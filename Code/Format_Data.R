@@ -79,9 +79,11 @@ for(i in 1:nrow(cast.x)){
   idx_cores[i] = which.min(d) 
 }
 
+if(DRAW == TRUE) pdf(paste0(dump.dir,"check_points.pdf"))
 plot(centers_polA[,1], centers_polA[,2])
 points(centers_biomass[idx_cores,1], centers_biomass[idx_cores,2], col='blue', pch=8)
 plot(usShp, add=T, lwd=2) 
+if(DRAW == TRUE) dev.off()
 
 for(i in 1:nrow(cast.x)){ 
   plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],])
@@ -90,7 +92,7 @@ for(i in 1:nrow(cast.x)){
 }  
 
 ##### Fixing up the data frame
-hist(plot_biomass_pollen[,1],breaks=20)
+#hist(plot_biomass_pollen[,1],breaks=20)
 #plot_biomass_pollen <- plot_biomass_pollen[-c(25,23),]#-c(25,23) #too much poaceae for bigwoods data set
 colnames(plot_biomass_pollen)<-c("Biomass","LatNorth","LongWest",colnames(cast.x[7:ncol(cast.x)])) ####MUST RUN
 
@@ -111,11 +113,14 @@ centers_polA <- spTransform(centers_pol, CRS('+proj=longlat +ellps=WGS84'))
 centers_polA <- as.matrix(data.frame(centers_polA))
 plot_biomass_pollen[,2] <- centers_polA[,1]
 plot_biomass_pollen[,3] <- centers_polA[,2]
+
+if(DRAW == TRUE) pdf(paste0(dump.dir,"all_sites.pdf"))
 map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
 points(plot_biomass_pollen[,2], plot_biomass_pollen[,3], pch=19, cex=1)
 points(cast.x[,3],cast.x[,2],col="white")
+if(DRAW == TRUE) dev.off()
 
-head(plot_biomass_pollen)
+#head(plot_biomass_pollen)
 library(mgcv)
 
 biomass = plot_biomass_pollen[,1]
@@ -138,11 +143,12 @@ for(i in 1:length(biomass)){
 
 library(splines)
 Z = bs(biomass,intercept=TRUE) #add knots here
-plot(biomass,Z[,1])
-points(biomass,Z[,2],col="blue")
-points(biomass,Z[,3],col="red")
-points(biomass,Z[,4],col="green")
-points(biomass)
+
+#plot(biomass,Z[,1])
+#points(biomass,Z[,2],col="blue")
+#points(biomass,Z[,3],col="red")
+#points(biomass,Z[,4],col="green")
+#points(biomass)
 
 rownames(Z)<-NULL
 
@@ -154,6 +160,7 @@ total_counts = rowSums(counts)
 
 betas = matrix(0,4,ncol(counts))
 
+if(DRAW == TRUE) pdf(paste0(dump.dir,"splines1.pdf"))
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
   gam_mod = gam(cbind(counts[,i],total_counts-counts[,i]) ~ s(biomass),family=binomial(link="logit"))
@@ -169,6 +176,7 @@ for(i in 1:ncol(counts)){
   betas[,i] = glm_mod$coefficients
   
 }
+if(DRAW == TRUE) dev.off()
 
 #Z.new%*%betas
 library(gtools)
@@ -187,3 +195,6 @@ for(j in 1:nrow(counts)){
 colnames(Y)<-colnames(counts)
 size = rowSums(Y)
 
+save.image(paste0(dump.dir,"data_formatted.Rdata"))
+
+print("Finished formatting data")

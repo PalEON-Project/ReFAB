@@ -1,5 +1,8 @@
 rm(list=ls())
 
+SAVE = TRUE
+DRAW = TRUE
+
 data.dir = "/Users/paleolab/babySTEPPS/Data/"
 dump.dir = "/Users/paleolab/babySTEPPS/Dump/"
 source("/Users/paleolab/babySTEPPS/Code/Format_Data.R")
