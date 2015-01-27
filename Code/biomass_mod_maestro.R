@@ -15,6 +15,6 @@ n.iter = 2
 
 source("/Users/paleolab/babySTEPPS/Code/Run_Model.R")
 
-
+source("/Users/paleolab/babySTEPPS/Code/Run_Model_Pick_Splines.R")
 
 
