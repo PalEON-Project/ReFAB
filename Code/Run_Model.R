@@ -80,5 +80,7 @@ abline(v=100)
 abline(h=100)
 if(DRAW == TRUE) dev.off()
 
+save.image(paste0(dump.dir,"mod_output.Rdata"))
+
 print("finished pred1")
 
