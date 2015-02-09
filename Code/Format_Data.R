@@ -21,7 +21,7 @@ usFortified <- fortify(usShp, region='id')
 #####
 ###### Load Biomass data #####
 #####
-biomass_dat <- read.csv(paste0(data.dir,"biomass_v0.9.csv"))
+biomass_dat <- read.csv(paste0(data.dir,"plss_biomass_v0.9-1.csv"))
 biomass_dat[is.na(biomass_dat)] <-0 #take out NAs
 biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
 
@@ -97,7 +97,9 @@ for(i in 1:nrow(cast.x)){
 colnames(plot_biomass_pollen)<-c("Biomass","LatNorth","LongWest",colnames(cast.x[7:ncol(cast.x)])) ####MUST RUN
 
 plot_biomass_pollen=plot_biomass_pollen[,-which(colSums(plot_biomass_pollen)==0)]
-save(plot_biomass_pollen,file=paste0(dump.dir,"plot_biomass_pollen.Rdata"))
+if(SAVE == TRUE){
+  save(plot_biomass_pollen,file=paste0(dump.dir,"plot_biomass_pollen.Rdata"))
+}
 #load("plot_biomass_pollen.Rdata")
 
 colnames(plot_biomass_pollen)
@@ -128,12 +130,12 @@ total_counts = round(rowSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)]))
 counts = round(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 colnames(counts) <- colnames(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 
-#going down to 10 spp for first attempt at model. also truncating biomass to 400.
-ten.count = matrix(0,142,10)
-prairie <- c("POACEAE","AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE")
+#going down to ncol(counts) spp for first attempt at model. also truncating biomass to 400.
+trees <- c("POACEAE","PINUSX","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+ten.count = matrix(0,142,length(trees)+1)
+prairie <- c("AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE")
 ten.count[,1] <- rowSums(counts[,prairie])
-trees <- c("TSUGAX","QUERCUS","PINUSX","TILIA","ULMUS","POPULUS","OSTRYCAR","BETULA","ABIES")
-ten.count[,2:10] <- counts[,trees]
+ten.count[,2:(length(trees)+1)] <- counts[,trees]
 colnames(ten.count)<-c("PRAIRIE",trees)
 ten.count = ten.count[-61,] #getting rid of grass pond
 biomass = biomass[-61]
@@ -158,7 +160,8 @@ library("mgcv")
 counts = ten.count
 total_counts = rowSums(counts)
 
-betas = matrix(0,4,ncol(counts))
+Z = bs(biomass,intercept=TRUE,df=4)
+betas = matrix(0,ncol(Z),ncol(counts))
 
 if(DRAW == TRUE) pdf(paste0(dump.dir,"splines1.pdf"))
 par(mfrow=c(3,3))
@@ -170,7 +173,7 @@ for(i in 1:ncol(counts)){
   glm_mod = glm(cbind(counts[,i],total_counts-counts[,i]) ~ Z - 1,family=binomial(link="logit"))   
   points(biomass,counts[,i]/total_counts,pch=19,cex=.4,col='grey')
   new.biomass = seq(1,400,1)
-  Z.new = bs(new.biomass,intercept=TRUE)
+  Z.new = bs(new.biomass,intercept=TRUE,df = ncol(Z))
   lines(new.biomass, predict(glm_mod,newdata=list(Z=Z.new),type="response"),col="blue")  
   
   betas[,i] = glm_mod$coefficients
@@ -180,11 +183,10 @@ if(DRAW == TRUE) dev.off()
 
 #Z.new%*%betas
 library(gtools)
-Z = bs(biomass,intercept=TRUE) 
 rownames(Z)<-NULL
 delta = 50#bigger
-phi.b = matrix(0,nrow(counts),10); p = phi.b
-Y = matrix(0,nrow(counts),10)
+phi.b = matrix(0,nrow(counts),ncol(counts)); p = phi.b
+Y = matrix(0,nrow(counts),ncol(counts))
 phi.b = exp(Z%*%betas)/rowSums(exp(Z%*%betas))
 
 for(j in 1:nrow(counts)){
@@ -197,4 +199,16 @@ size = rowSums(Y)
 
 save.image(paste0(dump.dir,"data_formatted.Rdata"))
 
-print("Finished formatting data")
+print("Finished formatting data. Saved all data to data_formatted.Rdata")
+
+set.seed(3)
+sites_rm = sample(1:141,50)
+Y = Y[-sites_rm,]
+biomass = biomass[-sites_rm]
+counts = counts[-sites_rm,]
+total_counts = rowSums(counts)
+
+
+if (nrow(Y) < 141) print("removed 50 sites for data validation")
+
+

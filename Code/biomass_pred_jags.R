@@ -12,7 +12,7 @@ model{
   phi.first <- Zb%*%beta
   
   for(j in 1:J){
-    for(i in 1:10){
+    for(i in 1:I){
       exp.phi[j,i] <- exp(phi.first[j,i])
     }
   }
