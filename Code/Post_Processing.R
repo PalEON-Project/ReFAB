@@ -23,12 +23,13 @@ for(i in 1:ncol(counts)){
 }
 
 #post processing
-biomass.preds = cbind(new.site.locs[-61,],summary(csamp.real.pred)$statistics[,1])
+new.site.locs = new.site.locs[-61,]
+biomass.preds = cbind(new.site.locs[-sites_rm,],summary(csamp.real.pred)$statistics[,1])
 colnames(biomass.preds)<-c("x","y","biomass")
 
-biomass_gam_mod = gam(log(biomass) ~ s(x,y,k=100),data = as.data.frame(biomass.preds))
+biomass_gam_mod = gam(log(biomass) ~ s(x,y),data = as.data.frame(biomass.preds))
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-biomass_dat_est <- read.csv("biomass_estimate_v1.9.csv")
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
 xiao_ests <- rowSums(biomass_dat_est)
 pred_biomass_gam = exp(predict(biomass_gam_mod,newdata = as.data.frame(biomass_dat5[,1:2])))
 
@@ -56,13 +57,17 @@ theme_clean <- function(plot_obj){
   return(plot_obj)
 }
 
-thresh = 800
-values <- seq(0,800,1)
+thresh = 400
+values <- c(seq(0,250,1),seq(251,451,10))
 
 #for(i in 2:n.iter){
 colnames(biomass.preds)<-c("x","y","biomass")
-full.mat <- cbind(biomass_dat5[,1:2],xiao_ests,pred_biomass_gam)
-colnames(full.mat) <- c("x","y","X.biomass","biomass")
+xiao_ests1 = numeric(length(xiao_ests))
+for(i in 1:length(xiao_ests)){
+  if(xiao_ests[i] > 400) xiao_ests1[i] = 400 else xiao_ests1[i] = xiao_ests[i]
+}
+full.mat <- cbind(biomass_dat5[,1:2],xiao_ests1,as.vector(pred_biomass_gam))
+colnames(full.mat) <- c("x","y","Xiao biomass","pred biomass")
 y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
 #id = which(y[,3] > thresh,arr.ind=T)
 #y[id,3] = thresh
@@ -77,7 +82,7 @@ d <- ggplot() + geom_raster(data=biomass_dat6, aes(x=x,y=y,fill=value)) +
 d <- d + facet_wrap(~ variable, ncol=1)
 
 d <- theme_clean(d) + theme(strip.text.y = element_text(size = rel(1.5)), strip.text.x = element_text(size = rel(1.5))) +
-  ggtitle("Xiaoping's Biomass")
+  ggtitle("Biomass")
 
 d <- add_map_albers(plot_obj = d,  map_data = usFortified, dat = biomass_dat6)
 print(d)

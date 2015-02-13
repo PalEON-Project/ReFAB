@@ -4,7 +4,7 @@
 ####
 
 z.seq1 = seq(1,400, length=5)
-Z.knots = bs(biomass,intercept=TRUE,df=4)
+Z.knots = bs(biomass,intercept=TRUE,df=7)
 
 beta = matrix(NA,ncol(Z.knots),ncol(Y))
 p = matrix(NA,nrow(Y),ncol(Y)) ; phi = p
@@ -76,9 +76,9 @@ csamp.real.pred <- coda.samples(mod.real.pred,c("b"),n.iter=n.iter)
 #points(biomass,summary(csamp.sim.pred)$quantiles[,2],pch=16,col="blue")
 #lines(seq(0,400,1),seq(0,400,1))
 
-pine.df4 = summary(csamp.real.pred)
-
-plot(biomass,summary(csamp.real.pred)$statistics[,1],main = "Real Data -- 4 df -- no pine", xlab = "true biomass",ylab="biomass estimates",ylim=c(0,400),xlim=c(0,400))
+no.pine.df7 = summary(csamp.real.pred)
+par(mfrow=c(1,1))
+plot(biomass,summary(csamp.real.pred)$statistics[,1],main = "Real Data -- 7 df -- no pine", xlab = "true biomass",ylab="biomass estimates",ylim=c(0,400),xlim=c(0,400))
 points(biomass,summary(csamp.real.pred)$quantiles[,2],pch=16,col="blue")
 lines(seq(0,400,1),seq(0,400,1))
 

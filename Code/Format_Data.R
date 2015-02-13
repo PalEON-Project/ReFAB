@@ -33,10 +33,10 @@ biomass_dat<-biomass_dat[,colnames(biomass_dat)!="Unknown.tree"]
 
 
 ##### organize the dataframe
-biomass_dat4<-rowSums(biomass_dat[,5:ncol(biomass_dat)])
+biomass_dat4<-rowSums(biomass_dat_est[,5:ncol(biomass_dat_est)])
 centers_biomass = cbind(biomass_dat$x,biomass_dat$y)
 biomass_dat5 <- data.frame(x=centers_biomass[,1],y=centers_biomass[,2],
-                           as.numeric(rowSums(biomass_dat[,5:ncol(biomass_dat)])))               
+                           as.numeric(rowSums(biomass_dat_est)))               
 
 colnames(biomass_dat5)<-c("x","y","biomass")
 load(file=paste0(data.dir,"pol.cal.count.mnwi.csv")) #all MN and WI follows from MNWI_dat.R
@@ -130,8 +130,19 @@ total_counts = round(rowSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)]))
 counts = round(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 colnames(counts) <- colnames(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 
+
+props = plot_biomass_pollen[,4:67]/rowSums(plot_biomass_pollen[,4:67])
+pdf("scatter.pdf")
+par(mfrow=c(4,4))
+for(i in 1:ncol(props)){
+  if(max(props[i,])>.01){
+    plot(plot_biomass_pollen[,1],props[,i],main=colnames(props)[i],xlab="biomass",ylab="pollen prop",pch = 19, cex = .5)
+  }
+}  
+dev.off()
+
 #going down to ncol(counts) spp for first attempt at model. also truncating biomass to 400.
-trees <- c("POACEAE","PINUSX","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+trees <- c("POACEAE","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
 ten.count = matrix(0,142,length(trees)+1)
 prairie <- c("AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE")
 ten.count[,1] <- rowSums(counts[,prairie])
@@ -197,7 +208,8 @@ for(j in 1:nrow(counts)){
 colnames(Y)<-colnames(counts)
 size = rowSums(Y)
 
-save.image(paste0(dump.dir,"data_formatted.Rdata"))
+
+if(SAVE == TRUE) save.image(paste0(dump.dir,"data_formatted.Rdata"))
 
 print("Finished formatting data. Saved all data to data_formatted.Rdata")
 
