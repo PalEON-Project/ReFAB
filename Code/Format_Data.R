@@ -45,15 +45,15 @@ hk_counts = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_counts_v0.csv")) #
 hk_meta = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_meta_v0.csv"))
 
 
-x = pol.cal.count[pol.cal.count$Age>=100,]
-x = x[x$Age<=200,]
+x = pol.cal.count[pol.cal.count$Age>=1500,]
+x = x[x$Age<=2000,]
 
 ##### Making a pollen proportion data frame that includes biomass for the pollen source grid cell.
 melt.x <- melt(x,id.vars=c("SiteID","LatitudeNorth","LongitudeWest","dataset.id","ContactName"))
 cast.x <- cast(melt.x,SiteID + LatitudeNorth + LongitudeWest + dataset.id +ContactName ~ variable,sum)
 cast.x=as.data.frame(cast.x)
 row_keep = rep(0,nrow(cast.x))
-plot_biomass_pollen = matrix(0,nrow(cast.x),78) #75 for just bigwoods #78 for mnwi
+plot_biomass_pollen = matrix(0,nrow(cast.x),(ncol(x)-3)) #75 for just bigwoods #78 for mnwi
 
 
 ##### Changing pollen coordinates so that we can find the right rows when we find the biomass for each pond.
@@ -70,7 +70,7 @@ centers_polA <- as.matrix(data.frame(centers_polA))
 cast.x$LongitudeWest <- centers_polA[,1]
 cast.x$LatitudeNorth <- centers_polA[,2]
 
-centers_biomass = cbind(biomass_dat5$x,biomass_dat5$y)
+centers_biomass = cbind(biomass_dat5[,1],biomass_dat5[,2])
 idx_cores = vector(length=nrow(cast.x))
 
 for(i in 1:nrow(cast.x)){   
@@ -87,7 +87,7 @@ if(DRAW == TRUE) dev.off()
 
 for(i in 1:nrow(cast.x)){ 
   plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],])
-  plot_biomass_pollen[i,2:78] = as.numeric(cast.x[i,c(2,3,7:ncol(cast.x))])
+  plot_biomass_pollen[i,2:(ncol(x)-3)] = as.numeric(cast.x[i,c(2,3,7:ncol(cast.x))])
   #plot_biomass_pollen[i,4:78] = plot_biomass_pollen[i,4:78]/sum(plot_biomass_pollen[i,4:78])
 }  
 
@@ -102,7 +102,7 @@ if(SAVE == TRUE){
 }
 #load("plot_biomass_pollen.Rdata")
 
-colnames(plot_biomass_pollen)
+#colnames(plot_biomass_pollen)
 
 
 ##### Changing pollen coordinates back so we can plot the pie plots #### when you rerun from the beginning make sure this is nessecary...
@@ -117,9 +117,17 @@ plot_biomass_pollen[,2] <- centers_polA[,1]
 plot_biomass_pollen[,3] <- centers_polA[,2]
 
 if(DRAW == TRUE) pdf(paste0(dump.dir,"all_sites.pdf"))
+par(mfrow=c(1,2))
 map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
 points(plot_biomass_pollen[,2], plot_biomass_pollen[,3], pch=19, cex=1)
-points(cast.x[,3],cast.x[,2],col="white")
+title(main="all sites")
+
+set.seed(4)
+sites_rm = sample(1:141,50)
+
+map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
+points(plot_biomass_pollen[-sites_rm,2], plot_biomass_pollen[-sites_rm,3], pch=19, cex=1)
+title(main="remaining sites")
 if(DRAW == TRUE) dev.off()
 
 #head(plot_biomass_pollen)
@@ -131,20 +139,31 @@ counts = round(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 colnames(counts) <- colnames(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
 
 
-props = plot_biomass_pollen[,4:67]/rowSums(plot_biomass_pollen[,4:67])
+props = plot_biomass_pollen[,4:ncol(plot_biomass_pollen)]/rowSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
+
+total_counts_spp = colSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
+
+props = props[,order(total_counts_spp,decreasing=TRUE)]
+
+
+if(DRAW==TRUE) {
+
 pdf("scatter.pdf")
 par(mfrow=c(4,4))
 for(i in 1:ncol(props)){
-  if(max(props[i,])>.01){
-    plot(plot_biomass_pollen[,1],props[,i],main=colnames(props)[i],xlab="biomass",ylab="pollen prop",pch = 19, cex = .5)
+  if(length(unique(props[-sites_rm,i]))>=9){
+    plot(plot_biomass_pollen[-sites_rm,1],props[-sites_rm,i],main=colnames(props)[i],xlab="biomass",ylab="pollen prop",pch = 19, cex = .5)
   }
+
 }  
 dev.off()
+}
+
 
 #going down to ncol(counts) spp for first attempt at model. also truncating biomass to 400.
-trees <- c("POACEAE","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
-ten.count = matrix(0,142,length(trees)+1)
-prairie <- c("AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE")
+trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+ten.count = matrix(0,nrow(counts),length(trees)+1)
+prairie <- c("AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE","POACEAE")
 ten.count[,1] <- rowSums(counts[,prairie])
 ten.count[,2:(length(trees)+1)] <- counts[,trees]
 colnames(ten.count)<-c("PRAIRIE",trees)
@@ -213,7 +232,7 @@ if(SAVE == TRUE) save.image(paste0(dump.dir,"data_formatted.Rdata"))
 
 print("Finished formatting data. Saved all data to data_formatted.Rdata")
 
-set.seed(3)
+set.seed(4)
 sites_rm = sample(1:141,50)
 Y = Y[-sites_rm,]
 biomass = biomass[-sites_rm]

@@ -4,7 +4,7 @@
 ####
 
 z.seq1 = seq(1,400, length=5)
-Z.knots = bs(biomass,intercept=TRUE,df=7)
+Z.knots = bs(biomass,intercept=TRUE,df=4)
 
 beta = matrix(NA,ncol(Z.knots),ncol(Y))
 p = matrix(NA,nrow(Y),ncol(Y)) ; phi = p
@@ -44,17 +44,17 @@ print("finished cal1")
 #### Prediction Models
 ####
 
-J = nrow(Y)#nrow(Z.new)
+J = nrow(counts)#nrow(Z.new)
 Zb = matrix(NA,J,ncol(Z.knots))
 DFS = ncol(Zb)
-p = matrix(NA,J,ncol(Y)); phi.first = p; phi = p
+p = matrix(NA,J,ncol(counts)); phi.first = p; phi = p
 #beta.est.sim = matrix(summary(csamp.sim.cal)$statistics[,1],4,ncol(Y))
 beta.est.real = matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))
 new.biomass = seq(1,400,1)
 Z.new = bs(new.biomass,intercept=TRUE,knots = attr(Z.knots,"knots"),Boundary.knots = attr(Z.knots,"Boundary.knots"))
 
 #data.sim.pred = list("I" = ncol(Y), "DFS" = DFS, "J" = J, "Zb" = Zb, "Y" = Y , "n" = rowSums(Y), "Z" = Z.new, "beta" = beta.est.sim, "p" = p, "phi.first" = phi.first)
-data.real.pred = list("I" = ncol(Y), "DFS" = DFS, "J" = J, "Zb" = Zb, "Y" = counts , "n" = rowSums(counts), "Z" = Z.new, "beta" = beta.est.real, "p" = p, "phi.first" = phi.first)
+data.real.pred = list("I" = ncol(counts), "DFS" = DFS, "J" = J, "Zb" = Zb, "Y" = counts , "n" = rowSums(counts), "Z" = Z.new, "beta" = beta.est.real, "p" = p, "phi.first" = phi.first)
 
 inits.pred = list(list(b = rep(20,J)),list(b=rep(300,J)))
 
@@ -67,7 +67,10 @@ csamp.real.pred <- coda.samples(mod.real.pred,c("b"),n.iter=n.iter)
 #csamp.real.pred.p <- coda.samples(mod.real.pred,c("p"),n.iter=n.iter)
 
 #plot(csamp.sim.pred)
-#plot(csamp.real.pred)
+
+pdf(paste0(dump.dir,"biom_posts.pdf"))
+plot(csamp.real.pred)
+dev.off()
 
 #if(DRAW == TRUE) pdf(paste0(dump.dir,"pred1.pdf"))
 
@@ -76,7 +79,7 @@ csamp.real.pred <- coda.samples(mod.real.pred,c("b"),n.iter=n.iter)
 #points(biomass,summary(csamp.sim.pred)$quantiles[,2],pch=16,col="blue")
 #lines(seq(0,400,1),seq(0,400,1))
 
-no.pine.df7 = summary(csamp.real.pred)
+no.pine.df4 = summary(csamp.real.pred)
 par(mfrow=c(1,1))
 plot(biomass,summary(csamp.real.pred)$statistics[,1],main = "Real Data -- 7 df -- no pine", xlab = "true biomass",ylab="biomass estimates",ylim=c(0,400),xlim=c(0,400))
 points(biomass,summary(csamp.real.pred)$quantiles[,2],pch=16,col="blue")

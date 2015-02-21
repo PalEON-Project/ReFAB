@@ -14,17 +14,18 @@ for(i in 1:ncol(counts)){
   plot(biomass,counts[,i]/total_counts,pch=19,cex=.4,col='grey',ylab="Pollen Prop",main=colnames(counts)[i])
   points(biomass,predict(gam_mod,type="response"),pch=19,col="green")
   
-  glm_mod = glm(cbind(counts[,i],total_counts-counts[,i]) ~ Z - 1,family=binomial(link="logit"))   
+  glm_mod = glm(cbind(counts[,i],total_counts-counts[,i]) ~ Z.knots - 1,family=binomial(link="logit"))   
   points(biomass,counts[,i]/total_counts,pch=19,cex=.4,col='grey')
-  new.biomass = seq(1,400,1)
-  Z.new = bs(new.biomass,intercept=TRUE)
+  #new.biomass = seq(20,400,1)
+  #Z.new = bs(new.biomass,intercept=TRUE)
+  #Z.new = bs(new.biomass,intercept=TRUE,knots = attr(Z,"knots"),Boundary.knots = attr(Z,"Boundary.knots"))
   lines(new.biomass, predict(glm_mod,newdata=list(Z=Z.new),type="response"),col="blue")  
-  points(biomass,exp(Z%*%beta.est.real)[,i]/rowSums(exp(Z%*%beta.est.real)),col="red")
+  points(biomass,exp(Z.knots%*%beta.est.real)[,i]/rowSums(exp(Z.knots%*%beta.est.real)),col="red")
 }
 
 #post processing
 new.site.locs = new.site.locs[-61,]
-biomass.preds = cbind(new.site.locs[-sites_rm,],summary(csamp.real.pred)$statistics[,1])
+biomass.preds = cbind(new.site.locs,summary(csamp.real.pred)$statistics[,1])
 colnames(biomass.preds)<-c("x","y","biomass")
 
 biomass_gam_mod = gam(log(biomass) ~ s(x,y),data = as.data.frame(biomass.preds))
@@ -58,13 +59,17 @@ theme_clean <- function(plot_obj){
 }
 
 thresh = 400
-values <- c(seq(0,250,1),seq(251,451,10))
+values <- c(seq(0,100,25),seq(100,200,50),300,400)
 
 #for(i in 2:n.iter){
 colnames(biomass.preds)<-c("x","y","biomass")
 xiao_ests1 = numeric(length(xiao_ests))
 for(i in 1:length(xiao_ests)){
   if(xiao_ests[i] > 400) xiao_ests1[i] = 400 else xiao_ests1[i] = xiao_ests[i]
+}
+
+for(i in 1:length(pred_biomass_gam)){
+  if(pred_biomass_gam[i] > 400) pred_biomass_gam[i] = 400 else pred_biomass_gam[i] = pred_biomass_gam[i]
 }
 full.mat <- cbind(biomass_dat5[,1:2],xiao_ests1,as.vector(pred_biomass_gam))
 colnames(full.mat) <- c("x","y","Xiao biomass","pred biomass")
@@ -75,7 +80,7 @@ y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
 biomass_dat6 = melt(y, c('x','y'))
 
 d <- ggplot() + geom_raster(data=biomass_dat6, aes(x=x,y=y,fill=value)) +
-  scale_fill_gradientn(colours=tim.colors(length(values)),values=values, 
+  scale_fill_gradientn(colours=sort(terrain.colors(length(values)),decreasing=TRUE),values=values, 
                        rescaler = function(x, ...) x, oob = identity) + 
   coord_fixed()
 
