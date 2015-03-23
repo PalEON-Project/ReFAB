@@ -45,8 +45,8 @@ hk_counts = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_counts_v0.csv")) #
 hk_meta = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_meta_v0.csv"))
 
 
-x = pol.cal.count[pol.cal.count$Age>=1500,]
-x = x[x$Age<=2000,]
+x = pol.cal.count[pol.cal.count$Age>=100,]
+x = x[x$Age<=200,]
 
 ##### Making a pollen proportion data frame that includes biomass for the pollen source grid cell.
 melt.x <- melt(x,id.vars=c("SiteID","LatitudeNorth","LongitudeWest","dataset.id","ContactName"))
@@ -82,7 +82,7 @@ for(i in 1:nrow(cast.x)){
 if(DRAW == TRUE) pdf(paste0(dump.dir,"check_points.pdf"))
 plot(centers_polA[,1], centers_polA[,2])
 points(centers_biomass[idx_cores,1], centers_biomass[idx_cores,2], col='blue', pch=8)
-plot(usShp, add=T, lwd=2) 
+plot(usShp, add=T, lwd=2)
 if(DRAW == TRUE) dev.off()
 
 for(i in 1:nrow(cast.x)){ 
@@ -127,8 +127,14 @@ sites_rm = sample(1:141,50)
 
 map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
 points(plot_biomass_pollen[-sites_rm,2], plot_biomass_pollen[-sites_rm,3], pch=19, cex=1)
+points(plot_biomass_pollen[plot_biomass_pollen[,3]>47,2], plot_biomass_pollen[plot_biomass_pollen[,3]>47,3], pch=19, cex=1,col="red")
 title(main="remaining sites")
 if(DRAW == TRUE) dev.off()
+
+quartz()
+map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
+
+plot_biomass_pollen[plot_biomass_pollen[,3]>47,]
 
 #head(plot_biomass_pollen)
 library(mgcv)
@@ -161,20 +167,26 @@ dev.off()
 
 
 #going down to ncol(counts) spp for first attempt at model. also truncating biomass to 400.
-trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
-ten.count = matrix(0,nrow(counts),length(trees)+1)
-prairie <- c("AMBROSIA","ARTEMISIA","ASTERX","CHENOAMX","FABACEAE","POACEAE")
-ten.count[,1] <- rowSums(counts[,prairie])
-ten.count[,2:(length(trees)+1)] <- counts[,trees]
-colnames(ten.count)<-c("PRAIRIE",trees)
-ten.count = ten.count[-61,] #getting rid of grass pond
-biomass = biomass[-61]
+counts = counts[,-which(colnames(counts)==c("PINUSX"))]
+trees <- c("CORYLUS","ARTEMISIA","ASTERX","POACEAE","AMBROSIA","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+other.trees <- c("TAXUS","NYSSA","JUGLANSX","CASTANEA","PLATANUS","SALIX","LIQUIDAM","ALNUSX")
+ten.count = matrix(0,nrow(counts),length(trees)+3)
+prairie <- c("CHENOAMX")
+ten.count[,1] <- counts[,prairie]
+ten.count[,2] <- rowSums(counts[,other.trees])
+ten.count[,3:(length(trees)+2)] <- counts[,trees]
+ten.count[,(length(trees)+3)] <- rowSums(counts) - rowSums(ten.count)
+colnames(ten.count)<-c("CHENOAMX","other trees",trees,"other herbs")
+ten.count = ten.count[-c(61,67),] #getting rid of grass pond and > 50% "other"
+biomass = biomass[-c(61,67)]
 for(i in 1:length(biomass)){
   if(biomass[i]>400) biomass[i] = 400
 }
 
 library(splines)
 Z = bs(biomass,intercept=TRUE) #add knots here
+
+
 
 #plot(biomass,Z[,1])
 #points(biomass,Z[,2],col="blue")
@@ -241,5 +253,37 @@ total_counts = rowSums(counts)
 
 
 if (nrow(Y) < 141) print("removed 50 sites for data validation")
+
+props1 = counts/rowSums(counts)
+
+total_counts_spp = colSums(counts)
+
+props1 = props1[,order(total_counts_spp,decreasing=TRUE)]
+
+long1 = plot_biomass_pollen[,3]
+long1 = long1[-c(61,67)]
+
+props2 = props1[long1[-sites_rm]>47,]
+
+pdf("scatter.locs.map.pdf")
+map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
+points(plot_biomass_pollen[-sites_rm,2], plot_biomass_pollen[-sites_rm,3], pch=19, cex=1)
+points(plot_biomass_pollen[plot_biomass_pollen[,3]>47.7,2], plot_biomass_pollen[plot_biomass_pollen[,3]>47.7,3], pch=19, cex=1,col="red")
+points(plot_biomass_pollen[plot_biomass_pollen[,3]<47.7&plot_biomass_pollen[,3]>47,2], plot_biomass_pollen[plot_biomass_pollen[,3]<47.7&plot_biomass_pollen[,3]>47,3], pch=19, cex=1,col="blue")
+title(main="over estimated sites")
+dev.off()
+
+pdf("scatter.locs.max.pdf")
+#quartz()
+par(mfrow=c(4,4))
+for(i in 1:ncol(counts)){
+  plot(biomass,props1[,i],main=colnames(props1)[i],xlab="biomass",ylab="pollen prop",pch = 19, cex = .5)
+  points(biomass[long1[-sites_rm]>47.8],props1[long1[-sites_rm]>47.8,i],col="red",pch = 19, cex = .7)
+  points(biomass[long1[-sites_rm]<47.7&long1[-sites_rm]>47],props1[long1[-sites_rm]<47.7&long1[-sites_rm]>47,i],col="blue",pch = 19, cex = .7)
+} 
+dev.off()
+
+
+
 
 
