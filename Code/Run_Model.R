@@ -97,21 +97,8 @@ dev.off()
 #lines(seq(0,400,1),seq(0,400,1))
 
 all.preds = summary(csamp.real.pred)
-site.factor = factor(all.preds1[,1],labels = seq(1,142,1))
-all.preds1 = cbind(site.factor,x[,1:6],all.preds$quantiles[,1],all.preds$quantiles[,3],all.preds$quantiles[,5])
-
-quartz()
-par(mfrow=c(4,4))
-for(i in 1:142){
-  if(length(all.preds1[all.preds1[,1]==i,7])>5){
-  plot(all.preds1[all.preds1[,1]==i,7],all.preds1[all.preds1[,1]==i,9],xlab="Age",ylab="Biomass",
-       main = c("site",as.character(unique(all.preds1[all.preds1[,1]==i,2])[1])),
-       ylim=c(0,400),xlim=c(150,1000),pch=19,cex=1)
-  }
-}
 
 pdf("min.max.lists.pdf")
-
 quartz()
 par(mfrow=c(2,2))
 plot(biomass,min.list$statistics[,1],main = "Min List", xlab = "true biomass",ylab="biomass estimates",ylim=c(0,400),xlim=c(0,400),pch=16,col="blue")

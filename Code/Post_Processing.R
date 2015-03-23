@@ -26,9 +26,9 @@ for(i in 1:ncol(counts)){
 #post processing
 new.site.locs = new.site.locs[-c(61,67),]
 biomass.preds = cbind(new.site.locs[-sites_rm,],summary(csamp.real.pred)$statistics[,1])
-colnames(biomass.preds)<-c("x","y","biomass")
+colnames(biomass.preds)<-c("x","y","biomass") #important step #gam has problems with formatting otherwise
 
-biomass_gam_mod = gam(log(biomass) ~ s(x,y),data = as.data.frame(biomass.preds))
+biomass_gam_mod = gam(log(biomass) ~ s(x,y,k=80),data = as.data.frame(biomass.preds))
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
 biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
 xiao_ests <- rowSums(biomass_dat_est)
@@ -119,7 +119,7 @@ input_points <- data.frame(new.site.locs[-sites_rm,])
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
   geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
-  ggtitle("Xiao Est - Min List Pred")
+  ggtitle("Xiao Est - Max List Pred")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
   p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +
