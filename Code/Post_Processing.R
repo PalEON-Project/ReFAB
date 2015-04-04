@@ -104,22 +104,43 @@ colors <- rev(terrain.colors(length(breaks)-1))
 breaks <-  c( -400, -300, -200, -100, 100, 200, 300, 400)
 
 colors <- c("dark blue", "blue", "light blue", "white", "pink", "red")
-legendName <- "Difference"
+legendName <- "Biomass"
 
-data_binned <-  cut(y[,3] - y[,4], breaks, include.lowest = TRUE, labels = FALSE)
+data_binned <-  cut(y[,3], breaks, include.lowest = TRUE, labels = FALSE)
 
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
 inputData <- data.frame(X = y[,1], Y = y[,2], Preds = cbind(data_binned,data_binned))
 inputData_long <- melt(inputData, c('X', 'Y'))
 
+sites_mat = read.csv("/Users/paleolab/Documents/PhD Dissertation Updates/field_sites_2015.csv")
+
+lon = as.numeric(-sites_mat[,4])
+lat = as.numeric(sites_mat[,3])
+#map('state',ylim = range(lat) + c(-1,1),xlim = range(long)+ c(-2,2))
+#points(long,lat,pch=19,cex=1)
+
+field_sites_locs <- cbind(lon,lat)
+centers_pol = data.frame(field_sites_locs)
+colnames(centers_pol) = c('x', 'y')
+
+coordinates(centers_pol) <- ~ x + y
+proj4string(centers_pol) <- CRS('+proj=longlat +ellps=WGS84')
+
+centers_polA <- spTransform(centers_pol, CRS('+init=epsg:3175'))
+centers_polA <- as.matrix(data.frame(centers_polA))
+
+colnames(centers_polA) <- c('lat','lon')
+input_points <- data.frame(centers_polA)
+Name = sites_mat[,1]
+
 colnames(new.site.locs) <- c('lat','lon')
 input_points <- data.frame(new.site.locs[-sites_rm,])
 
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
-  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
-  ggtitle("Xiao Est - Max List Pred")
+  geom_point() + geom_text(data = input_points, aes(x=lat,y=lon),label=Name,size = 3) + 
+  ggtitle("Settlement Biomass Estimates")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
   p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +

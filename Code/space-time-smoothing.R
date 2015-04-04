@@ -1,14 +1,58 @@
 load("all.preds.min.list.RData")
+all.preds = summary(csamp.real.pred)
 #follows from Run_Model.R ##all.preds = summary(csamp.real.pred)
 
 site.factor = factor(x[,1],labels = seq(1,142,1))
 all.preds1 = cbind(site.factor,x[,1:6],all.preds$quantiles[,1],all.preds$quantiles[,3],all.preds$quantiles[,5])
+all.preds1 = cbind(all.preds1,ten.count)
 all.preds1 = all.preds1[order(all.preds1$LatitudeNorth),]
 all.preds1[,1] = factor(all.preds1[,2],labels = seq(1,142,1),
                         levels=unique(all.preds1[,2]),ordered=FALSE)
 
-pdf("time.series1.pdf")
-par(mfrow=c(4,4))
+#ten.count = ten.count[order(all.preds1$LatitudeNorth),]
+
+count_mat = count(df = as.data.frame(all.preds1),vars = "SiteID")
+
+add1 = matrix(0,nrow(all.preds1),1)
+
+for(i in 1:nrow(all.preds1)){
+  add1[i,] = count_mat[count_mat[,1]==all.preds1$SiteID[i],2]
+}
+
+rbPal <- colorRampPalette(c("yellow",'red','blue',"green","black"))
+
+#This adds a column of color values
+# based on the y values
+color_dat <- rbPal(5)[as.numeric(cut(add1,breaks = 5))]
+
+breaks <-  c(0,5, 10,15, 20,25,30,35, 40,45, 50)
+colors <- rbPal(length(breaks)-1)
+data_binned <- as.character(cut(add1, breaks,
+                                include.lowest = TRUE,labels=colors))
+
+
+pdf("maps&hists_samples.pdf")
+map('state', xlim=range(all.preds1[,4])+c(-2, 2), ylim=range(all.preds1[,3])+c(-1, 1))
+points(all.preds1[,4],all.preds1[,3], pch=19, cex=1,col=data_binned)
+title("Colored by Number of Samples")
+
+hist(add1,col=colors,breaks=10,xlab="Number of samples between Ages 200 - 1000")
+
+breaks <-  seq(200,1000,100)
+colors <- rbPal(length(breaks)-1)
+data_binned1 <- as.character(cut(all.preds1$Age, breaks,
+                                include.lowest = TRUE,labels=colors))
+
+map('state', xlim=range(all.preds1[,4])+c(-2, 2), ylim=range(all.preds1[,3])+c(-1, 1))
+points(all.preds1[,4],all.preds1[,3], pch=19, cex=1,col=data_binned1)
+title("Colored by Max Age")
+
+hist(all.preds1$Age,col=colors,breaks=8,xlab="Sample Ages")
+dev.off()
+
+
+pdf("time.series1_with_pie.pdf")
+par(mfrow=c(2,2))
 for(i in 1:142){
   if(length(all.preds1[all.preds1[,1]==i,7])>5){
     plot(all.preds1[all.preds1[,1]==i,7],all.preds1[all.preds1[,1]==i,9],xlab="Age",ylab="Biomass",
@@ -16,6 +60,17 @@ for(i in 1:142){
          ylim=c(0,400),xlim=c(150,1000),pch=19,cex=1)
     map('state', xlim=range(all.preds1[,4])+c(-2, 2), ylim=range(all.preds1[,3])+c(-1, 1))
     points(unique(all.preds1[all.preds1[,1]==i,4]),unique(all.preds1[all.preds1[,1]==i,3]), pch=19, cex=1)
+   
+    min.calc = min(all.preds1[all.preds1[,1]==i,7])
+    min.plot = as.numeric(all.preds1[which(all.preds1[,1]==i&all.preds1[,7]==min.calc),
+                                     11:ncol(all.preds1)])
+    pie(min.plot,col=rainbow(ncol(ten.count)),main=c("Age BP",min.calc),
+        labels = colnames(all.preds1[,11:ncol(all.preds1)]))
+    max.calc = max(all.preds1[all.preds1[,1]==i,7])
+    max.plot = as.numeric(all.preds1[which(all.preds1[,1]==i&all.preds1[,7]==max.calc),
+                                     11:ncol(all.preds1)])
+    pie(max.plot,col=rainbow(ncol(ten.count)), main=c("Age BP",max.calc),
+        labels = colnames(all.preds1[,11:ncol(all.preds1)]))
   }
 }
 dev.off()
@@ -37,15 +92,16 @@ head(all.preds1)
 colnames(all.preds1)<-c("site_factor","SiteID","Lat","Long","dataset.id",
                         "ContactName","Age","low_bound","Median","high_bound","x","y")
 
-b <- gam(log(Median) ~ te(x,y,Age), data = as.data.frame(all.preds1), d = c(2,1),bs = c("tp","cr"))
+b <- gam(log(Median) ~ te(x,y,Age, d = c(2,1),bs = c("tp","cr"),k=100), data = as.data.frame(all.preds1))
 summary(b)
 vis.gam(b)  
 
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-age_slice = 300
+age_slice = 500
 pred_data = cbind(biomass_dat5[,1:2],rep(age_slice,nrow(biomass_dat5)))
 colnames(pred_data)<- c("x","y","Age")
 pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
+hist(pred_biomass_gam)
 
 full.mat <- cbind(biomass_dat5[,1:2],as.vector(pred_biomass_gam))
 colnames(full.mat) <- c("x","y","pred biomass")
