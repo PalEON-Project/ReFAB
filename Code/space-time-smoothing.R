@@ -28,10 +28,9 @@ color_dat <- rbPal(5)[as.numeric(cut(add1,breaks = 5))]
 breaks <-  c(0,5, 10,15, 20,25,30,35, 40,45, 50)
 colors <- rbPal(length(breaks)-1)
 data_binned <- as.character(cut(add1, breaks,
-                                include.lowest = TRUE,labels=colors))
+                                include.lowest = TRUE,
+                                labels=colors))
 
-
-pdf("maps&hists_samples.pdf")
 map('state', xlim=range(all.preds1[,4])+c(-2, 2), ylim=range(all.preds1[,3])+c(-1, 1))
 points(all.preds1[,4],all.preds1[,3], pch=19, cex=1,col=data_binned)
 title("Colored by Number of Samples")
@@ -48,10 +47,10 @@ points(all.preds1[,4],all.preds1[,3], pch=19, cex=1,col=data_binned1)
 title("Colored by Max Age")
 
 hist(all.preds1$Age,col=colors,breaks=8,xlab="Sample Ages")
-dev.off()
 
 
-pdf("time.series1_with_pie.pdf")
+#pdf("time.series1_with_pie.pdf")
+quartz()
 par(mfrow=c(2,2))
 for(i in 1:142){
   if(length(all.preds1[all.preds1[,1]==i,7])>5){
@@ -73,7 +72,7 @@ for(i in 1:142){
         labels = colnames(all.preds1[,11:ncol(all.preds1)]))
   }
 }
-dev.off()
+#dev.off()
 
 new.site.locs <- cbind(all.preds1$LongitudeWest,all.preds1$LatitudeNorth)
 centers_pol = data.frame(new.site.locs)
@@ -85,23 +84,27 @@ proj4string(centers_pol) <- CRS('+proj=longlat +ellps=WGS84')
 centers_polA <- spTransform(centers_pol, CRS('+init=epsg:3175'))
 centers_polA <- as.matrix(data.frame(centers_polA))
 
-all.preds1 = cbind(all.preds1,centers_polA)
+all.preds1 = cbind(all.preds1[,1:10],centers_polA)
 
 #colnames(all.preds1[,8:10]) <- c("2.5%","50%","97.5")
 head(all.preds1)
 colnames(all.preds1)<-c("site_factor","SiteID","Lat","Long","dataset.id",
                         "ContactName","Age","low_bound","Median","high_bound","x","y")
 
-b <- gam(log(Median) ~ te(x,y,Age, d = c(2,1),bs = c("tp","cr"),k=100), data = as.data.frame(all.preds1))
+b <- gam(log(Median) ~ te(x,y,Age, d = c(2,1),bs = c("tp","cr"),k=30), data = as.data.frame(all.preds1))
 summary(b)
 vis.gam(b)  
 
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-age_slice = 500
+age_slice = 900
 pred_data = cbind(biomass_dat5[,1:2],rep(age_slice,nrow(biomass_dat5)))
 colnames(pred_data)<- c("x","y","Age")
 pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
 hist(pred_biomass_gam)
+
+for(i in 1:length(pred_biomass_gam)){
+  if(pred_biomass_gam[i]>400) pred_biomass_gam[i] = 400
+}
 
 full.mat <- cbind(biomass_dat5[,1:2],as.vector(pred_biomass_gam))
 colnames(full.mat) <- c("x","y","pred biomass")
@@ -110,7 +113,7 @@ y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
 breaks <-  c(0, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400)
 colors <- rev(terrain.colors(length(breaks)-1))
 
-legendName <- "Biomass at Age = 300"
+legendName <- paste0("Biomass at Age = ",age_slice, " BP")
 
 data_binned <-  cut(y[,3], breaks, include.lowest = TRUE, labels = FALSE)
 
@@ -120,12 +123,13 @@ inputData <- data.frame(X = y[,1], Y = y[,2], Preds = cbind(data_binned,data_bin
 inputData_long <- melt(inputData, c('X', 'Y'))
 
 colnames(centers_polA) <- c('lat','lon')
-input_points <- data.frame(centers_polA[all.preds1$Age == age_slice,])
+input_points <- data.frame(centers_polA[all.preds1$Age >(age_slice-50)&all.preds1$Age <(age_slice+50),])
 
-d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
-  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
+d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) +
+  scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
+  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16),legend.position="none") + #legend.position="none" removes legend
   geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
-  ggtitle("Prediction Map")
+  ggtitle(paste0("Pred Map ","at Age = ",age_slice, " BP"))
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
   p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +
@@ -136,17 +140,23 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 
+d_200 = d
+d_300 = d
+d_400 = d
+d_500 = d
+
+d_600 = d
+d_700 = d
+d_800 = d
+d_900 = d
+
 quartz()
-print(d)
+pdf("initial.pred.maps.pdf")
+grid.arrange(d_200,d_300,d_400,d_500,ncol=2)
+grid.arrange(d_600,d_700,d_800,d_900,ncol=2)
+dev.off()
 
-
-
-
-
-
-
-
-
-
-
-
+## 4/4/2015 TO DO
+#figure out how to add covariates
+#run model for longer time series
+#pick out some interesting ponds and make specific observations for meeting and maybe more pie charts

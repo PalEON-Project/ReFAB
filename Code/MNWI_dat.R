@@ -157,9 +157,9 @@ plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.25,xlim=c(0,2000),main="Zoomed 
 plot.seq = seq(0,20000,500)
 
 #quartz()
-par(mfrow = c(3,3))
+par(mfrow = c(2,2))
 for(i in 2:length(plot.seq)){
-  map('state', xlim=range(site.locs$LongitudeWest)+c(-2, 2), ylim=range(site.locs$LatitudeNorth)+c(-1, 1))
+  map('state', xlim=range(ponds1$LongitudeWest)+c(-2, 2), ylim=range(ponds1$LatitudeNorth)+c(-1, 1))
   points(ponds1[ponds1$Age>plot.seq[i-1]&ponds1$Age<plot.seq[i],]$LongitudeWest, 
          ponds1[ponds1$Age>plot.seq[i-1]&ponds1$Age<plot.seq[i],]$LatitudeNorth, 
          pch=19, cex=.5)
