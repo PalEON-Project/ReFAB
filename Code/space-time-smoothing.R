@@ -119,11 +119,14 @@ summary(b)
 vis.gam(b)  
 
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-age_slice = 200
-pred_data = cbind(biomass_dat5[,1:2],rep(age_slice,nrow(biomass_dat5)))
-colnames(pred_data)<- c("x","y","Age")
-pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
-#hist(pred_biomass_gam)
+age_slice = 300
+
+diff_map_plor <- function(age_slice){
+
+  pred_data = cbind(biomass_dat5[,1:2],rep(age_slice,nrow(biomass_dat5)))
+  colnames(pred_data)<- c("x","y","Age")
+  pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
+  #hist(pred_biomass_gam)
 
 for(i in 1:length(pred_biomass_gam)){
   if(pred_biomass_gam[i]>400) pred_biomass_gam[i] = 400
@@ -139,8 +142,8 @@ legendName <- paste0("Biomass at Age = ",age_slice, " BP")
 
 biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
 xiao_ests <- rowSums(biomass_dat_est)
-breaks <-  c( -400, -300, -200, -100, 100, 200, 300, 400,500)
-colors <- c("dark blue", "blue", "light blue", "white", "pink", "red","orange","yellow")
+breaks <-  c(-300, -200, -100, 100, 200, 300, 400,500,600)
+colors <- c("blue", "light blue", "white", "pink","darkred", "red","orange","yellow")
 legendName <- paste0("Xiao - Pred at ", age_slice)
 
 data_binned <-  cut(xiao_ests - y[,3], breaks, include.lowest = TRUE, labels = FALSE)
@@ -167,26 +170,30 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 }
 
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
+return(d)
+}
+quartz()
+print(diff_map_plor(8000))
+
+
+d_200 = diff_map_plor(200)
+d_300 = diff_map_plor(300)
+d_400 = diff_map_plor(400)
+d_500 = diff_map_plor(500)
+
+d_600 = diff_map_plor(600)
+d_700 = diff_map_plor(700)
+d_800 = diff_map_plor(800)
+d_900 = diff_map_plor(900)
 
 quartz()
-print(d)
-
-d_200 = d
-d_300 = d
-d_400 = d
-d_500 = d
-
-d_600 = d
-d_700 = d
-d_800 = d
-d_900 = d
-
-quartz()
-#pdf("initial.pred.diff.maps.pdf")
-grid.arrange(...)
+pdf("initial.pred.diff.maps.pdf")
+grid.arrange(d_200,d_300)
+grid.arrange(d_400,d_500)
+grid.arrange(d_600,d_700)
+grid.arrange(d_800,d_900)
 dev.off()
 
 ## 4/4/2015 TO DO
 #figure out how to add covariates
 #run model for longer time series
-#pick out some interesting ponds and make specific observations for meeting and maybe more pie charts
