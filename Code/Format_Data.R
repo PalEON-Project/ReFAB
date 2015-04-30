@@ -13,6 +13,8 @@ gpclibPermit()
 require(maptools)
 require(ggplot2)
 library(mgcv)
+library(splines)
+library(rjags)
 
 usShp <- readShapeLines(file.path(data.dir, '/us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)

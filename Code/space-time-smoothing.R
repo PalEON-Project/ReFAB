@@ -74,6 +74,29 @@ for(i in 1:142){
 }
 #dev.off()
 
+plot.pie.time.series = function(site){
+  plot(all.preds1[all.preds1[,2]==site,7],all.preds1[all.preds1[,2]==site,9],xlab="Age",ylab="Biomass",
+       main = c("site",as.character(unique(all.preds1[all.preds1[,2]==site,2])[1])),
+       ylim=c(0,400),pch=19,cex=1)
+  text(all.preds1[all.preds1[,2]==site,7],all.preds1[all.preds1[,2]==site,9]+40,labels = all.preds1[all.preds1[,2]==site,7],cex=.6)
+  map('state', xlim=range(all.preds1[,4])+c(-2, 2), ylim=range(all.preds1[,3])+c(-1, 1))
+  points(unique(all.preds1[all.preds1[,2]==site,4]),unique(all.preds1[all.preds1[,2]==site,3]), pch=19, cex=1)
+  
+  which.pie = all.preds1[all.preds1[,2]==site,]
+  #min.plot = as.numeric(all.preds1[which(all.preds1[,1]==i&all.preds1[,7]==min.calc),
+  #                                 11:ncol(all.preds1)])
+  for(i in 1:nrow(which.pie)){
+    pie(as.numeric(which.pie[i,11:ncol(which.pie)]),col=rainbow(ncol(ten.count)),main=c("Age BP",which.pie$Age[i]),
+        labels = colnames(all.preds1[,11:ncol(all.preds1)])) 
+  }
+}
+
+quartz()
+#pdf("site_1988.pdf")
+par(mfrow=c(3,3))
+plot.pie.time.series(site = 1988)
+#dev.off()
+
 new.site.locs <- cbind(all.preds1$LongitudeWest,all.preds1$LatitudeNorth)
 centers_pol = data.frame(new.site.locs)
 colnames(centers_pol) = c('x', 'y')
@@ -96,11 +119,11 @@ summary(b)
 vis.gam(b)  
 
 load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-age_slice = 900
+age_slice = 200
 pred_data = cbind(biomass_dat5[,1:2],rep(age_slice,nrow(biomass_dat5)))
 colnames(pred_data)<- c("x","y","Age")
 pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
-hist(pred_biomass_gam)
+#hist(pred_biomass_gam)
 
 for(i in 1:length(pred_biomass_gam)){
   if(pred_biomass_gam[i]>400) pred_biomass_gam[i] = 400
@@ -112,10 +135,15 @@ y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
 
 breaks <-  c(0, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400)
 colors <- rev(terrain.colors(length(breaks)-1))
-
 legendName <- paste0("Biomass at Age = ",age_slice, " BP")
 
-data_binned <-  cut(y[,3], breaks, include.lowest = TRUE, labels = FALSE)
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
+xiao_ests <- rowSums(biomass_dat_est)
+breaks <-  c( -400, -300, -200, -100, 100, 200, 300, 400,500)
+colors <- c("dark blue", "blue", "light blue", "white", "pink", "red","orange","yellow")
+legendName <- paste0("Xiao - Pred at ", age_slice)
+
+data_binned <-  cut(xiao_ests - y[,3], breaks, include.lowest = TRUE, labels = FALSE)
 
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
@@ -127,7 +155,7 @@ input_points <- data.frame(centers_polA[all.preds1$Age >(age_slice-50)&all.preds
 
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) +
   scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
-  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16),legend.position="none") + #legend.position="none" removes legend
+  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) + #legend.position="none" removes legend
   geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
   ggtitle(paste0("Pred Map ","at Age = ",age_slice, " BP"))
 
@@ -140,6 +168,9 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 
+quartz()
+print(d)
+
 d_200 = d
 d_300 = d
 d_400 = d
@@ -151,9 +182,8 @@ d_800 = d
 d_900 = d
 
 quartz()
-pdf("initial.pred.maps.pdf")
-grid.arrange(d_200,d_300,d_400,d_500,ncol=2)
-grid.arrange(d_600,d_700,d_800,d_900,ncol=2)
+#pdf("initial.pred.diff.maps.pdf")
+grid.arrange(...)
 dev.off()
 
 ## 4/4/2015 TO DO

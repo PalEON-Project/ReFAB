@@ -45,7 +45,7 @@ print("finished cal1")
 ####
 
 x = pol.cal.count[pol.cal.count$Age>=200,]
-x = x[x$Age<=1000,]
+x = x[x$Age<=2000,]
 
 x = x[,-which(colnames(x)==c("PINUSX"))]
 trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
@@ -59,7 +59,7 @@ ten.count[,(length(trees)+3)] <- rowSums(x[,7:ncol(x)]) - rowSums(ten.count)
 colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
 
 ten.count <- round(ten.count)
-counts <- ten.count
+counts <- ten.count[1,]
 
 J = nrow(counts)#nrow(Z.new)
 Zb = matrix(NA,J,ncol(Z.knots))
