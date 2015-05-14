@@ -1,5 +1,6 @@
 library(nimble)
-load("min.list.samples.Rdata")
+library(splines)
+load("babySTEPPS/min.list.samples.Rdata")
 
 code <- nimbleCode({
   
@@ -11,7 +12,7 @@ code <- nimbleCode({
     }
   }
   
-  phi.first <- Z%*%beta
+  phi.first[,] <- Z[,]%*%beta[,]
   
   for(j in 1:J){
     for(i in 1:I){
@@ -24,8 +25,8 @@ code <- nimbleCode({
   }
   
   for(j in 1:J){
-    p[j,] ~ ddirch(exp.phi[j,]+.025) #http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/c21ef62a
-    Y[j,] ~ dmulti(p[j,],n[j])
+    p[j,] ~ ddirch(exp.phi[j,]) #http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/c21ef62a
+    Y[j,] ~ dmulti(size = n[j], prob = p[j,])
   }
   
 })
@@ -37,38 +38,117 @@ beta = matrix(NA,ncol(Z.knots),ncol(Y))
 p = matrix(NA,nrow(Y),ncol(Y)) ; phi = p
 J = nrow(Y)
 
-data = list(Y = counts , n = rowSums(counts), Z =  Z.knots)
-constants = list(R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
-inits.cal = list(list(beta = matrix(0,ncol(Z.knots),ncol(Y))),list(beta = matrix(3,ncol(Z.knots),ncol(Y))))
-dimensions = list(exp.phi = dim(phi), Z = dim(Z.knots), beta = dim(beta), p = dim(p), Y = dim(counts))
+data = list(Y = counts ,  Z =  Z.knots)
 
-model <- nimbleModel(code, inits = inits.cal, constants = constants, data = data.real.cal, dimensions = dimensions)
+constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
 
-# # compiled version of the model
-# Cmodel <- compileNimble(model)
-# 
-# # set up MCMC
-# spec <- configureMCMC(model, thin = 10)
-# spec$addMonitors(c('psi', 'theta'))  # set up monitoring of whatever
+inits = list(beta = matrix(1,ncol(Z.knots),ncol(Y)),p = matrix(1/18,nrow(Y),ncol(Y)))
+
+dimensions = list(exp.phi = dim(phi), phi.first = dim(phi), Z = dim(Z.knots), beta = dim(beta), p = dim(p), Y = dim(counts), n = nrow(Y))
+
+model <- nimbleModel(code, inits = inits, constants = constants, data = data, dimensions = dimensions)
+
+# compiled version of the model
+Cmodel <- compileNimble(model)
+
+# set up MCMC
+spec <- configureMCMC(model, thin = 10, print = TRUE)
+spec$addMonitors(c('beta')) 
+
+# set up monitoring of whatever
 # model variables you want posterior samples for - by default, top level
 # parameters are already included, so 'mu' in the above example would by
 # default be monitored. 'psi' and 'theta' are just for illustration -
-#   obviously they are not part of my toy model above
+# obviously they are not part of my toy model above
+
+# create MCMC algorithm for the model
+Rmcmc <- buildMCMC(spec)
+# compiled version of the MCMC
+Cmcmc <- compileNimble(Rmcmc, project = model)
 # 
-# # create MCMC algorithm for the model
-# Rmcmc <- buildMCMC(spec)
-# # compiled version of the MCMC
-# Cmcmc <- compileNimble(Rmcmc, project = model)
-# 
-# # run MCMC for 5000 iterations
-# Cmcmc$run(5000)
-# samples <- as.matrix(Cmcmc$mvSamples)
-# 
-# # samples has rows as iterations and columns as variables, you'll have
+# run MCMC for 5000 iterations
+Cmcmc$run(5000)
+samples <- as.matrix(Cmcmc$mvSamples)
+
+# samples has rows as iterations and columns as variables, you'll have
 # to manually remove a burn-in period
-# 
-# b) Here's how to do the Dirichlet-multinomial:
-# 
+
+pred_code <- nimbleCode({
+  
+  for(j in 1:J){
+    b[j] ~ dunif(1, 400)
+    b_trunc[j] <- trunc(b[j])
+    
+    for(c in 1:DFS) {
+      Zb[j,c] <- Z[b_trunc[j], c] + (b[j] - b_trunc[j]) * (Z[b_trunc[j]+1, c] - Z[b_trunc[j], c])
+    }
+  }
+  
+  phi.first[,] <- Zb[,]%*%beta[,]
+  
+  for(j in 1:J){
+    for(i in 1:I){
+      exp.phi[j,i] <- exp(phi.first[j,i])
+    }
+  }
+  
+  for(j in 1:J){
+   # for(i in 1:10){
+   #  phi[j,i] <- exp.phi[j,i]/sum(exp.phi[j,])
+   #} 
+    p[j,] ~ ddirch(exp.phi[j,] + .025) #http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/c21ef62a
+    Y[j,] ~ dmulti(prob = p[j,], size = n[j])
+  }
+  
+})
+
+x = pol.cal.count[pol.cal.count$Age>=200,]
+x = x[x$Age<=1000,]
+
+x = x[,-which(colnames(x)==c("PINUSX"))]
+trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+other.trees <- c("TAXUS","NYSSA","JUGLANSX","CASTANEA","PLATANUS","SALIX","LIQUIDAM","ALNUSX")
+ten.count = matrix(0,nrow(x),length(trees)+3)
+prairie <- c("CORYLUS","ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX")
+ten.count[,1] <- rowSums(x[,prairie])
+ten.count[,2] <- rowSums(x[,other.trees])
+ten.count[,3:(length(trees)+2)] <- as.matrix(x[,trees])
+ten.count[,(length(trees)+3)] <- rowSums(x[,7:ncol(x)]) - rowSums(ten.count)
+colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
+
+ten.count <- round(ten.count)
+ten.count <- ten.count[1:2,]
+
+J = nrow(ten.count)
+Zb = matrix(NA,J,ncol(Z.knots))
+DFS = ncol(Zb)
+p = matrix(NA,J,ncol(ten.count)); phi.first = p; phi = p; exp.phi = p
+beta.est = matrix(colMeans(samples[100:nrow(samples),]),ncol(Z.knots),ncol(Y))
+new.biomass = seq(1,400,1)
+Z.new = bs(new.biomass,intercept=TRUE,knots = attr(Z.knots,"knots"),Boundary.knots = attr(Z.knots,"Boundary.knots"))
+
+data.pred = list(Y = ten.count)
+
+constants.pred = list(beta = beta.est, I = 18, DFS = DFS, J = J, n = rowSums(ten.count),  Z =  Z.new)
+
+inits.pred = list(b=rep(300,J), p = matrix(1/18,nrow(Y),ncol(Y)))
+
+dimensions.pred = list(exp.phi = dim(phi), phi.first = dim(phi), p = dim(p), Zb = dim(Zb), beta = dim(beta.est), Y = dim(ten.count), Z = dim(Z.new), b = 2, b_trunc = 2)
+
+model_pred <- nimbleModel(pred_code, inits = inits.pred, constants = constants.pred, data = data.pred, dimensions = dimensions.pred)
+
+#Cmodel.pred <- compileNimble(model_pred) #opens browser...
+spec.pred <- configureMCMC(model_pred, thin = 10, print = TRUE)
+spec.pred$addMonitors(c('b')) 
+Rmcmc.pred <- buildMCMC(spec.pred)
+Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.nodeValPointers_byGID : $ operator not defined for this S4 class
+
+# Cmcmc.pred$run(5000)
+# samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
+
+
+# # b) Here's how to do the Dirichlet-multinomial:
+
 # # set up the "d" function for the distribution
 # ddirchmulti <- nimbleFunction(
 # run = function(x = double(1), alpha = double(1), size = double(0),
@@ -82,7 +162,7 @@ model <- nimbleModel(code, inits = inits.cal, constants = constants, data = data
 # return(exp(logProb))
 # }
 # })
-# 
+
 # # set up the "r" function
 # rdirchmulti <- nimbleFunction(
 # run = function(n = integer(0), alpha = double(1), size = double(0)) {
@@ -91,14 +171,14 @@ model <- nimbleModel(code, inits = inits.cal, constants = constants, data = data
 # p <- rdirch(1, alpha)
 # return(rmulti(1, size = size, prob = p))
 # })
-# 
+
 # # tell NIMBLE about the newly available distribution
 # registerDistributions(list(
 # ddirchmulti = list(
 # BUGSdist = "ddirchmulti(alpha, size)"
 # )
 # ))
-# 
+
 # # now modify your BUGS code and redo the stuff from part (a) above
 # # e.g.,  y ~ ddirchmulti(alpha, size)
 # # instead of y ~ dmulti(p, size)

@@ -20,29 +20,46 @@ colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
 
 ten.count <- round(ten.count)
 
-par(mfrow=c(3,3))
-do_sites = c(1988,269,1593,1820,2933,8574) #1101,318
+#par(mfrow=c(3,3))
+do_sites = c(269,1988) #1101,318
 quartz()
 par(mfrow=c(3,3))
 for(r in 1:length(do_sites)){  
-for(f in 1:length(colnames(counts))){
+for(f in 1:18){
   rows_use = which(x[,1]==do_sites[r])
 
-  counts <- t(as.matrix(ten.count[rows_use[3],]))
+  counts <- t(as.matrix(ten.count[rows_use[c(3)],]))
 
   pick_spp = colnames(counts)[f]
   
-  if(counts[,pick_spp]>0){
-    up.seq = seq(1,100,5)
-    max_neg = counts[,pick_spp]
-    down.seq = seq(1,max_neg,5)
+  base_num = counts[,pick_spp]
+  
+  min.calc1 = min(ten.count[rows_use,f])
+  max.calc1 = max(ten.count[rows_use,f])
+  
+  if(base_num>30){
+    up.seq = seq(1,max.calc1 + 10,20)
+    down.seq = seq(0,base_num,10)
     for(i in 1:length(up.seq)){
       counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]+up.seq[i],counts[1,colnames(counts)!=pick_spp]))
     }
     for(i in 1:length(down.seq)){
-      counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]-i,counts[1,colnames(counts)!=pick_spp]))
+      counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]-down.seq[i],counts[1,colnames(counts)!=pick_spp]))
     }
-  } else {
+  } 
+  
+  if(base_num>0 & base_num<30){
+    up.seq = seq(1, max.calc1 + 5,2)
+    down.seq = seq(0, base_num,2)
+    for(i in 1:length(up.seq)){
+      counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]+up.seq[i],counts[1,colnames(counts)!=pick_spp]))
+    }
+    for(i in 1:length(down.seq)){
+      counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]-down.seq[i],counts[1,colnames(counts)!=pick_spp]))
+    }
+  } 
+  
+  if(base_num==0){
     up.seq1 = seq(1,10,1)
     for(i in 1:length(up.seq1)){
       counts = rbind(counts, c(counts[1,colnames(counts)==pick_spp]+up.seq1[i],counts[1,colnames(counts)!=pick_spp]))
@@ -82,56 +99,19 @@ to_save = cbind(props_vec,biomass_vec)
 
 print(paste(pick_spp,do_sites[r]))
 
+prop_all_age = ten.count[rows_use,]/rowSums(ten.count[rows_use,])
+
+min.calc = min(prop_all_age[,f])
+max.calc = max(prop_all_age[,f])
+
 #pdf(paste0("site_",do_sites[r],"_",pick_spp,"_sensitivity.pdf") )
 
-plot(props_vec[,1],biomass_vec,pch=19,cex=1,ylim=c(0,400),
+plot(props_vec[,f],biomass_vec,pch=19,cex=1,ylim=c(0,400),
      main = paste0(pick_spp,"- site ",do_sites[r]),
-     xlab = "Pollen Prop",ylab="Biomass")
-#points(props_vec[1,1],biomass_vec[1],pch=19,cex=1,col = "red")
+     xlab = "Pollen Prop",ylab="Biomass",xlim = c(0,max(props_vec[,f])))
+abline(v = min.calc, col = "red",lwd = 2)
+abline(v = max.calc, col = "red",lwd = 2)
+axis(3,at = props_vec[,f], labels = counts[,f])
 #dev.off()
-
-#save(to_save,file = paste0("site_",do_sites[r],pick_spp,"sens.RData"))
 }
 }
-
-site=318
-load("site_1988ABIESsens.RData")
-#pdf(paste0("site_",do_sites[f],"_sensitivity.pdf") )
-
-#pdf(paste0("site_",site,"_sensitivity.pdf") )
-seq1 = seq(1,(nrow(props_vec)),4)
-seq2 = seq(1,18,1)
-#par(mfrow = c(3,3)) 
-quartz()
-par(mfrow=c(3,3))
-    for(i in 1:18){
-      plot(props_vec[seq1[i]:(seq1[i]+3),i],biomass_vec[seq1[i]:(seq1[i]+3)],pch = 19, cex = 1.5, main = colnames(ten.count)[i],xlim=c(0,1),ylim = c(0,400))
-    } 
-#dev.off()  
-
-
-    }
-
-
-
-
-
-
-
-
-save_list1 = cbind(props_vec[,1],biomass_vec)
-
-save_list = cbind(save_list[,1:5],biomass_vec,props_vec[,pick_col])
-
-colnames(save_list) = c("NA","biom_prairie","prop_prairie","biom_oak",
-                        "prop_oak","biom_birch","prop_birch")
-
-quartz()
-par(mfrow=c(1,3))
-colors = c(rep("black",3),rep("blue",3),"black","blue")
-plot(save_list[,3],save_list[,2],pch = 19, cex = 1.5, main = "Prairie - Site 1988",xlim=c(0,1),ylim = c(0,400),col = colors)
-plot(save_list[,5],save_list[,4],pch = 19, cex = 1.5, main = "Oak - Site 1988",xlim=c(0,1),ylim = c(0,400), col = colors)
-plot(save_list[,7],save_list[,6],pch = 19, cex = 1.5, main = "Birch - Site 1988",xlim=c(0,1),ylim = c(0,400),col = colors)
-
-
-

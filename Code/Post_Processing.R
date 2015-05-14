@@ -1,13 +1,4 @@
-sum.real.pred = summary(csamp.real.pred)$statistics[,1]
-
-round(rbind(colMeans(counts[biomass<160&sum.real.pred>200,]/rowSums(counts[biomass<160&sum.real.pred>200,])),
-            colMeans(counts[biomass<100&biomass<160&sum.real.pred<100,]/rowSums(counts[biomass<100&biomass<160&sum.real.pred<100,]))),digits = 2)
-
-par(mfrow=c(1,1))
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-pine.prop = counts[,4]/rowSums(counts)
-points(plot_biomass_pollen[biomass<150&biomass>50&pine.prop<.2,2], plot_biomass_pollen[biomass<150&biomass>50&pine.prop<.2,3], pch=19, cex=1)
-
+pdf("new.splines.pdf")
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
   gam_mod = gam(cbind(counts[,i],total_counts-counts[,i]) ~ s(biomass),family=binomial(link="logit"))
@@ -22,17 +13,17 @@ for(i in 1:ncol(counts)){
   #lines(new.biomass, predict(glm_mod,newdata=list(Z=Z.new),type="response"),col="blue")  
   points(biomass,exp(Z.knots%*%beta.est.real)[,i]/rowSums(exp(Z.knots%*%beta.est.real)),col="red")
 }
+dev.off()
 
 #post processing
-new.site.locs = new.site.locs[-c(61,67),]
-biomass.preds = cbind(new.site.locs[-sites_rm,],summary(csamp.real.pred)$statistics[,1])
+biomass.preds = cbind(final_coors[,3:4],summary(csamp.real.pred)$statistics[,1])
 colnames(biomass.preds)<-c("x","y","biomass") #important step #gam has problems with formatting otherwise
 
 biomass_gam_mod = gam(log(biomass) ~ s(x,y,k=80),data = as.data.frame(biomass.preds))
-load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
-biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
-xiao_ests <- rowSums(biomass_dat_est)
-pred_biomass_gam = exp(predict(biomass_gam_mod,newdata = as.data.frame(biomass_dat5[,1:2])))
+#load("/Users/paleolab/Documents/babySTEPPS/biomass_dat5.Rdata")
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))
+xiao_ests <- rowSums(biomass_dat_est[,4:23])
+pred_biomass_gam = exp(predict(biomass_gam_mod,newdata = as.data.frame(biomass_dat_est[,1:2])))
 
 usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)
@@ -57,90 +48,40 @@ theme_clean <- function(plot_obj){
   
   return(plot_obj)
 }
-
-thresh = 400
-values <- c(seq(0,100,25),seq(100,200,50),300,400)
-
 #for(i in 2:n.iter){
 colnames(biomass.preds)<-c("x","y","biomass")
-xiao_ests1 = numeric(length(xiao_ests))
-for(i in 1:length(xiao_ests)){
-  if(xiao_ests[i] > 400) xiao_ests1[i] = 400 else xiao_ests1[i] = xiao_ests[i]
-}
 
-for(i in 1:length(pred_biomass_gam)){
-  if(pred_biomass_gam[i] > 400) pred_biomass_gam[i] = 400 else pred_biomass_gam[i] = pred_biomass_gam[i]
-}
-full.mat <- cbind(biomass_dat5[,1:2],xiao_ests1,as.vector(pred_biomass_gam))
-colnames(full.mat) <- c("x","y","Xiao biomass","pred biomass")
-y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
-#id = which(y[,3] > thresh,arr.ind=T)
-#y[id,3] = thresh
-
-biomass_dat6 = melt(y, c('x','y'))
-
-d <- ggplot() + geom_raster(data=biomass_dat6, aes(x=x,y=y,fill=value)) +
-  scale_fill_gradientn(colours=sort(terrain.colors(length(values)),decreasing=TRUE),values=values, 
-                       rescaler = function(x, ...) x, oob = identity) + 
-  coord_fixed()
-
-d <- d + facet_wrap(~ variable, ncol=1)
-
-d <- theme_clean(d) + theme(strip.text.y = element_text(size = rel(1.5)), strip.text.x = element_text(size = rel(1.5))) +
-  ggtitle("Biomass")
-
-d <- add_map_albers(plot_obj = d,  map_data = usFortified, dat = biomass_dat6)
-
-quartz()
-print(d)
+full.mat <- cbind(biomass_dat_est[,1:2],xiao_ests,as.vector(pred_biomass_gam))
+colnames(full.mat) <- c("x","y","Xiao Total Biomass","Smoothed Biomass")
+y = as.data.frame(full.mat)
 
 # chris's code for plotting discrete values
 # data would be a vector of biomas values
 
-breaks <-  c(0, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400)
-
+#Regular breaks and colors
+breaks <-  c(seq(0,50,10),seq(75,200,25))
 colors <- rev(terrain.colors(length(breaks)-1))
 
-breaks <-  c( -400, -300, -200, -100, 100, 200, 300, 400)
+#Difference breaks and colors
+breaks <-  c(seq(-100,-25,25),-10,10,seq(25,100,25))
+colors <- cm.colors(length(breaks)-1)
 
-colors <- c("dark blue", "blue", "light blue", "white", "pink", "red")
-legendName <- "Biomass"
+legendName <- "Biomass (Mg/ha)"
 
-data_binned <-  cut(y[,3], breaks, include.lowest = TRUE, labels = FALSE)
+data_binned <-  cut(y[,3]-y[,4], breaks, include.lowest = TRUE, labels = FALSE)
 
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
 inputData <- data.frame(X = y[,1], Y = y[,2], Preds = cbind(data_binned,data_binned))
 inputData_long <- melt(inputData, c('X', 'Y'))
 
-sites_mat = read.csv("/Users/paleolab/Documents/PhD Dissertation Updates/field_sites_2015.csv")
-
-lon = as.numeric(-sites_mat[,4])
-lat = as.numeric(sites_mat[,3])
-#map('state',ylim = range(lat) + c(-1,1),xlim = range(long)+ c(-2,2))
-#points(long,lat,pch=19,cex=1)
-
-field_sites_locs <- cbind(lon,lat)
-centers_pol = data.frame(field_sites_locs)
-colnames(centers_pol) = c('x', 'y')
-
-coordinates(centers_pol) <- ~ x + y
-proj4string(centers_pol) <- CRS('+proj=longlat +ellps=WGS84')
-
-centers_polA <- spTransform(centers_pol, CRS('+init=epsg:3175'))
-centers_polA <- as.matrix(data.frame(centers_polA))
-
-colnames(centers_polA) <- c('lat','lon')
-input_points <- data.frame(centers_polA)
-Name = sites_mat[,1]
-
-colnames(new.site.locs) <- c('lat','lon')
-input_points <- data.frame(new.site.locs[-sites_rm,])
+input_points <- data.frame(final_coors[,3:4])
+colnames(input_points) <- c('lat','lon')
 
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
-  geom_point() + geom_text(data = input_points, aes(x=lat,y=lon),label=Name,size = 3) + 
-  ggtitle("Settlement Biomass Estimates")
+  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
+  ggtitle("Xiaoping estimates - smoothed prediciton")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
   p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +
@@ -154,15 +95,16 @@ d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 quartz()
 print(d)
 
-#remove_sites1 <- plot_biomass_pollen[-c(61,67),]
-breaks <-  c(0, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400)
-colors <- rev(terrain.colors(length(breaks)-1))
-data_binned1 <-  cut(biomass.preds[,3], breaks, include.lowest = TRUE, labels = colors)
+data_binned1 <-  cut(biomass - biomass.preds[,3], breaks, include.lowest = TRUE, labels = colors)
 
 quartz()
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-points(remove_sites1[-sites_rm,2], remove_sites1[-sites_rm,3], pch=19, cex=1, col = as.character(data_binned1))
-title("Min List Point Preds")
+map('state', xlim=range(final_coors[,2])+c(-2, 2), ylim=range(final_coors[,1])+c(-1, 1))
+points(final_coors[,2],final_coors[,1], pch=19, cex=1, col = as.character(data_binned1))
+title("Difference in Point Predictions for Subset of Settlement Points")
+legend("topright",c("-100 - -75","-75 - -50","-50 - -25","-25 -10", "-10 - 10","10 - 25","25 - 50",
+                    "50-75","75-100"),col = colors, pch = 19)
+legend("topright",c("0-10","10-20","20-30","30-40","40-50","50-75","75-100",
+                    "100-125","125-150","150-175"),col = colors, pch = 19)
 
 
 head(y)

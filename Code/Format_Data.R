@@ -10,10 +10,10 @@ require(plyr)
 require(maps)
 library(gridExtra)
 gpclibPermit()
-require(maptools)
-require(ggplot2)
 library(mgcv)
 library(splines)
+library(boot)
+library(gtools)
 library(rjags)
 
 usShp <- readShapeLines(file.path(data.dir, '/us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
@@ -22,142 +22,101 @@ usFortified <- fortify(usShp, region='id')
 
 
 #####
-###### Load Biomass data #####
+###### Load biomass and pollen data #####
 #####
-biomass_dat <- read.csv(paste0(data.dir,"plss_biomass_v0.9-1.csv"))
-biomass_dat[is.na(biomass_dat)] <-0 #take out NAs
-biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
 
-##### Get rid of weird groups in biomass data
-biomass_dat<-biomass_dat[,colnames(biomass_dat)!="No.tree"]
-biomass_dat<-biomass_dat[,colnames(biomass_dat)!="NonTree"]
-biomass_dat<-biomass_dat[,colnames(biomass_dat)!="Unknown"]
-biomass_dat<-biomass_dat[,colnames(biomass_dat)!="Unknown.tree"]
+#### Biomass
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))
 
+#### Pollen
+load(file=paste0(data.dir,"pol.cal.count.mnwi1.csv")) #all MN and WI and MI part that we want follows from MNWI_dat.R
 
-##### organize the dataframe
-biomass_dat4<-rowSums(biomass_dat_est[,5:ncol(biomass_dat_est)])
-centers_biomass = cbind(biomass_dat$x,biomass_dat$y)
-biomass_dat5 <- data.frame(x=centers_biomass[,1],y=centers_biomass[,2],
-                           as.numeric(rowSums(biomass_dat_est)))               
+#x[x$SiteID==29,] #there are two siteID 29s
 
-colnames(biomass_dat5)<-c("x","y","biomass")
-load(file=paste0(data.dir,"pol.cal.count.mnwi.csv")) #all MN and WI follows from MNWI_dat.R
-
-hk_counts = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_counts_v0.csv")) #have to add someday
-hk_meta = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_meta_v0.csv"))
-
-
+#####
+###### Format settlement pollen data #####
+#####
 x = pol.cal.count[pol.cal.count$Age>=100,]
 x = x[x$Age<=200,]
 
-##### Making a pollen proportion data frame that includes biomass for the pollen source grid cell.
 melt.x <- melt(x,id.vars=c("SiteID","LatitudeNorth","LongitudeWest","dataset.id","ContactName"))
-cast.x <- cast(melt.x,SiteID + LatitudeNorth + LongitudeWest + dataset.id +ContactName ~ variable,sum)
+cast.x <- cast(melt.x,LatitudeNorth + LongitudeWest + SiteID +ContactName ~ variable,sum)
 cast.x=as.data.frame(cast.x)
+cast.x = as.data.frame(cast.x[-c(1:3),])
 row_keep = rep(0,nrow(cast.x))
-plot_biomass_pollen = matrix(0,nrow(cast.x),(ncol(x)-3)) #75 for just bigwoods #78 for mnwi
+plot_biomass_pollen = matrix(0,nrow(cast.x),(ncol(x)-3))
 
 
 ##### Changing pollen coordinates so that we can find the right rows when we find the biomass for each pond.
-new.site.locs <- cbind(cast.x$LongitudeWest,cast.x$LatitudeNorth)
-centers_pol = data.frame(new.site.locs)
-colnames(centers_pol) = c('x', 'y')
+lat.long.reg <- cbind(cast.x$LongitudeWest,cast.x$LatitudeNorth)
+lat.long.reg.df = data.frame(lat.long.reg)
+colnames(lat.long.reg.df) = c('x', 'y')
 
-coordinates(centers_pol) <- ~ x + y
-proj4string(centers_pol) <- CRS('+proj=longlat +ellps=WGS84')
+coordinates(lat.long.reg.df) <- ~ x + y
+proj4string(lat.long.reg.df) <- CRS('+proj=longlat +ellps=WGS84')
 
-centers_polA <- spTransform(centers_pol, CRS('+init=epsg:3175'))
-centers_polA <- as.matrix(data.frame(centers_polA))
+albers <- spTransform(lat.long.reg.df, CRS('+init=epsg:3175'))
+albers <- as.matrix(data.frame(albers))
 
-cast.x$LongitudeWest <- centers_polA[,1]
-cast.x$LatitudeNorth <- centers_polA[,2]
-
-centers_biomass = cbind(biomass_dat5[,1],biomass_dat5[,2])
+centers_biomass = cbind(biomass_dat_est$x,biomass_dat_est$y)
 idx_cores = vector(length=nrow(cast.x))
 
 for(i in 1:nrow(cast.x)){   
-  core_site = centers_polA[i,]
+  core_site = albers[i,]
   d = rdist(matrix(core_site, ncol=2), as.matrix(centers_biomass))
   idx_cores[i] = which.min(d) 
 }
 
-if(DRAW == TRUE) pdf(paste0(dump.dir,"check_points.pdf"))
-plot(centers_polA[,1], centers_polA[,2])
+if(DRAW == TRUE) pdf(paste0(dump.dir,"check_points.pdf")) else (quartz())
+plot(albers[,1], albers[,2])
 points(centers_biomass[idx_cores,1], centers_biomass[idx_cores,2], col='blue', pch=8)
 plot(usShp, add=T, lwd=2)
 if(DRAW == TRUE) dev.off()
 
 for(i in 1:nrow(cast.x)){ 
-  plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],])
-  plot_biomass_pollen[i,2:(ncol(x)-3)] = as.numeric(cast.x[i,c(2,3,7:ncol(cast.x))])
+  plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],4:23])
+  plot_biomass_pollen[i,2:(ncol(x)-3)] = as.numeric(cast.x[i,c(1,2,6:ncol(cast.x))])
   #plot_biomass_pollen[i,4:78] = plot_biomass_pollen[i,4:78]/sum(plot_biomass_pollen[i,4:78])
 }  
 
-##### Fixing up the data frame
-#hist(plot_biomass_pollen[,1],breaks=20)
-#plot_biomass_pollen <- plot_biomass_pollen[-c(25,23),]#-c(25,23) #too much poaceae for bigwoods data set
-colnames(plot_biomass_pollen)<-c("Biomass","LatNorth","LongWest",colnames(cast.x[7:ncol(cast.x)])) ####MUST RUN
+#####
+##### Remove sites and take subset of points
+#####
+colnames(plot_biomass_pollen)<-c("Biomass","LatNorth","LongWest",colnames(cast.x[6:ncol(cast.x)])) ####MUST RUN
 
 plot_biomass_pollen=plot_biomass_pollen[,-which(colSums(plot_biomass_pollen)==0)]
-if(SAVE == TRUE){
-  save(plot_biomass_pollen,file=paste0(dump.dir,"plot_biomass_pollen.Rdata"))
-}
-#load("plot_biomass_pollen.Rdata")
-
-#colnames(plot_biomass_pollen)
-
-
-##### Changing pollen coordinates back so we can plot the pie plots #### when you rerun from the beginning make sure this is nessecary...
-new.site.locs <- cbind(plot_biomass_pollen[,3],plot_biomass_pollen[,2])
-centers_pol = data.frame(new.site.locs)
-colnames(centers_pol) = c('x', 'y')
-coordinates(centers_pol) <- ~ x + y
-proj4string(centers_pol) <- CRS('+init=epsg:3175')
-centers_polA <- spTransform(centers_pol, CRS('+proj=longlat +ellps=WGS84'))
-centers_polA <- as.matrix(data.frame(centers_polA))
-plot_biomass_pollen[,2] <- centers_polA[,1]
-plot_biomass_pollen[,3] <- centers_polA[,2]
+plot_biomass_pollen = cbind(plot_biomass_pollen, albers)
 
 if(DRAW == TRUE) pdf(paste0(dump.dir,"all_sites.pdf"))
+quartz()
 par(mfrow=c(1,2))
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-points(plot_biomass_pollen[,2], plot_biomass_pollen[,3], pch=19, cex=1)
+map('state', ylim=range(plot_biomass_pollen[,2])+c(-2, 2), xlim=range(plot_biomass_pollen[,3])+c(-1, 1))
+points(plot_biomass_pollen[,3], plot_biomass_pollen[,2], pch=19, cex=1)
 title(main="all sites")
 
 set.seed(4)
-sites_rm = sample(1:141,50)
+sites_rm = sample(1:nrow(plot_biomass_pollen),round(nrow(plot_biomass_pollen)/2))
 
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-points(plot_biomass_pollen[-sites_rm,2], plot_biomass_pollen[-sites_rm,3], pch=19, cex=1)
-points(plot_biomass_pollen[plot_biomass_pollen[,3]>47,2], plot_biomass_pollen[plot_biomass_pollen[,3]>47,3], pch=19, cex=1,col="red")
+map('state', xlim=range(plot_biomass_pollen[,3])+c(-2, 2), ylim=range(plot_biomass_pollen[,2])+c(-1, 1))
+points(plot_biomass_pollen[-sites_rm,3], plot_biomass_pollen[-sites_rm,2], pch=19, cex=1)
 title(main="remaining sites")
 if(DRAW == TRUE) dev.off()
 
-quartz()
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-
-plot_biomass_pollen[plot_biomass_pollen[,3]>47,]
-
-#head(plot_biomass_pollen)
 library(mgcv)
 
 biomass = plot_biomass_pollen[,1]
-total_counts = round(rowSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)]))
-counts = round(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
-colnames(counts) <- colnames(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
+total_counts = round(rowSums(plot_biomass_pollen[,4:(ncol(plot_biomass_pollen)-2)]))
+counts = round(plot_biomass_pollen[,4:(ncol(plot_biomass_pollen)-2)])
+colnames(counts) <- colnames(plot_biomass_pollen[,4:(ncol(plot_biomass_pollen)-2)])
 
+props = counts/rowSums(counts)
 
-props = plot_biomass_pollen[,4:ncol(plot_biomass_pollen)]/rowSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
-
-total_counts_spp = colSums(plot_biomass_pollen[,4:ncol(plot_biomass_pollen)])
+total_counts_spp = colSums(counts)
 
 props = props[,order(total_counts_spp,decreasing=TRUE)]
 
-
-if(DRAW==TRUE) {
-
-pdf("scatter.pdf")
+#pdf("scatter.newdata.pdf")
+quartz()
 par(mfrow=c(4,4))
 for(i in 1:ncol(props)){
   if(length(unique(props[-sites_rm,i]))>=9){
@@ -165,50 +124,39 @@ for(i in 1:ncol(props)){
   }
 
 }  
-dev.off()
-}
+#dev.off()
 
+plot_biomass_pollen = plot_biomass_pollen[-c(which(props$Other>.5),which(props$POACEAE>.8)),]
 
-#going down to ncol(counts) spp for first attempt at model. also truncating biomass to 400.
+#####
+##### Creating a dataset with the species we want to use
+#####
+
 counts = counts[,-which(colnames(counts)==c("PINUSX"))]
-trees <- c("CORYLUS","ARTEMISIA","ASTERX","POACEAE","AMBROSIA","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
 other.trees <- c("TAXUS","NYSSA","JUGLANSX","CASTANEA","PLATANUS","SALIX","LIQUIDAM","ALNUSX")
 ten.count = matrix(0,nrow(counts),length(trees)+3)
-prairie <- c("CHENOAMX")
-ten.count[,1] <- counts[,prairie]
+prairie <- c("CORYLUS","ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX")
+ten.count[,1] <- rowSums(counts[,prairie])
 ten.count[,2] <- rowSums(counts[,other.trees])
 ten.count[,3:(length(trees)+2)] <- counts[,trees]
 ten.count[,(length(trees)+3)] <- rowSums(counts) - rowSums(ten.count)
-colnames(ten.count)<-c("CHENOAMX","other trees",trees,"other herbs")
-ten.count = ten.count[-c(61,67),] #getting rid of grass pond and > 50% "other"
-biomass = biomass[-c(61,67)]
-for(i in 1:length(biomass)){
-  if(biomass[i]>400) biomass[i] = 400
-}
+colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
 
-library(splines)
-Z = bs(biomass,intercept=TRUE) #add knots here
-
-
-
-#plot(biomass,Z[,1])
-#points(biomass,Z[,2],col="blue")
-#points(biomass,Z[,3],col="red")
-#points(biomass,Z[,4],col="green")
-#points(biomass)
-
-rownames(Z)<-NULL
-
-library(boot)
-library("mgcv")
+props = as.data.frame(props)
 
 counts = ten.count
 total_counts = rowSums(counts)
 
-Z = bs(biomass,intercept=TRUE,df=4)
-betas = matrix(0,ncol(Z),ncol(counts))
+#####
+##### Drawing Splines #####
+#####
 
-if(DRAW == TRUE) pdf(paste0(dump.dir,"splines1.pdf"))
+Z = bs(biomass,intercept=TRUE,df=4)
+betas = matrix(0,ncol(Z),ncol(counts)); betas.save = betas
+
+#if(DRAW == TRUE) pdf(paste0(dump.dir,"splines.new.pdf"))
+quartz()
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
   gam_mod = gam(cbind(counts[,i],total_counts-counts[,i]) ~ s(biomass),family=binomial(link="logit"))
@@ -222,71 +170,38 @@ for(i in 1:ncol(counts)){
   lines(new.biomass, predict(glm_mod,newdata=list(Z=Z.new),type="response"),col="blue")  
   
   betas[,i] = glm_mod$coefficients
+  betas.save[,i] = glm_mod$coefficients
   
 }
-if(DRAW == TRUE) dev.off()
+#if(DRAW == TRUE) dev.off()
 
-#Z.new%*%betas
-library(gtools)
-rownames(Z)<-NULL
-delta = 50#bigger
-phi.b = matrix(0,nrow(counts),ncol(counts)); p = phi.b
-Y = matrix(0,nrow(counts),ncol(counts))
-phi.b = exp(Z%*%betas)/rowSums(exp(Z%*%betas))
+#####
+##### Simulating Data #####
+#####
+# 
+# rownames(Z)<-NULL
+# delta = 50#bigger
+# phi.b = matrix(0,nrow(counts),ncol(counts)); p = phi.b
+# Y = matrix(0,nrow(counts),ncol(counts))
+# phi.b = exp(Z%*%betas)/rowSums(exp(Z%*%betas))
+# 
+# for(j in 1:nrow(counts)){
+#   p[j,] = rdirichlet(1,phi.b[j,]*delta)
+#   Y[j,] = rmultinom(1,prob = p[j,], size = rowSums(counts)[j])
+# }
+# 
+# colnames(Y)<-colnames(counts)
+# size = rowSums(Y)
+# 
+# print("Finished formatting data. Saved all data to data_formatted.Rdata")
 
-for(j in 1:nrow(counts)){
-  p[j,] = rdirichlet(1,phi.b[j,]*delta)
-  Y[j,] = rmultinom(1,prob = p[j,], size = rowSums(counts)[j])
-}
+#####
+##### Create final datasets #####
+#####
 
-colnames(Y)<-colnames(counts)
-size = rowSums(Y)
-
-
-if(SAVE == TRUE) save.image(paste0(dump.dir,"data_formatted.Rdata"))
-
-print("Finished formatting data. Saved all data to data_formatted.Rdata")
-
-set.seed(4)
-sites_rm = sample(1:141,50)
-Y = Y[-sites_rm,]
+Y = counts[-sites_rm,] #remove sites "sites_rm" defined above
 biomass = biomass[-sites_rm]
 counts = counts[-sites_rm,]
 total_counts = rowSums(counts)
 
-
-if (nrow(Y) < 141) print("removed 50 sites for data validation")
-
-props1 = counts/rowSums(counts)
-
-total_counts_spp = colSums(counts)
-
-props1 = props1[,order(total_counts_spp,decreasing=TRUE)]
-
-long1 = plot_biomass_pollen[,3]
-long1 = long1[-c(61,67)]
-
-props2 = props1[long1[-sites_rm]>47,]
-
-pdf("scatter.locs.map.pdf")
-map('state', xlim=range(plot_biomass_pollen[,2])+c(-2, 2), ylim=range(plot_biomass_pollen[,3])+c(-1, 1))
-points(plot_biomass_pollen[-sites_rm,2], plot_biomass_pollen[-sites_rm,3], pch=19, cex=1)
-points(plot_biomass_pollen[plot_biomass_pollen[,3]>47.7,2], plot_biomass_pollen[plot_biomass_pollen[,3]>47.7,3], pch=19, cex=1,col="red")
-points(plot_biomass_pollen[plot_biomass_pollen[,3]<47.7&plot_biomass_pollen[,3]>47,2], plot_biomass_pollen[plot_biomass_pollen[,3]<47.7&plot_biomass_pollen[,3]>47,3], pch=19, cex=1,col="blue")
-title(main="over estimated sites")
-dev.off()
-
-pdf("scatter.locs.max.pdf")
-#quartz()
-par(mfrow=c(4,4))
-for(i in 1:ncol(counts)){
-  plot(biomass,props1[,i],main=colnames(props1)[i],xlab="biomass",ylab="pollen prop",pch = 19, cex = .5)
-  points(biomass[long1[-sites_rm]>47.8],props1[long1[-sites_rm]>47.8,i],col="red",pch = 19, cex = .7)
-  points(biomass[long1[-sites_rm]<47.7&long1[-sites_rm]>47],props1[long1[-sites_rm]<47.7&long1[-sites_rm]>47,i],col="blue",pch = 19, cex = .7)
-} 
-dev.off()
-
-
-
-
-
+final_coors = plot_biomass_pollen[-sites_rm,c(2,3,(ncol(plot_biomass_pollen)-1),ncol(plot_biomass_pollen))]

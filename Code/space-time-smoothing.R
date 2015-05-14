@@ -136,17 +136,17 @@ full.mat <- cbind(biomass_dat5[,1:2],as.vector(pred_biomass_gam))
 colnames(full.mat) <- c("x","y","pred biomass")
 y = as.data.frame(full.mat) #rowSums(biomass_dat_est) to make xiaopings
 
-breaks <-  c(0, 25, 50, 75, 100, 125, 150, 200, 250, 300, 400)
+breaks <-  c(seq(0,50,10),seq(75,200,25))
 colors <- rev(terrain.colors(length(breaks)-1))
-legendName <- paste0("Biomass at Age = ",age_slice, " BP")
+legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP")
 
-biomass_dat_est <- read.csv(paste0(data.dir,"biomass_estimate_v1.9.csv"))
-xiao_ests <- rowSums(biomass_dat_est)
-breaks <-  c(-300, -200, -100, 100, 200, 300, 400,500,600)
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))
+xiao_ests <- rowSums(biomass_dat_est[,4:23])
+breaks <-  c(-300, -200, -100, 100, 200, 300, 400, 500, 600)
 colors <- c("blue", "light blue", "white", "pink","darkred", "red","orange","yellow")
 legendName <- paste0("Xiao - Pred at ", age_slice)
 
-data_binned <-  cut(xiao_ests - y[,3], breaks, include.lowest = TRUE, labels = FALSE)
+data_binned <-  cut(xiao_ests, breaks, include.lowest = TRUE, labels = FALSE)
 
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
@@ -160,7 +160,7 @@ d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = fact
   scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) + #legend.position="none" removes legend
   geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +
-  ggtitle(paste0("Pred Map ","at Age = ",age_slice, " BP"))
+  ggtitle("Xiaoping's Biomass Estimates")#paste0("Pred Map ","at Age = ",age_slice, " BP")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
   p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +
@@ -173,7 +173,7 @@ d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 return(d)
 }
 quartz()
-print(diff_map_plor(8000))
+print(d)
 
 
 d_200 = diff_map_plor(200)

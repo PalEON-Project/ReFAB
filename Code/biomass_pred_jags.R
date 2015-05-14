@@ -1,7 +1,7 @@
 model{
   
   for(j in 1:J){
-    b[j] ~ dunif(1, 400)
+    b[j] ~ dunif(1, 156)
     b_trunc[j] <- trunc(b[j])
     
     for(c in 1:DFS) {
