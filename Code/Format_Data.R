@@ -95,7 +95,7 @@ points(plot_biomass_pollen[,3], plot_biomass_pollen[,2], pch=19, cex=1)
 title(main="all sites")
 
 set.seed(4)
-sites_rm = sample(1:nrow(plot_biomass_pollen),round(nrow(plot_biomass_pollen)/2))
+sites_rm = sample(1:nrow(plot_biomass_pollen),round(nrow(plot_biomass_pollen)/3))
 
 map('state', xlim=range(plot_biomass_pollen[,3])+c(-2, 2), ylim=range(plot_biomass_pollen[,2])+c(-1, 1))
 points(plot_biomass_pollen[-sites_rm,3], plot_biomass_pollen[-sites_rm,2], pch=19, cex=1)
@@ -115,8 +115,8 @@ total_counts_spp = colSums(counts)
 
 props = props[,order(total_counts_spp,decreasing=TRUE)]
 
-#pdf("scatter.newdata.pdf")
-quartz()
+pdf("scatter.newdata.pdf")
+#quartz()
 par(mfrow=c(4,4))
 for(i in 1:ncol(props)){
   if(length(unique(props[-sites_rm,i]))>=9){
@@ -124,19 +124,21 @@ for(i in 1:ncol(props)){
   }
 
 }  
-#dev.off()
+dev.off()
 
-plot_biomass_pollen = plot_biomass_pollen[-c(which(props$Other>.5),which(props$POACEAE>.8)),]
+props = as.data.frame(props)
+
+#plot_biomass_pollen = plot_biomass_pollen[-c(which(props$Other>.5),which(props$POACEAE>.8)),]
 
 #####
 ##### Creating a dataset with the species we want to use
 #####
 
 counts = counts[,-which(colnames(counts)==c("PINUSX"))]
-trees <- c("ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
-other.trees <- c("TAXUS","NYSSA","JUGLANSX","CASTANEA","PLATANUS","SALIX","LIQUIDAM","ALNUSX")
+trees <- c("ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
 ten.count = matrix(0,nrow(counts),length(trees)+3)
-prairie <- c("CORYLUS","ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX")
+prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
 ten.count[,1] <- rowSums(counts[,prairie])
 ten.count[,2] <- rowSums(counts[,other.trees])
 ten.count[,3:(length(trees)+2)] <- counts[,trees]

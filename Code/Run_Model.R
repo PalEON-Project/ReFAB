@@ -24,6 +24,8 @@ lines(seq(-10,8,1),seq(-10,8,1))
 
 print("finished cal1")
 
+save(csamp.real.cal,file ="beta.samps.Rdata")
+
 ####
 #### Prediction Models
 ####
@@ -67,7 +69,57 @@ mod.real.pred <- jags.model(paste0(model.dir,'biomass_pred_jags.R'),data = data.
 csamp.real.pred <- coda.samples(mod.real.pred,c("b"),n.iter=n.iter)
 #csamp.real.pred.p <- coda.samples(mod.real.pred,c("p"),n.iter=n.iter)
 
+nopine.max.list1 = summary(csamp.real.pred)$statistics[,1]
+pine.max.list1 = summary(pine.max.list)$statistics[,1]
+nopine.min.list1 = summary(nopine.min.list)$statistics[,1]
+pine.min.list1 = summary(pine.min.list)$statistics[,1]
 
+save(nopine.min.list,file="nopine.min.list.Rdata")
+
+csamp.real.pred = nopine.min.list
+
+quartz()
+par(mfrow=c(2,2))
+
+plot(biomass,nopine.min.list1 ,main = "No Pine -- Max List", 
+     xlab = "true biomass",ylab="biomass estimates",ylim=c(0,180),xlim=c(0,180),
+     pch = 19, cex = 1.2)
+mod = lm(biomass~nopine.max.list1)
+abline(mod,lty = 2)
+text(150,25,paste0("R^2 = ",round(summary(mod)$r.squared,digits = 4)))
+#points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
+#points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
+lines(seq(0,400,1),seq(0,400,1))
+
+plot(biomass,pine.max.list1,main = "Pine -- Max List", 
+     xlab = "true biomass",ylab="biomass estimates",ylim=c(0,180),xlim=c(0,180),
+     pch = 19, cex = 1.2)
+mod = lm(biomass~pine.max.list1)
+abline(mod,lty = 2)
+text(150,25,paste0("R^2 = ",round(summary(mod)$r.squared,digits = 4)))
+#points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
+#points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
+lines(seq(0,400,1),seq(0,400,1))
+
+plot(biomass,nopine.min.list1,main = "No Pine -- Min List", 
+     xlab = "true biomass",ylab="biomass estimates",ylim=c(0,180),xlim=c(0,180),
+     pch = 19, cex = 1.2)
+mod = lm(biomass~nopine.min.list1)
+abline(mod,lty = 2)
+text(150,25,paste0("R^2 = ",round(summary(mod)$r.squared,digits = 4)))
+#points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
+#points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
+lines(seq(0,400,1),seq(0,400,1))
+
+plot(biomass,pine.min.list1,main = "Pine -- Min List", 
+     xlab = "true biomass",ylab="biomass estimates",ylim=c(0,180),xlim=c(0,180),
+     pch = 19, cex = 1.2)
+mod = lm(biomass~pine.min.list1)
+abline(mod,lty = 2)
+text(150,25,paste0("R^2 = ",round(summary(mod)$r.squared,digits = 4)))
+#points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
+#points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
+lines(seq(0,400,1),seq(0,400,1))
 
 #plot(csamp.sim.pred)
 
@@ -88,11 +140,15 @@ pine.prop = counts[,4]/rowSums(counts)
 points(plot_biomass_pollen[which(biomass<20&sum.real.pred>70),3], plot_biomass_pollen[which(biomass<20&sum.real.pred>70),2], pch=19, cex=1,col = "blue")
 points(plot_biomass_pollen[which(biomass<20&sum.real.pred<50),3], plot_biomass_pollen[which(biomass<20&sum.real.pred<50),2], pch=19, cex=1,col = "green")
 
-plot(biomass,summary(csamp.real.pred)$statistics[,1],main = "Settlement", 
+quartz()
+plot(biomass,summary(csamp.real.pred)$statistics[,1],main = "Including Alnusx and Juglansx", 
      xlab = "true biomass",ylab="biomass estimates",ylim=c(0,180),xlim=c(0,180),
      pch = 19, cex = 1.2)
-points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
-points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
+mod = lm(biomass~summary(csamp.real.pred)$statistics[,1])
+abline(mod,lty = 2)
+text(150,25,paste0("R^2 = ",round(summary(mod)$r.squared,digits = 4)))
+#points(biomass[which(biomass<20&sum.real.pred>70)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred>70),1],pch=16,col="blue")
+#points(biomass[which(biomass<20&sum.real.pred<50)],summary(csamp.real.pred)$statistics[which(biomass<20&sum.real.pred<50),1],pch=16,col="green")
 lines(seq(0,400,1),seq(0,400,1))
 
 

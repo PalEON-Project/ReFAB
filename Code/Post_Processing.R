@@ -40,8 +40,8 @@ add_map_albers <- function(plot_obj, map_data = usShp, dat){
 
 ##### make a heat plot of biomass
 theme_clean <- function(plot_obj){
-  plot_obj <- plot_obj + theme(axis.ticks = element_blank(), 
-                               axis.text.y = element_blank(), 
+  plot_obj <- plot_obj + theme(axis.ticks = element_blank(),
+                               axis.text.y = element_blank(),
                                axis.text.x = element_blank(),
                                axis.title.x = element_blank(),
                                axis.title.y = element_blank())
@@ -63,7 +63,7 @@ breaks <-  c(seq(0,50,10),seq(75,200,25))
 colors <- rev(terrain.colors(length(breaks)-1))
 
 #Difference breaks and colors
-breaks <-  c(seq(-100,-25,25),-10,10,seq(25,100,25))
+breaks <-  c(seq(-125,-25,25),-10,10,seq(25,125,25))
 colors <- cm.colors(length(breaks)-1)
 
 legendName <- "Biomass (Mg/ha)"
@@ -95,14 +95,15 @@ d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 quartz()
 print(d)
 
-data_binned1 <-  cut(biomass - biomass.preds[,3], breaks, include.lowest = TRUE, labels = colors)
+breaks <-  c(seq(-125,-25,25),-10,10,seq(25,125,25))
+data_binned1 <-  cut(biomass.preds[,3], breaks, include.lowest = TRUE, labels = colors)
 
 quartz()
 map('state', xlim=range(final_coors[,2])+c(-2, 2), ylim=range(final_coors[,1])+c(-1, 1))
-points(final_coors[,2],final_coors[,1], pch=19, cex=1, col = as.character(data_binned1))
-title("Difference in Point Predictions for Subset of Settlement Points")
-legend("topright",c("-100 - -75","-75 - -50","-50 - -25","-25 -10", "-10 - 10","10 - 25","25 - 50",
-                    "50-75","75-100"),col = colors, pch = 19)
+points(final_coors[,2],final_coors[,1], pch=21, cex=1, bg = as.character(data_binned1))
+title("Point Predictions for Subset of Settlement Points")
+#legend("topright",c("-75 - -50","-50 - -25","-25 -10", "-10 - 10","10 - 25","25 - 50",
+#                    "50-75"),col = colors[3:9], pch = 19)
 legend("topright",c("0-10","10-20","20-30","30-40","40-50","50-75","75-100",
                     "100-125","125-150","150-175"),col = colors, pch = 19)
 

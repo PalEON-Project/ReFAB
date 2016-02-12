@@ -13,8 +13,8 @@ n.adapt = 400
 n.update = 400
 n.iter = 2000
 
-source("/Users/paleolab/babySTEPPS/Code/Run_Model.R")
+#source("/Users/paleolab/babySTEPPS/Code/Run_Model.R")
 
-source("/Users/paleolab/babySTEPPS/Code/Run_Model_Pick_Splines.R")
+#source("/Users/paleolab/babySTEPPS/Code/Run_Model_Pick_Splines.R")
 
 
