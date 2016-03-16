@@ -112,7 +112,8 @@ registerDistributions(list(ddirchmulti = list(BUGSdist = "ddirchmulti(alpha, siz
     
 pred_code <- nimbleCode({
 	
-  sigma ~ dunif(0,1) #GELMAN PAPER
+  sigma ~ dunif(0,5) #GELMAN PAPER
+  
   b[1,1] ~ dunif(0,400)
   
   for(t in 2:T){
@@ -133,6 +134,7 @@ pred_code <- nimbleCode({
   	for(j in 1:J){
         Y[j,1:20] ~ ddirchmulti(exp.phi[age.index[j,1], 1:20], n[j])
      }
+     
   
 })
 
@@ -146,10 +148,27 @@ for(i in 1:length(biomass)){
 }
 
 x = pol.cal.count[pol.cal.count$Age>=200,]
-x = x[x$Age<=3000,]
+x = x[x$Age<=10000,]
 
 x.meta = x[,1:6]
 x = x[,7:ncol(x)]
+
+choosen <- c(2550,1652,10149,1128,1598,2849,8552,1483,1410,1117,666,197,2956,2814,824,1544)
+
+map('state', xlim=c(-98,-81), ylim=c(41,50))
+    points(x.meta[,3],
+       x.meta[,2], pch=19, cex=.5)
+    points(x.meta[x.meta[,1]==choosen,3],
+       x.meta[x.meta[,1]==choosen,2], pch=19, cex=.75,col="red")
+
+
+count(x.meta[x.meta[,3]>-94&x.meta[,3]<=-93&x.meta[,2]<46&x.meta[,2]>45&x.meta$Age>9000,1])
+
+
+num = count(x.meta[,1])
+length(x.meta[x.meta[,1]==1128,1])
+
+num[order(num[,2]),]
 
 x = x[,-which(colnames(x)==c("PINUSX"))]
 trees <- c("ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
@@ -170,8 +189,8 @@ plot_sites = c(2550,2548,1991,7538,9953,10211,7542,1979,10132,7531,292,1701,1652
 #sigma1 = numeric(4001)
 all.preds1 = numeric(5006)
 
-for(i in 1:16){
-site_number = plot_sites[i]
+#for(i in 1:16){
+site_number = 1544#plot_sites[i]
 
 ten.count.use = ten.count[which(x.meta[,1]==site_number),]
 Y = as.matrix(ten.count.use)
@@ -185,7 +204,7 @@ I = ncol(Y)
 K = ncol(Z.knots)
 J = length(age.index)
 
-n = numeric(J)
+n = rowSums(Y)
 
 Zb = matrix(NA,T,K)
 phi.first = matrix(NA,T,I); exp.phi = phi.first
@@ -204,9 +223,9 @@ data.pred = list(Y = Y)
 
 constants.pred = list(beta = beta.est, I = I, J=J, T=T, n = n, u = u, N0 = rep(0, 8), N1 = rep(0, 7), N2 = rep(0, 6), N3 = rep(0, 5),age.index = age.index)
 
-inits.pred = list(b=matrix(100,1,T), sigma = .5)
+inits.pred = list(b=matrix(100,1,T), sigma = 4.5)
 
-dimensions.pred = list(exp.phi = dim(exp.phi), phi.first = dim(exp.phi), Zb = dim(Zb), beta = dim(beta.est), Y = dim(Y), b = dim(inits.pred$b))
+dimensions.pred = list(exp.phi = dim(exp.phi), phi.first = dim(exp.phi), Zb = dim(Zb), beta = dim(beta.est), Y = dim(Y),  b = dim(inits.pred$b))
 
 model_pred <- nimbleModel(pred_code, inits = inits.pred, constants = constants.pred, data = data.pred, dimensions = dimensions.pred)
 
@@ -219,10 +238,37 @@ Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.
 #dyn.unload(myproject$cppProjects[[1]]$getSOName()) #cant figure it out. 
 
 ptm <- proc.time()
-Cmcmc.pred$run(5000)
+Cmcmc.pred$run(30000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
+dim(samples.pred)
+par(mfrow=c(3,2))
+for(i in 1:5){
+	plot(samples.pred[,i],typ='l')
+	hist(samples.pred[,i],col='gray')
+}
+plot(samples.pred[10000:30000,ncol(samples.pred)],typ="l")
+
+ciEnvelope <- function(x,ylo,yhi,...){
+  polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
+                                      ylo[1])), border = NA,...) 
+}
+biomassCI = apply(samples.pred[10000:30000,],2,quantile,c(0.025,0.5,0.975))
+
+#jpeg(paste0(site_number,".jpeg"),quality=50)
+
+par(mfrow=c(1,2))
+plot(seq(1,10000,100),colMeans(samples.pred[5000:30000,1:(ncol(samples.pred)-1)]),cex=.01,ylim=range(biomassCI),ylab="Biomass",xlab="Years BP",main=site_number)
+ciEnvelope(seq(1,10000,100),biomassCI[1,1:100],biomassCI[3,1:100],col="lightblue")
+points(seq(1,10000,100),colMeans(samples.pred[5000:30000,1:(ncol(samples.pred)-1)]),cex=.5,pch=16)
+
+map('state', xlim=c(-98,-81), ylim=c(41,50))
+    points(x.meta[x.meta[,1]==site_number,3],
+       x.meta[x.meta[,1]==site_number,2], pch=19, cex=1)  
+    title(site_number)
+
+#dev.off()
 all.preds = as.matrix(cbind(matrix(0,30,6),t(samples.pred[,1:ncol(samples.pred)-1])))
 all.preds[,6]<-seq(50,2950,100)
 all.preds[,1]<-x.meta[x.meta[,1]==site_number,]$SiteID[1]
