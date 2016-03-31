@@ -77,7 +77,27 @@ for(i in 1:nrow(cast.x)){
   plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],4:23])
   plot_biomass_pollen[i,2:(ncol(x)-3)] = as.numeric(cast.x[i,c(1,2,6:ncol(cast.x))])
   #plot_biomass_pollen[i,4:78] = plot_biomass_pollen[i,4:78]/sum(plot_biomass_pollen[i,4:78])
-}  
+}
+
+breaks <-  c(seq(0,50,10),seq(75,200,25))
+colors <- rev(terrain.colors(length(breaks)-1))
+data_binned <-  cut(plot_biomass_pollen[,1], c(breaks), include.lowest = FALSE, labels = FALSE)
+
+	 
+pdf(paste0(fig.dir,"biomass.pts.settlement.pdf"))
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(plot_biomass_pollen[,3],plot_biomass_pollen[,2], pch=21,
+		cex=1.1, bg=colors[data_binned],lwd=.2)
+title("Biomass Point Estiamtes at Settlement")
+plotInset(-90,47,-82.5,50,
+          expr={
+          	hist(data_binned,col=colors,xaxt="n",xlab=NA,
+          	ylab=NA,main=NA,cex.lab=.5,cex.axis=.5)
+          	axis(side=1,breaks,at = seq(1,12,1),cex.axis = .5,las=2,line=0)
+          	mtext(side = 1, "Biomass (Mg/ha)", line = 1.5,cex=.5)
+         mtext(side = 2, "Frequency", line = 1.7,cex=.5)
+          	})
+dev.off()
 
 #####
 ##### Remove sites and take subset of points

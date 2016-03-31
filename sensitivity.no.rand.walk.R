@@ -136,48 +136,67 @@ ten.count[,3:(length(trees)+2)] <- as.matrix(x[,trees])
 ten.count[,(length(trees)+3)] <- as.numeric(rowSums(x)) - as.numeric(rowSums(ten.count))
 colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
 
+   	if(validation == TRUE){
+   		counts = round(plot_biomass_pollen[,4:(ncol(plot_biomass_pollen)-2)])
+   		colnames(counts) <- colnames(plot_biomass_pollen[,4:(ncol(plot_biomass_pollen)-2)])
+   		counts = counts[,-which(colnames(counts)==c("PINUSX"))]
+   		trees <-c("ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+   		other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
+   		ten.count = matrix(0,nrow(counts),length(trees)+3)
+   		prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
+   		ten.count[,1] <- rowSums(counts[,prairie])
+   		ten.count[,2] <- rowSums(counts[,other.trees])
+   		ten.count[,3:(length(trees)+2)] <- counts[,trees]
+   		ten.count[,(length(trees)+3)] <- rowSums(counts) - rowSums(ten.count)
+   		colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
+   		
+   		biomass = plot_biomass_pollen[,1]
+   		
+   		Y=ten.count
+   		counts = ten.count
+   	}
+
 ten.count.save = ten.count
 ten.count = round(ten.count.save)
+counts.save <- counts
+ten.count.add.save = array(0,dim=c(61,20,nrow(counts.save)))
+count.vec <- seq(2,61,3)
+slope.save <- matrix(0,ncol(counts.save),nrow(counts.save))
+biomassCI.save <- list()
+site.number.save <- list()
 
-site_number = 1128#plot_sites[i]
+load("slope.save.Rdata")
 
-ten.count.use = ten.count[which(x.meta[,1]==site_number),]
+for(r in 84:nrow(counts.save)){
+#site_number = sample(x = unique(x.meta[,1]), size = 1) #1128#plot_sites[i]
+site.number.save[[r]] <- r#site_number
+
+#ten.count.use = ten.count[which(x.meta[,1]==site_number),]
+ten.count.use = counts.save[r,]
 Y = as.matrix(ten.count.use)
 
-if(prairie.sensitivity ==TRUE){
-	prairie.vec = ten.count.use[3,]
-	forest.vec = ten.count.use[34,]
-	
-	prairie.mat = matrix(prairie.vec,172,20,byrow=TRUE)
-	
-    colnames(prairie.mat) <- names(prairie.vec)
-	
-	prairie.mat[1:21,1] <- c(prairie.vec[1],seq(40,49,1),seq(51,60,1))
-	prairie.mat[22:28,2] <- c(1,2,seq(4,8,1))
-	prairie.mat[29:35,3] <- c(1,2,seq(4,8,1))
-	prairie.mat[36:40,4] <- c(seq(1,5,1))
-	prairie.mat[41:45,5] <- c(seq(1,5,1))
-	prairie.mat[46:50,6] <- c(seq(1,5,1))
-	prairie.mat[51:56,7] <- c(1,seq(3,7,1))
-	prairie.mat[57:61,8] <- c(seq(1,5,1))
-	prairie.mat[62:81,9] <- c(seq(4,13,1),seq(15,24,1))
-	prairie.mat[82:86,10] <- c(seq(1,5,1))
-	prairie.mat[87:91,11] <- c(seq(1,5,1))
-	prairie.mat[92:111,12] <- c(seq(4,13,1),seq(15,24,1))
-	prairie.mat[112:116,13] <- c(seq(1,5,1))
-	prairie.mat[117:122,14] <- c(seq(1,3,1),seq(5,7,1))
-	prairie.mat[123:128,15] <- c(0,seq(2,6,1))
-	prairie.mat[129:134,16] <- c(0,seq(2,6,1))
-	prairie.mat[135:140,17] <- c(0,seq(2,6,1))
-	prairie.mat[141:145,18] <- c(seq(1,5,1))
-	prairie.mat[146:152,19] <- c(0,1,seq(3,7,1))
-	prairie.mat[153:172,20] <- c(seq(12,21,1),seq(23,32,1))
-	
-	Y = prairie.mat
-	counts = Y
-	
-	
+ten.count.pick <- ten.count.use#[sample(size=1,x=1:nrow(ten.count.use)),]
+ten.count.add <- ten.count.pick
+
+for(i in 1:length(ten.count.pick)){
+	mat.num <- ten.count.pick[i]
+	if(mat.num >= 2){
+		add.num = mat.num + c(-2,2,4)
+	}
+	if(mat.num == 1){
+		add.num = mat.num + c(-1,2,4)
+	}
+	if(mat.num == 0){
+		add.num = c(1,3,5)
+	}
+	add.vecs = rbind(ten.count.pick,ten.count.pick,ten.count.pick)
+	add.vecs[,i] = add.num
+	ten.count.add = rbind(ten.count.add,add.vecs)
 }
+
+ten.count.add.save[,,r] <- ten.count.add
+Y = ten.count.add
+counts = Y
 
 J = nrow(counts)#nrow(Z.new)
 Zb = matrix(NA,J,ncol(Z.knots))
@@ -214,7 +233,7 @@ cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.nodeValPointers_byGID : $ operator not defined for this S4 class
 
 ptm <- proc.time()
-Cmcmc.pred$run(50000)
+Cmcmc.pred$run(10000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
@@ -222,10 +241,49 @@ ciEnvelope <- function(x,ylo,yhi,...){
   polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
                                       ylo[1])), border = NA,...) 
 }
-samples.pred = samples.pred[10000:50000,]
+samples.pred = samples.pred[2000:10000,]
+biomassCI.save[[r]] = apply(samples.pred,2,quantile,c(0.025,0.5,0.975))
 biomassCI = apply(samples.pred,2,quantile,c(0.025,0.5,0.975))
 
+	for(i in 1:ncol(ten.count.add)){
+		slope.save[i,r] = lm(c(biomassCI[2,1],biomassCI[2,count.vec[i]:(count.vec[i]+2)]) ~ c(ten.count.add[1,i],ten.count.add[count.vec[i]:(count.vec[i]+2),i]))$coefficients[[2]]
+    }
+}
+save(slope.save,file="slope.save.Rdata")
+pdf("pollen_count_sensitivity_valid_sites.pdf")
+par(mfrow=c(2,2))
+for(s in 1:20){
+	breaks <-  c(min(slope.save),seq(-2,-1,1),-.25,.25)
+	breaks1 <-  c(seq(1,4,1),max(slope.save))
+	colors <- c("darkblue","blue", "lightblue","antiquewhite3")
+	colors1 <- c("pink","salmon", "red", "darkred","maroon")
+	data_binned1 <-  cut(slope.save[s,], c(breaks,breaks1),
+	 include.lowest = FALSE, labels = FALSE)
+	 colors.comb <- c(colors,colors1)
+	 
+	map('state', xlim=c(-98,-81), ylim=c(41,50))
+	for(i in 1:nrow(final_coors)){
+		#points(x.meta[x.meta$SiteID==site.number.save[[i]],3],
+		#x.meta[x.meta$SiteID==site.number.save[[i]],2], pch=19,
+		# cex=1, col=colors.comb[data_binned1[i]])	
+		points(final_coors[i,2],final_coors[i,1], pch=19,
+		cex=1, col=colors.comb[data_binned1[i]])
+		}
+	title(colnames(ten.count)[s])
+	if(s == c(0,0,3,0,0,6,0,0,9,0,0,12,0,0,15,0,0,18,0,20)[s]){
+	plot.new()
+	legend("center",legend=c("-57 - -2.01","-2 - -1.01","-1 - -.26","-.25 - .24",".25 - .99","1 - 1.99","2 - 2.99","3 - 3.99","4 - 36"),col=c(colors,colors1),pch=19)
+	}	
+}
+dev.off()
 
+hist(cut(slope.save, c(breaks,breaks1),
+	 include.lowest = TRUE, labels = FALSE), col=colors.comb, breaks=seq(0,10,1),
+	 include.lowest=FALSE, main="hist of slopes", xaxt='n')
+	 legend("topright",legend=c("-57 - -2.01","-2 - -1.01","-1 - -.26","-.25 - .24",".25 - .99","1 - 1.99","2 - 2.99","3 - 3.99","4 - 36"),col=c(colors,colors1),pch=19)
+	
+
+if(prairie.sensitivity ==TRUE){
 par(mfrow=c(4,5))
 for(i in 1:20){
 	plot(Y[Y[,i]!=prairie.vec[i],i],colMeans(samples.pred)[Y[,i]!=prairie.vec[i]],ylim=c(0,max(biomassCI)+1),pch=16,cex=1,xlab=paste("counts",names(prairie.vec)[i]),ylab="biomass")
@@ -236,5 +294,37 @@ for(i in 1:20){
 	abline(h=biomassCI[3,1],col="red",lty=2)
 	abline(v=Y[1,i],col="red")
 }
+}
 
+if(forest.sensitivity ==TRUE){
+par(mfrow=c(4,5))
+for(i in 1:20){
+	plot(Y[Y[,i]!=forest.vec[i],i],colMeans(samples.pred)[Y[,i]!= forest.vec[i]],ylim=c(0,max(biomassCI)+1),pch=16,cex=1,xlab=paste("counts",names(prairie.vec)[i]),ylab="biomass")
+	ciEnvelope(Y[Y[,i]!= forest.vec[i],i],biomassCI[1,Y[,i]!= forest.vec[i]],biomassCI[3,Y[,i]!= forest.vec[i]],col="lightblue")
+	points(Y[Y[,i]!= forest.vec[i],i],colMeans(samples.pred)[Y[,i]!= forest.vec[i]],pch=16,cex=1)
+	abline(h=mean(samples.pred[,1]),col="red")
+	abline(h=biomassCI[1,1],col="red",lty=2)
+	abline(h=biomassCI[3,1],col="red",lty=2)
+	abline(v=Y[1,i],col="red")
+}
+}
+
+if(validation==TRUE){
+	
+	reg <- lm(colMeans(samples.pred)[-sites_rm]~biomass[-sites_rm]+0)
+	reg1 <- lm(colMeans(samples.pred)[sites_rm]~biomass[sites_rm]+0)
+	plot(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],ylim=c(0,200),xlim=c(0,200),pch=16,cex=1,main="Validation",
+	xlab="True Biomass",ylab="Estimated Biomass")
+	points(biomass[sites_rm],colMeans(samples.pred)[sites_rm],col="red",pch=16,cex=1)
+	abline(reg)
+	abline(reg1,col="red")
+	text(35,175,paste("R^2 calib sites",signif(summary(reg)[[8]],digits=3)))
+	text(35,165,paste("R^2 left out sites",signif(summary(reg1)[[8]],digits=3)))
+	legend("bottomright",c("calib sites","left out sites"),pch=c(16,16),col=c("black","red"))
+	
+	hist(colMeans(samples.pred)[-sites_rm],breaks=20,freq=FALSE,col="gray",main="Validation")
+	lines(density(colMeans(samples.pred)[sites_rm]),lwd=2)
+	legend('topright',c("left out sites"),lty=c(1),lwd=2)
+	
+}
 

@@ -1,4 +1,5 @@
 data.dir = c("/Users/paleolab/babySTEPPS/Data/")
+fig.dir = c('/Users/paleolab/babySTEPPS/Figures/')
 
 #####
 ##### Prediction Data -- BIGWOODS 8/13/14 #####
@@ -34,38 +35,41 @@ meta1 <- get_dataset(datasettype='pollen', gpid=c(gpid1), ageyoung=0) #Pollen da
 meta2 <- get_dataset(datasettype='pollen', gpid=c(gpid2), ageyoung=0) #Pollen data for all of MN&WI
 
 loc.PI = rep(0,length(c(meta)))
-for(i in 1:length(loc.PI)) loc.PI[i] = as.character(meta[[i]]$DatasetPIs$ContactName)
+for(i in 1:length(loc.PI)) loc.PI[i] = as.character(meta[[i]]$pi.data$ContactName)
 
 hk_counts = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_counts_v0.csv"))
 hk_meta = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_meta_v0.csv"))
 
-site.locs <- ldply(meta, function(x)x$Site)
-site.locs1 <- ldply(meta1, function(x)x$Site)
-site.locs2 <- ldply(meta2, function(x)x$Site)
+site.locs <- ldply(meta, function(x) c(x$site.data$long, x$site.data$lat))
+site.locs1 <- ldply(meta1, function(x) c(x$site.data$long, x$site.data$lat))
+site.locs2 <- ldply(meta2, function(x) c(x$site.data$long, x$site.data$lat))
 site.locs<-rbind(site.locs,site.locs1,site.locs2)
-quartz()
-map('state', xlim=range(site.locs$LongitudeWest)+c(-2, 2), ylim=range(site.locs$LatitudeNorth)+c(-1, 1))
-points(site.locs$LongitudeWest, site.locs$LatitudeNorth, pch=19, cex=1,col="green")
-points(hk_meta$long, hk_meta$lat, pch=19, cex=1,col="blue")
 
+pdf(paste0(fig.dir,"all.sites.neotoma.hotchkiss.pdf"))
+map('state', xlim=range(site.locs$V1)+c(-2, 2), ylim=range(site.locs$V2)+c(-1, 1))
+points(site.locs$V1, site.locs$V2, pch=19, cex=1,col="black")
+points(hk_meta$long, hk_meta$lat, pch=19, cex=1,col="black")
+title("All Pollen Sites")
+dev.off()
 
 mnwi1 <- rep(0,length(c(meta)))
 mnwi2 <- rep(0,length(c(meta1)))
 mnwi3 <- rep(0,length(c(meta2)))
-for(i in 1:length(meta)) mnwi1[i] <- meta[[i]]$DatasetID
-for(i in 1:length(meta1)) mnwi2[i] <- meta1[[i]]$DatasetID
-for(i in 1:length(meta2)) mnwi3[i] <- meta2[[i]]$DatasetID
-dat.mnwi <- get_download(datasetid = as.vector(c(mnwi1,mnwi2,mnwi3)))
-#save(dat.mnwi,file="mnwi.rdata")
+for(i in 1:length(meta)) mnwi1[i] <- meta[[i]]$dataset.meta$dataset.id
+for(i in 1:length(meta1)) mnwi2[i] <- meta1[[i]]$dataset.meta$dataset.id
+for(i in 1:length(meta2)) mnwi3[i] <- meta2[[i]]$dataset.meta$dataset.id
+datasets <- as.vector(c(mnwi1,mnwi2,mnwi3))
+dat.mnwi <- lapply(datasets, function(x)try(get_download(x)))#get_download(x = as.vector(c(mnwi1,mnwi2,mnwi3)))
+save(dat.mnwi,file="mnwi1.rdata")
 load(file="mnwi.rdata") # start here unless you think there might be new data in neotoma
 
 ##### Get only metadata
 pol.cal.data=matrix(0,length(c(meta,meta1,meta2)),5)
 for(i in 1:length(c(meta,meta1,meta2))){	
-  pol.cal.data[i,1] <- dat.mnwi[[i]]$metadata$site.data$SiteID
-  pol.cal.data[i,2] <- dat.mnwi[[i]]$metadata$site.data$LatitudeNorth
-  pol.cal.data[i,3] <- dat.mnwi[[i]]$metadata$site.data$LongitudeWest
-  pol.cal.data[i,4] <- dat.mnwi[[i]]$metadata$dataset$dataset.id
+  pol.cal.data[i,1] <- dat.mnwi[[i]][[1]]$dataset$site.data$site.id
+  pol.cal.data[i,2] <- dat.mnwi[[i]][[1]]$dataset$site.data$lat
+  pol.cal.data[i,3] <- dat.mnwi[[i]][[1]]$dataset$site.data$long
+  pol.cal.data[i,4] <- dat.mnwi[[i]][[1]]$dataset$site.data$site.name
 }
 
 pol.cal.data<-as.data.frame(pol.cal.data)
@@ -113,7 +117,7 @@ pol.cal.count[is.na(pol.cal.count)]<-0
 colnames(pol.cal.count)<-c("SiteID","LatitudeNorth","LongitudeWest","dataset.id","ContactName","Age",colnames(pol.cal.count[,7:ncol(pol.cal.count)]))
 #save(pol.cal.count,file="pol.cal.count.mnwi1.csv")
 
-load("pol.cal.count.mnwi1.csv")
+load(paste0(data.dir,"pol.cal.count.mnwi1.csv"))
 load("hk_counts3.csv")
 
 to_pol_mat = which(colnames(hk_counts3[,18:ncol(hk_counts3)])%in%colnames(pol.cal.count))
@@ -148,11 +152,12 @@ ponds1 = cbind(site.factor,ponds)
 ponds_rm = which(ponds1$LatitudeNorth<44.5&ponds1$LongitudeWest>c(-86))
 ponds1 = ponds1[-ponds_rm,]
 
-pdf("all.sites.all.times.pdf")
-par(mfrow=c(1,2))
-plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.25,main="All Records",ylab="Latitude",xlab="Age BP")
-abline(v=2000)
-plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.25,xlim=c(0,2000),main="Zoomed In",ylab="Latitude",xlab="Age BP")
+pdf(paste0(fig.dir,"chrono.10k.pdf"))
+par(mfrow=c(1,1))
+#plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.25,main="All Records",ylab="Latitude",xlab="Age BP")
+#abline(v=2000)
+plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.5,xlim=c(0,10000),main="All Pollen Records",ylab="Latitude",xlab="Age BP")
+dev.off()
 
 plot.seq = seq(0,20000,500)
 

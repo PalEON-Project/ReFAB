@@ -11,7 +11,7 @@ J = nrow(Y)
 
 data.real.cal = list("R" = ncol(Z.knots), "I" = ncol(Y), "J" = nrow(Y), "Y" = counts , 
                      "n" = rowSums(counts),"Z" =  Z.knots, "beta" = beta, "p" = p)
-inits.cal = list(list(beta = matrix(0,ncol(Z.knots),ncol(Y))),list(beta = matrix(3,ncol(Z.knots),ncol(Y))))
+inits.cal = list(list(beta = matrix(0,ncol(Z.knots),ncol(Y))),list(beta = matrix(3,ncol(Z.knots),ncol(Y))),list(beta = matrix(-3,ncol(Z.knots),ncol(Y))))
 
 mod.real.cal <- jags.model(paste0(model.dir,'biomass_jags1.R'),data = data.real.cal, 
                            n.chains = length(inits.cal), n.adapt = n.adapt, inits = inits.cal)
@@ -26,6 +26,21 @@ print("finished cal1")
 
 save(csamp.real.cal,file ="beta.samps.Rdata")
 
+beta.est.real = matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))
+
+plot.betas <- as.matrix(exp(Z.knots%*%beta.est.real)/rowSums(exp(Z.knots%*%beta.est.real)))
+
+pdf(paste0(fig.dir,"scatter.plus.betas.pdf"))
+par(mfrow=c(3,3))
+for(i in 1:ncol(counts)){
+	plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass")
+	points(biomass,plot.betas[,i],col='red',pch=19,cex=1)
+  }
+dev.off()
+
+pdf(paste0(fig.dir,"calib.trace.pdf"))
+plot(csamp.real.cal)
+dev.off()
 ####
 #### Prediction Models
 ####
@@ -52,7 +67,6 @@ Zb = matrix(NA,J,ncol(Z.knots))
 DFS = ncol(Zb)
 p = matrix(NA,J,ncol(counts)); phi.first = p; phi = p
 #beta.est.sim = matrix(summary(csamp.sim.cal)$statistics[,1],4,ncol(Y))
-beta.est.real = matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))
 new.biomass = seq(1,156,1)
 Z.new = bs(new.biomass,intercept=TRUE,knots = attr(Z.knots,"knots"),Boundary.knots = attr(Z.knots,"Boundary.knots"))
 
