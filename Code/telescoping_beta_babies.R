@@ -24,20 +24,16 @@ code <- nimbleCode({
       exp.phi[j,i] <- exp(phi.first[j,i])
       exp.pine.phi[j,i] <- exp(pine.phi[j,i])
     }
-    row.sums[j] <- sum(exp.phi[j,])
   }
      
     for(j in 1:J){
     	p.true[j,1] ~ dbeta(exp.phi[j,1],exp.pine.phi[j,1])
-    	p.sum[j,1] <- 1
     	
     for(i in 2:(I-1)){
-        p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i])
-        p.sum[j,i] <- sum(p.true[j,1:(i-1)])
-        p.true[j,i] <-  p.rel[j,i] * (1 - p.sum[j,i])
+        p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
+        p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-       p.sum[j,21] <- sum(p.true[j,1:20])
-       p.true[j,21] <- 1 - p.sum[j,21]
+       p.true[j,21] <- 1 - sum(p.true[j,1:20])
     }  
        
   for(j in 1:J){
@@ -64,19 +60,26 @@ data = list(Y = as.matrix(counts) ,  Z =  Z.knots)
 
 constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
 
-inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)), beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), p.rel = matrix(1/21, nrow(Y), ncol(Y)))
+inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)),
+             beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), 
+             p.rel = matrix(1/21, nrow(Y), ncol(Y)))
 
-dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi), phi.first = dim(phi), pine.phi = dim(phi), Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta), p.true = dim(p), Y = dim(counts), n = nrow(Y), pine.dirch = dim(phi),p.rel = dim(p),p.sum = dim(p))
+dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi),
+                  phi.first = dim(phi), pine.phi = dim(phi), 
+                  Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta),
+                  p.true = dim(p), Y = dim(counts), n = nrow(Y),
+                  pine.dirch = dim(phi),p.rel = dim(p))
 
 # in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
 
 model <- nimbleModel(code, inits = inits, constants = constants, data = data, dimensions = dimensions)
 
 # compiled version of the model
-Cmodel <- compileNimble(model)
+Cmodel <- compileNimble(model,showCompilerOutput = TRUE)
 
 # set up MCMC
-spec <- configureMCMC(model, thin = 10, print = TRUE)
+#4:27pm
+spec <- configureMCMC(model, thin = 10, print = TRUE, useConjugacy = FALSE)
 spec$addMonitors(c('beta','beta.pine','p.true','p.rel')) 
 
 # set up monitoring of whatever
