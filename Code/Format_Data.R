@@ -175,11 +175,17 @@ total_counts = rowSums(counts)
 ##### Drawing Splines #####
 #####
 
-Z = bs(biomass,intercept=TRUE,df=4)
+Z = bs(biomass,intercept=TRUE,df=5)
+# u=c(rep(0.01448195,4),29.45357,rep(157.45090602,4))
+# Z=matrix(0,123,5)
+# for(i in 1:123){
+	# Z[i,] = bs_nimble(biomass[i],u, N0 = rep(0, 8), N1 = rep(0, 7), N2 = rep(0, 6), N3 = rep(0, 5))
+# }
+
 betas = matrix(0,ncol(Z),ncol(counts)); betas.save = betas
 
 #if(DRAW == TRUE) pdf(paste0(dump.dir,"splines.new.pdf"))
-quartz()
+#quartz()
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
   gam_mod = gam(cbind(counts[,i],total_counts-counts[,i]) ~ s(biomass),family=binomial(link="logit"))
@@ -188,7 +194,7 @@ for(i in 1:ncol(counts)){
   
   glm_mod = glm(cbind(counts[,i],total_counts-counts[,i]) ~ Z - 1,family=binomial(link="logit"))   
   points(biomass,counts[,i]/total_counts,pch=19,cex=.4,col='grey')
-  new.biomass = seq(1,400,1)
+  new.biomass = seq(1,(max(biomass)+50),1)
   Z.new = bs(new.biomass,intercept=TRUE,df = ncol(Z))
   lines(new.biomass, predict(glm_mod,newdata=list(Z=Z.new),type="response"),col="blue")  
   
@@ -198,25 +204,28 @@ for(i in 1:ncol(counts)){
 }
 #if(DRAW == TRUE) dev.off()
 
-#####
-##### Simulating Data #####
-#####
-# 
-# rownames(Z)<-NULL
+####
+#### Simulating Data #####
+####
+
+# # rownames(Z)<-NULL
 # delta = 50#bigger
 # phi.b = matrix(0,nrow(counts),ncol(counts)); p = phi.b
 # Y = matrix(0,nrow(counts),ncol(counts))
 # phi.b = exp(Z%*%betas)/rowSums(exp(Z%*%betas))
-# 
+
 # for(j in 1:nrow(counts)){
-#   p[j,] = rdirichlet(1,phi.b[j,]*delta)
-#   Y[j,] = rmultinom(1,prob = p[j,], size = rowSums(counts)[j])
+  # p[j,] = rdirichlet(1,phi.b[j,]*delta)
+  # Y[j,] = rmultinom(1,prob = p[j,], size = round(rowSums(counts)/100)[j])
 # }
-# 
+
 # colnames(Y)<-colnames(counts)
 # size = rowSums(Y)
-# 
-# print("Finished formatting data. Saved all data to data_formatted.Rdata")
+
+# counts.save=counts
+# counts = Y
+
+print("Finished formatting data. Saved all data to data_formatted.Rdata")
 
 #####
 ##### Create final datasets #####

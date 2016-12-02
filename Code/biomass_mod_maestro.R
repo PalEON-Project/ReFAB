@@ -9,9 +9,9 @@ dump.dir = "/Users/paleolab/babySTEPPS/Dump/"
 
 model.dir = "/Users/paleolab/babySTEPPS/Code/"
 
-n.adapt = 4000
-n.update = 4000
-n.iter = 20000
+n.adapt = 2000
+n.update = 2000
+n.iter = 10000
 
 #source("/Users/paleolab/babySTEPPS/Code/Run_Model.R")
 
