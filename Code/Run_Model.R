@@ -1,7 +1,11 @@
+library(rjags)
 
 ####
 #### Calibration Models
 ####
+
+
+##### TRY NIMBLE VERSION FIRST IN babystepps_nimble_crc.R ####
 
 Z.knots = bs(biomass,intercept=TRUE,df=4)
 
@@ -17,6 +21,8 @@ mod.real.cal <- jags.model(paste0(model.dir,'biomass_jags1.R'),data = data.real.
                            n.chains = length(inits.cal), n.adapt = n.adapt, inits = inits.cal)
 csamp.real.cal <- coda.samples(mod.real.cal,c("beta"),n.iter = n.iter)
 
+gelman.diag(csamp.real.cal)
+
 quartz()
 plot(c(betas.save),summary(csamp.real.cal)$statistics[,1],main = "Real Data",xlab = "GLM betas",ylab="beta estimates",xlim=c(-9,5),ylim=c(-9,5))
 points(c(betas.save),summary(csamp.real.cal)$quantiles[,2],pch=16,col="blue")
@@ -24,13 +30,13 @@ lines(seq(-10,8,1),seq(-10,8,1))
 
 print("finished cal1")
 
-save(csamp.real.cal,file ="beta.samps.Rdata")
+save(csamp.real.cal,file =paste0("beta.samps",Sys.Date(),".Rdata"))
 
 beta.est.real = matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))
 
 plot.betas <- as.matrix(exp(Z.knots%*%beta.est.real)/rowSums(exp(Z.knots%*%beta.est.real)))
 
-pdf(paste0(fig.dir,"scatter.plus.betas.pdf"))
+pdf(paste0(fig.dir,paste0("scatter.plus.betas",Sys.Date(),".pdf")))
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
 	plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass")

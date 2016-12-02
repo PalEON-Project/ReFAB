@@ -15,6 +15,7 @@ library(splines)
 library(boot)
 library(gtools)
 library(rjags)
+library(oce)
 
 usShp <- readShapeLines(file.path(data.dir, '/us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)
@@ -26,10 +27,10 @@ usFortified <- fortify(usShp, region='id')
 #####
 
 #### Biomass
-biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.9-7_bam.csv"))
 
 #### Pollen
-load(file=paste0(data.dir,"pol.cal.count.mnwi1.csv")) #all MN and WI and MI part that we want follows from MNWI_dat.R
+load(file="~/stepps-data/data/pol.cal.count.mnwi3.Rdata") #all MN and WI and MI part that we want follows from MNWI_dat.R
 
 #x[x$SiteID==29,] #there are two siteID 29s
 
@@ -74,7 +75,7 @@ plot(usShp, add=T, lwd=2)
 if(DRAW == TRUE) dev.off()
 
 for(i in 1:nrow(cast.x)){ 
-  plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],4:23])
+  plot_biomass_pollen[i,1] = sum(biomass_dat_est[idx_cores[i],5:25])
   plot_biomass_pollen[i,2:(ncol(x)-3)] = as.numeric(cast.x[i,c(1,2,6:ncol(cast.x))])
   #plot_biomass_pollen[i,4:78] = plot_biomass_pollen[i,4:78]/sum(plot_biomass_pollen[i,4:78])
 }
@@ -84,7 +85,7 @@ colors <- rev(terrain.colors(length(breaks)-1))
 data_binned <-  cut(plot_biomass_pollen[,1], c(breaks), include.lowest = FALSE, labels = FALSE)
 
 	 
-pdf(paste0(fig.dir,"biomass.pts.settlement.pdf"))
+pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
 map('state', xlim=c(-98,-81), ylim=c(41.5,50))
 points(plot_biomass_pollen[,3],plot_biomass_pollen[,2], pch=21,
 		cex=1.1, bg=colors[data_binned],lwd=.2)
@@ -104,10 +105,10 @@ dev.off()
 #####
 colnames(plot_biomass_pollen)<-c("Biomass","LatNorth","LongWest",colnames(cast.x[6:ncol(cast.x)])) ####MUST RUN
 
-plot_biomass_pollen=plot_biomass_pollen[,-which(colSums(plot_biomass_pollen)==0)]
+#plot_biomass_pollen=plot_biomass_pollen[,-which(colSums(plot_biomass_pollen)==0)]
 plot_biomass_pollen = cbind(plot_biomass_pollen, albers)
 
-if(DRAW == TRUE) pdf(paste0(dump.dir,"all_sites.pdf"))
+if(DRAW == TRUE) pdf(paste0(dump.dir,paste0("all_sites",Sys.Date(),".pdf")))
 quartz()
 par(mfrow=c(1,2))
 map('state', ylim=range(plot_biomass_pollen[,2])+c(-2, 2), xlim=range(plot_biomass_pollen[,3])+c(-1, 1))
@@ -154,20 +155,20 @@ props = as.data.frame(props)
 ##### Creating a dataset with the species we want to use
 #####
 
-counts = counts[,-which(colnames(counts)==c("PINUSX"))]
-trees <- c("ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
-other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
-ten.count = matrix(0,nrow(counts),length(trees)+3)
-prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
-ten.count[,1] <- rowSums(counts[,prairie])
-ten.count[,2] <- rowSums(counts[,other.trees])
-ten.count[,3:(length(trees)+2)] <- counts[,trees]
-ten.count[,(length(trees)+3)] <- rowSums(counts) - rowSums(ten.count)
-colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
+# counts = counts[,-which(colnames(counts)==c("PINUSX"))]
+# trees <- c("ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+# other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
+# ten.count = matrix(0,nrow(counts),length(trees)+3)
+# prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
+# ten.count[,1] <- rowSums(counts[,prairie])
+# ten.count[,2] <- rowSums(counts[,other.trees])
+# ten.count[,3:(length(trees)+2)] <- counts[,trees]
+# ten.count[,(length(trees)+3)] <- rowSums(counts) - rowSums(ten.count)
+# colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
 
-props = as.data.frame(props)
+# props = as.data.frame(props)
 
-counts = ten.count
+ten.count = count
 total_counts = rowSums(counts)
 
 #####

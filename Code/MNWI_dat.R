@@ -2,7 +2,7 @@ data.dir = c("/Users/paleolab/babySTEPPS/Data/")
 fig.dir = c('/Users/paleolab/babySTEPPS/Figures/')
 
 #####
-##### Prediction Data -- BIGWOODS 8/13/14 #####
+##### Prediction Data #####
 #####
 
 ##### Install #####
@@ -22,9 +22,8 @@ library(mapplots)
 gpclibPermit()
 
 
-
 #####
-##### Download Data for MN and WI #####
+##### Download Data for MN and WI and MI #####
 #####
 gpids <- get_table(table.name='GeoPoliticalUnits')
 gpid <- gpids[which(gpids$GeoPoliticalName == 'Minnesota'),1]
@@ -34,8 +33,8 @@ meta <- get_dataset(datasettype='pollen', gpid=c(gpid), ageyoung=0) #Pollen data
 meta1 <- get_dataset(datasettype='pollen', gpid=c(gpid1), ageyoung=0) #Pollen data for all of MN&WI
 meta2 <- get_dataset(datasettype='pollen', gpid=c(gpid2), ageyoung=0) #Pollen data for all of MN&WI
 
-loc.PI = rep(0,length(c(meta)))
-for(i in 1:length(loc.PI)) loc.PI[i] = as.character(meta[[i]]$pi.data$ContactName)
+#loc.PI = rep(0,length(c(meta)))
+#for(i in 1:length(loc.PI)) loc.PI[i] = as.character(meta[[i]]$pi.data$ContactName)
 
 hk_counts = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_counts_v0.csv"))
 hk_meta = read.csv(paste0(data.dir,"hotchkiss_lynch_calcote_meta_v0.csv"))
@@ -60,8 +59,8 @@ for(i in 1:length(meta1)) mnwi2[i] <- meta1[[i]]$dataset.meta$dataset.id
 for(i in 1:length(meta2)) mnwi3[i] <- meta2[[i]]$dataset.meta$dataset.id
 datasets <- as.vector(c(mnwi1,mnwi2,mnwi3))
 dat.mnwi <- lapply(datasets, function(x)try(get_download(x)))#get_download(x = as.vector(c(mnwi1,mnwi2,mnwi3)))
-save(dat.mnwi,file="mnwi1.rdata")
-load(file="mnwi.rdata") # start here unless you think there might be new data in neotoma
+save(dat.mnwi,file="mnwi2.rdata")
+load(file="mnwi2.rdata") # start here unless you think there might be new data in neotoma
 
 ##### Get only metadata
 pol.cal.data=matrix(0,length(c(meta,meta1,meta2)),5)
@@ -76,7 +75,7 @@ pol.cal.data<-as.data.frame(pol.cal.data)
 
 ##### prepare data frame for adding counts
 get.count <- function(x,i){	
-	compile_taxa(x[[i]],'WhitmoreSmall')
+	compile_taxa(x[[i]],'WhitmoreFull')
 }
 
 x=dat.mnwi
@@ -97,27 +96,27 @@ head(pol.cal.count)
 ##### rows are of varying lengths i.e. some have more types of pollen than others
 ##### expect it to take a while and several warnings
 
-for(i in 2:nrow(pol.cal.data)){
-		save1<-data.frame(cbind(rep(pol.cal.data[i,1],
-    length(get.count(dat.mnwi,i)$sample.meta$Age)),
-    rep(pol.cal.data[i,2],length(get.count(dat.mnwi,
-    i)$sample.meta$Age)),rep(pol.cal.data[i,3],
-    length(get.count(dat.mnwi,i)$sample.meta$Age)),
-    rep(pol.cal.data[i,4],length(get.count(dat.mnwi,
-    i)$sample.meta$Age)),rep(pol.cal.data[i,5],
-    length(get.count(dat.mnwi,i)$sample.meta$Age)),
-    get.count(dat.mnwi,i)$sample.meta$Age,
-    as.matrix(get.count(dat.mnwi,i)$count)))
-	pol.cal.count=smartbind(pol.cal.count,save1)	
-	}	
+# for(i in 2:nrow(pol.cal.data)){
+		# save1<-data.frame(cbind(rep(pol.cal.data[i,1],
+    # length(get.count(dat.mnwi,i)$sample.meta$Age)),
+    # rep(pol.cal.data[i,2],length(get.count(dat.mnwi,
+    # i)$sample.meta$Age)),rep(pol.cal.data[i,3],
+    # length(get.count(dat.mnwi,i)$sample.meta$Age)),
+    # rep(pol.cal.data[i,4],length(get.count(dat.mnwi,
+    # i)$sample.meta$Age)),rep(pol.cal.data[i,5],
+    # length(get.count(dat.mnwi,i)$sample.meta$Age)),
+    # get.count(dat.mnwi,i)$sample.meta$Age,
+    # as.matrix(get.count(dat.mnwi,i)$count)))
+	# pol.cal.count=smartbind(pol.cal.count,save1)	
+	# }	
 
 ##### Fix problems with matrix
 rownames(pol.cal.count)<-seq(1,nrow(pol.cal.count),1)
 pol.cal.count[is.na(pol.cal.count)]<-0
 colnames(pol.cal.count)<-c("SiteID","LatitudeNorth","LongitudeWest","dataset.id","ContactName","Age",colnames(pol.cal.count[,7:ncol(pol.cal.count)]))
-#save(pol.cal.count,file="pol.cal.count.mnwi1.csv")
+#save(pol.cal.count,file="pol.cal.count.mnwi2.csv")
 
-load(paste0(data.dir,"pol.cal.count.mnwi1.csv"))
+load(paste0("pol.cal.count.mnwi2.csv"))
 load("hk_counts3.csv")
 
 to_pol_mat = which(colnames(hk_counts3[,18:ncol(hk_counts3)])%in%colnames(pol.cal.count))

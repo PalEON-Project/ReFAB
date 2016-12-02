@@ -16,8 +16,8 @@ library(boot)
 library(gtools)
 library(rjags)
 
-biomass_dat_est <- read.csv("biomass_prediction_v0.2.csv")
-xiao_ests <- rowSums(biomass_dat_est[,4:23])
+biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-7_bam (2).csv"))
+xiao_ests <- biomass_dat_est$Total#rowSums(biomass_dat_est[,4:23])
 
 usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)
@@ -43,7 +43,7 @@ theme_clean <- function(plot_obj){
   return(plot_obj)
 }
 
-full.mat <- cbind(biomass_dat_est[,1:2],xiao_ests)
+full.mat <- cbind(biomass_dat_est[,2:3],xiao_ests)
 colnames(full.mat) <- c("x","y","Xiao Total Biomass")
 y = as.data.frame(full.mat)
 

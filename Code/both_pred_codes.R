@@ -10,7 +10,7 @@ pred_code <- nimbleCode({
     b[j] ~ dunif(1, 400)
     #b_trunc <- b[j]
  
-    Zb[j,1:5] <- bs_nimble(b[j], u[1:8], N0[1:8], N1[1:7], N2[1:6], N3[1:5])
+    Zb[j,1:5] <- bs_nimble(b[j], u[1:3], N0[1:2], N1[1:3], N2[1:4], N3[1:5])
     }
 
   for(i in 1:I){

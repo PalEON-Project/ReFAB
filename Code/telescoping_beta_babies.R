@@ -4,43 +4,50 @@ library(nimble)
 library(splines)
 
 load("add.bacon2.Rdata")
-source(paste0('~/babystepps/Code/',"bs_nimble.R"))
-
-if(length(which(colnames(Y)=='PINUSX'))>0){
-	Y = Y[,-3]
-	counts = counts[,-3]
-}
+model.dir <- c('/Users/paleolab/babySTEPPS/Code/')
+source(paste0(model.dir,"bs_nimble.R"))
 
 code <- nimbleCode({
-  
-  #delta ~ dunif(0,1000)
   
   for(r in 1:R){ 
     for(i in 1:I){
       beta[r,i] ~ dnorm(0,.04)
-    }
+      beta.pine[r,i] ~ dnorm(0,.04)
+    }  
   }
   
   phi.first[,] <- Z[,]%*%beta[,]
-  
+  pine.phi[,] <- Z[,]%*%beta.pine[,]
+    
   for(j in 1:J){
     for(i in 1:I){
       exp.phi[j,i] <- exp(phi.first[j,i])
+      exp.pine.phi[j,i] <- exp(pine.phi[j,i])
     }
     row.sums[j] <- sum(exp.phi[j,])
-    # 	  for(i in 1:10){
-    # 	    phi[j,i] <- exp.phi[j,i]/(row.sums[j])
-    # 	  }
   }
-  
+     
+    for(j in 1:J){
+    	p.true[j,1] ~ dbeta(exp.phi[j,1],exp.pine.phi[j,1])
+    	p.sum[j,1] <- 1
+    	
+    for(i in 2:(I-1)){
+        p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i])
+        p.sum[j,i] <- sum(p.true[j,1:(i-1)])
+        p.true[j,i] <-  p.rel[j,i] * (1 - p.sum[j,i])
+    }	
+       p.sum[j,21] <- sum(p.true[j,1:20])
+       p.true[j,21] <- 1 - p.sum[j,21]
+    }  
+       
   for(j in 1:J){
-    p[j,] ~ ddirch(exp.phi[j,]) #http://sourceforge.net/p/mcmc-jags/discussion/610037/thread/c21ef62a
-    Y[j,] ~ dmulti(size = n[j], prob = p[j,])
+    Y[j,] ~ dmulti(size = n[j], prob = p.true[j,])
   }
   
 })
 
-if(FALSE){
+counts <- Y[,rev(order(colMeans(Y)))]
+
 Z.knots = matrix(0,nrow=length(biomass),ncol=(length(u)+2));
 Z.knots = bs(biomass,intercept=TRUE,df=5)
 # 0 to 150 grid points rows are biomass and each column is basis function
@@ -49,6 +56,7 @@ Z.knots = bs(biomass,intercept=TRUE,df=5)
 #get a sense of the raw data how long it took for the transition
 
 beta = matrix(NA,ncol(Z.knots),ncol(Y))
+beta.pine = matrix(NA,ncol(Z.knots),1)
 p = matrix(NA,nrow(Y),ncol(Y)) ; phi = p
 J = nrow(Y)
 
@@ -56,9 +64,9 @@ data = list(Y = as.matrix(counts) ,  Z =  Z.knots)
 
 constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
 
-inits = list(beta = matrix(1,ncol(Z.knots),ncol(Y)),p = matrix(1/20,nrow(Y),ncol(Y)))
+inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)), beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), p.rel = matrix(1/21, nrow(Y), ncol(Y)))
 
-dimensions = list(exp.phi = dim(phi), phi.first = dim(phi), Z = dim(Z.knots), beta = dim(beta), p = dim(p), Y = dim(counts), n = nrow(Y))
+dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi), phi.first = dim(phi), pine.phi = dim(phi), Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta), p.true = dim(p), Y = dim(counts), n = nrow(Y), pine.dirch = dim(phi),p.rel = dim(p),p.sum = dim(p))
 
 # in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
 
@@ -69,7 +77,7 @@ Cmodel <- compileNimble(model)
 
 # set up MCMC
 spec <- configureMCMC(model, thin = 10, print = TRUE)
-spec$addMonitors(c('beta','row.sums')) 
+spec$addMonitors(c('beta','beta.pine','p.true','p.rel')) 
 
 # set up monitoring of whatever
 # model variables you want posterior samples for - by default, top level
@@ -85,32 +93,72 @@ Cmcmc <- compileNimble(Rmcmc, project = model)
 
 # run MCMC for 5000 iterations
 Cmcmc$run(2000)
-samples1 <- as.matrix(Cmcmc$mvSamples)
+samples.mixed <- as.matrix(Cmcmc$mvSamples)
 
-beta.est.real = matrix(colMeans(samples1[100:nrow(samples1),grep('beta',colnames(samples1))]),ncol(Z.knots),ncol(Y))
+par(mfrow=c(3,3))
+for(i in grep('p.rel',colnames(samples.mixed))[1:10]){
+	plot(samples.mixed[,i],main=colnames(samples.mixed)[i],type="l")
+  }
 
-plot.betas <- as.matrix(exp(Z.knots%*%beta.est.real)/rowSums(exp(Z.knots%*%beta.est.real)))
+beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),1:105]),ncol(Z.knots),ncol(Y))
+beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),106:210]),ncol(Z.knots),ncol(Y))
 
-pdf(paste0(fig.dir,paste0("scatter.plus.betas",Sys.Date(),".pdf")))
+plot.betas1 <- as.matrix(exp(Z.knots%*%beta1.est.real)/rowSums(exp(Z.knots%*%beta1.est.real)))
+plot.betas2 <- as.matrix(exp(Z.knots%*%beta2.est.real)/rowSums(exp(Z.knots%*%beta2.est.real)))
+
+
+beta1.est.real <- array(NA, dim=c(ncol(Z.knots),ncol(Y),200))
+beta2.est.real <- array(NA, dim=c(ncol(Z.knots),ncol(Y),200))
+plot.betas1 <- array(NA, dim=c(length(biomass),ncol(Y),200))
+plot.betas2 <- array(NA, dim=c(length(biomass),ncol(Y),200))
+
+for(i in 1:200){
+	beta1.est.real[,,i] = matrix(samples.mixed[i,1:105],ncol(Z.knots),ncol(Y))
+    beta2.est.real[,,i] = matrix(samples.mixed[i,106:210],ncol(Z.knots),ncol(Y))
+
+    plot.betas1[,,i] <- as.matrix(exp(Z.knots%*%beta1.est.real[,,i])/rowSums(exp(Z.knots%*%beta1.est.real[,,i])))
+    plot.betas2[,,i] <- as.matrix(exp(Z.knots%*%beta2.est.real[,,i])/rowSums(exp(Z.knots%*%beta2.est.real[,,i])))
+    
+}
+
+prop.quants <- array(NA,dim=c(21,101,3))
+
+for(s in 1:21){
+	for(b in 1:101){
+		prop.quants[s,b,] <- quantile(plot.betas1[b,s,],c(.025,.5,.975))
+	}
+}
+
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
-	plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass")
-	points(biomass,plot.betas[,i],col='red',pch=19,cex=1)
+    plot(biomass,prop.quants[i,,1],ylim=c(0,1))
+    for(r in 2:3){
+    	points(biomass,prop.quants[i,,r])
+    }
+}
+
+matrix(samples.mixed[i,grep('p.new[1,',colnames(samples.mixed))],J,21,byrow=TRUE)
+
+pdf(paste0(fig.dir,paste0("tele.betas",Sys.Date(),".pdf")))
+par(mfrow=c(3,3))
+for(i in 1:ncol(counts)){
+	plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass",ylim=c(0,max(c(plot.betas1[,i],plot.betas2[,i],counts[,i]/total_counts))))
+	points(biomass,plot.betas1[,i],col='red',pch=19,cex=1)
+	points(biomass,plot.betas2[,i],col='blue',pch=19,cex=1)
 	abline(v=u)
   }
 dev.off()
 
-row.sums.est = colMeans(samples1[100:nrow(samples1),grep('row.sums',colnames(samples1))])
-pdf('calib.lik.pdf')
-plot(biomass,row.sums.est,pch=19)
-dev.off()
-for(i in 1:ncol(counts)){
-	plot(samples1[,i],type="l")
+grep('p',colnames(samples.mixed))
+
+par(mfrow=c(3,3))
+for(i in grep('p.new',colnames(samples.mixed))){
+	plot(samples.mixed[,i],main=colnames(samples.mixed)[i],type="l")
   }
 
-save(samples1,file = paste0("nimble.betas",Sys.Date(),".Rdata"))
-}
-load("nimble.betas.Rdata")
+save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
+
+load("nimble.betas_1_2.Rdata")
 
 # samples has rows as iterations and columns as variables, you'll have
 # to manually remove a burn-in period
@@ -152,17 +200,28 @@ pred_code <- nimbleCode({
   for(i in 1:I){
   	for(j in 1:J){
   		phi.first[j,i] <- sum(Zb[j,1:5] %*% beta[1:5,i])
+  		phi.first1[j,i] <- sum(Zb[j,1:5] %*% beta1[1:5,i])
   	}
   }
   
   for(j in 1:J){
     for(i in 1:I){
       exp.phi[j,i] <- exp(phi.first[j,i])
+      exp.phi1[j,i] <- exp(phi.first1[j,i])
     }
   }
   
+   for(j in 1:J){
+    	p[j,1] ~ dbeta(exp.phi[j,1],exp.phi1[j,1])
+    	
+    for(i in 2:I){
+        p.new[j,i]  ~ dbeta(exp.phi[j,i],exp.phi1[j,i])
+        p[j,i] <-  p.new[j,i] * (1 - p[j,i-1]) 
+    }	
+    }    
+    
   for(j in 1:J){
-   Y[j,] ~ ddirchmulti(exp.phi[j,],n[j])
+   Y[j,] ~ dmulti(p[j,],n[j])
   }
   
 })
@@ -173,12 +232,14 @@ DFS = ncol(Zb)
 phi = matrix(NA,J,ncol(counts)); phi.first = phi;
 #beta.est.sim = matrix(summary(csamp.sim.cal)$statistics[,1],4,ncol(Y))
 #load("beta.samps.Rdata")
-beta.est = matrix(colMeans(samples1[100:nrow(samples1),]),ncol(Z.knots),ncol(Y)) #matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))# 
+beta.est = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),]),ncol(Z.knots),ncol(Y)) #matrix(summary(csamp.real.cal)$statistics[,1],ncol(Z.knots),ncol(Y))# 
 new.biomass = seq(1,u[length(u)],1)
 #Z.new = bs(new.biomass,intercept=TRUE,knots = attr(Z.knots,"knots"),Boundary.knots = attr(Z.knots,"Boundary.knots"))
 Z.new = matrix(0,nrow=length(new.biomass),ncol=5)
 u <- u #should have defined knots in calibration
 u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+
+ro = mean(samples.mixed[,'ro'])
 
 for(i in 1:length(new.biomass)){
     u_given <- new.biomass[i]
@@ -187,66 +248,25 @@ for(i in 1:length(new.biomass)){
 
 data.pred = list(Y = as.matrix(counts))
 
-constants.pred = list(beta = beta.est, I = ncol(counts), DFS = DFS, J = J, n = rowSums(counts),  Z =  Z.new, u = u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+constants.pred = list(beta = beta1.est.real, beta1 = beta2.est.real, I = ncol(counts), DFS = DFS, J = J, n = rowSums(counts), u = u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 
 inits.pred = list(b=rep(100,J))
 
-dimensions.pred = list(exp.phi = dim(phi), phi.first = dim(phi), Zb = dim(Zb), beta = dim(beta.est), Y = dim(counts))
+dimensions.pred = list(exp.phi = dim(phi), exp.phi1 = dim(phi), phi.first = dim(phi), phi.first1 = dim(phi), Zb = dim(Zb), beta = dim(beta.est), beta1 = dim(beta.est), Y = dim(counts), p = dim(phi))
 
 model_pred <- nimbleModel(pred_code, inits = inits.pred, constants = constants.pred, data = data.pred, dimensions = dimensions.pred)
-
-cm <- compileNimble(model_pred)
-vals <- 1:157
-outLik = outPost = matrix(NA, 157, J)
-for(j in 1:J){
-	calcNodes <-  cm$getDependencies(paste0('b[',j,']'))
-for(val in vals) {
-    cm$b[j] <- val
-    outPost[val,j] = calculate(cm,calcNodes)# cm$calculate(calcNodes)
-    # likelihood portion
-    outLik[val,j] =  calculate(cm,calcNodes[grep("Y", calcNodes)]) # cm$calculate(calcNodes[45])  #
-}	
-}
-
-pdf('calib_dataset_max_liks.pdf')
-par(mfrow=c(3,3))
-   for(j in 1:J){
-        plot(vals,exp(outLik[,j] - max(outLik[,j]))/-sum(outLik[,j])
-        ,typ='l',ylab=NA,main=w[j])
-    }
-dev.off()
 
 #Cmodel.pred <- compileNimble(model_pred) #opens browser...
 spec.pred <- configureMCMC(model_pred, thin = 10, print = TRUE)
 spec.pred$addMonitors(c('b')) 
 Rmcmc.pred <- buildMCMC(spec.pred)
-
+cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.nodeValPointers_byGID : $ operator not defined for this S4 class
 
 ptm <- proc.time()
 Cmcmc.pred$run(5000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
-
-vals <- 1:157
-outLik = outPost = matrix(NA, 157, J)
-for(j in 1:J){
-	calcNodes <-  cm$getDependencies(paste0('b[',j,']'))
-for(val in vals) {
-    cm$b[j] <- val
-    outPost[val,j] = calculate(cm,calcNodes)# cm$calculate(calcNodes)
-    # likelihood portion
-    outLik[val,j] =  calculate(cm,calcNodes[grep("Y", calcNodes)]) # cm$calculate(calcNodes[45])  #
-}	
-}
-
-pdf('calib_dataset_max_liks.pdf')
-par(mfrow=c(3,3))
-   for(j in 1:J){
-        plot(vals,exp(outLik[,j] - max(outLik[,j]))/-sum(outLik[,j])
-        ,typ='l',ylab=NA,main=w[j])
-    }
-dev.off()
 
 par(mfrow=c(2,2))
 for(i in 1:ncol(samples.pred)){
@@ -257,9 +277,11 @@ for(i in 1:ncol(samples.pred)){
 load("samples.pred1.Rdata")
 save(samples.pred,file="twothirds.pred.Rdata")
 
-pdf(paste0("pred_validation",Sys.Date(),".pdf"))
-plot(biomass,colMeans(samples.pred[100:nrow(samples.pred),]),xlim=c(0,200),ylim=c(0,200),pch=19,xlab="True Biomass",ylab="Predicted Mean Biomass")
+pdf(paste0("pred_validation_two_betas",Sys.Date(),".pdf"))
+
+plot(biomass,colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))]),xlim=c(0,200),ylim=c(0,200),pch=19,xlab="True Biomass",ylab="Predicted Mean Biomass")
 abline(a=0,b=1)
-abline(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),])+0),lty=2)
-mtext(paste("r-squared",summary(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),])+0))$r.squared))
+abline(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))])+0),lty=2)
+mtext(paste("r-squared",summary(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))])+0))$r.squared))
+
 dev.off()

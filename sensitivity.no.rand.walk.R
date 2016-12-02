@@ -250,31 +250,33 @@ biomassCI = apply(samples.pred,2,quantile,c(0.025,0.5,0.975))
     }
 }
 save(slope.save,file="slope.save.Rdata")
-pdf("pollen_count_sensitivity_valid_sites.pdf")
-par(mfrow=c(2,2))
+pdf("pollen_count_sensitivity_valid_sites2.pdf")
+par(mfrow=c(6,4),mar=c(0,0,0,0),oma = c(0, 0, 0, 0))
 for(s in 1:20){
-	breaks <-  c(min(slope.save),seq(-2,-1,1),-.25,.25)
-	breaks1 <-  c(seq(1,4,1),max(slope.save))
-	colors <- c("darkblue","blue", "lightblue","antiquewhite3")
-	colors1 <- c("pink","salmon", "red", "darkred","maroon")
-	data_binned1 <-  cut(slope.save[s,], c(breaks,breaks1),
+	breaks <- c(min(slope.save),quantile(slope.save,c(.01,.25)),0,quantile(slope.save,c(.75,.99)),max(slope.save))#c(seq(min(slope.save),-1,length.out =2),0,seq(1,max(slope.save),length.out=2))#c(min(slope.save),seq(-2,-1,1),-.25,.25)
+	#breaks1 <-  c(seq(1,4,1),max(slope.save))
+	colors <- colorRampPalette(c("darkblue","lightblue","pink","red"))(length(breaks)-1)#c("darkblue","blue", "lightblue","antiquewhite1")
+	#colors1 <- c("pink","salmon", "red", "darkred","maroon")
+	data_binned1 <-  cut(slope.save[s,], c(breaks),
 	 include.lowest = FALSE, labels = FALSE)
-	 colors.comb <- c(colors,colors1)
+	 colors.comb <- colors#c(colors,colors1)
 	 
-	map('state', xlim=c(-98,-81), ylim=c(41,50))
+	map('state', xlim=c(-98,-81), ylim=c(41,50),mar=c(0,0,0,0))
 	for(i in 1:nrow(final_coors)){
 		#points(x.meta[x.meta$SiteID==site.number.save[[i]],3],
 		#x.meta[x.meta$SiteID==site.number.save[[i]],2], pch=19,
 		# cex=1, col=colors.comb[data_binned1[i]])	
 		points(final_coors[i,2],final_coors[i,1], pch=19,
-		cex=1, col=colors.comb[data_binned1[i]])
+		cex=.6,lwd=.02, col=colors.comb[data_binned1[i]])
 		}
-	title(colnames(ten.count)[s])
-	if(s == c(0,0,3,0,0,6,0,0,9,0,0,12,0,0,15,0,0,18,0,20)[s]){
-	plot.new()
-	legend("center",legend=c("-57 - -2.01","-2 - -1.01","-1 - -.26","-.25 - .24",".25 - .99","1 - 1.99","2 - 2.99","3 - 3.99","4 - 36"),col=c(colors,colors1),pch=19)
-	}	
+	text(-90,49,colnames(ten.count)[s])
+	#if(s == c(0,0,3,0,0,6,0,0,9,0,0,12,0,0,15,0,0,18,0,20)[s]){
+	
+	#}	
 }
+plot.new()
+legend("center",legend=c('-58:-1.22 (1%)','-1.22:-0.07 (25%)','-0.07:0','0:0.12','0.12:2.56 (75%)','2.56:36 (99%)'),col=colors,pch=19)
+
 dev.off()
 
 hist(cut(slope.save, c(breaks,breaks1),
