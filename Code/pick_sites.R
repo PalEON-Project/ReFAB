@@ -11,7 +11,7 @@ fig.dir = "/Users/paleolab/babySTEPPS/Figures/"
 model.dir = "/Users/paleolab/babySTEPPS/Code/"
 
 setwd("/Users/paleolab/babySTEPPS/")
-load("add.bacon.Rdata")
+load("add.bacon2.Rdata")
 load("2016-05-31nimble.betas.Rdata")
 source(paste0(model.dir,"bs_nimble.R"))
 
@@ -53,13 +53,13 @@ plot.which=numeric(500)
 ############# Conditions for picking sites
 
 for(i in list.buddy[order(lat.save)]){#
-	if(length(biomassCI[[i]])>1 & 
+	if(
 	min(x.meta[x.meta[,1]== site.id.list[i],]$age_bacon)<1000 & 
 	max(x.meta[x.meta[,1]== site.id.list[i],]$age_bacon)>9000)
 	#min(control.pts[which(control.pts[,1]%in%unique(x.meta[x.meta[,1]==site.id.list[i],4])),]$geo_age)<2000 &
 	#max(control.pts[which(control.pts[,1]%in%unique(x.meta[x.meta[,1]==site.id.list[i],4])),]$geo_age)>8000)
 	{
-    plot.which[i] <- i
+    plot.which[i] <- site.id.list[i]
     }
 }
 
@@ -69,18 +69,18 @@ plot.which.keep<- plot.which.keep[-c(1,6,11)]
 
 site.pick <- site.id.list[plot.which.keep]
 
-calc.all <- plot_biomass_pollen
-calc.all1 <- calc.all[which(calc.all$SiteID%in%site.pick),]
+calc.all <- cast.x
+calc.all1 <- calc.all[which(calc.all$site.id%in%site.pick),]
 
 
 breaks <-  c(seq(0,40,10),seq(80,160,40))
 colors <- rev(terrain.colors(length(breaks)-1))
-data_binned <-  cut(calc.all1[,27], c(breaks), include.lowest = FALSE, labels = FALSE)
+data_binned <-  cut(calc.all1[,ncol(calc.all1)], c(breaks), include.lowest = FALSE, labels = FALSE)
 
 pdf("pick_sites1.pdf")
 
 map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-points(calc.all1$LongitudeWest, calc.all1$LatitudeNorth, pch=21,
+points(calc.all1$lon, calc.all1$lat, pch=21,
 		cex=1.1, bg=colors[data_binned],lwd=.2)
 title("Biomass Point Estimates at Settlement")
 plotInset(-90,47,-82.5,50,
@@ -92,7 +92,7 @@ plotInset(-90,47,-82.5,50,
          mtext(side = 2, "Frequency", line = 1.7,cex=.5)
           	})
 
-for(i in which(unique(x.meta[,1])%in%site.pick1)){
+for(i in which(unique(x.meta[,1])%in%site.pick)){
 	  par(mfrow=c(1,1))
 	  map('state', xlim=c(-97.3,-83), ylim=c(41.5,50))
       points(x.meta[x.meta[,1]==unique(x.meta[,1])[i],3],      
@@ -148,30 +148,53 @@ for(i in which(unique(x.meta[,1])%in%site.pick1)){
 
 dev.off()
 
+breaks <-  c(seq(0,40,10),seq(80,160,40))
+colors <- rev(terrain.colors(length(breaks)-1,alpha=.6))
+
+
+pdf("time_series_by_settlement_biomass.pdf")  		
+	
+	  
+      #title(x.meta[x.meta[,1]== site.id.list[i],5][1],outer=TRUE)
+      #axis(3,at=seq(0,10000,1000),labels=seq(0,10000,1000),padj=1)
+
+par(mfrow=c(4,1))
+for(i in q1){
+	plot(seq(100,9900,100),biomassCI[[i]][2,],cex=.1,
+	  ylim=c(0,150),xlim=c(-10,10000),ylab="Biomass (Mg / Ha)",xlab="Years BP",main=NA)
+	  
+	  save.col <- cut(biomassCI[[i]][1,2], c(breaks), include.lowest = FALSE, labels = FALSE)
+	
+      ciEnvelope(seq(100,9900,100),biomassCI[[i]][1,],biomassCI[[i]][3,],col=colors[save.col])
+      
+      data_binned <-  
+      points(seq(100,9900,100),biomassCI[[i]][2,],cex=.2,pch=16)
+      abline(h=0)
+     }
+     
+dev.off()
+
+
 
 ######QUESTION 1
 
 
 ints <- list()
-for(i in 1:10){
+for(i in 1:7){
 	ints[[i]]<-which(data_binned%in%i)[1:2]
 	}
-ints[[6]] <- c(30,23)
-ints[[4]][2]<-32
-ints[[5]][1]<-19
-
 
 ints<-na.omit(unlist(ints))
 
 data_binned[ints]
-q1<- which(site.id.list%in%calc.all1$SiteID[ints])
+q1 <- which(names(biomassCI)%in%calc.all1$site.id[ints])
 
 site.pick1 <- calc.all1$SiteID[ints]
-calc.all2 <- calc.all[which(calc.all$SiteID%in%site.pick1),]
+calc.all2 <- calc.all[which(calc.all$site.id%in%site.pick1),]
 #calc.all2<-calc.all2[-5,]
-data_binned1 <-  cut(calc.all2[,27], c(breaks), include.lowest = FALSE, labels = FALSE)
+data_binned1 <-  cut(calc.all2[,ncol(calc.all2)], c(breaks), include.lowest = FALSE, labels = FALSE)
 
-q1<-q1[order(calc.all2[,27])]
+#q1<-q1[order(calc.all2[,ncol(calc.all2)])]
 dbs<-numeric(500)
 dbs[q1] <- data_binned1[order(calc.all2[,27])]
    
@@ -189,8 +212,6 @@ dbs[q1] <- data_binned1[order(calc.all2[,27])]
      fig.mat[46:50,1]<-10
      fig.mat[51:55,1]<-11
      fig.mat[56:60,1]<-12
-
-
    
 pdf("map_sites_draft.pdf")
 map('state', xlim=c(-98,-81), ylim=c(41.5,50))
@@ -198,24 +219,8 @@ points(calc.all2$LongitudeWest, calc.all2$LatitudeNorth, pch=21,
 		cex=2, bg=colors[data_binned1],lwd=.2)
 text(calc.all2$LongitudeWest, calc.all2$LatitudeNorth,labels=data_binned1)
 dev.off()
-
-colors <- rev(terrain.colors(length(breaks)-1,alpha=.6))
-pdf("time_series_by_settlement_biomass.pdf")  		
-	  plot(seq(100,9900,100),biomassCI[[i]][2,],cex=.1,ylim=c(0,150),xlim=c(-10,10000),ylab="Biomass (Mg / Ha)",xlab="Years BP",main=NA)
-      #title(x.meta[x.meta[,1]== site.id.list[i],5][1],outer=TRUE)
-      #axis(3,at=seq(0,10000,1000),labels=seq(0,10000,1000),padj=1)
-for(i in rev(q1)){
-      ciEnvelope(seq(100,9900,100),biomassCI[[i]][1,],biomassCI[[i]][3,],col=colors[dbs[i]])
-
-      points(seq(100,9900,100),biomassCI[[i]][2,],cex=.2,pch=16)
-      abline(h=0)
-     }
-     
-dev.off()
-     
      
 pdf("Differences_by_settlement_biomass.pdf")
-
 
 map('state', xlim=c(-98,-81), ylim=c(41.5,50))
 points(calc.all2$LongitudeWest, calc.all2$LatitudeNorth, pch=21,
@@ -400,40 +405,45 @@ second.deriv<-list()
 ##different time steps
 ##all possible steps
 calc.second.deriv <- function(biomassCI,h,second.deriv){
-	for(i in 1:183){
+	for(i in 1:length(biomassCI)){
 	if(length(biomassCI[[i]])>10){
 		T <- dim(biomassCI[[i]])[2] - h
 		t <- h + 1 
-		second.deriv[[i]]<-sum(((log(biomassCI[[i]][2,(t:T)+h])-2*log(biomassCI[[i]][2,(t:T)])+log(biomassCI[[i]][2,(t:T)-h]))/((h*100)^2))^2)
+		second.deriv[[i]]<-sum(((biomassCI[[i]][2,(t:T)+h]-2*biomassCI[[i]][2,(t:T)]+biomassCI[[i]][2,(t:T)-h])/((h*100)^2))^2)
+		
 	}else{
 		second.deriv[[i]]<-NA
 	}
 }
 return(second.deriv)
 }
-
-h=1
+pdf(paste('second.deriv.map',Sys.Date(),'.pdf'))
+for(i in c(1,2,5,10,20)){
+h=i
 second.deriv<-calc.second.deriv(biomassCI=biomassCI,h=h,second.deriv=list())
 
 #hist(unlist(second.deriv))
 names(second.deriv) <- unique(x.meta[,1])
 second.deriv.unlist <- unlist(second.deriv)
-second.deriv.unlist.comp <- second.deriv.unlist[which(names(second.deriv.unlist)%in%calc.all1$SiteID)]
-rownames(calc.all1)<-seq(1,34,1)
+second.deriv.unlist.comp <- second.deriv.unlist[which(names(second.deriv.unlist)%in%calc.all1$site.id)]
+#rownames(calc.all1)<-seq(1,34,1)
 
-breaks <-  c(0,quantile(probs=c(.05,.25,.5,.75,.975),second.deriv.unlist.comp),max(second.deriv.unlist.comp)+1)
-calc.all2<-cbind(calc.all1[-c(14,17),],second.deriv.unlist.comp) #taking out repeat sites
+breaks <-  c(0,quantile(probs=c(.05,.25,.5,.75,.975),second.deriv.unlist,na.rm=TRUE),max(second.deriv.unlist)+1)
+ 
+  long.keep <- list()
+  lat.keep <- list()
+  for(i in 1:length(second.deriv.unlist)){
+  	long.keep[[i]] <- x.meta[x.meta[,1]==names(second.deriv.unlist)[i],'long'][1]
+  	lat.keep[[i]] <- x.meta[x.meta[,1]==names(second.deriv.unlist)[i],'lat'][1]
+  }
 
-#round(seq(0,max(second.deriv.unlist.comp),length.out=25))
 colors <- colorRampPalette(c("white","yellow",'green','blue'))(length(breaks)-1)
-#rev(rainbow(length(breaks)-1,start=.2,end=0))#want different colors
 
-data_binned <-  cut(calc.all2[,30], c(breaks), include.lowest = FALSE, labels = FALSE)
+data_binned <-  cut(second.deriv.unlist, c(breaks), include.lowest = FALSE, labels = FALSE)
 
-#pdf(paste('second.deriv.map',h*100,'.pdf'))
 map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-points(calc.all2$LongitudeWest, calc.all2$LatitudeNorth, pch=21,
-		cex=1.3, bg=colors[data_binned],lwd=.2)
+points(long.keep, lat.keep, pch=19,
+		cex=1.3, col=colors[data_binned],lwd=.2)
 title(paste("Second Derivative Sum Point Estimates h = ",h*100))
 
 plotInset(-90,47,-82.5,50,
@@ -444,7 +454,10 @@ plotInset(-90,47,-82.5,50,
           	mtext(side = 1, "Squared Sum", line = 1.5,cex=.5)
             mtext(side = 2, "Frequency", line = 1.7,cex=.5)
           	})
-#dev.off()
+
+}
+dev.off()
+
 
 
 first.deriv<-list()
@@ -504,9 +517,9 @@ plot(seq(100,9800,100),diff(biomassCI[[i]][2,])/diff(seq(100,9900,100)),typ='l',
 abline(h=0,col='red')
 mtext(paste("sum = ",signif(sum(diff(biomassCI[[i]][2,])/diff(seq(100,9900,100))),digits=2)),side=3)
 
-plot(seq(100,9900,length.out=89),
-((biomassCI[[i]][2,(t:T)+h]-2*biomassCI[[i]][2,(t:T)]+biomassCI[[i]][2,(t:T)-h])/(h^2))^2,
-typ='l',,ylab='Second Derivative',xlab="Years BP")
+second.deriv.plot <- ((biomassCI[[i]][2,(t:T)+h]-2*biomassCI[[i]][2,(t:T)]+biomassCI[[i]][2,(t:T)-h])/(h*100^2))^2
+plot(seq(100,9900,length.out=length(second.deriv.plot)), second.deriv.plot
+,typ='l',,ylab='Second Derivative',xlab="Years BP")
 abline(h=0,col='red')
 mtext(paste("sum = ",signif(sum(((biomassCI[[i]][2,(t:T)+h]-2*biomassCI[[i]][2,(t:T)]+biomassCI[[i]][2,(t:T)-h])/(h^2))^2),digits=2)),side=3)
 

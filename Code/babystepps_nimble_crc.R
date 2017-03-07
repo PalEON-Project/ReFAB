@@ -228,8 +228,8 @@ Cmcmc.pred$run(5000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
-vals <- 1:157
-outLik = outPost = matrix(NA, 157, J)
+vals <- 1:145
+outLik = outPost = matrix(NA, 145, J)
 for(j in 1:J){
 	calcNodes <-  cm$getDependencies(paste0('b[',j,']'))
 for(val in vals) {

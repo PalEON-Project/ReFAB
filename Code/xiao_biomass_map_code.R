@@ -16,7 +16,7 @@ library(boot)
 library(gtools)
 library(rjags)
 
-biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-7_bam (2).csv"))
+biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-10_bam.csv"))
 xiao_ests <- biomass_dat_est$Total#rowSums(biomass_dat_est[,4:23])
 
 usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
@@ -43,7 +43,7 @@ theme_clean <- function(plot_obj){
   return(plot_obj)
 }
 
-full.mat <- cbind(biomass_dat_est[,2:3],xiao_ests)
+full.mat <- cbind(biomass_dat_est[,c('x','y')],xiao_ests)
 colnames(full.mat) <- c("x","y","Xiao Total Biomass")
 y = as.data.frame(full.mat)
 
@@ -59,12 +59,12 @@ breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)
 inputData <- data.frame(X = y[,1], Y = y[,2], Preds = cbind(data_binned,data_binned))
 inputData_long <- melt(inputData, c('X', 'Y'))
 
-#input_points <- data.frame(final_coors[,3:4]) # how to add points part A
-#colnames(input_points) <- c('lat','lon')
+input_points <- data.frame(albers) # how to add points part A
+colnames(input_points) <- c('lat','lon')
 
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
-  #geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") + # how to add points part B
+  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") + # how to add points part B
   ggtitle("Xiaoping Estimates")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
@@ -77,4 +77,6 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 
 quartz()
+pdf('biomass_est_1.pdf')
 print(d)
+dev.off()
