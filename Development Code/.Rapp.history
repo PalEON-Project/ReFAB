@@ -1,0 +1,123 @@
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))#
+xiao_ests <- rowSums(biomass_dat_est[,4:23])#
+#
+usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))#
+usShp@data$id <- rownames(usShp@data)#
+usFortified <- fortify(usShp, region='id')#
+#
+##### add state lines function#
+add_map_albers <- function(plot_obj, map_data = usShp, dat){#
+  p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 1) + #
+    scale_x_continuous(limits = c(min(dat$x, na.rm = TRUE), max(dat$x, na.rm = TRUE))) +#
+    scale_y_continuous(limits = c(min(dat$y, na.rm = TRUE), max(dat$y, na.rm = TRUE)))#
+  return(p)#
+}#
+##### make a heat plot of biomass#
+theme_clean <- function(plot_obj){#
+  plot_obj <- plot_obj + theme(axis.ticks = element_blank(),#
+                               axis.text.y = element_blank(),#
+                               axis.text.x = element_blank(),#
+                               axis.title.x = element_blank(),#
+                               axis.title.y = element_blank())#
+  return(plot_obj)#
+}#
+#for(i in 2:n.iter){#
+colnames(biomass.preds)<-c("x","y","biomass")#
+#
+full.mat <- cbind(biomass_dat_est[,1:2],xiao_ests)#
+colnames(full.mat) <- c("x","y","Xiao Total Biomass")#
+y = as.data.frame(full.mat)
+rm(list=ls())#
+#
+SAVE = FALSE#
+DRAW = FALSE#
+#
+data.dir = "/Users/paleolab/babySTEPPS/Data/"#
+dump.dir = "/Users/paleolab/babySTEPPS/Dump/"
+biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.2.csv"))#
+xiao_ests <- rowSums(biomass_dat_est[,4:23])#
+#
+usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))#
+usShp@data$id <- rownames(usShp@data)#
+usFortified <- fortify(usShp, region='id')
+library(reshape)#
+library(ggplot2)#
+library(sp)#
+library(rgdal)#
+library(fields)#
+library(maptools)#
+library(neotoma)#
+require(grid)#
+require(plyr)#
+require(maps)#
+library(gridExtra)#
+gpclibPermit()#
+library(mgcv)#
+library(splines)#
+library(boot)#
+library(gtools)#
+library(rjags)
+usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))#
+usShp@data$id <- rownames(usShp@data)#
+usFortified <- fortify(usShp, region='id')
+add_map_albers <- function(plot_obj, map_data = usShp, dat){#
+  p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 1) + #
+    scale_x_continuous(limits = c(min(dat$x, na.rm = TRUE), max(dat$x, na.rm = TRUE))) +#
+    scale_y_continuous(limits = c(min(dat$y, na.rm = TRUE), max(dat$y, na.rm = TRUE)))#
+  return(p)#
+}#
+##### make a heat plot of biomass#
+theme_clean <- function(plot_obj){#
+  plot_obj <- plot_obj + theme(axis.ticks = element_blank(),#
+                               axis.text.y = element_blank(),#
+                               axis.text.x = element_blank(),#
+                               axis.title.x = element_blank(),#
+                               axis.title.y = element_blank())#
+  return(plot_obj)#
+}#
+#for(i in 2:n.iter){#
+colnames(biomass.preds)<-c("x","y","biomass")#
+#
+full.mat <- cbind(biomass_dat_est[,1:2],xiao_ests)#
+colnames(full.mat) <- c("x","y","Xiao Total Biomass")#
+y = as.data.frame(full.mat)
+breaks <-  c(seq(0,50,10),seq(75,200,25))#
+colors <- rev(terrain.colors(length(breaks)-1))#
+#
+legendName <- "Biomass (Mg/ha)"
+data_binned <-  cut(y[,3], breaks, include.lowest = TRUE, labels = FALSE)#
+#
+breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })#
+#
+inputData <- data.frame(X = y[,1], Y = y[,2], Preds = cbind(data_binned,data_binned))#
+inputData_long <- melt(inputData, c('X', 'Y'))
+input_points <- data.frame(final_coors[,3:4])#
+colnames(input_points) <- c('lat','lon')
+d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + #
+  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +#
+  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +#
+  ggtitle("Xiaoping estimates - smoothed prediciton")#
+#
+add_map_albers <- function(plot_obj, map_data = usFortified, dat){#
+  p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +#
+    scale_x_continuous(limits = c(min(inputData$X, na.rm = TRUE), max(inputData$X, na.rm = TRUE))) +#
+    scale_y_continuous(limits = c(min(inputData$Y, na.rm = TRUE), max(inputData$Y, na.rm = TRUE)))#
+  return(p)#
+}#
+#
+d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)#
+#
+quartz()#
+print(d)
+d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + #
+  theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +#
+  #geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") +#
+  ggtitle("Xiaoping Estimates")
+add_map_albers <- function(plot_obj, map_data = usFortified, dat){#
+  p <- plot_obj + geom_path(data = map_data, aes(x = long, y = lat, group = group), size = 0.1) +#
+    scale_x_continuous(limits = c(min(inputData$X, na.rm = TRUE), max(inputData$X, na.rm = TRUE))) +#
+    scale_y_continuous(limits = c(min(inputData$Y, na.rm = TRUE), max(inputData$Y, na.rm = TRUE)))#
+  return(p)#
+}
+d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
+print(d)

@@ -409,6 +409,7 @@ calc.second.deriv <- function(biomassCI,h,second.deriv){
 	if(length(biomassCI[[i]])>10){
 		T <- dim(biomassCI[[i]])[2] - h
 		t <- h + 1 
+		biomassCI[[i]]<-log(biomassCI[[i]])
 		second.deriv[[i]]<-sum(((biomassCI[[i]][2,(t:T)+h]-2*biomassCI[[i]][2,(t:T)]+biomassCI[[i]][2,(t:T)-h])/((h*100)^2))^2)
 		
 	}else{
@@ -417,16 +418,23 @@ calc.second.deriv <- function(biomassCI,h,second.deriv){
 }
 return(second.deriv)
 }
-pdf(paste('second.deriv.map',Sys.Date(),'.pdf'))
+pdf(paste('second.deriv.map.subset.log',Sys.Date(),'.pdf'))
 for(i in c(1,2,5,10,20)){
 h=i
 second.deriv<-calc.second.deriv(biomassCI=biomassCI,h=h,second.deriv=list())
 
 #hist(unlist(second.deriv))
-names(second.deriv) <- unique(x.meta[,1])
+names(second.deriv) <- unique(x.meta[,1])[1:182]
 second.deriv.unlist <- unlist(second.deriv)
-second.deriv.unlist.comp <- second.deriv.unlist[which(names(second.deriv.unlist)%in%calc.all1$site.id)]
+second.deriv.unlist <- second.deriv.unlist[plot.which.keep]
 #rownames(calc.all1)<-seq(1,34,1)
+second.deriv.copy <- second.deriv
+second.deriv.unlist.names <- unlist(second.deriv.copy)
+second.deriv.unlist.names <- second.deriv.unlist.names[plot.which.keep]
+
+for(q in 1:length(second.deriv.unlist.names)){
+  names(second.deriv.unlist.names)[q] <- as.character(x.meta[x.meta$site.id==names(second.deriv.unlist[q]),'site.name'][1])
+}
 
 breaks <-  c(0,quantile(probs=c(.05,.25,.5,.75,.975),second.deriv.unlist,na.rm=TRUE),max(second.deriv.unlist)+1)
  
