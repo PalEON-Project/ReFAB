@@ -5,9 +5,9 @@ library(plyr)
 library(oce)
 library(RCurl)
 
-load("calibration.data.Rdata") #from get.data.R
-load("prediction.data.Rdata") #from get.data.R
-load(file = 'nimble.betas_1_22016-12-02.Rdata')
+load("~/babystepps/Data/calibration.data.Rdata") #from get.data.R
+load("~/babystepps/Data/prediction.data.Rdata") #from get.data.R
+load(file = '~/babystepps/Data/nimble.betas_1_22016-12-02.Rdata')
 
 source("~/babySTEPPS/Workflow Code/utils/bs_nimble.R")
 
