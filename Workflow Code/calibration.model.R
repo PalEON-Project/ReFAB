@@ -70,7 +70,7 @@ code <- nimbleCode({
   
 })
 
-counts <- Y[,rev(order(colMeans(Y)))]
+counts <- Y
 
 Z.knots = bs(biomass,intercept=TRUE,df=5)
 u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
