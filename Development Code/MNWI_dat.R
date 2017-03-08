@@ -75,7 +75,7 @@ pol.cal.data<-as.data.frame(pol.cal.data)
 
 ##### prepare data frame for adding counts
 get.count <- function(x,i){	
-	compile_taxa(x[[i]],'WhitmoreFull')
+	compile_taxa(x[[i]][[1]],'WhitmoreFull')
 }
 
 x=dat.mnwi

@@ -2,7 +2,9 @@ setwd("/Users/paleolab/babySTEPPS/")
 data.dir = c("/Users/paleolab/babySTEPPS/Data/")
 fig.dir = c('/Users/paleolab/babySTEPPS/Figures/')
 
-##### Install #####
+#####
+##### Install Packages #####
+#####
 library(reshape)
 library(ggplot2)
 library(sp)
@@ -45,12 +47,6 @@ site.locs1 <- ldply(meta1, function(x) c(x$site.data$long, x$site.data$lat))
 site.locs2 <- ldply(meta2, function(x) c(x$site.data$long, x$site.data$lat))
 site.locs<-rbind(site.locs,site.locs1,site.locs2)
 
-pdf(paste0(fig.dir,"all.sites.neotoma",Sys.Date(),".pdf"))
-map('state', xlim=range(site.locs$V1)+c(-2, 2), ylim=range(site.locs$V2)+c(-1, 1))
-points(site.locs$V1, site.locs$V2, pch=19, cex=1,col="black")
-title("All Pollen Sites")
-dev.off()
-
 mnwi1 <- rep(0,length(c(meta)))
 mnwi2 <- rep(0,length(c(meta1)))
 mnwi3 <- rep(0,length(c(meta2)))
@@ -61,7 +57,7 @@ datasets <- as.vector(c(mnwi1,mnwi2,mnwi3))
 dat.mnwi <- get_download(x = as.vector(c(mnwi1,mnwi2,mnwi3)))
 save(dat.mnwi,file="mnwi4.rdata")
 
-    comp.tax <- compile_taxa(dat.mnwi[[1]], 'WhitmoreSmall')
+  comp.tax <- compile_taxa(dat.mnwi[[1]], 'WhitmoreSmall')
 	
 	samp.meta <- comp.tax[[1]]$sample.meta
 	counts <- comp.tax[[1]]$counts
@@ -88,38 +84,9 @@ rownames(pol.cal.count)<-seq(1,nrow(pol.cal.count),1)
 pol.cal.count[is.na(pol.cal.count)]<-0
 #save(pol.cal.count,file="pol.cal.count.mnwi2.csv")
 
-head(pol.cal.count)
-ponds = pol.cal.count[pol.cal.count$age>0,]
-#ponds = ponds[ponds$Age<=5000,]
-ponds = ponds[order(ponds$lat),]
-site.factor = factor(ponds[,1],labels = seq(1,length(unique(ponds[,1])),1))
-ponds1 = cbind(site.factor,ponds)
-
-#ponds_rm = which(ponds1$LatitudeNorth<44.5&ponds1$LongitudeWest>c(-86))
-#ponds1 = ponds1[-ponds_rm,]
-
-pdf(paste0(fig.dir,"chrono.10k",Sys.Date(),".pdf"))
-par(mfrow=c(1,1))
-#plot(ponds1$Age,ponds1$LatitudeNorth,pch=19,cex=.25,main="All Records",ylab="Latitude",xlab="Age BP")
-#abline(v=2000)
-plot(ponds1$age,ponds1$lat,pch=19,cex=.5,xlim=c(0,10000),main="All Pollen Records",ylab="Latitude",xlab="Age BP")
-dev.off()
-
-plot.seq = seq(0,20000,500)
-
-#quartz()
-par(mfrow = c(2,2))
-for(i in 2:length(plot.seq)){
-  map('state', xlim=range(as.numeric(as.character(ponds1$long)))+c(-2, 2), ylim=range(as.numeric(as.character(ponds1$lat)))+c(-1, 1))
-  points(ponds1[ponds1$age>plot.seq[i-1]&ponds1$age<plot.seq[i],]$long, 
-         ponds1[ponds1$age>plot.seq[i-1]&ponds1$age<plot.seq[i],]$lat, 
-         pch=19, cex=.5)
-  title(c(plot.seq[i-1],"-",plot.seq[i]))
-}
-dev.off()
-
-###### add.bacon2baby.R ######
-
+#####
+##### Add Bacon Pollen Dates #####
+#####
 bacon<-read.csv(paste0(data.dir,'/pollen_ts_bacon_v6.csv'))
 
 ### makes a dataframe with only sites that have bacon ages
@@ -173,6 +140,10 @@ cast.x=as.data.frame(cast.x)
 #cast.x = as.data.frame(cast.x[-c(1:3),])
 #row_keep = rep(0,nrow(cast.x))
 #plot_biomass_pollen = matrix(0,nrow(cast.x),(ncol(x)-3))
+
+#####
+##### Adding settlement biomass data #####
+#####
 
 biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.9-7_bam.csv"))
 
@@ -235,7 +206,7 @@ plotInset(-90,47,-82.5,50,
 dev.off()
 
 #####
-##### Creating a dataset with the species we want to use
+##### Creating a calibration dataset with the species we want to use
 #####
 
 ###with pine
@@ -331,29 +302,79 @@ for(i in 1:length(biomass)){
 	Z.knots[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 }
 
-#### Plot basis functions ####
-plot(Z.knots.check[,1],xlim=c(0,u[length(u)]),pch=19,ylim=c(0,1),xlab="Biomass")
-for(i in 2:ncol(Z.knots.check)){
-	points(Z.knots.check[,i],col=i,pch=19)
-}
-abline(v=u,lwd=2)
-title("Basis Functions")
-
-
 #if(DRAW == TRUE) dev.off()
 
 #####
-##### Create final datasets #####
+##### Create final calibration datasets #####
 #####
 
 Y = counts[-sites_rm,] #remove sites "sites_rm" defined above
+Y <- Y[,rev(order(colMeans(Y)))]
 biomass = biomass[-sites_rm]
 counts = counts[-sites_rm,]
+counts <- Y[,rev(order(colMeans(Y)))]
 total_counts = rowSums(counts)
 
-save.image(file="add.bacon2.Rdata")
+save(Y,biomass,file='calibration.data.Rdata')
+
+#save.image(file="add.bacon2.Rdata")
+
+u<-c(rep(attr(Z,"Boundary.knots")[1],1),attr(Z,"knots"),rep(attr(Z,"Boundary.knots")[2],1))
+
+x = new.pol1[new.pol1$age_bacon>=200,]
+x = x[x$age_bacon<=10000,]
+
+x.meta = x[,c('site.id','lat',"long","dataset.id","site.name","age_bacon")]
+
+trees <- c("PINUSX","ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA","BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS")
+other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
+ten.count = matrix(0,nrow(x),length(trees)+3)
+prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
+ten.count[,1] <- unlist(rowSums(x[,prairie]))
+ten.count[,2] <- unlist(rowSums(x[,other.trees]))
+ten.count[,3:(length(trees)+2)] <- as.matrix(x[,trees])
+ten.count[,(length(trees)+3)] <- rowSums(x[,20:99]) - rowSums(ten.count)
+colnames(ten.count)<-c("prairie","other trees",trees,"other herbs")
+
+ten.count.save = ten.count
+ten.count = round(ten.count.save)
+
+ten.count <- ten.count[,colnames(counts)]
+
+save(x.meta,ten.count,file = 'prediction.data.Rdata')
+
+#####
+##### Plots #####
+#####
+
+pdf(paste0(fig.dir,"all.sites.neotoma",Sys.Date(),".pdf"))
+map('state', xlim=range(site.locs$V1)+c(-2, 2), ylim=range(site.locs$V2)+c(-1, 1))
+points(site.locs$V1, site.locs$V2, pch=19, cex=1,col="black")
+title("All Pollen Sites")
+dev.off()
+
+pdf(paste0(fig.dir,"chrono.10k",Sys.Date(),".pdf"))
+par(mfrow=c(1,1))
+plot(ponds1$age,ponds1$lat,pch=19,cex=.5,xlim=c(0,10000),main="All Pollen Records",ylab="Latitude",xlab="Age BP")
+dev.off()
 
 
+plot.seq = seq(0,20000,500)
 
+par(mfrow = c(2,2))
+for(i in 2:length(plot.seq)){
+  map('state', xlim=range(as.numeric(as.character(ponds1$long)))+c(-2, 2), ylim=range(as.numeric(as.character(ponds1$lat)))+c(-1, 1))
+  points(ponds1[ponds1$age>plot.seq[i-1]&ponds1$age<plot.seq[i],]$long, 
+         ponds1[ponds1$age>plot.seq[i-1]&ponds1$age<plot.seq[i],]$lat, 
+         pch=19, cex=.5)
+  title(c(plot.seq[i-1],"-",plot.seq[i]))
+}
 
+#### Plot basis functions ####
+plot(Z.knots.check[,1],xlim=c(0,u[length(u)]),pch=19,ylim=c(0,1),xlab="Biomass")
+for(i in 2:ncol(Z.knots.check)){
+  points(Z.knots.check[,i],col=i,pch=19)
+}
+abline(v=u,lwd=2)
+title("Basis Functions")
 
