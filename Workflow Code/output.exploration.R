@@ -73,9 +73,57 @@ plot_biomass_ts(site_number=unique(x.meta$site.id)[182], biomassCI=biomassCI[[18
 
 ##### biomass CI is ordered by unique(x.meta$site.id)
 
-pca=princomp(biomass_dat_est[,c(5:19,21:24)]) 
-summary(pca) 
-biplot(pca)
+name.vec <- seq(100,10000,100)
+only.means.all<-lapply(biomassCI,function(x){return(x[seq(2,299,3)])})
+get.lat.long<-matrix(0,183,2)
+for(i in 2:183){
+  get.lat.long[i,1]<- unique(x.meta[x.meta[,1]==unique(x.meta[,1])[i],c(3)])
+  get.lat.long[i,2]<- unique(x.meta[x.meta[,1]==unique(x.meta[,1])[i],c(2)])
+}
+
+
+names(only.means.all)<-unique(x.meta$site.id)[1:182]
+
+breaks <-  c(seq(0,50,10),seq(75,200,25))
+colors <- rev(terrain.colors(length(breaks)))
+
+pdf(paste0('pred.points.map',Sys.Date(),'.pdf'))
+for(r in seq(1,99,1)){
+  
+  only.means <- unlist(lapply(only.means.all,function(x){return(x[r])}))
+  
+  data_binned <-  cut(only.means, c(breaks), include.lowest = FALSE, labels = FALSE)
+  
+  long.keep <- list()
+  lat.keep <- list()
+  for(i in 1:length(only.means)){
+    long.keep[[i]] <- x.meta[x.meta[,1]==names(only.means)[i],'long'][1]
+    lat.keep[[i]] <- x.meta[x.meta[,1]==names(only.means)[i],'lat'][1]
+  }
+  
+  
+  map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+  points(unlist(long.keep),unlist(lat.keep), pch=21,
+         cex=1.1, bg=colors[data_binned],lwd=.2)
+  plotInset(-90,47,-82.5,50,
+            expr={
+              keep.col<-unique(data_binned)
+              keep.col<-keep.col[!is.na(keep.col)]
+              keep.col<-sort(keep.col)
+              is.na.vec <- rep(NA,10)
+              is.na.vec[keep.col]<-colors[keep.col]
+              
+              hist(data_binned,col=is.na.vec,xaxt="n",xlab=NA,
+                   ylab=NA,main=NA,cex.lab=.5,cex.axis=.5,
+                   xlim=c(0,length(breaks)),ylim=c(0,20),breaks=seq(0,12,1))
+              
+              axis(side=1,breaks,at = seq(0,11,1),cex.axis = .5,las=2,line=0)
+              mtext(side = 1, "Biomass (Mg/ha)", line = 1.5,cex=.5)
+              mtext(side = 2, "Frequency", line = 1.7,cex=.5)
+            })
+  title(paste("Biomass @",name.vec[r]))
+}
+dev.off()
 
 #####
 ##### Second Derivative #####
@@ -97,7 +145,7 @@ calc.second.deriv <- function(biomassCI,h,second.deriv){
 }
 
 pdf(paste('second.deriv.map',Sys.Date(),'.pdf'))
-for(i in c(1,2,5,10,20)){
+for(i in c(20)){
   h=i
   second.deriv<-calc.second.deriv(biomassCI=biomassCI,h=h,second.deriv=list())
   
@@ -137,5 +185,97 @@ for(i in c(1,2,5,10,20)){
 }
 dev.off()
 
+pdf('stability.group.ts.100.pdf')
+par(mfrow=c(2,3))
+for(count in 1:6){
+  plot(seq(100,10000,100),seq(100,10000,100),
+       cex=.1,ylim=c(0,150),xlim=c(10000,-10),ylab="Biomass (Mg / Ha)",
+       xlab="Years Before Present",main=paste('Stability Bin',count))
+  for(r in names(second.deriv.unlist[data_binned==count])){
+    biomassCI.use <- biomassCI[[which(unique(x.meta$site.id)==as.numeric(r))]]
+    print(x.meta[x.meta$site.id==r,'site.name'])[[1]]
+    points(seq(100,10000,100),biomassCI.use[2,],
+           main=(x.meta[x.meta$site.id==r,'site.name'])[[1]],
+           ylim=c(0,150), pch = 21,bg=colors[count])
+  }
+}
+dev.off()
+
+#####
+##### Principle Component Analysis #####
+#####
+
+prop.ten.count = prop.table(ten.count,margin = 1)
+
+#whole sample #oak,pine,prairie
+pca=princomp(prop.ten.count) 
+summary(pca) 
+biplot(pca)
+
+#pca by stability group #number is time step
+pdf('stability.group.pca.2000.pdf')
+for(count in 1:6){
+  pca.new <- numeric(ncol(prop.ten.count))
+  for(b in as.numeric(names(second.deriv.unlist[data_binned==count]))){
+    pca.use <- prop.ten.count[x.meta$site.id==b,]
+    #print(pca.use)
+    pca.new <- rbind(pca.use,pca.new)
+  }
+pca=princomp(pca.new) 
+#summary(pca)
+biplot(pca,main=paste('Stability Bin',count))
+}
+dev.off()
+
+save.cats <- list()
+for(i in 1:nrow(prop.ten.count)){
+  #save.cats[[i]] <- length(which(prop.ten.count[i,] > .1))
+  save.cats[[i]] <- diversity(prop.ten.count[i,])
+}
+
+x.meta.new <- cbind(x.meta, unlist(save.cats))
+x.meta.new <- cbind(x.meta.new, numeric(nrow(x.meta)))
+colnames(x.meta.new) <- c(colnames(x.meta),c('divIndex','estBiomass'))
+
+names(biomassCI) <- unique(x.meta$site.id)[1:182]
+
+pdf('diversity.biomass.pdf')
+plot(save.cats[which(x.meta$site.id==site.num)],
+     biomassCI[[182]][2,x.meta[x.meta$site.id==site.num,'age_bacon']/100],
+     pch = 19,ylab = 'Biomass',xlab = 'Diversity Index',
+     ylim = c(0,150),xlim=c(min(unlist(save.cats)),max(unlist(save.cats))))
+
+for(i in 1:182){
+  if(length(biomassCI[[i]])>1){
+    site.num <- names(biomassCI[i])
+    points(save.cats[which(x.meta$site.id==site.num)],
+         biomassCI[[i]][2,x.meta[x.meta$site.id==site.num,'age_bacon']/100],
+         pch = 19)
+    x.meta.new[which(x.meta$site.id==site.num),'estBiomass'] <- biomassCI[[i]][2,x.meta[x.meta$site.id==site.num,'age_bacon']/100]
+    
+ }
+}
+dev.off()
+
+
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass>100),'long'],
+       x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass>100),'lat'],
+       pch=19,
+       cex=1.3,lwd=.2)
+hist(x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass>100),'age_bacon'])
+
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass<40),'long'],
+       x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass<40),'lat'],
+       pch=19,
+       cex=1.3,lwd=.2)
+hist(x.meta[which(x.meta.new$divIndex>1.75&x.meta.new$estBiomass<40),'age_bacon'])
+
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(x.meta[which(x.meta.new$divIndex<1.25),'long'],
+       x.meta[which(x.meta.new$divIndex<1.25),'lat'],
+       pch=19,
+       cex=1.3,lwd=.2)
 
 
