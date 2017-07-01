@@ -147,18 +147,6 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
   
-  par(mfrow=c(3,3))
-  for(i in 1:100){
-    plot(samplesList[round(nItsSave/5):nItsSave,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
-    if(any(i==age_index)){
-      abline(h=seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],col='purple',lwd=3)
-    }
-  }
-  plot(samplesList[round(nItsSave/5):nItsSave,grep('sigma',colnames(samplesList))],ylab = 'Sigma Estimate', xlab = 'MCMC iteration', main = 'Sigma', typ='l')
-  
-  map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-  points(unique(x.meta[x.meta$site.name == locn,'long']), unique(x.meta[x.meta$site.name == locn,'lat']),pch=19,cex=1.5)
-  title(locn)
   
   breaks <-  c(seq(0,50,10),seq(75,200,25))
   colors <- rev(terrain.colors(length(breaks)))
@@ -174,15 +162,17 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   fig.mat[7:27,]<-seq(2,22,1)
   #control.pts<-read.csv(text=getURL('https://raw.githubusercontent.com/PalEON-Project/stepps-baconizing/master/data/bacon_age_markers_v1.csv'))
   
+  def.par <- par(no.readonly = TRUE)
   layout(fig.mat)
   par(mar = c(0, 4, 0, 3), oma = c(5, 0, 4, 0),tcl=.5)
   
-  plot(bio.quants[2,], xlim = c(100,0), ylim = c(0,160),
+  plot(bio.quants[2,], xlim = c(100,0), ylim = c(0,160), xaxt='n',
        xlab = 'Years BP', ylab = 'Biomass Mg/ha', col = 'white')
+  axis(side = 3, at = rev(seq(0,100,20)), labels = rev(seq(0,10000,2000)))
   ciEnvelope(x=1:99,ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
   points(bio.quants[2,],cex=.8,pch=16,col = rev(colors[data_binned]))
   rug(x.meta[x.meta[,1]==site_number,]$age_bacon/100,lwd=2)
-  rug(control.pts[which(control.pts[,1]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
+  rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
   points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
   legend('topleft','Mx.Lik.',pch=1)
   
@@ -198,6 +188,21 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
     legend('topleft',colnames(prop.use)[p])
     #legend('topleft',paste(signif(mean(prop.use[,p]),digits=2)),bty="n")
   } 
+  par(def.par)
+  
+  par(mfrow=c(3,3))
+  for(i in 1:100){
+    plot(samplesList[round(nItsSave/5):nItsSave,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
+    if(any(i==age_index)){
+      abline(h=seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],col='purple',lwd=3)
+    }
+  }
+  plot(samplesList[round(nItsSave/5):nItsSave,grep('sigma',colnames(samplesList))],ylab = 'Sigma Estimate', xlab = 'MCMC iteration', main = 'Sigma', typ='l')
+  
+  map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+  points(unique(x.meta[x.meta$site.name == locn,'long']), unique(x.meta[x.meta$site.name == locn,'lat']),pch=19,cex=1.5)
+  title(locn)
+
   dev.off()
   
   return(samplesList)
