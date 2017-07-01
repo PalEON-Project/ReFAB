@@ -43,7 +43,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
 
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
 
-  if(!file.exists(paste0('~/ReFAB/MCMC Samples/samplesList_',locn,'.Rda'))){
+  if(!file.exists(paste0('~/ReFAB/samplesList_',locn,'.Rda'))){
   model_pred <- nimbleModel(pred_code, constants = constants_pred,
                             data = c(data_pred, list(constraint = rep(1,TT))),
                             dimensions = dimensions_pred)
@@ -58,7 +58,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
     # smallest and largest bimass values
     calc_lik_approx(model_pred, 'b', 'Y', age_index, J, I, 5, bMax-5, workFile = workFile)
   
-    pdf(paste0('Likelihood_Plots/likelihoods_',locn,'.pdf'))
+    pdf(paste0('likelihoods_',locn,'.pdf'))
     par(mfrow=c(3,3))
     for(j in 1:J){
       plot(seq(5, bMax-5, by = 2), exp(out[,j]), typ='l', xlab = 'Biomass', ylab='Likelihood')
@@ -71,7 +71,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   
   if(is.null(lik.only)){
     
-  if(!file.exists(paste0('~/ReFAB/MCMC Samples/samplesList_',locn,'.Rda'))){
+  if(!file.exists(paste0('~/ReFAB/samplesList_',locn,'.Rda'))){
 
   Cmodel_pred <- compileNimble(model_pred)
 
@@ -135,13 +135,13 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
 
   samplesList = as.matrix(Cmcmc_pred$mvSamples)
   
-  save(samplesList,file = paste0('~/ReFAB/MCMC Samples/samplesList_',locn,'.Rda'))
+  save(samplesList,file = paste0('~/ReFAB/samplesList_',locn,'.Rda'))
   # or if we want multiple runs: but need to change seed and generate different initial values
 #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
  #                      inits = ...
   }
     
-  load(file = paste0('~/ReFAB/MCMC Samples/samplesList_',locn,'.Rda'))
+  load(file = paste0('~/ReFAB/samplesList_',locn,'.Rda'))
   #### Plotting One Site
   pdf(paste0('SiteDiagnositcs',locn,'.pdf'))
   site_number = unique(x.meta[x.meta$site.name == locn,1])
