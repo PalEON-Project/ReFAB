@@ -24,14 +24,16 @@ for(i in 1:length(site.names)){ #44:length(site.names)
 names(how.many) <- site.names[1:177]
 how.many <- unlist(how.many)
 
-
-SITE <- names(how.many)[1]
+for(i in 1:length(how.many)){
+SITE <- names(how.many)[i]
 
 master.test <- readLines('~/ReFAB/genPareto/master.R')
 master.test <- gsub("SITE", SITE, master.test)
 locnClean <- gsub(' ', '-', SITE)
+locnClean <- gsub("'", '-', locnClean)
 writeLines(master.test, con=paste0('master.',locnClean,'.R'))
 
 jobsh <- readLines('~/ReFAB/template.job.sh')
 jobsh <- gsub('@SITE@',locnClean,jobsh)
 writeLines(jobsh, con=paste0(locnClean,'.sh'))
+}
