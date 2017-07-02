@@ -1,8 +1,8 @@
 #!/bin/bash -l
 
-#$ -l h_rt=08:00:00
+#$ -l h_rt=24:00:00
 #$ -pe smp 1
-#$ -N raiho.master.run.@SITE@
+#$ -N @SITE@.raiho
 
 module load R/3.4.0
 
