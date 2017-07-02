@@ -6,4 +6,4 @@
 
 module load R/3.4.0
 
-R CMD BATCH  @SITE@.master.R
+R CMD BATCH  master.@SITE@.R
