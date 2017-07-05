@@ -43,7 +43,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
 
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
 
-  if(!file.exists(paste0('~/ReFAB/samplesList_',locn,'.Rda'))){
+  if(!file.exists(paste0('~/ReFAB/samplesList_',locn,'.Rda')) | !is.null(lik.only)){
   model_pred <- nimbleModel(pred_code, constants = constants_pred,
                             data = c(data_pred, list(constraint = rep(1,TT))),
                             dimensions = dimensions_pred)
@@ -101,6 +101,8 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   bInit = mStar+(t(chol(solve(Q))))%*%rnorm(TT)
   bInit[bInit > bMax] <- bMax - 5
   
+  bInit[bInit<0] <- runif(length(bInit[bInit<0]),5,10)
+  
   inits_pred = list(b = bInit, sigma = sigmaInit,
     omega = omegaInit, lambda = lambdaInit)
 
@@ -144,6 +146,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   load(file = paste0('~/ReFAB/samplesList_',locn,'.Rda'))
   #### Plotting One Site
   pdf(paste0('SiteDiagnositcs',locn,'.pdf'))
+  #quartz()
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
   
@@ -176,6 +179,8 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
   legend('topleft','Mx.Lik.',pch=1)
   
+  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+  Y = as.matrix(ten_count_use)
   prop.use <- prop.table(as.matrix(Y),margin=1)    
   
   for(p in rev(match(names(sort(colMeans(prop.use))),colnames(prop.use)))){
@@ -192,7 +197,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   
   par(mfrow=c(3,3))
   for(i in 1:100){
-    plot(samplesList[round(nItsSave/5):nItsSave,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
+    plot(samplesList[1:nItsSave,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
     if(any(i==age_index)){
       abline(h=seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],col='purple',lwd=3)
     }
