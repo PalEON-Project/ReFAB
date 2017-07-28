@@ -7,7 +7,7 @@ for(s in seq_along(sigma.vals)){
     master.test <- readLines('~/ReFAB/master_cross_validation.R')
     master.test <- gsub("SIGMA", sigma.vals[s], master.test)
     master.test <- gsub("GROUP", g, master.test)
-    locnClean <- gsub(' ', '-', SITE)
+    locnClean <- gsub(' ', '-', 'Cub Lake')
     locnClean <- gsub("'", '-', locnClean)
     writeLines(master.test, con=paste0('master.',locnClean,g,sigma.vals[s],'.R'))
     
