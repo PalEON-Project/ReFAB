@@ -27,6 +27,9 @@ site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
 Y = as.matrix(ten_count_use)
+minAge = 0
+maxAge = 10000
+ageInterval = 100
 
 sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
 age_bins <- seq(minAge, maxAge, ageInterval)
