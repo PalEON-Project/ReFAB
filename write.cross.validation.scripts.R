@@ -1,13 +1,14 @@
 
 sigma.vals <- c(.01,.03,.09,.27,.81)
-
+site <- 'Wintergreen Lake'
 
 for(s in seq_along(sigma.vals)){
   for(g in 1:10){
     master.test <- readLines('~/ReFAB/master_cross_validation.R')
     master.test <- gsub("SIGMA", sigma.vals[s], master.test)
     master.test <- gsub("GROUP", g, master.test)
-    locnClean <- gsub(' ', '-', 'Cub Lake')
+    master.test <- gsub("SITE", site, master.test)
+    locnClean <- gsub(' ', '-', site)
     locnClean <- gsub("'", '-', locnClean)
     writeLines(master.test, con=paste0('master.',locnClean,g,sigma.vals[s],'.R'))
     
