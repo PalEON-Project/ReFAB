@@ -132,6 +132,7 @@ dev.off()
 calc.second.deriv <- function(biomassCI,h,second.deriv){
   for(i in 1:length(biomassCI)){
     if(length(biomassCI[[i]])>10){
+      biomassCI[[i]] <- biomassCI[[i]][,1:11]
       T <- dim(biomassCI[[i]])[2] - h
       t <- h + 1 
       biomassCI[[i]]<-(biomassCI[[i]]) #log or no log here?
@@ -145,7 +146,7 @@ calc.second.deriv <- function(biomassCI,h,second.deriv){
 }
 
 pdf(paste('second.deriv.map',Sys.Date(),'.pdf'))
-for(i in c(20)){
+for(i in c(1)){
   h=i
   second.deriv<-calc.second.deriv(biomassCI=biomassCI,h=h,second.deriv=list())
   

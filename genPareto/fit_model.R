@@ -177,6 +177,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   rug(x.meta[x.meta[,1]==site_number,]$age_bacon/100,lwd=2)
   rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
   points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
+  points(0,unique(x.meta[x.meta$site.name == locn,'SettleBiomass']),pch=19,col='purple',cex=2)
   legend('topleft','Mx.Lik.',pch=1)
   
   ten_count_use = ten.count[which(x.meta$site.id == site_number), ]

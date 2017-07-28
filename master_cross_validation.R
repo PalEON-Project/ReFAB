@@ -1,4 +1,3 @@
-
 library(nimble)
 library(RCurl)
 library(maps)
@@ -17,7 +16,7 @@ if(!file.exists('allPredData.Rda'))
 load('allPredData.Rda')
 
 source('~/ReFAB/genPareto/model_dgp_auxil.R')  # BUGS code for model
-source('~/ReFAB/genPareto/fit_model.R')        # contains fit() function
+source('~/ReFAB/genPareto/fit_fix_sigma.R')        # contains fit() function
 
 #adding settlement biomass to the metadata matrix in the most annoying way possible
 ##TO DO: put somewhere else
@@ -60,19 +59,46 @@ colnames(x.meta)[ncol(x.meta)]<-c('SettleBiomass')
 #stewerts dark\
 #lake O' Pines
 
-for(i in 57:length(how.many)){
-  SITE <- names(how.many)[i]
+locn <- 'Cub Lake'
+site_number = unique(x.meta[x.meta$site.name == locn,1])
+ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
-  locn <- SITE
-  site_number = unique(x.meta[x.meta$site.name == locn,1])
-  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+Y = as.matrix(ten_count_use)
+
+sigma.values <- c(.01, .03, .09, .27, .81)
+
+# pull out data for locn of interest
+site_number = unique(x.meta[x.meta$site.name == locn,1])
+ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+
+Y = as.matrix(ten_count_use)
+
+sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
+age_bins <- seq(minAge, maxAge, ageInterval)
+age_index <- as.matrix(as.numeric(
+  cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
+))
+
+tmp <- data.frame(cbind(age_index, Y))
+names(tmp)[1] <- 'age_index'
+
+Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
+
+set.seed(0)
+group.sample <- sample(x = 1:nrow(Y2), size = nrow(Y2), replace = FALSE)
+group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
+                    ncol = round((nrow(Y2) / 10)))
+
+SITE <- 'Cub Lake'#names(how.many)[i]
+
+sigma <- SIGMA
+group <- GROUP
   
-  Y = as.matrix(ten_count_use)
- 
-  smp <- fit(locn = locn, pred_code = pred_code, order = 3, Z = Z,
-               u = u, x.meta = x.meta,
-               ten.count = ten.count, beta1 =  beta1.est.real,
-               beta2 = beta2.est.real,
-               nIts = 50000, nItsSave = 10000, seed = 1,
-               control.pts = control.pts)
-}
+smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
+                     pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
+                     u = u, x.meta = x.meta,
+                     ten.count = ten.count, beta1 =  beta1.est.real,
+                     beta2 = beta2.est.real,
+                     nIts = 500, nItsSave = 100, seed = 1,
+                     control.pts = control.pts, sigma = sigma,
+                     samples.rm)

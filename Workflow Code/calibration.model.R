@@ -9,8 +9,8 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("~/babystepps/Data/calibration.data.Rdata")
-model.dir <- c('/Users/paleolab/babySTEPPS/Code/')
+load("~/ReFAB/Data/calibration.data.Rdata")
+model.dir <- c('/Users/paleolab/ReFAB/Workflow Code/')
 source("~/Workflow Code/utils/bs_nimble.R")
 
 code <- nimbleCode({

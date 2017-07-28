@@ -110,15 +110,14 @@ calclik <- nimbleFunction(
     for(t in 1:100){
       for(i in 1:n) {
         #set.seed(0)
-        
         model$b[t] <<- biomasses[i]
-        model$calculate()  # so deterministic dependencies of b are updated
+        model$calculate() # so deterministic dependencies of b are updated
         
         out[i,t] = 0
         for(j in 1:nSims) {
-          model$simulate(parentnodes[t])  # simulate p.rel and fill in resulting p.true
+          model$simulate(parentnodes[t]) # simulate p.rel and fill in resulting p.true
           model$calculate(deps) # fill in deterministic dependencies of parentnodes and calculate densities for dependencies (which should include calcnode)
-          out[i,t] <- out[i,t] + exp(model$getLogProb(calcnode[t]))  # add density values across iterations
+          out[i,t] <- out[i,t] + exp(model$getLogProb(calcnode[t])) # add density values across iterations
         }
         out[i,t] = out[i,t]/nSims
       }
@@ -127,13 +126,13 @@ calclik <- nimbleFunction(
     return(out)
   })
 
-parentnodes<-cbind(paste0('p.true[',age.index,',1]'),paste0('p.rel[',age.index,',2:20]'))
-calcnode <- paste0('Y[',1:length(age.index),',1:21]')
+parentnodes <- cbind(paste0('shape1[',age.index,',1:20]'),paste0('shape2[',age.index,',1:20]'))
+calcnode <- paste0('Y[',1:length(age.index),',1:20]')
 rcalclik <- calclik(model_pred, calcnode = calcnode[1:7], parentnodes = parentnodes[1:7,])
 
 ccalclik <- compileNimble(rcalclik, project = model_pred, showCompilerOutput = TRUE)
 bvals <- seq(1,150, length = 50)
-tmp = ccalclik$run(bvals, 50000) 
+tmp = ccalclik$run(bvals, 50000)
 plot(bvals, log(tmp))
 
 # alternative that tries to reset seed and do calculation one biomass at a time, but for some reason this doesn't smooth things out...
@@ -172,8 +171,8 @@ tmp.mat5 <-matrix(NA,length(age.index),length(bvals))
 for(i in 46:52){
   rcalclik <- calclik(model = model_pred,
                       calcnode = paste0('Y[',i,',1:21]'),
-                      parentnodes = c(paste0('p.true[',age.index[i],',1]'),
-                                      paste0('p.rel[',age.index[i],',2:20]')),
+                      parentnodes = c(paste0('shape1[',age.index[i],',1:20]'),
+                                      paste0('shape2[',age.index[i],',1:20]')),
                       timebin = age.index[i])
   ccalclik <- compileNimble(rcalclik, project = model_pred)
   

@@ -5,8 +5,8 @@
 # 1) good practice (thought not universally-agreed-upon) is not to have names of objects in R that contain periods (periods generally indicate object-oriented programming syntax in R and other languages)
 # 2) more white space - space after commas
 
-load("add.bacon2.Rdata")
-load(file = 'nimble.betas_1_22016-12-02.Rdata')
+load("~/babySTEPPS/add.bacon3.Rdata")
+load(file = '~/babySTEPPS/Data/nimble.betas_1_22016-12-02.Rdata')
 
 beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),1:105]),ncol(Z.knots),ncol(Y))
 beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),106:210]),ncol(Z.knots),ncol(Y))
