@@ -22,7 +22,7 @@ source('~/ReFAB/fit_fix_sigma.R')        # contains fit() function
 ##TO DO: put somewhere else
 library(fields)
 
-locn <- 'Wintergreen Lake'
+locn <- SITE
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
@@ -47,8 +47,6 @@ group.sample <- sample(x = 1:nrow(Y2), size = nrow(Y2), replace = FALSE)
 group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
                     ncol = round((nrow(Y2) / 10)))
 group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(group.mat))))
-
-SITE <- locn#names(how.many)[i]
 
 sigma <- SIGMA
 group <- GROUP
