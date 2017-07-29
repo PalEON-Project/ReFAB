@@ -22,7 +22,7 @@ source('~/ReFAB/fit_fix_sigma.R')        # contains fit() function
 ##TO DO: put somewhere else
 library(fields)
 
-locn <- SITE
+locn <- as.character(SITE)
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
