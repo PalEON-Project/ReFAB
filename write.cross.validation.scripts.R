@@ -27,7 +27,7 @@ names(how.many) <- site.names[1:177]
 how.many <- unlist(how.many)
 
 dataID <- data.frame(name = sort(rep(names(how.many),50)), ID = 1:3100,
-                     sigma = rep(sigma.vals,620), group = rep(1:10,310))
+                     sigma = rep(sigma.vals,620), group = rep(sort(rep(1:10,5)),62))
 
 write.csv(dataID,file = 'dataID.csv')
 
