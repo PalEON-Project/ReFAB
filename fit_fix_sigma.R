@@ -187,4 +187,5 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       log.prob.list <- list(log.prob.all=log.prob.all,log.prob.data=log.prob.data, samples.rm = group.mat[group,])
       
       save(log.prob.list,file = paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))
+      
        }

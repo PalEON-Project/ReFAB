@@ -1,3 +1,13 @@
+
+arg <- commandArgs(trailingOnly = TRUE)
+if (is.na(arg[1])) {
+  stop()
+} else {
+  runnum <- as.numeric(arg[1])
+}
+
+dataID <- read.csv('dataID.csv')
+
 library(nimble)
 library(RCurl)
 library(maps)
@@ -22,7 +32,7 @@ source('~/ReFAB/fit_fix_sigma.R')        # contains fit() function
 ##TO DO: put somewhere else
 library(fields)
 
-locn <- as.character('SITE')
+locn <- as.character(dataID[dataID$ID==runnum,'name'])
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
@@ -48,8 +58,8 @@ group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
                     ncol = round((nrow(Y2) / 10)))
 group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(group.mat))))
 
-sigma <- SIGMA
-group <- GROUP
+sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
+group <- as.numeric(dataID[dataID$ID==runnum,'group'])
   
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,

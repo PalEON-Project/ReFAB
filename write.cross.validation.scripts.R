@@ -26,27 +26,32 @@ for(i in 1:length(site.names)){ #44:length(site.names)
 names(how.many) <- site.names[1:177]
 how.many <- unlist(how.many)
 
-for(i in 1:length(how.many)){
-  site <- names(how.many)[i]
-  
+dataID <- data.frame(name = sort(rep(names(how.many),50)), ID = 1:3100,
+                     sigma = rep(sigma.vals,620), group = rep(1:10,310))
 
-for(s in seq_along(sigma.vals)){
-  for(g in 1:10){
-    master.test <- readLines('~/ReFAB/master_cross_validation.R')
-    master.test <- gsub("SIGMA", sigma.vals[s], master.test)
-    master.test <- gsub("GROUP", g, master.test)
-    master.test <- gsub("SITE", site, master.test)
-    locnClean <- gsub(' ', '-', site)
-    locnClean <- gsub("'", '-', locnClean)
-    writeLines(master.test, con=paste0('master.',locnClean,g,sigma.vals[s],'.R'))
-    
-    jobsh <- readLines('~/ReFAB/template.job.sh')
-    jobsh <- gsub('@SITE@',paste0(locnClean,g,sigma.vals[s]),jobsh)
-    writeLines(jobsh, con=paste0(locnClean,g,sigma.vals[s],'.sh'))
-    
-    system(paste('qsub',paste0(locnClean,g,sigma.vals[s],'.sh')))
-  }
+write.csv(dataID,file = 'dataID.csv')
 
-}
-
-}
+# for(i in 1:length(how.many)){
+#   site <- names(how.many)[i]
+#   
+# 
+# for(s in seq_along(sigma.vals)){
+#   for(g in 1:10){
+#     master.test <- readLines('~/ReFAB/master_cross_validation.R')
+#     master.test <- gsub("SIGMA", sigma.vals[s], master.test)
+#     master.test <- gsub("GROUP", g, master.test)
+#     master.test <- gsub("SITE", site, master.test)
+#     locnClean <- gsub(' ', '-', site)
+#     locnClean <- gsub("'", '-', locnClean)
+#     writeLines(master.test, con=paste0('master.',locnClean,g,sigma.vals[s],'.R'))
+#     
+#     jobsh <- readLines('~/ReFAB/template.job.sh')
+#     jobsh <- gsub('@SITE@',paste0(locnClean,g,sigma.vals[s]),jobsh)
+#     writeLines(jobsh, con=paste0(locnClean,g,sigma.vals[s],'.sh'))
+#     
+#     system(paste('qsub',paste0(locnClean,g,sigma.vals[s],'.sh')))
+#   }
+# 
+# }
+# 
+# }
