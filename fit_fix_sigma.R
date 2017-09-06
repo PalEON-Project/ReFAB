@@ -38,14 +38,17 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
                         N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
   
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
+
+  locnClean <- gsub(' ', '-', locn)
+  workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
   
+  if(!file.exists(paste0('~/ReFAB/samplesList_',workFile,'.Rda'))){  
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),
                               dimensions = dimensions_pred)
   
   # get normal approx to likelihood for all samples for the location
-  locnClean <- gsub(' ', '-', locn)
-  workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
+
   
   source('~/ReFAB/genPareto/calc_lik_approx.R')
   calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
@@ -122,6 +125,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
    
+}
+ 
+  load(file = paste0('~/ReFAB/samplesList_',workFile,'.Rda'))     
       Y = as.matrix(ten_count_use)
       
       sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
@@ -163,7 +169,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
                                 data = c(data_pred, list(constraint = rep(1,TT))),
                                 dimensions = dimensions_pred)
       
-      workFile.left.out <- paste0('left.out_workInfo.', locnClean, 'Sigma', sigma, 'Group', i, '.Rda')
+      workFile.left.out <- paste0('left.out_workInfo.', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
       
       source('~/ReFAB/genPareto/calc_lik_approx.R')
       calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
