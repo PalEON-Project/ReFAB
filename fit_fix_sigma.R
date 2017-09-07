@@ -1,17 +1,7 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
                 minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
-<<<<<<< HEAD
-                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group, group.mat) {
-
-locnClean <- gsub(' ', '-', locn)      	
-if(file.exists(paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))){
-	   print('file exists considering stopping')
-		}
-
-=======
                 ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group = NULL, group.mat) {
-  
->>>>>>> 33ecef10c8fa1d471dfb230909bf585a7f5dc2df
+
   Y = as.matrix(ten_count_use)
   
   sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
