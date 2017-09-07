@@ -60,6 +60,9 @@ group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(
 
 sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
 group <- as.numeric(dataID[dataID$ID==runnum,'group'])
+if(is.na(group)){
+  group <- NULL
+} 
   
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
