@@ -29,6 +29,12 @@ how.many <- unlist(how.many)
 dataID <- data.frame(name = sort(rep(names(how.many),50)), ID = 1:3100,
                      sigma = rep(sigma.vals,620), group = rep(sort(rep(1:10,5)),62))
 
+new.runs <- c('Tower Lake','Penegor Lake','Cub Lake','Wintergreen Lake','Kirchner Marsh','Gass Lake')
+dataID.new <- data.frame(name = sort(rep(new.runs,5)), ID = 3101:3130,
+                     sigma = rep(sigma.vals,6), group = rep(NA,30))
+
+dataID <- rbind(dataID,dataID.new)
+
 write.csv(dataID,file = 'dataID.csv')
 
 # for(i in 1:length(how.many)){

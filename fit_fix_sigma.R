@@ -1,6 +1,6 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
                 minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
-                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group, group.mat) {
+                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group = NULL, group.mat) {
   
   Y = as.matrix(ten_count_use)
   
@@ -15,7 +15,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
-  Y2 <- Y2[-group.mat[group,],]
+  if(!is.null(group)){
+    Y2 <- Y2[-group.mat[group,],]
+  }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
   age_index <- Y2[,1]
@@ -125,7 +127,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
    
-}
+  }
+  
+  if(!is.null(group)){
  
   load(file = paste0('~/ReFAB/samplesList_',workFile,'.Rda'))     
       Y = as.matrix(ten_count_use)
@@ -188,10 +192,13 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       
       model_pred$calculate()
       log.prob.all <- model_pred$getLogProb('Y')
-      log.prob.data <- model_pred$getLogProb(paste0('Y[',age_index,']'))
+      log.prob.data <- numeric(length(age_index))
+      for(a in 1:length(age_index)){
+        log.prob.data[a] <- model_pred$getLogProb(paste0('Y[',age_index[a],']'))
+      }
       
       log.prob.list <- list(log.prob.all=log.prob.all,log.prob.data=log.prob.data, samples.rm = group.mat[group,])
       
       save(log.prob.list,file = paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))
-      
-       }
+  }
+}
