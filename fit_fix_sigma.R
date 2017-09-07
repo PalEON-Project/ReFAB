@@ -4,7 +4,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
 
 locnClean <- gsub(' ', '-', locn)      	
 if(file.exists(paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))){
-	   stop()
+	   print('file exists considering stopping')
 		}
 
   Y = as.matrix(ten_count_use)
@@ -193,7 +193,11 @@ if(file.exists(paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rd
       
       model_pred$calculate()
       log.prob.all <- model_pred$getLogProb('Y')
-      log.prob.data <- model_pred$getLogProb(paste0('Y[',age_index,']'))
+	log.prob.data <- numeric(length(age_index))
+      for(a in 1:length(age_index)){
+	        log.prob.data[a] <- model_pred$getLogProb(paste0('Y[',age_index[a],']'))
+      }      
+      #log.prob.data <- model_pred$getLogProb(paste0('Y[',age_index,']'))
       
       log.prob.list <- list(log.prob.all=log.prob.all,log.prob.data=log.prob.data, samples.rm = group.mat[group,])
       
