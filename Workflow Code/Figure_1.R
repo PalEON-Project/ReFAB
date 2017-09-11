@@ -6,6 +6,7 @@ prob.of.inc <- matrix(NA,62,99)
 all.samps<- numeric(100)
 nItsSave = 10000
 hem.is <- list()
+lat <- long <- name.keep <- list()
 for(i in 1:62){
   locn <- names(how.many)[i]
   site_number = unique(x.meta[x.meta$site.name == locn,1])
@@ -22,6 +23,9 @@ for(i in 1:62){
       all.samps <- rbind(all.samps,samplesList[round(nItsSave/5):nItsSave,1:100])
       diff.median[[i]] <- apply(diff(t(samplesList[round(nItsSave/5):nItsSave,1:100])),1,quantile,c(0.5))
       test <- diff(t(samplesList[round(nItsSave/5):nItsSave,1:100]))
+      lat[[i]] <- x.meta[x.meta$site.name == locn,'lat'][1]
+      long[[i]] <- x.meta[x.meta$site.name == locn,'long'][1]
+      name.keep[[i]] <- locn
       for(t in 1:99){
         prob.of.inc[i,t] <- length(which(test[t,]<0))/8001
       }
@@ -29,6 +33,11 @@ for(i in 1:62){
       }
   }
 }
+
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(unlist(long),unlist(lat), pch=19,
+       cex=1.1,lwd=.2)
+text(unlist(long),unlist(lat),unlist(name.keep),cex=.5)
 
 pdf('boxplots.prob.of.inc.pdf')
 boxplot(prob.of.inc,xlim=c(100,1))
@@ -111,6 +120,26 @@ segments(seq(.5,98.5,1),save.how.much[1,],seq(.5,98.5,1),save.how.much[3,],col='
 
 abline(h=.5)
 dev.off()
+
+
+
+
+site_number = unique(x.meta[x.meta$site.name == "Wood Lake",1])
+ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+#capitola 38
+#kelly's 34
+#wood 33
+
+lat.long.reg <- cbind(unlist(long),unlist(lat))
+lat.long.reg.df = data.frame(lat.long.reg)
+colnames(lat.long.reg.df) = c('x', 'y')
+
+coordinates(lat.long.reg.df) <- ~ x + y
+proj4string(lat.long.reg.df) <- CRS('+proj=longlat +ellps=WGS84')
+
+albers <- spTransform(lat.long.reg.df, CRS('+init=epsg:3175'))
+albers <- as.matrix(data.frame(albers))
+
 
 
 

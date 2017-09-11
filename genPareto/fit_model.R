@@ -137,15 +137,15 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
 
   samplesList = as.matrix(Cmcmc_pred$mvSamples)
   
-  save(samplesList,file = paste0('~/ReFAB/samplesList_',locn,'.Rda'))
+  save(samplesList,file = paste0('~/ReFAB/samplesList_',locnClean,'.Rda'))
   # or if we want multiple runs: but need to change seed and generate different initial values
 #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
  #                      inits = ...
   }
     
-  load(file = paste0('~/ReFAB/samplesList_',locn,'.Rda'))
+  load(file = paste0('~/ReFAB/samplesList_',locnClean,'.Rda'))
   #### Plotting One Site
-  pdf(paste0('SiteDiagnositcs',locn,'.pdf'))
+  pdf(paste0('SiteDiagnositcs',locnClean,'.pdf'))
   #quartz()
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
@@ -156,7 +156,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   
   #browser()
   
-  bio.quants <- apply(samplesList[round(nItsSave/5):nItsSave,1:99],2,quantile,c(0.025,0.5,0.975))
+  bio.quants <- apply(samplesList[round(nItsSave/5):nItsSave,1:(maxAge/100)],2,quantile,c(0.025,0.5,0.975))
   
   data_binned <-  cut(rev(bio.quants[2,]), c(breaks), include.lowest = FALSE, labels = FALSE)
   
@@ -169,11 +169,11 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   layout(fig.mat)
   par(mar = c(0, 4, 0, 3), oma = c(5, 0, 4, 0),tcl=.5)
   
-  plot(bio.quants[2,], xlim = c(100,0), ylim = c(0,160), xaxt='n',
+  plot(bio.quants[2,], xlim = c(maxAge/100,0), ylim = c(0,150), xaxt='n',
        xlab = 'Years BP', ylab = 'Biomass Mg/ha', col = 'white')
-  axis(side = 3, at = rev(seq(0,100,20)), labels = rev(seq(0,10000,2000)))
-  ciEnvelope(x=1:99,ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
-  points(bio.quants[2,],cex=.8,pch=16,col = rev(colors[data_binned]))
+  axis(side = 3, at = rev(seq(0,maxAge/100, round((maxAge/100)/6))), labels = rev(seq(0,maxAge,round(maxAge/6))))
+  ciEnvelope(x=1:(maxAge/100), ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
+  points(bio.quants[2,],cex=1.1,pch=16,col = rev(colors[data_binned]))
   rug(x.meta[x.meta[,1]==site_number,]$age_bacon/100,lwd=2)
   rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
   points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
@@ -187,7 +187,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   for(p in rev(match(names(sort(colMeans(prop.use))),colnames(prop.use)))){
     prop.plot<- cbind(as.vector(x.meta[which(x.meta$site.id==site_number),]$age_bacon),as.matrix(prop.use[,p]))      	
     prop.plot<-prop.plot[order(prop.plot[,1]),]
-    plot(x=prop.plot[,1],y=prop.plot[,2],type="l",xlim=c(10000,-10),
+    plot(x=prop.plot[,1],y=prop.plot[,2],type="l",xlim=c(maxAge,-10),
          ylim=c(0,max(prop.use[,p])),ylab=NA,yaxt='n', xaxt='n')
     #axis(2,at=signif(max(prop.use)/2),labels=signif(max(prop.use[,p])/2,digits=1))
     ciEnvelope(prop.plot[,1],rep(0,nrow(prop.use)),prop.plot[,2],col="darkblue")
@@ -197,7 +197,7 @@ fit <- function(locn, pred_code, order = 3, Z, u, x.meta, ten.count, beta1, beta
   par(def.par)
   
   par(mfrow=c(3,3))
-  for(i in 1:100){
+  for(i in 1:(maxAge/100)){
     plot(samplesList[1:nItsSave,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
     if(any(i==age_index)){
       abline(h=seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],col='purple',lwd=3)

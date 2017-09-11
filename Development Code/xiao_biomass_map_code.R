@@ -65,6 +65,7 @@ colnames(input_points) <- c('lat','lon')
 d <- ggplot() + geom_raster(data = inputData_long, aes(x = X, y = Y, fill = factor(value))) + scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") + 
   theme(strip.text.x = element_text(size = 16), legend.text = element_text(size = 16), legend.title = element_text(size = 16)) +
   geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2,colour="black") + # how to add points part B
+  geom_text(data = input_points,aes(x=lat,y=lon,label=unlist(name.keep))) +
   ggtitle("Xiaoping Estimates")
 
 add_map_albers <- function(plot_obj, map_data = usFortified, dat){
@@ -77,6 +78,7 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 
 quartz()
-pdf('biomass_est_1.pdf')
 print(d)
+
+ggsave(d,filename = 'biomass_est_3_names.pdf')
 dev.off()

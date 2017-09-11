@@ -61,7 +61,7 @@ colnames(x.meta)[ncol(x.meta)]<-c('SettleBiomass')
 #lake O' Pines
 
 for(i in 57:length(how.many)){
-  SITE <- names(how.many)[i]
+  SITE <- 'Cub Lake'#names(how.many)[i]
 
   locn <- SITE
   site_number = unique(x.meta[x.meta$site.name == locn,1])

@@ -35,6 +35,11 @@ dataID.new <- data.frame(name = sort(rep(new.runs,5)), ID = 3101:3130,
 
 dataID <- rbind(dataID,dataID.new)
 
+dataID.new1 <- data.frame(name = c(new.runs,rep('Lake Mendota',6)), ID = 3131:3142,
+                         sigma = c(rep(2.43,7),sigma.vals), group = rep(NA,12))
+
+dataID <- rbind(dataID,dataID.new1)
+
 write.csv(dataID,file = 'dataID.csv')
 
 # for(i in 1:length(how.many)){
