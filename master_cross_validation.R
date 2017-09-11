@@ -69,6 +69,6 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      u = u, x.meta = x.meta,
                      ten.count = ten.count, beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 50000, nItsSave = 10000, seed = 1,
+                     nIts = 50000, nItsSave = 200, seed = 1,
                      control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat)
