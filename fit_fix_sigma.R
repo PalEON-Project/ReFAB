@@ -1,6 +1,6 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
                 minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
-                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group = NULL, group.mat) {
+                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group = NULL, group.mat, override = TRUE) {
 
   Y = as.matrix(ten_count_use)
   
@@ -17,6 +17,10 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   
   if(!is.null(group)){
     Y2 <- Y2[-group.mat[group,],]
+  }
+  
+  if(any(which(age_index<5))){
+    Y2 <- Y2[Y2[,2]>5,]
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
@@ -44,7 +48,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   locnClean <- gsub(' ', '-', locn)
   workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
   
-  if(!file.exists(paste0('~/ReFAB/samplesList_',workFile,'.Rda'))){  
+  if(!file.exists(paste0('~/ReFAB/samplesList_',workFile,'.Rda')) | override == TRUE){  
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),
                               dimensions = dimensions_pred)
