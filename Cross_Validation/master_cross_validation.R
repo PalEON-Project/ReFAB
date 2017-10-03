@@ -1,38 +1,52 @@
 
+dataDir <- c(getwd())
+
+####
+#### Only for running job.array.sh ####
+####
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
-  stop()
+  runnum <- NA
 } else {
   runnum <- as.numeric(arg[1])
 }
 
-dataID <- read.csv('dataID.csv')
+dataID <- read.csv(file.path(crossValDir,'dataID.csv'))
+
+####
+#### Master Setup
+####
 
 library(nimble)
 library(RCurl)
 library(maps)
+library(fields)
 
 ciEnvelope <- function(x,ylo,yhi,...){
   polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
                                       ylo[1])), border = NA,...) 
 }
-control.pts<-read.csv('~/ReFAB/Data/control.pts.csv')
 
-# nimbleOptions(buildInterfacesForCompiledNestedNimbleFunctions = TRUE)
+control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
 # load in data for all sites, per Ann's original code
 if(!file.exists('allPredData.Rda'))
-  source('prep_data.R') 
-load('allPredData.Rda')
+  source(file.path('Workflow_Code','prep_data.R'))
+load(file.path(dataDir,'allPredData.Rda'))
 
-source('~/ReFAB/genPareto/model_dgp_auxil.R')  # BUGS code for model
-source('~/ReFAB/fit_fix_sigma.R')        # contains fit() function
+source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
+source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
 
-#adding settlement biomass to the metadata matrix in the most annoying way possible
-##TO DO: put somewhere else
-library(fields)
+####
+#### Start One Site Model Run ####
+####
 
-locn <- as.character(dataID[dataID$ID==runnum,'name'])
+if(!is.na(runnum)){
+  locn <- as.character(dataID[dataID$ID==runnum,'name'])
+}else{
+  locn <- readline(prompt = 'Location Name:')
+}
+
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
@@ -58,11 +72,13 @@ group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
                     ncol = round((nrow(Y2) / 10)))
 group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(group.mat))))
 
-sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
-group <- as.numeric(dataID[dataID$ID==runnum,'group'])
-if(is.na(group)){
+if(!is.na(runnum)){
+  sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
+  group <- as.numeric(dataID[dataID$ID==runnum,'group'])
+}else{
+  sigma <- as.numeric(readline(prompt = 'sigma = '))
   group <- NULL
-} 
+}
   
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,

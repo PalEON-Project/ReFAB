@@ -49,7 +49,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   locnClean <- gsub(' ', '-', locn)
   workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
   
-  if(!file.exists(paste0('~/ReFAB/samplesList_',workFile,'.Rda')) | override == TRUE){  
+  if(!file.exists(paste0('samplesList_',workFile,'.Rda')) | override == TRUE){  
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),
                               dimensions = dimensions_pred)
@@ -57,7 +57,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   # get normal approx to likelihood for all samples for the location
 
   
-  source('~/ReFAB/genPareto/calc_lik_approx.R')
+  source(file.path('genPareto','calc_lik_approx.R'))
   calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                   age_index, J, I, bMin = 5,bMax =  bMax-5,
                   workFile = workFile)
@@ -98,7 +98,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       
       Cmodel_pred$setInits(inits_pred)
       
-      source('~/ReFAB/genPareto/sampler_local.R')
+      source(file.path('genPareto','sampler_local.R'))
       mcmcConf_pred <- configureMCMC(model_pred, thin = nIts/nItsSave, nodes = 'b')
       
       for(i in 1:TT) {  # eventually should be order+1 once sort out issue with omitted lambda/omega values
@@ -127,7 +127,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       
       samplesList = as.matrix(Cmcmc_pred$mvSamples)
       
-      save(samplesList,file = paste0('~/ReFAB/samplesList_',workFile,'.Rda'))
+      save(samplesList,file = paste0('samplesList_',workFile,'.Rda'))
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
@@ -136,7 +136,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   
   if(!is.null(group)){
  
-  load(file = paste0('~/ReFAB/samplesList_',workFile,'.Rda'))     
+  load(file = paste0('samplesList_',workFile,'.Rda'))     
       Y = as.matrix(ten_count_use)
       
       sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
@@ -180,7 +180,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       
       workFile.left.out <- paste0('left.out_workInfo.', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
       
-      source('~/ReFAB/genPareto/calc_lik_approx.R')
+      source(file.path('genPareto','calc_lik_approx.R'))
       calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                       age_index, J, I, bMin = 5,bMax =  bMax-5,
                       workFile = workFile.left.out)
