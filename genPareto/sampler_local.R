@@ -2,12 +2,11 @@ sampler_local <- nimbleFunction(
     contains = sampler_BASE,
     setup = function(model, mvSaved, target, control) {
         ## control list extraction
-        logScale    <- control$log
-        adaptive      <- control$adaptive
-        adaptScaleOnly <- control$adaptScaleOnly
-        adaptInterval  <- control$adaptInterval
-        propCov        <- control$propCov
-        scale         <- control$scale
+        logScale      <- if(!is.null(control$log))           control$log           else FALSE
+        adaptive      <- if(!is.null(control$adaptive))      control$adaptive      else TRUE
+        adaptInterval <- if(!is.null(control$adaptInterval)) control$adaptInterval else 200
+        scale         <- if(!is.null(control$scale))         control$scale         else 1
+        propCov        <- if(!is.null(control$propCov))        control$propCov        else 'identity'
         order <- control$order
 	focal <- control$focal
 	nbhd <- control$nbhd
