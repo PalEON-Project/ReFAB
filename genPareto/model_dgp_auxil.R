@@ -1,5 +1,5 @@
-source(file.path(genParetoDir,'betabin.R')) # code for user-defined beta-binomial distribution
-source('~/ReFAB/Workflow_Code/utils/bs_nimble.R') # code for b-spline basis as user-defined function
+source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
+source(file.path('Workflow_Code','utils','bs_nimble.R')) # code for b-spline basis as user-defined function
 
 pred_code <- nimbleCode({
   sigma ~ dunif(0.01,1000) #GELMAN PAPER #5

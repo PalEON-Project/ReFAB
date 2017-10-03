@@ -30,8 +30,8 @@ ciEnvelope <- function(x,ylo,yhi,...){
 control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
 # load in data for all sites, per Ann's original code
-if(!file.exists('allPredData.Rda'))
-  source(file.path('Workflow_Code','prep_data.R'))
+#if(!file.exists(file.path(dataDir,'allPredData.Rda')))
+#  source(file.path('Workflow_Code','prep_data.R'))
 load(file.path(dataDir,'allPredData.Rda'))
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
