@@ -132,7 +132,7 @@ dev.off()
 calc.second.deriv <- function(biomassCI,h,second.deriv){
   for(i in 1:length(biomassCI)){
     if(length(biomassCI[[i]])>10){
-      biomassCI[[i]] <- biomassCI[[i]][,1:11]
+      biomassCI[[i]] <- biomassCI[[i]]
       T <- dim(biomassCI[[i]])[2] - h
       t <- h + 1 
       biomassCI[[i]]<-(biomassCI[[i]]) #log or no log here?

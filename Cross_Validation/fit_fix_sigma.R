@@ -1,6 +1,7 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
                 minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
-                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, sigma, group = NULL, group.mat, override = TRUE) {
+                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
+                sigma, group = NULL, group.mat, override = TRUE) {
 
   Y = as.matrix(ten_count_use)
   

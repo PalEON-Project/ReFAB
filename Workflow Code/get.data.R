@@ -59,18 +59,18 @@ save(dat.mnwi,file="mnwi4.rdata")
 
   comp.tax <- compile_taxa(dat.mnwi[[1]], 'WhitmoreSmall')
 	
-	samp.meta <- comp.tax[[1]]$sample.meta
-	counts <- comp.tax[[1]]$counts
-	dat.meta <- matrix(unlist(comp.tax[[1]]$dataset$site.data),nrow(counts),8,byrow=TRUE)
-	colnames(dat.meta) <- names(comp.tax[[1]]$dataset$site.data)
+	samp.meta <- comp.tax$sample.meta
+	counts <- comp.tax$counts
+	dat.meta <- matrix(unlist(comp.tax$dataset$site.data),nrow(counts),8,byrow=TRUE)
+	colnames(dat.meta) <- names(comp.tax$dataset$site.data)
 	pol.cal.count<-cbind(dat.meta,samp.meta,counts)
 		
 for(i in 2:length(dat.mnwi)){
 	comp.tax <- compile_taxa(dat.mnwi[[i]], 'WhitmoreSmall')
-	samp.meta <- comp.tax[[1]]$sample.meta
-	dat.meta <- matrix(unlist(comp.tax[[1]]$dataset$site.data),nrow(samp.meta),8,byrow=TRUE)
-	colnames(dat.meta) <- names(comp.tax[[1]]$dataset$site.data)
-	counts <- comp.tax[[1]]$counts
+	samp.meta <- comp.tax$sample.meta
+	dat.meta <- matrix(unlist(comp.tax$dataset$site.data),nrow(samp.meta),8,byrow=TRUE)
+	colnames(dat.meta) <- names(comp.tax$dataset$site.data)
+	counts <- comp.tax$counts
 	cbound<-cbind(dat.meta,samp.meta,counts)
 	pol.cal.count <- smartbind(pol.cal.count,cbound)
 }
