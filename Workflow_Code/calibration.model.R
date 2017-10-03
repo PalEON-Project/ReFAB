@@ -1,0 +1,176 @@
+setwd("/Users/paleolab/babySTEPPS/")
+
+library(nimble)
+library(splines)
+library(maps)
+
+ciEnvelope <- function(x,ylo,yhi,...){
+  polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
+                                      ylo[1])), border = NA,...) 
+}
+
+load("~/ReFAB/Data/calibration.data.Rdata")
+model.dir <- c('/Users/paleolab/ReFAB/Workflow Code/')
+source("~/Workflow Code/utils/bs_nimble.R")
+
+code <- nimbleCode({
+  
+  for(r in 1:R){ 
+    for(i in 1:I){
+      beta[r,i] ~ dnorm(0,.04)
+      beta.pine[r,i] ~ dnorm(0,.04)
+    }  
+  }
+  
+  phi.first[,] <- Z[,]%*%beta[,]
+  pine.phi[,] <- Z[,]%*%beta.pine[,]
+  
+  for(j in 1:J){
+    for(i in 1:I){
+      exp.phi[j,i] <- exp(phi.first[j,i])
+      exp.pine.phi[j,i] <- exp(pine.phi[j,i])
+    }
+  }
+  
+  for(j in 1:J){
+    p.true[j,1] ~ dbeta(exp.phi[j,1],exp.pine.phi[j,1])
+    p.rel[j,1] <- p.true[j,1]
+    
+    for(i in 2:(I-1)){
+      p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
+      p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
+    }	
+    p.true[j,21] <- 1 - sum(p.true[j,1:20])
+  }  
+  
+  for(j in 1:J){
+    Y[j,] ~ dmulti(size = n[j], prob = p.true[j,])
+  }
+  
+  phi.first1[,] <- Z.new[,]%*%beta[,]
+  pine.phi1[,] <- Z.new[,]%*%beta.pine[,]
+  
+  for(j in 1:145){
+    for(i in 1:I){
+      exp.phi1[j,i] <- exp(phi.first1[j,i])
+      exp.pine.phi1[j,i] <- exp(pine.phi1[j,i])
+    }
+  }
+  
+  for(j in 1:145){
+    p.true1[j,1] ~ dbeta(exp.phi1[j,1],exp.pine.phi1[j,1])
+    p.rel1[j,1] <- p.true1[j,1]
+    
+    for(i in 2:(I-1)){
+      p.rel1[j,i]  ~ dbeta(exp.phi1[j,i],exp.pine.phi1[j,i]) 
+      p.true1[j,i] <-  p.rel1[j,i] * (1 - sum(p.true1[j,1:(i-1)]))
+    }	
+    p.true1[j,21] <- 1 - sum(p.true1[j,1:20])
+  }  
+  
+})
+
+counts <- Y
+
+Z.knots = bs(biomass,intercept=TRUE,df=5)
+u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+# 0 to 150 grid points rows are biomass and each column is basis function
+# 5 basis functions 
+#plot emp props of key taxa based on sampling dates by site
+#get a sense of the raw data how long it took for the transition
+
+beta = matrix(NA,ncol(Z.knots),ncol(Y))
+beta.pine = matrix(NA,ncol(Z.knots),1)
+p = matrix(NA,nrow(Y),ncol(Y)) ; phi = p
+J = nrow(Y)
+
+data = list(Y = as.matrix(counts) ,  Z =  Z.knots, Z.new = Z.new)
+
+constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
+
+inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)),
+             beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), 
+             p.rel = matrix(1/21, nrow(Y), ncol(Y)),
+             p.rel1 = matrix(1/21, 145, ncol(Y)))
+
+dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi),
+                  phi.first = dim(phi), pine.phi = dim(phi), 
+                  Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta),
+                  p.true = dim(p), Y = dim(counts), n = nrow(Y),
+                  pine.dirch = dim(phi),p.rel = dim(p),
+                  phi.first1 = c(145,21), pine.phi1 = c(145,21),
+                  Z.new = dim(Z.new),p.true1 = c(145,21),p.rel1 = c(145,21))
+
+# in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
+
+model <- nimbleModel(code, inits = inits, constants = constants, data = data, dimensions = dimensions)
+
+# compiled version of the model
+Cmodel <- compileNimble(model)
+
+# set up MCMC
+#4:27pm
+spec <- configureMCMC(model, thin = 10, print = TRUE, useConjugacy = FALSE)
+spec$addMonitors(c('beta','beta.pine','p.true1','p.rel1')) 
+
+# set up monitoring of whatever
+# model variables you want posterior samples for - by default, top level
+# parameters are already included, so 'mu' in the above example would by
+# default be monitored. 'psi' and 'theta' are just for illustration -
+# obviously they are not part of my toy model above
+
+# create MCMC algorithm for the model
+Rmcmc <- buildMCMC(spec)
+
+# compiled version of the MCMC
+Cmcmc <- compileNimble(Rmcmc, project = model)
+
+# run MCMC for 2000 iterations
+Cmcmc$run(50000)
+samples.mixed <- as.matrix(Cmcmc$mvSamples)
+
+save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
+
+beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),1:105]),ncol(Z.knots),ncol(Y))
+beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),106:210]),ncol(Z.knots),ncol(Y))
+
+prop.quants <- matrix(NA,ncol(samples.mixed),3)
+for(i in 1:ncol(samples.mixed)){
+  prop.quants[i,]<-quantile(samples.mixed[,i],c(.025,.5,.975),na.rm=TRUE)
+}
+rownames(prop.quants)<-colnames(samples.mixed)
+
+plot.help<- seq(0,3045,145)
+
+pdf(paste0(Sys.Date(),'tele.betas.calib.pdf'))
+par(mfrow=c(2,2))
+for(i in 1:21){
+  plot(1:145,prop.quants[grep('p.true1',
+                              colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],2],
+       pch=21,bg='gray',main=colnames(counts)[i],ylim=range(prop.quants[grep('p.true1',colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],]),ylab='pollen prop',xlab='biomass')
+  
+  ciEnvelope(x = 1:145,
+             ylo = prop.quants[grep('p.true1',colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],1],
+             yhi = prop.quants[grep('p.true1',colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],3],
+             col = 'lightblue') 
+  points(1:145,prop.quants[grep('p.true1',
+                                colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],2],
+         pch=21,bg='gray')
+  points(biomass,counts[,i]/total_counts,cex=.8,pch=19,col='blue')
+}
+dev.off()
+
+plot.betas1 <- as.matrix(exp(Z.knots%*%beta1.est.real)/rowSums(exp(Z.knots%*%beta1.est.real)))
+plot.betas2 <- as.matrix(exp(Z.knots%*%beta2.est.real)/rowSums(exp(Z.knots%*%beta2.est.real)))
+
+pdf(paste0(fig.dir,paste0("tele.betas",Sys.Date(),".pdf")))
+par(mfrow=c(3,3))
+for(i in 1:ncol(counts)){
+  plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass",ylim=c(0,max(c(plot.betas1[,i],plot.betas2[,i],counts[,i]/total_counts))))
+  points(biomass,plot.betas1[,i],col='red',pch=19,cex=1)
+  points(biomass,plot.betas2[,i],col='blue',pch=19,cex=1)
+  abline(v=u)
+}
+dev.off()
+
+save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
