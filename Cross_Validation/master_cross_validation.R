@@ -1,5 +1,5 @@
 
-dataDir <- c(getwd())
+dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 ####
 #### Only for running job.array.sh ####
