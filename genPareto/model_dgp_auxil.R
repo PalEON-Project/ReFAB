@@ -47,6 +47,9 @@ pred_code <- nimbleCode({
  
 })
 pred_code_fix_sigma <- nimbleCode({
+  
+  settleMean ~ dnorm(b[1],settleSD)
+  
   for(t in 1:order){
     b[t] ~ dunif(0, bMax)
     ##         b[2] ~ dunif(0, bMax) # dnorm(b[1], var = omega[2]) # if try smoothing over baseline...
@@ -85,6 +88,8 @@ pred_code_fix_sigma <- nimbleCode({
       
     }
   }
+  
+  
   
 })
 

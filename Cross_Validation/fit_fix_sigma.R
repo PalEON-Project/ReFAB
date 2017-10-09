@@ -1,5 +1,5 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
-                minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
+                minAge = 0, maxAge = 11000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
                 ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
                 sigma, group = NULL, group.mat, override = TRUE) {
 
@@ -20,10 +20,6 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
     Y2 <- Y2[-group.mat[group,],]
   }
   
-  if(any(which(age_index<5))){
-    Y2 <- Y2[Y2[,2]>5,]
-  }
-  
   Y <- as.matrix(Y2[ , -c(1,2)])
   age_index <- Y2[,1]
   
@@ -37,7 +33,10 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   # new_biomass <- seq(1, bMax, 1)  # needed?
   # Z_new <- matrix(0, nrow=length(new_biomass), ncol=K) # needed?
   
-  data_pred = list(Y = Y, sigma = sigma)
+  settleMean <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassMean[1]
+  settleSD <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassSD[1]
+  
+  data_pred = list(Y = Y, sigma = sigma, settleMean = settleMean, settleSD = settleSD)
   
   constants_pred = list(order = order, beta1 = beta1, beta2 = beta2, I = I, J = J,
                         T = TT, n = n, u = u, N0 = rep(0, (length(u)-1)), 
