@@ -36,7 +36,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   settleMean <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassMean[1]
   settleSD <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassSD[1]
   
-  data_pred = list(Y = Y, sigma = sigma, settleMean = settleMean, settleSD = settleSD)
+  data_pred = list(Y = Y, sigma = sigma)#, settleMean = settleMean, settleSD = settleSD)
   
   constants_pred = list(order = order, beta1 = beta1, beta2 = beta2, I = I, J = J,
                         T = TT, n = n, u = u, N0 = rep(0, (length(u)-1)), 
@@ -60,6 +60,10 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                   age_index, J, I, bMin = 5,bMax =  bMax-5,
                   workFile = workFile)
+  
+  if(lik.only==TRUE){
+    print('done')
+  }else{
 
   load(workFile)
   
@@ -206,6 +210,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
       
       save(log.prob.list,file = paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))
    
+  }
   }
 
 }

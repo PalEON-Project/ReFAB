@@ -48,7 +48,7 @@ pred_code <- nimbleCode({
 })
 pred_code_fix_sigma <- nimbleCode({
   
-  settleMean ~ dnorm(mean = b[1], sd = settleSD)
+  #settleMean ~ dnorm(mean = b[1], sd = settleSD)
   
   for(t in 1:order){
     b[t] ~ dunif(0, bMax)

@@ -26,6 +26,8 @@ for(i in 1:length(site.names)){ #44:length(site.names)
 names(how.many) <- site.names[1:177]
 how.many <- unlist(how.many)
 
+stop()
+
 sigma.vals <- c(.01,.03,.09,.27,.81)
 
 dataID <- data.frame(name = sort(rep(names(how.many),50)), ID = 1:3100,
