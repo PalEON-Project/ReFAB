@@ -1,6 +1,5 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten.count, beta1, beta2,
-                minAge = 0, maxAge = 11000, sigmaInit = 1, nIts = 10000, nItsSave = 1000,
-                ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
+                minAge = 0, maxAge = 11000, sigmaInit = 1, nIts = 10000, nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
                 sigma, group = NULL, group.mat, override = TRUE) {
 
   Y = as.matrix(ten_count_use)
@@ -17,7 +16,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
   if(!is.null(group)){
-    Y2 <- Y2[-group.mat[group,],]
+   # Y2 <- Y2[-group.mat[group,],]
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
@@ -44,6 +43,12 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
                         N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
   
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
+
+print(dimensions_pred)
+print(paste('sigma',sigma))
+print(paste('group',group))
+print(Y)
+print(dim(Y))
 
   locnClean <- gsub(' ', '-', locn)
   workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
