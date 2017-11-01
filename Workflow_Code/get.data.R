@@ -7,7 +7,7 @@ fig.dir = c('/Users/paleolab/babySTEPPS/Figures/')
 #####
 library(reshape)
 library(ggplot2)
-library(sp)
+library(sp) 
 library(rgdal)
 library(fields)
 library(maptools)
