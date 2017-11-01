@@ -66,22 +66,22 @@ pred_code <- nimbleCode({
   
   for(i in 1:I){
     for(t in 1:T){
-      phi.first[t,i] <- sum(Zb[t,1:5] %*% beta[1:5,i])
-      phi.first1[t,i] <- sum(Zb[t,1:5] %*% beta1[1:5,i])
+      phi.first[t,i] <- sum(Zb[t,1:5] %*% beta1[1:5,i])
+      phi.first1[t,i] <- sum(Zb[t,1:5] %*% beta2[1:5,i])
     }
   }
   
   for(t in 1:T){
     for(i in 1:I){
-      exp.phi[t,i] <- exp(phi.first[t,i])
-      exp.phi1[t,i] <- exp(phi.first1[t,i])
+      shape1[t,i] <- exp(phi.first[t,i])
+      shape2[t,i] <- exp(phi.first1[t,i])
     }
   }
   
   for(j in 1:J){
-    Y[j, 1] ~ dbetabin(exp.phi[age.index[j,1], 1], exp.phi1[age.index[j,1], 1], n[j])
+    Y[j, 1] ~ dbetabin(shape1[age_index[j], 1], shape2[age_index[j], 1], n[j])
     for(i in 2:(I-1)){
-      Y[j, i] ~ dbetabin(exp.phi[age.index[j,1], i], exp.phi1[age.index[j,1], i], n[j] - sum(Y[j,1:(i-1)]))
+      Y[j, i] ~ dbetabin(shape1[age_index[j], i], shape2[age_index[j], i], n[j] - sum(Y[j,1:(i-1)]))
     }
   }
   
@@ -121,10 +121,10 @@ u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.k
 
 data.pred = list(Y = Y)
 
-constants.pred = list(beta = beta1.est.real, beta1 = beta2.est.real, I = I, J = J,
+constants.pred = list(beta1 = beta1.est.real, beta2 = beta2.est.real, I = I, J = J,
                       T = T, n = n, u = u, N0 = rep(0, (length(u)-1)), 
                       N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)),
-                      N3 = rep(0, (length(u)+2)), age.index = age.index)
+                      N3 = rep(0, (length(u)+2)), age_index = age_index)
 
 inits.pred = list(b = rep(10, T),sigma = 4.5)#logb = matrix(log(10),1,T) #b = matrix(10,1,T), 
 
@@ -136,13 +136,12 @@ set.seed(0)
 source('~/babySTEPPS/Workflow Code/samplers/samplers.R')
 model_pred <- nimbleModel(pred_code, inits = inits.pred, constants = constants.pred,
                           data = data.pred, dimensions = dimensions.pred)
-spec.pred <- configureMCMC(model_pred, thin = 10, print = FALSE,
-                           control = list(log=TRUE))#,control = list(log=TRUE)
+spec.pred <- configureMCMC(model_pred, thin = 10)#,control = list(log=TRUE) , print = FALSE,control = list(log=TRUE)
 
 
 smp <- spec.pred$getSamplers()
 for(i in 1:length(smp)) {
-  if(smp[[i]]$name == 'RW' && smp[[i]]$target != 'sigma') {
+  if(smp[[i]]$name == 'RW sampler' && smp[[i]]$target != 'sigma') {
     spec.pred$removeSamplers(smp[[i]]$target)
     spec.pred$addSampler(smp[[i]]$target, type = 'RWt_trunc', control = list(log=TRUE, range = c(0,145)))
     spec.pred$addSampler(smp[[i]]$target, type = 'jointb', control = list(log = TRUE, range = c(0,145), weights = c(.7,.2)))  # this seems to help avoid getting stuck at low-lik values early in chain and leads to higher ESS, but sampling does take longer... 
@@ -160,10 +159,11 @@ b3 <- rnorm(T, 125, 10)
 b1[b1 < 0] <- 2
 b3[b3 > 145] <- 144
 
-samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 100, nchains = 3,
-                       inits = list(list(b = b1, sigma = 4.5),
-                                    list(b = b2, sigma = 4.5),
-                                    list(b = b3, sigma = 4.5)))
+samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 10000, nchains = 1,
+                       inits = list(list(b = b1, sigma = 4.5)))
+                       #,
+                       #list(b = b2, sigma = 4.5),
+                       #list(b = b3, sigma = 4.5))
 
 
 stop()
