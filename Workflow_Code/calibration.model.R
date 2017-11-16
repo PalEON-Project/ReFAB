@@ -1,4 +1,4 @@
-setwd("/Users/paleolab/babySTEPPS/")
+setwd("/Users/paleolab/ReFAB/")
 
 library(nimble)
 library(splines)
@@ -9,9 +9,10 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("~/ReFAB/Data/calibration.data.Rdata")
-model.dir <- c('/Users/paleolab/ReFAB/Workflow Code/')
-source("~/Workflow Code/utils/bs_nimble.R")
+load("Data/calibration.data.Rdata")
+model.dir <- c('Workflow Code/')
+fig.dir <- c("Figures/")
+source("Workflow_Code/utils/bs_nimble.R")
 
 code <- nimbleCode({
   
@@ -40,7 +41,7 @@ code <- nimbleCode({
       p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
       p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-    p.true[j,21] <- 1 - sum(p.true[j,1:20])
+    p.true[j,22] <- 1 - sum(p.true[j,1:21])
   }  
   
   for(j in 1:J){
@@ -65,7 +66,7 @@ code <- nimbleCode({
       p.rel1[j,i]  ~ dbeta(exp.phi1[j,i],exp.pine.phi1[j,i]) 
       p.true1[j,i] <-  p.rel1[j,i] * (1 - sum(p.true1[j,1:(i-1)]))
     }	
-    p.true1[j,21] <- 1 - sum(p.true1[j,1:20])
+    p.true1[j,22] <- 1 - sum(p.true1[j,1:21])
   }  
   
 })
@@ -74,6 +75,9 @@ counts <- Y
 
 Z.knots = bs(biomass,intercept=TRUE,df=5)
 u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+
+new.biomass = seq(1,145,1)
+Z.new = bs(new.biomass,intercept=TRUE,df = ncol(Z))
 # 0 to 150 grid points rows are biomass and each column is basis function
 # 5 basis functions 
 #plot emp props of key taxa based on sampling dates by site
@@ -86,20 +90,21 @@ J = nrow(Y)
 
 data = list(Y = as.matrix(counts) ,  Z =  Z.knots, Z.new = Z.new)
 
-constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y), J = nrow(Y))
+constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y),
+                 J = nrow(Y))
 
 inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)),
              beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), 
-             p.rel = matrix(1/21, nrow(Y), ncol(Y)),
-             p.rel1 = matrix(1/21, 145, ncol(Y)))
+             p.rel = matrix(1/22, nrow(Y), ncol(Y)),
+             p.rel1 = matrix(1/22, 145, ncol(Y)))
 
 dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi),
                   phi.first = dim(phi), pine.phi = dim(phi), 
                   Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta),
                   p.true = dim(p), Y = dim(counts), n = nrow(Y),
                   pine.dirch = dim(phi),p.rel = dim(p),
-                  phi.first1 = c(145,21), pine.phi1 = c(145,21),
-                  Z.new = dim(Z.new),p.true1 = c(145,21),p.rel1 = c(145,21))
+                  phi.first1 = c(145,22), pine.phi1 = c(145,22),
+                  Z.new = dim(Z.new),p.true1 = c(145,22),p.rel1 = c(145,22))
 
 # in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
 
@@ -131,8 +136,12 @@ samples.mixed <- as.matrix(Cmcmc$mvSamples)
 
 save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
 
-beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),1:105]),ncol(Z.knots),ncol(Y))
-beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),106:210]),ncol(Z.knots),ncol(Y))
+i.beta <- grep("beta",colnames(samples.mixed))
+i.beta.pine <- grep("beta.pine",colnames(samples.mixed))
+i.beta1 <- i.beta[-i.beta.pine]
+
+beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta1]),ncol(Z.knots),ncol(Y))
+beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta.pine]),ncol(Z.knots),ncol(Y))
 
 prop.quants <- matrix(NA,ncol(samples.mixed),3)
 for(i in 1:ncol(samples.mixed)){
@@ -142,7 +151,7 @@ rownames(prop.quants)<-colnames(samples.mixed)
 
 plot.help<- seq(0,3045,145)
 
-pdf(paste0(Sys.Date(),'tele.betas.calib.pdf'))
+if(DRAW == TRUE) pdf(file.path(fig.dir,paste0(Sys.Date(),'tele.betas.calib.pdf')))
 par(mfrow=c(2,2))
 for(i in 1:21){
   plot(1:145,prop.quants[grep('p.true1',
@@ -158,12 +167,12 @@ for(i in 1:21){
          pch=21,bg='gray')
   points(biomass,counts[,i]/total_counts,cex=.8,pch=19,col='blue')
 }
-dev.off()
+if(DRAW == TRUE) dev.off()
 
 plot.betas1 <- as.matrix(exp(Z.knots%*%beta1.est.real)/rowSums(exp(Z.knots%*%beta1.est.real)))
 plot.betas2 <- as.matrix(exp(Z.knots%*%beta2.est.real)/rowSums(exp(Z.knots%*%beta2.est.real)))
 
-pdf(paste0(fig.dir,paste0("tele.betas",Sys.Date(),".pdf")))
+if(DRAW == TRUE) pdf(paste0(fig.dir,paste0("tele.betas",Sys.Date(),".pdf")))
 par(mfrow=c(3,3))
 for(i in 1:ncol(counts)){
   plot(biomass,counts[,i]/total_counts,pch=19,cex=.7,col='black',ylab="Pollen Proportions",main=colnames(counts)[i],xlab="Biomass",ylim=c(0,max(c(plot.betas1[,i],plot.betas2[,i],counts[,i]/total_counts))))
@@ -171,6 +180,5 @@ for(i in 1:ncol(counts)){
   points(biomass,plot.betas2[,i],col='blue',pch=19,cex=1)
   abline(v=u)
 }
-dev.off()
+if(DRAW == TRUE) dev.off()
 
-save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
