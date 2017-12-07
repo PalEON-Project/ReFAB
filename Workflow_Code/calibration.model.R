@@ -9,7 +9,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("Data/calibration.data.Rdata")
+#load("Data/calibration.data.Rdata")
 model.dir <- c('Workflow Code/')
 fig.dir <- c("Figures/")
 source("Workflow_Code/utils/bs_nimble.R")
@@ -131,10 +131,10 @@ Rmcmc <- buildMCMC(spec)
 Cmcmc <- compileNimble(Rmcmc, project = model)
 
 # run MCMC for 2000 iterations
-Cmcmc$run(50000)
+Cmcmc$run(50000)#50000
 samples.mixed <- as.matrix(Cmcmc$mvSamples)
 
-save(samples.mixed,file = paste0("nimble.betas_1_2",Sys.Date(),".Rdata"))
+save(samples.mixed,file = paste0("nimble.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))
 
 i.beta <- grep("beta",colnames(samples.mixed))
 i.beta.pine <- grep("beta.pine",colnames(samples.mixed))
@@ -151,7 +151,7 @@ rownames(prop.quants)<-colnames(samples.mixed)
 
 plot.help<- seq(0,3045,145)
 
-if(DRAW == TRUE) pdf(file.path(fig.dir,paste0(Sys.Date(),'tele.betas.calib.pdf')))
+if(DRAW == TRUE) pdf(file.path(fig.dir,paste0(Sys.Date(),'tele.betas.calib_horiz_plus.pdf')))
 par(mfrow=c(2,2))
 for(i in 1:21){
   plot(1:145,prop.quants[grep('p.true1',
@@ -166,6 +166,7 @@ for(i in 1:21){
                                 colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],2],
          pch=21,bg='gray')
   points(biomass,counts[,i]/total_counts,cex=.8,pch=19,col='blue')
+  points(biomass[94],counts[94,i]/total_counts[94],cex=.8,pch=19,col='red')
 }
 if(DRAW == TRUE) dev.off()
 

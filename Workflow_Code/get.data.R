@@ -19,7 +19,9 @@ usFortified <- fortify(usShp, region='id')
 ##### Download Data for MN and WI and MI #####
 #####
 
-meta <- get_dataset(datasettype='pollen', gpid=c("Wisconsin", "Michigan", "Minnesota"), ageyoung=0)
+meta <- get_dataset(datasettype='pollen', gpid=c("Wisconsin", 
+                                                 "Michigan",
+                                                 "Minnesota"), ageyoung=0)
 meta_dl <- get_download(meta)
 
 comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
@@ -30,11 +32,32 @@ pol_cal_count <- compile_downloads(comp.tax)
 #####
 
 bacon <- read.csv(paste0(data.dir,'/sediment_ages_v1.0_varves.csv'))
+cal <- read.csv(paste0(data.dir,'/cal_data_mid_depth_2015-06-10.csv'))
+
+cal.new.pol <- merge(x = pol_cal_count, y = cal, 
+      by.x = c('dataset','depth'), 
+      by.y = c('id','depth'))
+length(unique(cal.new.pol$dataset))
+
+# site.find <- cal[-na.omit(match(cal$id,cal.new.pol$dataset)),'site']
+# 
+# d.id <- list()
+# for(i in 1:length(site.find)){
+#   cal[cal$site==site.find[i],'id']<-pol_cal_count[grep(site.find[i],pol_cal_count$site.name),'dataset'][1]
+# }
+
 
 #bacon <- read.csv(paste0(data.dir,'/pollen_ts_bacon_v8.csv'))
 new.pollen <- merge(x = pol_cal_count, y = bacon, 
                     by.x = c('.id','age','depth','PINUSX','lat','long'), 
                     by.y = c('id','age_default','depth','PINE','lat','long'))
+pol_list <- list()
+pol_ids <- unique(pol_cal_count$dataset)
+for(i in 1:length(pol_ids)){
+  pol_list[[i]] <- pol_cal_count[pol_cal_count$dataset==pol_ids[i],]
+}
+names(pol_list) <- pol_ids
+
 
 ### Test
 sum(new.pollen$BIRCH - new.pollen$BETULA) #should equal zero
@@ -42,8 +65,31 @@ sum(new.pollen$BIRCH - new.pollen$BETULA) #should equal zero
 #####
 ###### Format settlement pollen data #####
 #####
-x = new.pollen[new.pollen$age_bacon>=50,]
-x = x[x$age_bacon<=250,]
+
+#original
+x <- new.pollen[new.pollen$age_bacon >= 100, ]
+x <- x[x$age_bacon<=250,]
+
+#just settlement horizon
+colnames(cal.new.pol)[9] <- c('lat')
+colnames(cal.new.pol)[10] <- c('long')
+x <- cal.new.pol
+
+#settlement horizon + previous 100 years
+pol_settle <- list()
+for(i in 1:length(pol_list)){
+  #cal_list <- merge(x = pol_list[[i]], y = cal, 
+   #                 by.x = c('dataset','depth'), 
+    #                by.y = c('id','depth'))
+  cal_stop <- cal[which(cal$id==names(pol_list)[i]),]
+  cal_list <- pol_list[[i]][which(pol_list[[i]]$depth==cal_stop$depth),]
+  i_cal <- which(pol_list[[i]]$age >= cal_list$age & pol_list[[i]]$age < (cal_list$age + 100))
+  pol_settle[[i]] <- pol_list[[i]][i_cal,]
+  
+}
+## might not be getting all of the sites
+x <- pol_settle_mat <- do.call(rbind,pol_settle)
+length(unique(x$dataset))
 
 all.pollen.taxa.names <- colnames(pol_cal_count)[11:length(colnames(pol_cal_count))]
 melt.x <- melt(x, id.vars=c('.id','age','lat','long','site.name'),
@@ -87,7 +133,7 @@ proj4string(lat.long.reg.df) <- CRS('+proj=longlat +ellps=WGS84')
 albers <- spTransform(lat.long.reg.df, CRS('+init=epsg:3175'))
 albers <- as.matrix(data.frame(albers))
 
-save(albers,file='calibration.albers.Rdata')
+save(albers,file=paste0(Sys.Date(),'calibration.albers.Rdata'))
 
 centers_biomass = cbind(biomass_dat_est$x,biomass_dat_est$y)
 idx_cores = vector(length=nrow(cast.x))
@@ -252,7 +298,7 @@ total_counts = rowSums(counts)
 
 dim(Y)[1]-length(biomass) # should be zero
 
-save(Y,biomass,file=paste0(Sys.Date(),'calibration.data.Rdata'))
+save(Y,biomass,file=paste0(Sys.Date(),'calibration.data_summed.Rdata'))
 
 #save.image(file="add.bacon2.Rdata")
 

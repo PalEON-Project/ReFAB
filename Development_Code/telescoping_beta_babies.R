@@ -236,7 +236,7 @@ pred_code <- nimbleCode({
       p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.phi1[j,i]) 
       p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-    p.true[j,21] <- 1 - sum(p.true[j,1:20])
+    p.true[j,22] <- 1 - sum(p.true[j,1:21])
   }    
     
   for(j in 1:J){
@@ -314,10 +314,11 @@ dev.off()
 
 # #samples.pred1<-samples.pred
 load("samples.pred1.Rdata")
-save(samples.pred,file="twothirds.pred.Rdata")
+save(samples.pred,file="twothirds.pred_horizon.Rdata")
 
-pdf(paste0("pred_validation_two_betas",Sys.Date(),".pdf"))
+pdf(paste0("pred_validation_two_betas_horizon",Sys.Date(),".pdf"))
 
+par(mfrow=c(1,1))
 plot(biomass,
      colMeans(samples.pred[100:nrow(samples.pred),
                            grep('b',colnames(samples.pred))]),
