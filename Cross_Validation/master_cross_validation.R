@@ -56,6 +56,7 @@ if(!is.na(runnum)){
 
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+ten_count_use[which(is.na(ten_count_use))] <- 0
 
 Y = as.matrix(ten_count_use)
 minAge = 0
@@ -92,7 +93,7 @@ if(!is.na(runnum)){
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
                      u = u, x.meta = x.meta,
-                     ten.count = ten.count, beta1 =  beta1.est.real,
+                     ten_count_use = ten_count_use, beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
                      nIts = 50000, nItsSave = 200, seed = 1,
                      control.pts = control.pts, sigma = sigma,
