@@ -83,6 +83,8 @@ for(i in 1:length(pol_list)){
     #                by.y = c('id','depth'))
   cal_stop <- cal[which(cal$id==names(pol_list)[i]),]
   cal_list <- pol_list[[i]][which(pol_list[[i]]$depth==cal_stop$depth),]
+  # this is not using bacon ages I think... Ask Andria if cal has bacon ages. 
+  #We need the bacon ages to aggregate 100 years back from settlement horizon.
   i_cal <- which(pol_list[[i]]$age >= cal_list$age & pol_list[[i]]$age < (cal_list$age + 100))
   pol_settle[[i]] <- pol_list[[i]][i_cal,]
   
@@ -304,6 +306,10 @@ save(Y,biomass,file=paste0(Sys.Date(),'calibration.data_summed.Rdata'))
 
 u<-c(rep(attr(Z,"Boundary.knots")[1],1),attr(Z,"knots"),rep(attr(Z,"Boundary.knots")[2],1))
 
+#####
+##### Create final prediction datasets #####
+#####
+
 x = new.pollen[new.pollen$age_bacon>=200,]
 x = x[x$age_bacon<=10000,]
 
@@ -319,10 +325,34 @@ colnames(ten.count)<-c("prairie","other_trees",trees,"other_herbs")
 
 ten.count.save = ten.count
 ten.count = round(ten.count.save)
-
 ten.count <- ten.count[,colnames(counts)]
 
 save(x.meta,ten.count,file = 'prediction.data.Rdata')
+
+#####
+##### Create paleon mip datasets #####
+#####
+
+x = new.pollen[new.pollen$age_bacon>=200,]
+x = x[x$age_bacon<=2000,]
+
+x.meta = x[,c('.id','lat',"long","dataset","site.name","age_bacon")]
+colnames(x.meta)[1] <- c('site.id')
+
+ten.count = matrix(0,nrow(x),length(trees)+3)
+ten.count[,1] <- unlist(rowSums(x[,prairie],na.rm = TRUE))
+ten.count[,2] <- unlist(rowSums(x[,other.trees],na.rm = TRUE))
+ten.count[,3:(length(trees)+2)] <- as.matrix(x[,trees])
+ten.count[,(length(trees)+3)] <- rowSums(x[,all.pollen.taxa.names],na.rm = TRUE) - rowSums(ten.count,na.rm = TRUE)
+colnames(ten.count)<-c("prairie","other_trees",trees,"other_herbs")
+
+ten.count.save = ten.count
+ten.count = round(ten.count.save)
+ten.count <- ten.count[,colnames(counts)]
+
+
+save(u,Z,x.meta,ten.count,file = 'paleon.data.Rdata')
+
 
 #####
 ##### Plots #####

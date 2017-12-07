@@ -140,8 +140,10 @@ i.beta <- grep("beta",colnames(samples.mixed))
 i.beta.pine <- grep("beta.pine",colnames(samples.mixed))
 i.beta1 <- i.beta[-i.beta.pine]
 
-beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta1]),ncol(Z.knots),ncol(Y))
-beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta.pine]),ncol(Z.knots),ncol(Y))
+beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
+beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta.pine]),ncol(Z),ncol(Y))
+
+save(beta1.est.real,beta2.est.real,file = paste0("simple.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))
 
 prop.quants <- matrix(NA,ncol(samples.mixed),3)
 for(i in 1:ncol(samples.mixed)){

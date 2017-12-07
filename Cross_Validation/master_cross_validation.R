@@ -11,7 +11,9 @@ if (is.na(arg[1])) {
   runnum <- as.numeric(arg[1])
 }
 
-dataID <- read.csv(file.path('Cross_Validation','dataID.csv'))
+#dataID <- read.csv(file.path('Cross_Validation','dataID.csv')) #for 10K
+dataID <- read.csv(file.path('Cross_Validation','paleon.dataID.csv')) #for paleon mip
+
 
 ####
 #### Master Setup
@@ -33,7 +35,9 @@ control.pts<-read.csv(file.path('Data','control.pts.csv'))
 # load in data for all sites, per Ann's original code
 #if(!file.exists(file.path(dataDir,'allPredData.Rda')))
 #  source(file.path('Workflow_Code','prep_data.R'))
-load(file.path(dataDir,'allPredData.Rda'))
+# load(file.path(dataDir,'allPredData.Rda')) # load for 10K run
+load('paleon.data.Rdata') # adding via ssh rather than github
+load('simple.betas_1_2_horiz_plus2017-12-07.Rdata') # adding via ssh rather than github
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
@@ -48,14 +52,14 @@ if(!is.na(runnum)){
   locn <- readline(prompt = 'Location Name:')
 }
 
-load(file.path(dataDir,'x.meta.w.settle.Rdata'))
+#load(file.path(dataDir,'x.meta.w.settle.Rdata')) #load for 10K
 
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
 
 Y = as.matrix(ten_count_use)
 minAge = 0
-maxAge = 10000
+maxAge = 2000 #10000
 ageInterval = 100
 
 sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
@@ -69,11 +73,13 @@ names(tmp)[1] <- 'age_index'
 
 Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
 
-set.seed(0)
-group.sample <- sample(x = 1:nrow(Y2), size = nrow(Y2), replace = FALSE)
-group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
-                    ncol = round((nrow(Y2) / 10)))
-group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(group.mat))))
+if(FALSE){ # for cross validation
+  set.seed(0)
+  group.sample <- sample(x = 1:nrow(Y2), size = nrow(Y2), replace = FALSE)
+  group.mat <- matrix(group.sample[1:(round((nrow(Y2) / 10))*10)],
+                      ncol = round((nrow(Y2) / 10)))
+  group.mat[is.na(group.mat)] <- sample(x = 1:nrow(Y2), size = length(which(is.na(group.mat))))
+}
 
 if(!is.na(runnum)){
   sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
@@ -90,4 +96,5 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      beta2 = beta2.est.real,
                      nIts = 50000, nItsSave = 200, seed = 1,
                      control.pts = control.pts, sigma = sigma,
-                     group = group, group.mat = group.mat,lik.only = FALSE)
+                     group = group, group.mat = group.mat,lik.only = FALSE,
+                     maxAge = 2000)
