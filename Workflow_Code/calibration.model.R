@@ -41,7 +41,7 @@ code <- nimbleCode({
       p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
       p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-    p.true[j,22] <- 1 - sum(p.true[j,1:21])
+    p.true[j,21] <- 1 - sum(p.true[j,1:20])
   }  
   
   for(j in 1:J){
@@ -66,7 +66,7 @@ code <- nimbleCode({
       p.rel1[j,i]  ~ dbeta(exp.phi1[j,i],exp.pine.phi1[j,i]) 
       p.true1[j,i] <-  p.rel1[j,i] * (1 - sum(p.true1[j,1:(i-1)]))
     }	
-    p.true1[j,22] <- 1 - sum(p.true1[j,1:21])
+    p.true1[j,21] <- 1 - sum(p.true1[j,1:20])
   }  
   
 })
@@ -95,16 +95,16 @@ constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y),
 
 inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)),
              beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), 
-             p.rel = matrix(1/22, nrow(Y), ncol(Y)),
-             p.rel1 = matrix(1/22, 145, ncol(Y)))
+             p.rel = matrix(1/21, nrow(Y), ncol(Y)),
+             p.rel1 = matrix(1/21, 145, ncol(Y)))
 
 dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi),
                   phi.first = dim(phi), pine.phi = dim(phi), 
                   Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta),
                   p.true = dim(p), Y = dim(counts), n = nrow(Y),
                   pine.dirch = dim(phi),p.rel = dim(p),
-                  phi.first1 = c(145,22), pine.phi1 = c(145,22),
-                  Z.new = dim(Z.new),p.true1 = c(145,22),p.rel1 = c(145,22))
+                  phi.first1 = c(145,21), pine.phi1 = c(145,21),
+                  Z.new = dim(Z.new),p.true1 = c(145,21),p.rel1 = c(145,21))
 
 # in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
 
@@ -131,7 +131,7 @@ Rmcmc <- buildMCMC(spec)
 Cmcmc <- compileNimble(Rmcmc, project = model)
 
 # run MCMC for 2000 iterations
-Cmcmc$run(50000)#50000
+Cmcmc$run(5000)#50000
 samples.mixed <- as.matrix(Cmcmc$mvSamples)
 
 save(samples.mixed,file = paste0("nimble.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))

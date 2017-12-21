@@ -54,7 +54,7 @@ pred_code <- nimbleCode({
       p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.phi1[j,i]) 
       p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-    p.true[j,22] <- 1 - sum(p.true[j,1:21])
+    p.true[j,21] <- 1 - sum(p.true[j,1:20])
   }    
   
   for(j in 1:J){
@@ -109,7 +109,7 @@ cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.nodeValPointers_byGID : $ operator not defined for this S4 class
 
 ptm <- proc.time()
-Cmcmc.pred$run(50000)
+Cmcmc.pred$run(5000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 

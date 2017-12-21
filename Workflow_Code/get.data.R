@@ -196,9 +196,9 @@ dev.off()
 
 ### I do this after indexing because some of the places where we have settlement pollen we don't have settlement biomass.
 
-trees <- c('PINUSX',"ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","CYPERACE","LARIXPSEU","TSUGAX","QUERCUS","TILIA",
+trees <- c('PINUSX',"ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","LARIXPSEU","TSUGAX","QUERCUS","TILIA",
            "BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS","CARYA")
-other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
+other.trees <- c("TAXUS","CYPERACE","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
 ten.count = matrix(0,nrow(cast.x),length(trees)+3)
 prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
 ten.count[,1] <- unlist(rowSums(cast.x[,prairie],na.rm = T))
