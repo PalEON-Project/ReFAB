@@ -27,6 +27,8 @@ meta_dl <- get_download(meta)
 comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
 pol_cal_count <- compile_downloads(comp.tax)
 
+save(pol_cal_count,file='nimble_pull',Sys.Date(),'.Rdata')
+
 #####
 ##### Add Bacon Pollen Dates #####
 #####
@@ -327,7 +329,9 @@ ten.count.save = ten.count
 ten.count = round(ten.count.save)
 ten.count <- ten.count[,colnames(counts)]
 
-save(x.meta,ten.count,file = 'prediction.data.Rdata')
+ten.count[is.na(ten.count)] <- 0
+
+save(x.meta, ten.count, Z, u, file = 'prediction.data.Rdata')
 
 #####
 ##### Create paleon mip datasets #####

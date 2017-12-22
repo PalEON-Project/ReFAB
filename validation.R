@@ -1,29 +1,4 @@
-ddirchmulti <- nimbleFunction(
-  run = function(x = double(1), alpha = double(1), size = double(0), log_value = integer(0)){
-    returnType(double(0))
-    logProb <- lgamma(sum(alpha)) - sum(lgamma(alpha)) + sum(lgamma(alpha + x)) - lgamma(sum(alpha) + size)
-    
-    if(log_value) {
-      return(logProb)
-    } else {
-      return(exp(logProb))
-    }
-    
-  }
-)
-
-# set up the "r" function
-rdirchmulti <- nimbleFunction(
-  run = function(n = integer(0), alpha = double(1), size = double(0)) {
-    returnType(double(1))
-    if(n != 1) nimPrint("rdirchmulti only allows n = 1; using n = 1.")
-    p <- rdirch(1, alpha)
-    return(rmulti(1, size = size, prob = p))
-  })
-
-# tell NIMBLE about the newly available distribution
-registerDistributions(list(ddirchmulti = list(BUGSdist = "ddirchmulti(alpha, size)",
-                                              types = c('value = double(1)', 'alpha = double(1)'))))
+validation_model <- function(counts, Z.knots, samples.mixed, u, Niters, biomass){
 
 pred_code <- nimbleCode({
   for(j in 1:J){
@@ -109,7 +84,8 @@ cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) #Error in cModel$.nodeValPointers_byGID : $ operator not defined for this S4 class
 
 ptm <- proc.time()
-Cmcmc.pred$run(5000)
+set.seed(0)
+Cmcmc.pred$run(Niters)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
@@ -137,10 +113,13 @@ plot(biomass,
      xlim=c(0,145),ylim=c(0,145),pch=19,xlab="True Biomass",ylab="Predicted Mean Biomass")
 abline(a=0,b=1)
 abline(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))])+0),lty=2)
-mtext(paste("r-squared",summary(lm(biomass~colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))])+0))$r.squared))
+mtext(paste("r-squared",summary(lm(biomass ~ colMeans(samples.pred[100:nrow(samples.pred),grep('b',colnames(samples.pred))])+0))$r.squared))
 
 arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
        x1 = biomass,y1 = apply(samples.pred,2,FUN = quantile,.975),
        code = 0, lwd=2)
 
 dev.off()
+
+}
+

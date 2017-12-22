@@ -1,75 +1,9 @@
-setwd("/Users/paleolab/ReFAB/")
-
-library(nimble)
-library(splines)
-library(maps)
-
-ciEnvelope <- function(x,ylo,yhi,...){
-  polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
-                                      ylo[1])), border = NA,...) 
-}
-
+calibration_model <- function(Y, biomass, code, Niters, DRAW){
+  
 #load("Data/calibration.data.Rdata")
 model.dir <- c('Workflow Code/')
 fig.dir <- c("Figures/")
 source("Workflow_Code/utils/bs_nimble.R")
-
-code <- nimbleCode({
-  
-  for(r in 1:R){ 
-    for(i in 1:I){
-      beta[r,i] ~ dnorm(0,.04)
-      beta.pine[r,i] ~ dnorm(0,.04)
-    }  
-  }
-  
-  phi.first[,] <- Z[,]%*%beta[,]
-  pine.phi[,] <- Z[,]%*%beta.pine[,]
-  
-  for(j in 1:J){
-    for(i in 1:I){
-      exp.phi[j,i] <- exp(phi.first[j,i])
-      exp.pine.phi[j,i] <- exp(pine.phi[j,i])
-    }
-  }
-  
-  for(j in 1:J){
-    p.true[j,1] ~ dbeta(exp.phi[j,1],exp.pine.phi[j,1])
-    p.rel[j,1] <- p.true[j,1]
-    
-    for(i in 2:(I-1)){
-      p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
-      p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
-    }	
-    p.true[j,21] <- 1 - sum(p.true[j,1:20])
-  }  
-  
-  for(j in 1:J){
-    Y[j,] ~ dmulti(size = n[j], prob = p.true[j,])
-  }
-  
-  phi.first1[,] <- Z.new[,]%*%beta[,]
-  pine.phi1[,] <- Z.new[,]%*%beta.pine[,]
-  
-  for(j in 1:145){
-    for(i in 1:I){
-      exp.phi1[j,i] <- exp(phi.first1[j,i])
-      exp.pine.phi1[j,i] <- exp(pine.phi1[j,i])
-    }
-  }
-  
-  for(j in 1:145){
-    p.true1[j,1] ~ dbeta(exp.phi1[j,1],exp.pine.phi1[j,1])
-    p.rel1[j,1] <- p.true1[j,1]
-    
-    for(i in 2:(I-1)){
-      p.rel1[j,i]  ~ dbeta(exp.phi1[j,i],exp.pine.phi1[j,i]) 
-      p.true1[j,i] <-  p.rel1[j,i] * (1 - sum(p.true1[j,1:(i-1)]))
-    }	
-    p.true1[j,21] <- 1 - sum(p.true1[j,1:20])
-  }  
-  
-})
 
 counts <- Y
 
@@ -77,7 +11,7 @@ Z.knots = bs(biomass,intercept=TRUE,df=5)
 u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 new.biomass = seq(1,145,1)
-Z.new = bs(new.biomass,intercept=TRUE,df = ncol(Z))
+Z.new = bs(new.biomass,intercept=TRUE,df = ncol(Z.knots))
 # 0 to 150 grid points rows are biomass and each column is basis function
 # 5 basis functions 
 #plot emp props of key taxa based on sampling dates by site
@@ -95,16 +29,16 @@ constants = list(n = rowSums(counts), R = ncol(Z.knots), I = ncol(Y),
 
 inits = list(beta = matrix(1, ncol(Z.knots), ncol(Y)),
              beta.pine = matrix(1, ncol(Z.knots), ncol(Y)), 
-             p.rel = matrix(1/21, nrow(Y), ncol(Y)),
-             p.rel1 = matrix(1/21, 145, ncol(Y)))
+             p.rel = matrix(1/ncol(Y), nrow(Y), ncol(Y)),
+             p.rel1 = matrix(1/ncol(Y), 145, ncol(Y)))
 
 dimensions = list(exp.phi = dim(phi), exp.pine.phi = dim(phi),
                   phi.first = dim(phi), pine.phi = dim(phi), 
                   Z = dim(Z.knots), beta = dim(beta), beta.pine = dim(beta),
                   p.true = dim(p), Y = dim(counts), n = nrow(Y),
                   pine.dirch = dim(phi),p.rel = dim(p),
-                  phi.first1 = c(145,21), pine.phi1 = c(145,21),
-                  Z.new = dim(Z.new),p.true1 = c(145,21),p.rel1 = c(145,21))
+                  phi.first1 = c(145,ncol(Y)), pine.phi1 = c(145,ncol(Y)),
+                  Z.new = dim(Z.new),p.true1 = c(145,ncol(Y)),p.rel1 = c(145,ncol(Y)))
 
 # in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
 
@@ -131,7 +65,8 @@ Rmcmc <- buildMCMC(spec)
 Cmcmc <- compileNimble(Rmcmc, project = model)
 
 # run MCMC for 2000 iterations
-Cmcmc$run(5000)#50000
+set.seed(0)
+Cmcmc$run(Niters)#50000
 samples.mixed <- as.matrix(Cmcmc$mvSamples)
 
 save(samples.mixed,file = paste0("nimble.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))
@@ -140,8 +75,10 @@ i.beta <- grep("beta",colnames(samples.mixed))
 i.beta.pine <- grep("beta.pine",colnames(samples.mixed))
 i.beta1 <- i.beta[-i.beta.pine]
 
-beta1.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
-beta2.est.real = matrix(colMeans(samples.mixed[100:nrow(samples.mixed),i.beta.pine]),ncol(Z),ncol(Y))
+burnin <- round(.2 * nrow(samples.mixed))
+
+beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
+beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta.pine]),ncol(Z),ncol(Y))
 
 save(beta1.est.real,beta2.est.real,file = paste0("simple.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))
 
@@ -155,7 +92,7 @@ plot.help<- seq(0,3045,145)
 
 if(DRAW == TRUE) pdf(file.path(fig.dir,paste0(Sys.Date(),'tele.betas.calib_horiz_plus.pdf')))
 par(mfrow=c(2,2))
-for(i in 1:21){
+for(i in 1:ncol(Y)){
   plot(1:145,prop.quants[grep('p.true1',
                               colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],2],
        pch=21,bg='gray',main=colnames(counts)[i],ylim=range(prop.quants[grep('p.true1',colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],]),ylab='pollen prop',xlab='biomass')
@@ -168,7 +105,7 @@ for(i in 1:21){
                                 colnames(samples.mixed))[(plot.help[i]+1):plot.help[i+1]],2],
          pch=21,bg='gray')
   points(biomass,counts[,i]/total_counts,cex=.8,pch=19,col='blue')
-  points(biomass[94],counts[94,i]/total_counts[94],cex=.8,pch=19,col='red')
+  points(biomass[95],counts[95,i]/total_counts[95],cex=.8,pch=19,col='red')
 }
 if(DRAW == TRUE) dev.off()
 
@@ -184,4 +121,6 @@ for(i in 1:ncol(counts)){
   abline(v=u)
 }
 if(DRAW == TRUE) dev.off()
+
+}
 

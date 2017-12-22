@@ -15,7 +15,7 @@ for(i in 1:length(site.names)){ #44:length(site.names)
   ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
   
   Y = as.matrix(ten_count_use)
-  if(length(Y)>21 & nrow(Y) > 15 &
+  if(length(Y)>21 & nrow(Y) > 10 &
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
      min(x.meta[x.meta$site.name == locn,'age_bacon'])<2000){
     
@@ -23,7 +23,7 @@ for(i in 1:length(site.names)){ #44:length(site.names)
   }
 }
 
-names(how.many) <- site.names[1:177]
+names(how.many) <- site.names
 how.many <- unlist(how.many)
 
 stop()
@@ -59,6 +59,11 @@ dataID.new4 <- data.frame(name = sort(names(how.many)), ID = 8785:8846,#5580
 dataID<-rbind(dataID,dataID.new4)
 
 write.csv(dataID,file = 'dataID.csv')
+
+
+dataID <- data.frame(name = sort(rep(names(how.many), 20)), ID = seq(1,20*62,1), sigma = .12, beta = rep(1:20,62))
+write.csv(dataID, file = 'beta_run_dataID.csv')
+
 
 # for(i in 1:length(how.many)){
 #   site <- names(how.many)[i]

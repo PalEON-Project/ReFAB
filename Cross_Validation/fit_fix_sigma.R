@@ -1,6 +1,6 @@
 fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten_count_use, beta1, beta2,
                 minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
-                sigma, group = NULL, group.mat, override = TRUE) {
+                sigma, group = NULL, group.mat, override = TRUE, Nbeta=NA, ID = NA) {
 
   Y = as.matrix(ten_count_use)
   
@@ -32,8 +32,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   # new_biomass <- seq(1, bMax, 1)  # needed?
   # Z_new <- matrix(0, nrow=length(new_biomass), ncol=K) # needed?
   
-  settleMean <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassMean[1]
-  settleSD <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassSD[1]
+  #settleMean <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassMean[1]
+  #settleSD <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassSD[1]
   
   data_pred = list(Y = Y, sigma = sigma)#, settleMean = settleMean, settleSD = settleSD)
   
@@ -44,16 +44,10 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
 
-print(dimensions_pred)
-print(paste('sigma',sigma))
-print(paste('group',group))
-print(Y)
-print(dim(Y))
-
   locnClean <- gsub(' ', '-', locn)
-  workFile <- paste0('workInfo_', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
+  workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rda')
   
-  if(!file.exists(paste0('samplesList_',workFile,'.Rda')) | override == TRUE){  
+  if(!file.exists(paste0('samplesList_',workFile)) | override == TRUE){  
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),
                               dimensions = dimensions_pred)
@@ -135,7 +129,7 @@ print(dim(Y))
       
       samplesList = as.matrix(Cmcmc_pred$mvSamples)
       
-      save(samplesList,file = paste0('samplesList_',workFile,'.Rda'))
+      save(samplesList,file = paste0('samplesList_',workFile))
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
