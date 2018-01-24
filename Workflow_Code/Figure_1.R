@@ -36,10 +36,22 @@ for(i in 1:62){
   
   LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,11] + prop.table(Y,1)[,19])
   
-  if(length(Y)>21 & nrow(Y) > 14 &
+  if(length(Y)>21 & nrow(Y) > 10 &
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
      min(x.meta[x.meta$site.name == locn,'age_bacon'])<2000){
-    file_name <- paste0('~/Downloads/samples.12/samplesList_workInfo_',locnClean,'Sigma0.12GroupNA.Rda.Rda') #Sigma0.12Group
+    
+    samples.keep <- numeric(300)
+    
+    for(b in 1:20){
+      ID <- dataID[dataID$name==as.character(locn),'ID'][b]
+      file_name <- paste0('~/Downloads/samps/samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda') #Sigma0.12Group
+      if(!file.exists(file_name)) next()
+      load(file_name)
+      samples.keep <- rbind(samples.keep, samplesList)
+    }
+    
+    samplesList <- samples.keep
+    
     if(file.exists(file_name) ){
       file_name1 <- paste0('~/Downloads/workInfo/workInfo_',locnClean,'Sigma0.12GroupNA.Rda')
       load(file = file_name)
@@ -210,8 +222,8 @@ for(i in 1:length(biomassCI)){
     for(t in 2:length(time.bin)){
       segments(x0 = time.bin[t-1],y0 = biomassCI[[i]][2,t-1],
                x1 = time.bin[t],y1 = biomassCI[[i]][2,t],
-               col='lightgray',lwd = 1)
-               #col=colors.LS[data_binned_LS[t]],lwd = data_binned_LS[t])
+               #col='lightgray',lwd = 1)
+               col=colors.LS[data_binned_LS[t]],lwd = data_binned_LS[t])
     }
       
       #}else{

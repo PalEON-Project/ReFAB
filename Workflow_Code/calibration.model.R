@@ -88,7 +88,7 @@ for(i in 1:ncol(samples.mixed)){
 }
 rownames(prop.quants)<-colnames(samples.mixed)
 
-plot.help<- seq(0,3045,145)
+plot.help<- seq(0,3290,145)
 
 if(DRAW == TRUE) pdf(file.path(fig.dir,paste0(Sys.Date(),'tele.betas.calib_horiz_plus.pdf')))
 par(mfrow=c(2,2))

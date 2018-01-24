@@ -46,10 +46,13 @@ i.beta1 <- i.beta[-i.beta.pine]
 
 beta <- dataID[dataID$ID==runnum,'beta']
 
-Nbeta <- round(seq(10,nrow(samples.mixed),length.out = 20))[beta]
+Nbeta <- round(seq(3000,nrow(samples.mixed),length.out = 20))[beta]
 
 beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],5,ncol(ten.count))
 beta2.est.real = matrix(samples.mixed[Nbeta,i.beta.pine],5,ncol(ten.count))
+
+beta1.est.real = matrix(colMeans(samples.mixed[,i.beta1]),5,ncol(ten.count))
+beta2.est.real = matrix(colMeans(samples.mixed[,i.beta.pine]),5,ncol(ten.count))
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
@@ -104,4 +107,46 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum)
 
+## Full Site Diagnostics
+for(l in unique(dataID$name)){
+  site_diag(locn = l, x.meta = x.meta, ten.count = ten.count,
+            control.pts = control.pts, bMax = 150)
+}
+
+## Individual Site Diagnostics
+site_diag(locn = 'Cub Lake', x.meta = x.meta, ten.count = ten.count,
+          control.pts = control.pts, bMax = 150,
+          path_to_samps = "~/ReFAB/samplesList_workInfo_1_Cub-Lake_Beta_20.Rda",
+          path_to_Info = "~/ReFAB/workInfo_1_Cub-Lake_Beta_20.Rda")
+
+## Simple Site Diagnositics
+plot(colMeans(samplesList[,1:100]),col='red',pch=19,ylim=c(0,150))
+points(age_index,seq(5, 150-5, by = 2)[apply(out,2,which.max)])
+
+## Drawing Multiple MCMCs
+load("~/Downloads/samps/samplesList_workInfo_181_Cub-Lake_Beta_1.Rda")
+load("~/Downloads/work/workInfo_181_Cub-Lake_Beta_1.Rda")
+out.save <- out
+samplesList.save <- samplesList
+load("~/Downloads/samps/samplesList_workInfo_184_Cub-Lake_Beta_4.Rda")
+load("~/Downloads/work/workInfo_184_Cub-Lake_Beta_4.Rda")
+samplesList.save.1 <- samplesList
+out.save.1 <- out
+load("~/Downloads/samps/samplesList_workInfo_194_Cub-Lake_Beta_14.Rda")
+load("~/Downloads/work/workInfo_194_Cub-Lake_Beta_14.Rda")
+
+pdf('Cub-Lake-MCMC.pdf')
+par(mfrow=c(2,2))
+for(i in 1:100){
+  plot(samplesList[,i],typ='l',lwd=1.5,ylim=c(0,bMax))
+  points(samplesList.save[,i],typ='l',lwd=1.5,col='red') 
+  points(samplesList.save.1[,i],typ='l',lwd=1.5,col='blue') 
+  title(i)
+  if(any(i==age_index)){
+    abline(h = seq(5, 150-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],lwd=2)
+    abline(h = seq(5, 150-5, by = 2)[apply(out.save,2,which.max)][which(i==age_index)],col='red',lwd=2)
+    abline(h = seq(5, 150-5, by = 2)[apply(out.save.1,2,which.max)][which(i==age_index)],col='blue',lwd=2)
+  }
+}
+dev.off()
 

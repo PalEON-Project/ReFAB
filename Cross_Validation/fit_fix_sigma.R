@@ -1,10 +1,24 @@
-fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3, Z, u, x.meta, ten_count_use, beta1, beta2,
-                minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, nbhd = 5, lik.only = NULL, control.pts, 
-                sigma, group = NULL, group.mat, override = TRUE, Nbeta=NA, ID = NA) {
+fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, 
+                          order = 3, Z, u, x.meta, ten_count_use, beta1, beta2,
+                          minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, 
+                          nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
+                          nbhd = 5, lik.only = NULL, control.pts, 
+                          sigma, group = NULL, group.mat, override = TRUE, 
+                          Nbeta=NA, ID = NA) {
 
+  site_number = unique(x.meta[x.meta$site.name == locn,1])
+  
+  x.meta.use <- x.meta[x.meta$site.name == locn,]
+  
+  source('test_site.R')
+  test_site(x.meta.use)
+  
+  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+  ten_count_use[which(is.na(ten_count_use))] <- 0
+  
   Y = as.matrix(ten_count_use)
   
-  sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
+  sample_ages <- x.meta.use$age_bacon
   age_bins <- seq(minAge, maxAge, ageInterval)
   age_index <- as.matrix(as.numeric(
     cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
@@ -16,7 +30,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, order = 3,
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
   if(!is.null(group)){
-   # Y2 <- Y2[-group.mat[group,],]
+    # Y2 <- Y2[-group.mat[group,],]
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
