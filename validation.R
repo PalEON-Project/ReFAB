@@ -29,7 +29,7 @@ pred_code <- nimbleCode({
       p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.phi1[j,i]) 
       p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
     }	
-    p.true[j,21] <- 1 - sum(p.true[j,1:20])
+    p.true[j,I] <- 1 - sum(p.true[j,1:(I-1)])
   }    
   
   for(j in 1:J){

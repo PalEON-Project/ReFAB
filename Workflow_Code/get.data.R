@@ -27,7 +27,7 @@ meta_dl <- get_download(meta)
 comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
 pol_cal_count <- compile_downloads(comp.tax)
 
-save(pol_cal_count,file='nimble_pull',Sys.Date(),'.Rdata')
+save(pol_cal_count,file=paste0('nimble_pull',Sys.Date(),'.Rdata'))
 
 #####
 ##### Add Bacon Pollen Dates #####
@@ -199,8 +199,8 @@ dev.off()
 ### I do this after indexing because some of the places where we have settlement pollen we don't have settlement biomass.
 
 trees <- c('PINUSX',"ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","LARIXPSEU","TSUGAX","QUERCUS","TILIA",
-           "BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS","CARYA")
-other.trees <- c("TAXUS","CYPERACE","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
+           "BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS","CARYA","CYPERACE")
+other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
 ten.count = matrix(0,nrow(cast.x),length(trees)+3)
 prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
 ten.count[,1] <- unlist(rowSums(cast.x[,prairie],na.rm = T))
@@ -302,7 +302,7 @@ total_counts = rowSums(counts)
 
 dim(Y)[1]-length(biomass) # should be zero
 
-save(Y,biomass,file=paste0(Sys.Date(),'calibration.data_summed.Rdata'))
+save(Y,biomass,file=paste0(Sys.Date(),'calibration.data.Rdata'))
 
 #save.image(file="add.bacon2.Rdata")
 
