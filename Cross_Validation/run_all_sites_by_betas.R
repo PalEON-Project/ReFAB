@@ -68,16 +68,21 @@ if(!is.na(runnum)){
 }
 #load(file.path(dataDir,'x.meta.w.settle.Rdata')) #load for 10K
 
-site_number = unique(x.meta[x.meta$site.name == locn,1])
-ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
-ten_count_use[which(is.na(ten_count_use))] <- 0
-
-Y = as.matrix(ten_count_use)
 minAge = 0
 maxAge = 10000
 ageInterval = 100
 
-sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
+site_number = unique(x.meta[x.meta$site.name == locn,1])
+x.meta.use <- x.meta[x.meta$site.name == locn,]
+
+source('test_site.R')
+test_site(x.meta.use)
+
+ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+ten_count_use[which(is.na(ten_count_use))] <- 0
+Y = as.matrix(ten_count_use)
+
+sample_ages <- x.meta.use$age_bacon
 age_bins <- seq(minAge, maxAge, ageInterval)
 age_index <- as.matrix(as.numeric(
   cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
@@ -87,6 +92,7 @@ tmp <- data.frame(cbind(age_index, Y))
 names(tmp)[1] <- 'age_index'
 
 Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
+
 
 if(!is.na(runnum)){
   sigma <- as.numeric(dataID[dataID$ID==runnum,'sigma'])
@@ -106,6 +112,10 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum)
+
+stop()
+
+source('site_diag.R')
 
 ## Full Site Diagnostics
 for(l in unique(dataID$name)){
