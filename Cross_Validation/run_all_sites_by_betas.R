@@ -51,8 +51,8 @@ Nbeta <- round(seq(3000,nrow(samples.mixed),length.out = 20))[beta]
 beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],5,ncol(ten.count))
 beta2.est.real = matrix(samples.mixed[Nbeta,i.beta.pine],5,ncol(ten.count))
 
-beta1.est.real = matrix(colMeans(samples.mixed[,i.beta1]),5,ncol(ten.count))
-beta2.est.real = matrix(colMeans(samples.mixed[,i.beta.pine]),5,ncol(ten.count))
+#beta1.est.real = matrix(colMeans(samples.mixed[,i.beta1]),5,ncol(ten.count))
+#beta2.est.real = matrix(colMeans(samples.mixed[,i.beta.pine]),5,ncol(ten.count))
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
@@ -102,7 +102,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 5000, nItsSave = 200, seed = 1,
+                     nIts = 10000, nItsSave = 2000, seed = 1,
                      control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum)
