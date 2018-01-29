@@ -78,7 +78,7 @@ x.meta.use <- x.meta[x.meta$site.name == locn,]
 source('test_site.R')
 test_site(x.meta.use)
 
-ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+ten_count_use = ten.count[which(x.meta$site.name == locn), ]
 ten_count_use[which(is.na(ten_count_use))] <- 0
 Y = as.matrix(ten_count_use)
 
