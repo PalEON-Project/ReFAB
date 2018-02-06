@@ -4,6 +4,7 @@
 library(nimble)
 library(splines)
 library(maps)
+library(methods)
 
 ciEnvelope <- function(x,ylo,yhi,...){
   polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
@@ -69,8 +70,10 @@ code <- nimbleCode({
 
 load("2018-01-08calibration.data.Rdata")
 
+Z = bs(unlist(biomass),intercept=TRUE,df=5)
+
 source(file.path('Workflow_Code','calibration.model.R'))
-calibration_model(Y = Y, biomass = biomass, code = code, Niters = 50000, DRAW = TRUE)
+calibration_model(Y = Y, biomass = biomass, code = code, Niters = 50000, Z = Z,  DRAW = TRUE)
 
 beta.names <- rep(rep(colnames(Y),each=5),2)
 beta.i <- grep('beta',colnames(samples.mixed))

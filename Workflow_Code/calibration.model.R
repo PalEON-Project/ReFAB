@@ -1,4 +1,4 @@
-calibration_model <- function(Y, biomass, code, Niters, DRAW){
+calibration_model <- function(Y, biomass, code, Niters, Z, DRAW){
   
 #load("Data/calibration.data.Rdata")
 model.dir <- c('Workflow Code/')
