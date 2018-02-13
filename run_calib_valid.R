@@ -27,10 +27,10 @@ trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
            'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
            "OSTRYCAR","ULMUS","TILIA","ALNUSX",
            "CYPERACE","PICEAX",
-           "ABIES","POPULUS","CARYA",
-           "LARIXPSEU","TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX",
-           "LIQUIDAM","CUPRESSA")
-other.trees <- c()#NULL#c()
+           "ABIES","POPULUS","CARYA","LARIXPSEU","CUPRESSA")
+other.trees <- c("TAXUS","NYSSA",
+                 "CASTANEA","PLATANUS","SALIX",
+                 "LIQUIDAM")#NULL#c()
 drop.taxa <- NA#c('other_herbs')
 
 source('taxa_selection.R')
