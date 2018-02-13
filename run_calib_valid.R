@@ -1,4 +1,11 @@
 
+arg <- commandArgs(trailingOnly = TRUE)
+if (is.na(arg[1])) {
+  runnum <- NA
+} else {
+  group_rm <- as.numeric(arg[1])
+}
+
 ### after get.data
 
 library(nimble)
@@ -10,111 +17,62 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-code <- nimbleCode({
-  
-  for(r in 1:R){ 
-    for(i in 1:I){
-      beta[r,i] ~ dnorm(0,.04)
-      beta.pine[r,i] ~ dnorm(0,.04)
-    }  
-  }
-  
-  phi.first[,] <- Z[,]%*%beta[,]
-  pine.phi[,] <- Z[,]%*%beta.pine[,]
-  
-  for(j in 1:J){
-    for(i in 1:I){
-      exp.phi[j,i] <- exp(phi.first[j,i])
-      exp.pine.phi[j,i] <- exp(pine.phi[j,i])
-    }
-  }
-  
-  for(j in 1:J){
-    p.true[j,1] ~ dbeta(exp.phi[j,1],exp.pine.phi[j,1])
-    p.rel[j,1] <- p.true[j,1]
-    
-    for(i in 2:(I-1)){
-      p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.pine.phi[j,i]) 
-      p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
-    }	
-    p.true[j,I] <- 1 - sum(p.true[j,1:(I-1)])
-  }  
-  
-  for(j in 1:J){
-    Y[j,] ~ dmulti(size = n[j], prob = p.true[j,])
-  }
-  
-  phi.first1[,] <- Z.new[,]%*%beta[,]
-  pine.phi1[,] <- Z.new[,]%*%beta.pine[,]
-  
-  for(j in 1:145){
-    for(i in 1:I){
-      exp.phi1[j,i] <- exp(phi.first1[j,i])
-      exp.pine.phi1[j,i] <- exp(pine.phi1[j,i])
-    }
-  }
-  
-  for(j in 1:145){
-    p.true1[j,1] ~ dbeta(exp.phi1[j,1],exp.pine.phi1[j,1])
-    p.rel1[j,1] <- p.true1[j,1]
-    
-    for(i in 2:(I-1)){
-      p.rel1[j,i]  ~ dbeta(exp.phi1[j,i],exp.pine.phi1[j,i]) 
-      p.true1[j,i] <-  p.rel1[j,i] * (1 - sum(p.true1[j,1:(i-1)]))
-    }	
-    p.true1[j,I] <- 1 - sum(p.true1[j,1:(I-1)])
-  }  
-  
-})
 
-load("2018-01-08calibration.data.Rdata")
+load("2018-01-08calibration.data.Rdata") #this needs to have cast.x in it. and the entire biomass and sites_rm
+load("cast.x.Rdata")
+load("sites_rm.Rdata")
+
+all.pollen.taxa.names <- colnames(cast.x)[5:84]
+trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
+           "OSTRYCAR","ULMUS","TILIA","ALNUSX",
+           "CYPERACE","PICEAX",
+           "ABIES","POPULUS","CARYA",
+           "LARIXPSEU","TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX",
+           "LIQUIDAM","CUPRESSA")
+other.trees <- c()#NULL#c()
+drop.taxa <- NA#c('other_herbs')
+
+source('taxa_selection.R')
+Y <- taxa_selection(trees = trees, other.trees = other.trees,
+                    cast.x = cast.x, sites_rm = sites_rm,
+                    all.pollen.taxa.names = all.pollen.taxa.names,
+                    prairie.include = T, other.herbs.include = T,
+                    other.trees.include = T, drop.taxa = drop.taxa,
+                    PFT.do = F)
+
+Niters <- 200
+bMax <- 143
+
+#### Setting up 10 fold cross validation
+set.seed(5)
+sets10 <- replicate(10, sample(size = 10,x = nrow(Y), replace = F))
+Y.keep <- Y
+biomass.keep <- biomass
+Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
+biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
+
+#### Making sure Z.knots and u are the same between calibration and validation
+Z.knots = bs(biomass.calib,intercept=TRUE,df=5)
+u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))
-calibration_model(Y = Y, biomass = biomass, code = code, Niters = 50000, DRAW = TRUE)
+samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
+                                   Z.knots = Z.knots, u = u, Niters = Niters)
 
-beta.names <- rep(rep(colnames(Y),each=5),2)
-beta.i <- grep('beta',colnames(samples.mixed))
-
-pdf('beta.posteriors.pdf')
-par(mfrow=c(4,4))
-for(i in seq_along(beta.i)){
-  plot(samples.mixed[,beta.i[i]],typ='l',main=paste('beta',beta.i[i],'pollen',beta.names[i]))
-  hist(samples.mixed[,beta.i[i]],main=paste('beta',beta.i[i]),freq=F)
-}
-dev.off()
-
-ddirchmulti <- nimbleFunction(
-  run = function(x = double(1), alpha = double(1), size = double(0), log = integer(0)){
-    returnType(double(0))
-    logProb <- lgamma(sum(alpha)) - sum(lgamma(alpha)) + sum(lgamma(alpha + x)) - lgamma(sum(alpha) + size)
-    
-    if(log_value) {
-      return(logProb)
-    } else {
-      return(exp(logProb))
-    }
-    
-  }
-)
-
-# set up the "r" function
-rdirchmulti <- nimbleFunction(
-  run = function(n = integer(0), alpha = double(1), size = double(0)) {
-    returnType(double(1))
-    if(n != 1) nimPrint("rdirchmulti only allows n = 1; using n = 1.")
-    p <- rdirch(1, alpha)
-    return(rmulti(1, size = size, prob = p))
-  })
-
-# tell NIMBLE about the newly available distribution
-registerDistributions(list(ddirchmulti = list(BUGSdist = "ddirchmulti(alpha, size)",
-                                              types = c('value = double(1)', 'alpha = double(1)'))))
-
-load(file = paste0("nimble.betas_1_2_horiz_plus",Sys.Date(),".Rdata"))
-
-validation_model(counts = counts, Z.knots = Z.knots, 
+source('validation.R')
+samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                  samples.mixed = samples.mixed, u = u,
-                 Niters = 5000, biomass = biomass)
+                 Niters = Niters, bMax = bMax)
+
+load(file=paste0('outLik.group.',group_rm,'.Rdata'))
+
+source('calibration.figs.R')
+calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
+                 samples.mixed = samples.mixed, outLik = outLik,
+                 biomass = biomass.keep, samples.pred = samples.pred,
+                 group_rm = group_rm,Y.pred = Y.pred,
+                 biomass.pred = biomass.pred)
 
 
 
