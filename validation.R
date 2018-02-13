@@ -115,6 +115,8 @@ Cmcmc.pred$run(Niters)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
+save(samples.pred, file = paste0('samples.pred.group',group_rm,'.Rdata'))
+
 return(samples.pred)
 
 }
