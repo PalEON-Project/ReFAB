@@ -11,12 +11,12 @@ if (is.na(arg[1])) {
 library(nimble)
 library(splines)
 library(maps)
+library(methods)
 
 ciEnvelope <- function(x,ylo,yhi,...){
   polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
                                       ylo[1])), border = NA,...) 
 }
-
 
 load("2018-01-08calibration.data.Rdata") #this needs to have cast.x in it. and the entire biomass and sites_rm
 load("cast.x.Rdata")
@@ -41,7 +41,7 @@ Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     other.trees.include = T, drop.taxa = drop.taxa,
                     PFT.do = F)
 
-Niters <- 200
+Niters <- 5000
 bMax <- 143
 
 #### Setting up 10 fold cross validation

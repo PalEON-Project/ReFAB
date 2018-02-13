@@ -1,4 +1,3 @@
-
 #### Y                     dataset with # of sites rows and # of taxa columns
 #### biomass               dataset with length = # of sites
 #### Niters                number of iterations
@@ -74,7 +73,7 @@ calib_code <- nimbleCode({
     # }  
     
   })
-  
+
 #load("Data/calibration.data.Rdata")
 model.dir <- c('Workflow Code/')
 fig.dir <- c("Figures/")
