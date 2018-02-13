@@ -58,7 +58,8 @@ u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z
 
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
-                                   Z.knots = Z.knots, u = u, Niters = Niters)
+                                   Z.knots = Z.knots, u = u, Niters = Niters,
+                                   group_rm = group_rm)
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 

@@ -4,7 +4,8 @@
 #### Niters.save           number of iterations to output to Rdata file
 #### group_rm              number 1-10 for which group to remove
 
-calibration_model <- function(Y, biomass, Z.knots, u, Niters = 5000, Niter.save = 200, group_rm = NA){
+calibration_model <- function(Y, biomass, Z.knots, u, Niters = 5000,
+                              Niter.save = 200, group_rm = NA){
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
