@@ -75,5 +75,28 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
                  group_rm = group_rm,Y.pred = Y.pred,
                  biomass.pred = biomass.pred)
 
+if(group_rm == 10){
+  samples.pred.mat <- matrix(NA,Niters,length(biomass))
+  for(i in 1:10){
+    load(file = paste0('samples.pred.group',group_rm,'.Rdata'))
+    samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
+  }
+  pdf(paste0('validation.r2.all.pdf'))
+  par(mfrow=c(1,1))
+  plot(biomass, colMeans(samples.pred.mat),
+       xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+       xlab="True Biomass", ylab="Predicted Mean Biomass")
+  abline(a=0,b=1)
+  lm.mod <- lm(biomass~colMeans(samples.pred.mat)+0)
+  abline(lm.mod,lty=2)
+  mtext(paste("r-squared",summary(lm.mod$r.squared)))
+  
+  arrows(x0 = biomass.pred, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+         x1 = biomass.pred, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+         code = 0, lwd=2)
+  dev.off()
+  
+}
+
 
 

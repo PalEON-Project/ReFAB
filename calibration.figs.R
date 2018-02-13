@@ -46,6 +46,7 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   par(mfrow=c(4,4))
   for(b in seq(1,length(new.biomass),length.out = 5)){
     for(s in 1:ncol(Y)){
+      ## Add label for numbering
       plot(alpha[b,s,], typ = 'l',main=paste('alpha',b,s))
       hist(alpha[b,s,],col='gray',freq=F,main=paste('alpha',b,s))
       plot(beta[b,s,], typ = 'l',main=paste('beta',b,s))
@@ -75,9 +76,9 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   pdf(paste0('validation.r2.group',group_rm,'.pdf'))
   par(mfrow=c(1,1))
   plot(biomass.pred,
-       colMeans(samples.pred[,
-                             grep('b',colnames(samples.pred))]),
-       xlim=c(0,bMax),ylim=c(0,bMax),pch=19,xlab="True Biomass",ylab="Predicted Mean Biomass")
+       colMeans(samples.pred[,grep('b',colnames(samples.pred))]),
+       xlim=c(0,bMax),ylim=c(0,bMax),pch=19,xlab="True Biomass",
+       ylab="Predicted Mean Biomass")
   abline(a=0,b=1)
   abline(lm(biomass.pred~colMeans(samples.pred[,grep('b',colnames(samples.pred))])+0),lty=2)
   mtext(paste("r-squared",summary(lm(biomass.pred ~ colMeans(samples.pred[,grep('b',colnames(samples.pred))])+0))$r.squared))

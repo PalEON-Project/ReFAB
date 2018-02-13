@@ -98,6 +98,9 @@ for(j in 1:J){
     cm$b[j] <- val
     outPost[val,j] = calculate(cm,calcNodes)# cm$calculate(calcNodes)
     # likelihood portion
+    # decompose into taxa Y's
+    # look at a matrix of likelihood contributions to each of the taxa
+    # one for each qually time points # one for the calibration outlier
     outLik[val,j] =  calculate(cm,calcNodes[grep("Y", calcNodes)]) # cm$calculate(calcNodes[45])  #
   }	
 }
