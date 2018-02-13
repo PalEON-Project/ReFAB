@@ -1,4 +1,5 @@
-validation_model <- function(Y, Z.knots, samples.mixed, u, Niters, bMax = 143){
+validation_model <- function(Y, Z.knots, samples.mixed, u, Niters,
+                             bMax = 143, group_rm){
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
