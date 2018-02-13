@@ -29,6 +29,13 @@ calib_code <- nimbleCode({
       }
     }
     
+    for(j in 1:J){
+      Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
+      for(i in 2:(I-1)){
+        Y[j, i] ~ dbetabin(shape1[j, i], shape2[j, i], n[j] - sum(Y[j,1:(i-1)]))
+      }
+    }
+    
     # for(j in 1:J){
     #   p.true[j,1] ~ dbeta(exp1[j,1],exp2[j,1])
     #   p.rel[j,1] <- p.true[j,1]
@@ -40,12 +47,6 @@ calib_code <- nimbleCode({
     #   p.true[j,I] <- 1 - sum(p.true[j,1:(I-1)])
     # }  
     
-    for(j in 1:J){
-      Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
-      for(i in 2:(I-1)){
-        Y[j, i] ~ dbetabin(shape1[j, i], shape2[j, i], n[j] - sum(Y[j,1:(i-1)]))
-      }
-    }
     
     # for(j in 1:J){
     #   Y[j,] ~ dmulti(size = n[j], prob = p.true[j,])
