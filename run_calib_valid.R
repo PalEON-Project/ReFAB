@@ -41,12 +41,12 @@ Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     other.trees.include = T, drop.taxa = drop.taxa,
                     PFT.do = F)
 
-Niters <- 5000
+Niters <- 10000
 bMax <- 143
 
 #### Setting up 10 fold cross validation
 set.seed(5)
-sets10 <- replicate(10, sample(size = 10,x = nrow(Y), replace = F))
+sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
 Y.keep <- Y
 biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
@@ -78,12 +78,13 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,Niters,length(biomass))
   for(i in 1:10){
-    load(file = paste0('samples.pred.group',group_rm,'.Rdata'))
+    #load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
   pdf(paste0('validation.r2.all.pdf'))
   par(mfrow=c(1,1))
-  plot(biomass, colMeans(samples.pred.mat),
+  plot(biomass, colMeans(samples.pred.mat, na.rm = T),
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
        xlab="True Biomass", ylab="Predicted Mean Biomass")
   abline(a=0,b=1)
@@ -91,8 +92,8 @@ if(group_rm == 10){
   abline(lm.mod,lty=2)
   mtext(paste("r-squared",summary(lm.mod$r.squared)))
   
-  arrows(x0 = biomass.pred, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
-         x1 = biomass.pred, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+  arrows(x0 = biomass, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+         x1 = biomass, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
          code = 0, lwd=2)
   dev.off()
   
