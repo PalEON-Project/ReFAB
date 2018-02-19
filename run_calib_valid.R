@@ -53,7 +53,7 @@ Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib,intercept=TRUE,df=5)
+Z.knots = bs(biomass.calib,intercept=TRUE,df=7)
 u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))
@@ -73,19 +73,21 @@ load(file=paste0('outLik.group.',group_rm,'.Rdata'))
 #load(paste0("~/Downloads/beta/beta.est.group",group_rm,".Rdata"))
 #load(paste0("~/Downloads/outs/outLik.group.",group_rm,".Rdata"))
 
+outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.calib))
+
 source('calibration.figs.R')
 calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
                  samples.mixed = samples.mixed, outLik = outLik,
                  biomass = biomass.keep, samples.pred = samples.pred,
                  group_rm = group_rm,Y.pred = Y.pred,
-                 biomass.pred = biomass.pred, outlier = 5,
+                 biomass.pred = biomass.pred, outlier = outlier,
                  sets10 = sets10)
 
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
-    #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+    #load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
   pdf(paste0('validation.r2.all.pdf'))
