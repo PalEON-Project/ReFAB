@@ -9,7 +9,7 @@ pred_code <- nimbleCode({
   for(j in 1:J){
     b[j] ~ dunif(0,bMax)
     
-    Zb[j,1:knots] <- bs_nimble(b[j], u[1:(knots-2)], N0[1:2], N1[1:3], N2[1:4], N3[1:5])
+    Zb[j,1:knots] <- bs_nimble(b[j], u[1:(knots-2)], N0[1:(knots-3)], N1[1:(knots-2)], N2[1:(knots-1)], N3[1:knots])
   }
   
   for(i in 1:I){
@@ -92,9 +92,8 @@ Rmcmc.pred <- buildMCMC(spec.pred)
 cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) 
 
-if(FALSE){
 vals <- 1:bMax
-outLik = outPost = array(NA, dim = c(bMax, J, ncol(Y)))
+outLik = outPost = array(NA, dim = c(bMax, J, (ncol(Y)-1)))
 
 for(j in 1:J){
   calcNodes <-  cm$getDependencies(paste0('b[',j,']'))
@@ -129,7 +128,6 @@ bInit[is.na(bInit)] <- 25
 
 inits_pred = list(b = bInit)
 cm$setInits(inits_pred)
-}
 
 ptm <- proc.time()
 set.seed(0)

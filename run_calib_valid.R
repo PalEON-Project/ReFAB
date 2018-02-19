@@ -76,7 +76,7 @@ load(file=paste0('outLik.group.',group_rm,'.Rdata'))
 #load(paste0("~/Downloads/beta/beta.est.group",group_rm,".Rdata"))
 #load(paste0("~/Downloads/outs/outLik.group.",group_rm,".Rdata"))
 
-outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.calib))
+outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.pred))
 
 source('calibration.figs.R')
 calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
