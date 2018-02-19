@@ -11,24 +11,20 @@ library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
   
 calib_code <- nimbleCode({
-    
     for(r in 1:R){ 
       for(i in 1:I){
         beta1[r,i] ~ dnorm(0,.04)
         beta2[r,i] ~ dnorm(0,.04)
       }  
     }
-
-    shape1 <- exp(Z[,] %*% beta1[,])
-    shape2 <- exp(Z[,] %*% beta2[,])
-
+    shape1[,] <- exp(Z[,] %*% beta1[,])
+    shape2[,] <- exp(Z[,] %*% beta2[,])
     for(j in 1:J){
       Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
       for(i in 2:(I-1)){
         Y[j, i] ~ dbetabin(shape1[j, i], shape2[j, i], n[j] - sum(Y[j,1:(i-1)]))
       }
     }
-
   })
 
 #load("Data/calibration.data.Rdata")
