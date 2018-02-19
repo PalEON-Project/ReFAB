@@ -68,18 +68,24 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 
 load(file=paste0('outLik.group.',group_rm,'.Rdata'))
 
+
+#load(paste0("~/Downloads/CVpred.samps/samples.pred.group",group_rm,".Rdata"))
+#load(paste0("~/Downloads/beta/beta.est.group",group_rm,".Rdata"))
+#load(paste0("~/Downloads/outs/outLik.group.",group_rm,".Rdata"))
+
 source('calibration.figs.R')
 calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
                  samples.mixed = samples.mixed, outLik = outLik,
                  biomass = biomass.keep, samples.pred = samples.pred,
                  group_rm = group_rm,Y.pred = Y.pred,
-                 biomass.pred = biomass.pred)
+                 biomass.pred = biomass.pred, outlier = 5,
+                 sets10 = sets10)
 
 if(group_rm == 10){
-  samples.pred.mat <- matrix(NA,Niters,length(biomass))
+  samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    #load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
-    load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
+    #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
   pdf(paste0('validation.r2.all.pdf'))
@@ -90,12 +96,18 @@ if(group_rm == 10){
   abline(a=0,b=1)
   lm.mod <- lm(biomass~colMeans(samples.pred.mat)+0)
   abline(lm.mod,lty=2)
-  mtext(paste("r-squared",summary(lm.mod$r.squared)))
+  mtext(paste("r-squared",summary(lm.mod)$r.squared))
   
   arrows(x0 = biomass, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
          x1 = biomass, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
          code = 0, lwd=2)
+  
+  library(calibrate)
+  textxy(biomass, colMeans(samples.pred.mat, na.rm = T),1:100)
   dev.off()
+  #10, 1
+  #9,10
+  #7,5
   
 }
 

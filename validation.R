@@ -3,18 +3,19 @@ validation_model <- function(Y, Z.knots, samples.mixed, u, Niters,
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
+source("Workflow_Code/utils/bs_nimble.R")
   
 pred_code <- nimbleCode({
   for(j in 1:J){
     b[j] ~ dunif(0,bMax)
     
-    Zb[j,1:5] <- bs_nimble(b[j], u[1:3], N0[1:2], N1[1:3], N2[1:4], N3[1:5])
+    Zb[j,1:knots] <- bs_nimble(b[j], u[1:(knots-2)], N0[1:2], N1[1:3], N2[1:4], N3[1:5])
   }
   
   for(i in 1:I){
     for(j in 1:J){
-      shape1[j,i] <- exp(sum(Zb[j,1:5] %*% beta1[1:5,i]))
-      shape2[j,i] <- exp(sum(Zb[j,1:5] %*% beta2[1:5,i]))
+      shape1[j,i] <- exp(sum(Zb[j,1:knots] %*% beta1[1:knots,i]))
+      shape2[j,i] <- exp(sum(Zb[j,1:knots] %*% beta2[1:knots,i]))
     }
   }
   
@@ -69,7 +70,8 @@ constants.pred = list(bMax = bMax, beta1 = beta1.est.real,
                       beta2 = beta2.est.real, I = ncol(Y),
                       DFS = DFS, J = J, n = rowSums(Y), u = u,
                       N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
-                      N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+                      N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)),
+                      knots = ncol(Z.knots))
 
 inits.pred = list(b=rep(25,J))
 
@@ -91,23 +93,38 @@ cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) 
 
 vals <- 1:bMax
-outLik = outPost = matrix(NA, bMax, J)
+outLik = outPost = array(NA, dim = c(bMax, J, ncol(Y)))
+
 for(j in 1:J){
   calcNodes <-  cm$getDependencies(paste0('b[',j,']'))
   for(val in vals) {
+    # 1: set b value
     cm$b[j] <- val
-    outPost[val,j] = calculate(cm,calcNodes)# cm$calculate(calcNodes)
+    # 2: do calculate on entire model to update all values:
+    calculate(cm, calcNodes)
+    # 3: for aggregated likelihood, just do calculate on 'Y' 
+    #so we get only the likelihood without the prior for b[j] 
+    #(though is is flat so probably doesn't matter)
+    calculate(cm, paste0("Y[",j,",", 1:ncol(Y),"]"))
     # likelihood portion
     # decompose into taxa Y's
     # look at a matrix of likelihood contributions to each of the taxa
     # one for each qually time points # one for the calibration outlier
-    outLik[val,j] =  calculate(cm,calcNodes[grep("Y", calcNodes)]) # cm$calculate(calcNodes[45])  #
+    for(s in 1:(ncol(Y)-1)){
+      # 4: for likelihood by taxon, need likelihood for each val, j, i triplet:
+      outLik[val,j,s] =  calculate(cm,paste0("Y[",j,",", s,"]")) # cm$calculate(calcNodes[45])  #
+    }
   }	
 }
 
 save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
 
-bInit <- apply(outLik,2,which.max)
+bInit <- numeric(J)
+for(j in 1:j){
+  bInit[j] <- mean(apply(outLik[,j,],2,which.max))
+}
+
+bInit[is.na(bInit)] <- 25
 
 inits_pred = list(b = bInit)
 cm$setInits(inits_pred)

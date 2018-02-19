@@ -1,8 +1,13 @@
-# in BUGS code, to calculate the vector of basis matrix values for a given biomass, pass that biomass in as 'u_given', pass in the vector of u values for the knots and pass in N0,N1,N2,N3 of correct length - you can do this simply by providing N0,N1,N2,N3 as part of the 'constants' argument given to the 'nimbleModel' function
+# in BUGS code, to calculate the vector of basis matrix values for a 
+# given biomass, pass that biomass in as 'u_given', pass in the vector 
+# of u values for the knots and pass in N0,N1,N2,N3 of correct length - 
+# you can do this simply by providing N0,N1,N2,N3 as part of the '
+# constants' argument given to the 'nimbleModel' function
 
-#p is the degree of the basis function. p = 3 is a cubic spline
+# p is the degree of the basis function. p = 3 is a cubic spline
 
-#The following website helped with the creation of this function http://www.cs.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/B-spline/bspline-basis.html
+# The following website helped with the creation of this function 
+# http://www.cs.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/B-spline/bspline-basis.html
 
 bs_nimble <-  nimbleFunction(
     run = function(u_given = double(0), u = double(1), N0 = double(1), N1 = double(1),
@@ -20,7 +25,7 @@ bs_nimble <-  nimbleFunction(
             N1[i] <- 0
         for(i in 1:(length(u)+1))
             N2[i] <- 0
-        for(i in 1:5) #change if you increase number of knots
+        for(i in 1:(length(u)+2)) #change if you increase number of knots
             N3[i] <- 0
             
         for(i in 1:(length(u)-1)){
@@ -207,8 +212,8 @@ bs_nimble <-  nimbleFunction(
 if(FALSE){
 
 ### This code calculates the cubic spline for one value at a time. Use loop to calculate more than one vector.
-u <- c(0, quantile(biomass,.5),200) #u is the number of knots
-u_given <- 3
+u <- c(0, quantile(biomass,c(.25,.5,.75)),200) #u is the number of knots
+u_given <- 196
 
 bs_nimble(u_given, u=u, N0 = rep(0, 2),N1 = rep(0, 3), N2 = rep(0,4), N3 = rep(0, 5))
 bs(x = u_given, knots = u[2:(length(u)-1)], Boundary.knots = c(0,200),intercept=TRUE,degree=3)
@@ -228,8 +233,10 @@ lines(x, rowSums(bb), col = "gray", lwd = 2)
 matlines(x, bb, ylim = c(0,1), lty = 1)
 rug(x)
 
+Z.knots.check <- matrix(NA, u[length(u)], length(u) + 2)
+
 for(i in 1:u[length(u)]){
-	u_given <-i
+	u_given <- i
 	Z.knots.check[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 }
 
