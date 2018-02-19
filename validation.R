@@ -92,6 +92,7 @@ Rmcmc.pred <- buildMCMC(spec.pred)
 cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) 
 
+if(FALSE){
 vals <- 1:bMax
 outLik = outPost = array(NA, dim = c(bMax, J, ncol(Y)))
 
@@ -128,6 +129,7 @@ bInit[is.na(bInit)] <- 25
 
 inits_pred = list(b = bInit)
 cm$setInits(inits_pred)
+}
 
 ptm <- proc.time()
 set.seed(0)
