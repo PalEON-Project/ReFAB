@@ -22,7 +22,7 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   ####
   
   new.biomass <- 1:bMax
-  Z.new = matrix(0,nrow=length(new.biomass),ncol=5)
+  Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
   u <- u #should have defined knots in calibration
   u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
   
