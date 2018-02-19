@@ -87,6 +87,7 @@ calc_lik_approx <- function(model, bName, dataName, age_index, J, I, bMin, bMax,
   #   log_lik_mat[i,] <- exp(a - max(a))/-sum(a)
   #   
   # }
+
   save(workData, workVars, out, file = workFile)
   nimble:::clearCompiled(model)
 }  

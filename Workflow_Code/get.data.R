@@ -113,6 +113,7 @@ title(main="all sites")
 
 set.seed(4)
 sites_rm = sample(1:nrow(cast.x),round(nrow(cast.x)/3))
+save(sites_rm, file = 'sites_rm.Rdata')
 
 points(cast.x$long[-sites_rm], cast.x$lat[-sites_rm], pch=19, cex=1,col="blue")
 if(DRAW == TRUE) dev.off()
@@ -198,22 +199,35 @@ dev.off()
 
 ### I do this after indexing because some of the places where we have settlement pollen we don't have settlement biomass.
 
-trees <- c('PINUSX',"ALNUSX","JUGLANSX","ACERX","CUPRESSA","FRAXINUX","FAGUS","LARIXPSEU","TSUGAX","QUERCUS","TILIA",
-           "BETULA","PICEAX","OSTRYCAR","ULMUS","ABIES","POPULUS","CARYA","CYPERACE")
-other.trees <- c("TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX","LIQUIDAM")
-ten.count = matrix(0,nrow(cast.x),length(trees)+3)
-prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
-ten.count[,1] <- unlist(rowSums(cast.x[,prairie],na.rm = T))
-ten.count[,2] <- unlist(rowSums(cast.x[,other.trees],na.rm = T))
-ten.count[,3:(length(trees)+2)] <- as.matrix(cast.x[,trees])
-ten.count[,(length(trees)+3)] <- rowSums(cast.x[,all.pollen.taxa.names],na.rm = T) - rowSums(ten.count,na.rm = T)
-colnames(ten.count)<-c("prairie","other_trees",trees,"other_herbs")
+trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
+           "OSTRYCAR","ULMUS","TILIA","ALNUSX",
+           "CYPERACE","PICEAX",
+           "ABIES","POPULUS","CARYA",
+           "LARIXPSEU","TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX",
+           "LIQUIDAM","CUPRESSA")
+other.trees <- c()#NULL#c()
+drop.taxa <- NA#c('other_herbs')
 
-total_counts = round(rowSums(ten.count,na.rm = TRUE))
-counts = round(ten.count)
-props = counts/rowSums(counts,na.rm = TRUE)
+source('taxa_selection.R')
+Y <- taxa_selection(trees = trees, other.trees = other.trees,
+                    cast.x = cast.x, sites_rm = sites_rm,
+                    all.pollen.taxa.names = all.pollen.taxa.names,
+                    prairie.include = T, other.herbs.include = T,
+                    other.trees.include = T, drop.taxa = drop.taxa,
+                    PFT.do = F)
 
-total_counts_spp = colSums(counts)
+set.seed(5)
+sites_pred <- sample(1:nrow(Y),round(nrow(Y)/3))
+
+Y.all <- Y
+Y <- Y[-sites_pred,]
+
+
+total_counts = round(rowSums(Y,na.rm = TRUE))
+props = Y/rowSums(Y,na.rm = TRUE)
+
+total_counts_spp = colSums(Y)
 
 props = props[,order(total_counts_spp,decreasing=TRUE)]
 
@@ -302,7 +316,7 @@ total_counts = rowSums(counts)
 
 dim(Y)[1]-length(biomass) # should be zero
 
-save(Y,biomass,file=paste0(Sys.Date(),'calibration.data.Rdata'))
+save(Y,biomass,Z,file=paste0(Sys.Date(),'calibration.data.Rdata'))
 
 #save.image(file="add.bacon2.Rdata")
 

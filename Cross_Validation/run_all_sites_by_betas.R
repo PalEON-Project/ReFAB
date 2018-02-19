@@ -33,10 +33,10 @@ ciEnvelope <- function(x,ylo,yhi,...){
 control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
 # load in data for all sites, per Ann's original code
-#if(!file.exists(file.path(dataDir,'allPredData.Rda')))
-#  source(file.path('Workflow_Code','prep_data.R'))
+# if(!file.exists(file.path(dataDir,'allPredData.Rda')))
+# source(file.path('Workflow_Code','prep_data.R'))
 # load(file.path(dataDir,'allPredData.Rda')) # load for 10K run
-#load('paleon.data.Rdata') # adding via ssh rather than github
+# load('paleon.data.Rdata') # adding via ssh rather than github
 
 load(file = paste0("nimble.betas_1_2_horiz_plus2018-01-08.Rdata")) #load via ssh
 

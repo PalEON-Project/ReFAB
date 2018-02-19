@@ -1,7 +1,7 @@
 
 calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
                              biomass, samples.pred,group_rm, Y.pred,
-                             biomass.pred){
+                             biomass.pred, outlier, sets10){
   
   ciEnvelope <- function(x,ylo,yhi,...){
     polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
@@ -62,10 +62,18 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   J = nrow(Y.pred)
   
   pdf(paste0('validation_max_liks_pfts_',group_rm,'.pdf'))
-  par(mfrow=c(3,3))
-  for(j in 1:J){
-    plot(vals,exp(outLik[,j] - max(outLik[,j]))/-sum(outLik[,j])
-         ,typ='l',ylab=NA,main=j)
+  par(mfrow=c(4,5))
+  for(s in 1:(ncol(Y)-1)){
+    for(j in 1:J){
+      if(sum(outLik[,j,s])!=0){
+        plot(vals,exp(outLik[,j,s] - max(outLik[,j,s]))/-sum(outLik[,j,s])
+             ,typ='l',ylab=NA,main=paste('site',sets10[,group_rm][j],'taxa',colnames(Y)[s]),xlab = 'biomass')
+        abline(v=biomass.pred[j],col='blue',lwd=2)
+        abline(v=colMeans(samples.pred)[j],col='orange',lwd=2)
+      }else{
+        plot.new()
+      }
+    }
   }
   dev.off()
   
@@ -91,6 +99,20 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   ####
   #### Splines ####
   ####
+  
+  if(FALSE){
+    K <- 143 # n biomass values
+    M <- 200 # n posterior samples
+    I # number of taxa
+    p_rel <- array(0, c(K, I, M))
+    
+    for(m in 1:M) {
+      devs <- runif(I)
+      devs <- rep(devs, each = K)
+      ## use same random number for all K biomass values
+      p_rel[1:K, 1:I, m] <- qbeta(devs, shape1[1:K , 1:I, m], shape2[1:K , 1:I, m])
+    }
+  }
   
   #i.beta1 <- i.beta[-i.beta.pine]
   #iter.look <- 250 #4474 low15 #4368 high14
@@ -135,6 +157,13 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
     points(biomass.pred,props.pred[,i],col='red',pch=19)
     
     ###Validation outlier
+    points(biomass.pred[outlier],
+           props[outlier,i],
+           col='darkblue',pch=19,cex=2)
+    points(colMeans(samples.pred[,grep('b',colnames(samples.pred))])[outlier],
+           props[outlier,i],
+           col='orange',pch=19,cex=2)
+    
     if(FALSE){
     points(biomass[c(outlier)],
            props[c(outlier),i],

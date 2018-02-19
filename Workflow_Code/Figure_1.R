@@ -1,22 +1,29 @@
+blue       <- col2rgb("blue")
+alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
+
 biomassCI <- diff.median <-  list()
 prob.of.inc <- matrix(NA,62,99)
 all.samps<- numeric(100)
 nItsSave = 10000
 hem.is <- out.list <- LS.is <- list()
 lat <- long <- all.samps.list <- name.keep <- age.keep <- list()
-for(i in 1:62){
-  locn <- names(how.many)[i]
-  locnClean <- gsub(' ', '-', names(how.many)[i])
+for(i in 39:length(unique(dataID$name))){
+  locn <- as.character(unique(dataID$name)[i])
+  locnClean <- gsub(' ', '-', unique(dataID$name)[i])
   site_number = unique(x.meta[x.meta$site.name == locn,1])
-  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+  
+  x.meta.use <- x.meta[x.meta$site.name == locn,]
+  
+  source('test_site.R')
+  test_site(x.meta.use)
+  
+  ten_count_use = ten.count[which(x.meta$site.name == locn), ]
+  ten_count_use[which(is.na(ten_count_use))] <- 0
+  
+  Y = as.matrix(ten_count_use)
   hem.is[[i]]<-max(prop.table(ten_count_use,1)[,11]) + max(prop.table(ten_count_use,1)[,19])#sum(ten_count_use[,11])
-  Y = as.matrix(ten_count_use)
   
-  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
-  
-  Y = as.matrix(ten_count_use)
-  
-  sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
+  sample_ages <- x.meta.use$age_bacon
   age_bins <- seq(minAge, maxAge, ageInterval)
   age_index <- as.matrix(as.numeric(
     cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
@@ -27,14 +34,14 @@ for(i in 1:62){
   
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
-  if(!is.null(group)){
+  if(!is.null(group) | FALSE){
     Y2 <- Y2[-group.mat[group,],]
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
   age_index <- Y2[,1]
   
-  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,11] + prop.table(Y,1)[,19])
+  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'])
   
   if(length(Y)>21 & nrow(Y) > 10 &
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
@@ -44,18 +51,19 @@ for(i in 1:62){
     
     for(b in 1:20){
       ID <- dataID[dataID$name==as.character(locn),'ID'][b]
-      file_name <- paste0('~/Downloads/samps/samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda') #Sigma0.12Group
+      file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda')
       if(!file.exists(file_name)) next()
       load(file_name)
-      samples.keep <- rbind(samples.keep, samplesList)
+      samples.keep <- rbind(samples.keep, samplesList[1000:2000,])
     }
     
     samplesList <- samples.keep
     
-    if(file.exists(file_name) ){
-      file_name1 <- paste0('~/Downloads/workInfo/workInfo_',locnClean,'Sigma0.12GroupNA.Rda')
-      load(file = file_name)
-      
+    if(file.exists(file_name)){
+      b <- 1
+      ID <- dataID[dataID$name==as.character(locn),'ID'][b]
+      file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda')
+
       if(file.exists(file_name1)){
         load(file = file_name1)
         out.list[[i]] <- out
@@ -68,16 +76,13 @@ for(i in 1:62){
       #Takes out modern data estimates where data stop# i.e. 'cut' approach
       #samplesList[,1:min(age_index)] <- NA
       
-      if(i!=35){
-      not_burn <- 11:200
+      not_burn <- 1:nrow(samplesList)
       biomassCI[[i]] <- apply(samplesList[not_burn,1:100],2,quantile,c(0.025,0.5,0.975),na.rm=TRUE)
       names(biomassCI)[i] <- x.meta[x.meta$site.name == locn,'site.id'][1]
       
       all.samps.list[[i]] <- samplesList[not_burn,1:100]
-      
-      
-        all.samps <- rbind(all.samps,samplesList[not_burn,1:100])
-      }
+      all.samps <- rbind(all.samps,samplesList[not_burn,1:100])
+
       diff.median[[i]] <- apply(diff(t(samplesList[not_burn,1:100])),1,quantile,c(0.5),na.rm=TRUE)
       test <- diff(t(samplesList[not_burn,1:100]))
       lat[[i]] <- x.meta[x.meta$site.name == locn,'lat'][1]
@@ -99,11 +104,8 @@ for(i in 1:62){
   }
 }
 
-
-
-
+### For Paleon MIP
 biomass.mean.df <- data.frame(lat=unlist(lat)[-35],lon=unlist(long)[-35],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
-
 write.csv(biomass.mean.df,file='biomass.means.csv')
 
 
@@ -143,9 +145,7 @@ title('Map Colored by Last Sample Age Index')
 #####
 
 bio.quant <- apply(all.samps,2,quantile,c(0.025,0.5,0.975),na.rm=TRUE)
-
 diff.mat.all<- t(diff(t(all.samps[,100:1])))
-
 
 ## Find cutoff for time series by last data point
 stop.spot <- list()
@@ -154,7 +154,7 @@ for(i in 1:62){
 }
 
 ## Looking for where to cut all.samps matrix -- changes with number of sites
-site_count <- 61-1
+site_count <- 60-1 #number of sites minus 1
 
 ## calculation for proportion sites increasing -- barplot
 how.much <- matrix(NA,length(not_burn),99)
@@ -199,7 +199,7 @@ data_binned_LS <-  cut(unlist(hem.is), c(breaks.LS), include.lowest = TRUE, labe
 ##### Creating Figure 1 ##### 
 ##### 
 
-pdf(paste0('average.biomass_.12_',Sys.Date(),'.pdf'))
+pdf(paste0('average.biomass_',Sys.Date(),'.pdf'))
 #quartz()
 zones=matrix(c(2,1), ncol=1, byrow=TRUE)
 layout(zones, widths=c(4/5,1/5), heights=c(1/5,4/5))
@@ -228,10 +228,16 @@ for(i in 1:length(biomassCI)){
       
       #}else{
      # lines(seq(100,10000,100),biomassCI[[i]][2,],col='red')
+    #green       <- col2rgb("green")
+    #alphagreen  <- rgb(green[1], green[2], green[3], alpha = 30, max = 255)
+    
+    #ciEnvelope(x = seq(100,10000,100),ylo = biomassCI[[i]][1,],yhi =biomassCI[[i]][3,],col=alphagreen)
+  
     #}
     
   }
 }
+abline(h=150)
 ciEnvelope(x = seq(100,10000,100),ylo = save.median.bucket[1,],yhi =save.median.bucket[3,],col=alphablue)
 points(seq(100,10000,100),save.median.bucket[2,],
        col=colors[data_binned],pch=19)
@@ -247,6 +253,15 @@ points(seq(.5,98.5,1),save.how.much[2,],pch=19,cex=.5)
 
 abline(h=.5)
 dev.off()
+
+
+
+
+
+
+
+
+
 
 ### Old code for showing RW and genpareto outputs together
 blue       <- col2rgb("blue")
@@ -278,7 +293,7 @@ for(i in 1:62){
   
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
-  if(!is.null(group)){
+  if(!is.null(group) | FALSE){
     Y2 <- Y2[-group.mat[group,],]
   }
   

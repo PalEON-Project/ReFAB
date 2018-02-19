@@ -1,6 +1,6 @@
 site_diag <- function(bMax = 150, locn, x.meta, minAge = 0, maxAge = 10000, 
                       ageInterval = 100, path_to_samps = '~/Downloads/samps2zip/',
-                      path_to_Info = '~/Downloads/work/', control.pts,
+                      path_to_Info = '~/Downloads/work_3/', control.pts,
                       ten.count){
   
 locnClean <- gsub(' ', '-', locn)
@@ -10,7 +10,7 @@ x.meta.use <- x.meta[x.meta$site.name == locn,]
 
 test_site(x.meta.use)
 
-ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+ten_count_use = ten.count[which(x.meta$site.name == locn), ]
 ten_count_use[which(is.na(ten_count_use))] <- 0
 
 Y = as.matrix(ten_count_use)
@@ -77,7 +77,7 @@ plot(bio.quants[2,], xlim = c(maxAge/100,0), ylim = c(0,150), xaxt='n',
 axis(side = 3, at = rev(seq(0,maxAge/100, round((maxAge/100)/6))), labels = rev(seq(0,maxAge,round(maxAge/6))))
 ciEnvelope(x=1:(maxAge/100), ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
 points(bio.quants[2,],cex=1.1,pch=16,col = rev(colors[data_binned]))
-rug(x.meta[x.meta[,1]==site_number,]$age_bacon/100,lwd=2)
+rug(age_index,lwd=2)
 rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
 for(b in 1:20) {
   points(age_index, out.list[[b]], cex = .5)

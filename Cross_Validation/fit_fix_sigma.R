@@ -4,7 +4,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                           nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
                           nbhd = 5, lik.only = NULL, control.pts, 
                           sigma, group = NULL, group.mat, override = TRUE, 
-                          Nbeta=NA, ID = NA) {
+                          Nbeta=NA, ID = NA, liks.by.taxa = TRUE) {
 
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   
@@ -59,7 +59,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
 
   locnClean <- gsub(' ', '-', locn)
-  workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rda')
+  workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rdata')
   
   if(!file.exists(paste0('samplesList_',workFile)) | override == TRUE){  
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
@@ -68,10 +68,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   # get normal approx to likelihood for all samples for the location
 
-  
   source(file.path('genPareto','calc_lik_approx.R'))
   calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
-                  age_index, J, I, bMin = 5,bMax =  bMax-5,
+                  age_index, J, I, bMin = 5, bMax =  bMax-5,
                   workFile = workFile)
   
   if(lik.only==TRUE){
@@ -81,6 +80,36 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   load(workFile)
   
   Cmodel_pred <- compileNimble(model_pred)
+  
+  if(liks.by.taxa == TRUE){
+    vals <- 1:bMax
+    outLik = outPost = array(NA, dim = c(bMax, J, (ncol(Y)-1)))
+    
+    for(j in 1:J){
+      calcNodes <-  Cmodel_pred$getDependencies(paste0('b[',age_index[j],']'))
+      for(val in vals) {
+        # 1: set b value
+        Cmodel_pred$b[age_index[j]] <- val
+        # 2: do calculate on entire model to update all values:
+        calculate(Cmodel_pred, calcNodes)
+        # 3: for aggregated likelihood, just do calculate on 'Y' 
+        #so we get only the likelihood without the prior for b[j] 
+        #(though is is flat so probably doesn't matter)
+        calculate(Cmodel_pred, paste0("Y[",j,",", 1:ncol(Y),"]"))
+        # likelihood portion
+        # decompose into taxa Y's
+        # look at a matrix of likelihood contributions to each of the taxa
+        # one for each qually time points # one for the calibration outlier
+        for(s in 1:(ncol(Y)-1)){
+          # 4: for likelihood by taxon, need likelihood for each val, j, i triplet:
+          outLik[val,j,s] =  calculate(Cmodel_pred,paste0("Y[",j,",", s,"]")) # cm$calculate(calcNodes[45])  #
+        }
+      }	
+    }
+    
+    save(outLik, file=paste0('outLik.by.taxa.',locnClean,'.Rdata'))
+    stop()
+  }
       
   set.seed(seed)
       
@@ -202,11 +231,14 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                       workFile = workFile.left.out)
       
       if(FALSE){
+        
+      pdf('qually.liks.mean.pdf')
       par(mfrow=c(3,3))
       for(j in 1:J){
         plot(seq(5, bMax-5, by = 2), exp(out[,j]), typ='l', xlab = 'Biomass', ylab='Likelihood')
         title(paste0(age_index[j]))
       } 
+      dev.off()
       }
       
       load(workFile.left.out)
