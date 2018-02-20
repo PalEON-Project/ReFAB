@@ -18,7 +18,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("2018-01-08calibration.data.Rdata") #this needs to have cast.x in it. and the entire biomass and sites_rm
+load("2018-01-08calibration.data.Rdata") 
 load("cast.x.Rdata")
 load("sites_rm.Rdata")
 
@@ -27,10 +27,10 @@ trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
            'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
            "OSTRYCAR","ULMUS","TILIA","ALNUSX",
            "CYPERACE","PICEAX",
-           "ABIES","POPULUS","CARYA","LARIXPSEU","CUPRESSA")
-other.trees <- c("TAXUS","NYSSA",
-                 "CASTANEA","PLATANUS","SALIX",
-                 "LIQUIDAM")#NULL#c()
+           "ABIES","POPULUS","CARYA","LARIXPSEU","CUPRESSA","TAXUS","NYSSA",
+           "CASTANEA","PLATANUS","SALIX",
+           "LIQUIDAM")
+other.trees <- c()#NULL#c()
 drop.taxa <- NA#c('other_herbs')
 
 source('taxa_selection.R')
@@ -38,10 +38,10 @@ Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     cast.x = cast.x, sites_rm = sites_rm,
                     all.pollen.taxa.names = all.pollen.taxa.names,
                     prairie.include = T, other.herbs.include = T,
-                    other.trees.include = T, drop.taxa = drop.taxa,
+                    other.trees.include = F, drop.taxa = drop.taxa,
                     PFT.do = F)
 
-Niters <- 10000
+Niters <- 2000
 bMax <- 143
 
 #### Setting up 10 fold cross validation
@@ -53,29 +53,20 @@ Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib,intercept=TRUE,df=7)
+Z.knots = bs(biomass.calib,intercept=TRUE,df=5)
 u <- c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
-if(FALSE){
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                    Z.knots = Z.knots, u = u, Niters = Niters,
                                    group_rm = group_rm)
-}
 
-load(paste0("beta.est.group",group_rm,".Rdata"))
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                  samples.mixed = samples.mixed, u = u,
                  Niters = Niters, bMax = bMax, group_rm = group_rm)
 
 load(file=paste0('outLik.group.',group_rm,'.Rdata'))
-
-
-#load(paste0("~/Downloads/CVpred.samps/samples.pred.group",group_rm,".Rdata"))
-#load(paste0("~/Downloads/beta/beta.est.group",group_rm,".Rdata"))
-#load(paste0("~/Downloads/outs/outLik.group.",group_rm,".Rdata"))
-
 outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.pred))
 
 source('calibration.figs.R')
@@ -89,11 +80,11 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    #load(file = file.path('~/Downloads','CVpred.samps',paste0('samples.pred.group',i,'.Rdata')))
-    load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','samps7knots',paste0('samples.pred.group',i,'.Rdata')))
+    #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
-  pdf(paste0('validation.r2.all.pdf'))
+  pdf(paste0('validation.r2.7knots.pdf'))
   par(mfrow=c(1,1))
   plot(biomass, colMeans(samples.pred.mat, na.rm = T),
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
