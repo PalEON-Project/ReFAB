@@ -107,8 +107,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       }	
     }
     
-    save(outLik, file=paste0('outLik.by.taxa.',locnClean,'.Rdata'))
-    stop()
+    save(outLik, age_index, file=paste0('outLik.by.taxa.',locnClean,'.Rdata'))
+    #stop()
   }
       
   set.seed(seed)

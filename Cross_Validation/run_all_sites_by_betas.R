@@ -111,7 +111,8 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      nIts = 5000, nItsSave = 1000, seed = 1,
 		                 control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
-                     maxAge = 10000, Nbeta = beta, ID = runnum)
+                     maxAge = 10000, Nbeta = beta, ID = runnum,
+		                 liks.by.taxa = TRUE, bMax = 143)
 
 stop()
 
