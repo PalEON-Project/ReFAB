@@ -30,11 +30,11 @@ all.pollen.taxa.names <- colnames(cast.x)[5:84]
 trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
            'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
            "OSTRYCAR","ULMUS","TILIA","ALNUSX",
-           "CYPERACE","PICEAX",
-           "ABIES","POPULUS","CARYA","LARIXPSEU","CUPRESSA")
-other.trees <- c("TAXUS","NYSSA",
-                 "CASTANEA","PLATANUS","SALIX",
-                 "LIQUIDAM")#NULL#c()
+           "CYPERACE","PICEAX","ABIES","POPULUS",
+           "CARYA","LARIXPSEU","CUPRESSA","TAXUS","NYSSA",
+           "CASTANEA","PLATANUS",
+           "SALIX","LIQUIDAM")
+other.trees <- c() #NULL#c()
 drop.taxa <- NA#c('other_herbs')
 
 source('taxa_selection.R')
@@ -42,7 +42,7 @@ Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     cast.x = cast.x, sites_rm = sites_rm,
                     all.pollen.taxa.names = all.pollen.taxa.names,
                     prairie.include = T, other.herbs.include = T,
-                    other.trees.include = T, drop.taxa = drop.taxa,
+                    other.trees.include = F, drop.taxa = drop.taxa,
                     PFT.do = F)
 
 Niters <- 5000
@@ -84,7 +84,7 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    load(file = file.path('~/Downloads','samps7knots',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','samps.27',paste0('samples.pred.group',i,'.Rdata')))
     #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
