@@ -46,7 +46,7 @@ Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     PFT.do = F)
 
 Niters <- 5000
-bMax <- 143
+bMax <- 150
 
 #### Setting up 10 fold cross validation
 set.seed(5)
