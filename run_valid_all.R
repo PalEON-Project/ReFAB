@@ -14,7 +14,7 @@ load("2018-02-28all.calibration.data.Rdata")
 
 Niters <- 50000
 bMax <- 150
-group_rm <- NA
+group_rm <- c('ALL')
 
 #### Setting up 2/3 calibration 3/3 prediction
 Y.keep <- Y
