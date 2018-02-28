@@ -12,7 +12,7 @@ load("2018-02-28all.calibration.data.Rdata")
 #load("cast.x.Rdata")
 load("sites_rm.Rdata")
 
-Niters <- 500
+Niters <- 50000
 bMax <- 150
 group_rm <- NA
 
