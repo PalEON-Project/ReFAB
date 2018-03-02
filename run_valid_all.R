@@ -23,8 +23,8 @@ Y.calib <- Y; Y.pred <- Y
 biomass.calib <- biomass; biomass.pred <- biomass
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
-u <- c(0,30,150) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
+u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
