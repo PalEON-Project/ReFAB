@@ -43,9 +43,10 @@ biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,gr
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
-Z.test <- matrix(NA,length(biomass),5)
-for(i in 1:length(biomass)){
-  Z.test[i,] <- bs_nimble(u_given = biomass[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
+source("Workflow_Code/utils/bs_nimble.R")
+Z.test <- matrix(NA,length(biomass.calib),5)
+for(i in 1:length(biomass.calib)){
+  Z.test[i,] <- bs_nimble(u_given = biomass.calib[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
                           N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 }
 
