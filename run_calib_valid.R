@@ -40,8 +40,16 @@ Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
+#Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+
+Z.test <- matrix(NA,length(biomass),5)
+for(i in 1:length(biomass)){
+  Z.test[i,] <- bs_nimble(u_given = biomass[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
+                          N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+}
+
+Z.knots <- Z.test
 
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
@@ -67,26 +75,26 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    load(file = file.path('~/Downloads','samps.22',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','samps10fold_143',paste0('samples.pred.group',i,'.Rdata')))
     #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
   pdf(paste0('10.fold.r2.validation.pdf'))
   par(mfrow=c(1,1))
-  plot(biomass, colMeans(samples.pred.mat, na.rm = T),
+  plot(biomass.keep, colMeans(samples.pred.mat, na.rm = T),
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
        xlab="True Biomass", ylab="Predicted Mean Biomass")
   abline(a=0,b=1)
-  lm.mod <- lm(biomass~colMeans(samples.pred.mat)+0)
+  lm.mod <- lm(biomass.keep~colMeans(samples.pred.mat)+0)
   abline(lm.mod,lty=2)
   mtext(paste("r-squared",summary(lm.mod)$r.squared))
   
-  arrows(x0 = biomass, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
-         x1 = biomass, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+  arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+         x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
          code = 0, lwd=2)
   
   library(calibrate)
-  textxy(biomass, colMeans(samples.pred.mat, na.rm = T),1:100)
+  textxy(biomass.keep, colMeans(samples.pred.mat, na.rm = T),1:100)
   dev.off()
   #10, 1
   #9,10
