@@ -203,6 +203,11 @@ bs_nimble <-  nimbleFunction(
             
             N3[i+3] <- first + second           
         }
+        
+        ## This could be a hack ## 
+        if(u_given == u[length(u)]){
+          N3[i+3] <- 1
+        }
 
         return(N3)
     })
@@ -215,7 +220,7 @@ if(FALSE){
 u <- c(0, quantile(biomass,c(.25,.5,.75)),200) #u is the number of knots
 u_given <- 196
 
-bs_nimble(u_given, u=u, N0 = rep(0, 2),N1 = rep(0, 3), N2 = rep(0,4), N3 = rep(0, 5))
+bs_nimble(u_given, u=u, N0 = rep(0, 4),N1 = rep(0, 5), N2 = rep(0,6), N3 = rep(0, 7))
 bs(x = u_given, knots = u[2:(length(u)-1)], Boundary.knots = c(0,200),intercept=TRUE,degree=3)
 splineDesign(knots=u, x=u_given, ord = 2, outer.ok=TRUE) #test against this function
 
@@ -251,7 +256,7 @@ title("Basis Functions")
 #### example nimble use
 code <- nimbleCode({
    u_given ~ dunif(1,150)
-   Z[1:5] <- bs_nimble(u_given, u=u[1:3], N0[1:2], N1[1:3], N2[1:4], N3[1:5]) #Z size depends on number of knots length(Z) = length(u) - 4
+   Z[1:7] <- bs_nimble(u_given, u=u[1:5], N0[1:4], N1[1:5], N2[1:6], N3[1:7]) #Z size depends on number of knots length(Z) = length(u) - 4
                                         #You must write out indexing for u and Z
 })
 
@@ -266,7 +271,7 @@ Rmcmc.pred <- buildMCMC(spec.pred)
 cm <- compileNimble(m)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = m) #Error in cModel
 
-Cmcmc.pred$run(10000)
+Cmcmc.pred$run(1000)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 
 head(samples.pred)

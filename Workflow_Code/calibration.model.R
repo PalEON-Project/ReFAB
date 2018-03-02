@@ -13,8 +13,8 @@ source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial
 calib_code <- nimbleCode({
     for(r in 1:R){ 
       for(i in 1:I){
-        beta1[r,i] ~ dnorm(0,.04)
-        beta2[r,i] ~ dnorm(0,.04)
+        beta1[r,i] ~ dnorm(0,.1) #.04
+        beta2[r,i] ~ dnorm(0,.1) #.04
       }  
     }
     shape1[,] <- exp(Z[,] %*% beta1[,])

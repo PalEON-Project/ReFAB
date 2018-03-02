@@ -39,6 +39,11 @@ biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
+if(is.na(group_rm)){
+  Y.calib <- Y; Y.pred <- Y
+  biomass.calib <- biomass; biomass.pred <- biomass
+}
+
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
@@ -76,7 +81,7 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    load(file = file.path('~/Downloads','samps10fold_143',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','samps_bs',paste0('samples.pred.group',i,'.Rdata')))
     #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
