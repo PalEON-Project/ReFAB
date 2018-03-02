@@ -22,28 +22,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("2018-01-08calibration.data.Rdata") 
-load("cast.x.Rdata")
+load("2018-02-28all.calibration.data.Rdata") 
 load("sites_rm.Rdata")
 
-all.pollen.taxa.names <- colnames(cast.x)[5:84]
-trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
-           'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
-           "OSTRYCAR","ULMUS","TILIA","ALNUSX",
-           "CYPERACE","PICEAX","ABIES","POPULUS",
-           "CARYA","LARIXPSEU","CUPRESSA","TAXUS","NYSSA",
-           "CASTANEA","PLATANUS",
-           "SALIX","LIQUIDAM")
-other.trees <- c() #NULL#c()
-drop.taxa <- NA#c('other_herbs')
-
-source('taxa_selection.R')
-Y <- taxa_selection(trees = trees, other.trees = other.trees,
-                    cast.x = cast.x, sites_rm = sites_rm,
-                    all.pollen.taxa.names = all.pollen.taxa.names,
-                    prairie.include = T, other.herbs.include = T,
-                    other.trees.include = F, drop.taxa = drop.taxa,
-                    PFT.do = F)
+Y <- Y[-sites_rm,]
+biomass <- biomass[-sites_rm]
 
 Niters <- 5000
 bMax <- 150
@@ -57,8 +40,8 @@ Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
-u <- c(0,30,150) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
+u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
