@@ -9,7 +9,7 @@ calibration_model <- function(Y, biomass, Z.knots, u, Niters = 5000,
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
-source(file.path('Workflow_Code/','utils','linexp.R'))
+source(file.path('Workflow_Code','utils','linexp.R'))
   
    
 calib_code <- nimbleCode({
