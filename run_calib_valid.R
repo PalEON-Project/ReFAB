@@ -22,10 +22,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("2018-02-28all.calibration.data.Rdata") 
+load("2018-02-28all.calibration.data.Rdata")
 load("sites_rm.Rdata")
 
 Y <- Y[-sites_rm,]
+Y <- Y[,rev(order(colMeans(Y)))]
 biomass <- biomass[-sites_rm]
 
 Niters <- 5000
@@ -95,12 +96,12 @@ if(group_rm == 10){
   abline(lm.mod,lty=2)
   mtext(paste("r-squared",summary(lm.mod)$r.squared))
   
-  arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
-         x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+  arrows(x0 = biomass.keep, y0 = apply(samples.pred,2,FUN = quantile,.05),
+         x1 = biomass.keep, y1 = apply(samples.pred,2,FUN = quantile,.975),
          code = 0, lwd=2)
   
   library(calibrate)
-  textxy(biomass.keep, colMeans(samples.pred.mat, na.rm = T),1:100)
+  textxy(biomass.keep, colMeans(samples.pred, na.rm = T),1:100)
   dev.off()
   #10, 1
   #9,10
