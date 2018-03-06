@@ -12,11 +12,11 @@ pred_code <- nimbleCode({
     Zb[j,1:knots] <- bs_nimble(b[j], u[1:(knots-2)], N0[1:(knots-3)], N1[1:(knots-2)], N2[1:(knots-1)], N3[1:knots])
   }
   
-  for(i in 1:I){
-    for(j in 1:J){
-      shape1[j,i] <- exp(sum(Zb[j,1:knots] %*% beta1[1:knots,i]))
-      shape2[j,i] <- exp(sum(Zb[j,1:knots] %*% beta2[1:knots,i]))
-    }
+  shape1.hold[,] <- (Zb[,] %*% beta1[,])
+  shape2.hold[,] <- (Zb[,] %*% beta2[,])
+  for(j in 1:J){
+    shape1[j,] <- exp(shape1.hold[j,])
+    shape2[j,] <- exp(shape2.hold[j,])
   }
   
   for(j in 1:J){
@@ -76,6 +76,8 @@ constants.pred = list(bMax = bMax, beta1 = beta1.est.real,
 inits.pred = list(b=rep(25,J))
 
 dimensions.pred = list(shape1 = dim(phi), shape2 = dim(phi),
+                       shape1.hold = c(nrow(Y),ncol(Y)),
+                       shape2.hold = c(nrow(Y),ncol(Y)),
                        Zb = dim(Zb), beta1 = dim(beta1.est.real),
                        beta2 = dim(beta2.est.real), Y = dim(Y))
 
@@ -92,6 +94,7 @@ Rmcmc.pred <- buildMCMC(spec.pred)
 cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) 
 
+if(FALSE){
 vals <- 1:bMax
 outLik = outPost = array(NA, dim = c(bMax, J, (ncol(Y)-1)))
 
@@ -128,6 +131,7 @@ bInit[is.na(bInit)] <- 25
 
 inits_pred = list(b = bInit)
 cm$setInits(inits_pred)
+}
 
 ptm <- proc.time()
 set.seed(0)

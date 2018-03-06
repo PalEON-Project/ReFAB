@@ -9,16 +9,23 @@ calibration_model <- function(Y, biomass, Z.knots, u, Niters = 5000,
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
+source(file.path('Workflow_Code/','utils','linexp.R'))
   
+   
 calib_code <- nimbleCode({
     for(r in 1:R){ 
       for(i in 1:I){
-        beta1[r,i] ~ dnorm(0,.1) #.04
-        beta2[r,i] ~ dnorm(0,.1) #.04
+        beta1[r,i] ~ dnorm(0,.04) #.04
+        beta2[r,i] ~ dnorm(0,.04) #.04
       }  
     }
-    shape1[,] <- exp(Z[,] %*% beta1[,])
-    shape2[,] <- exp(Z[,] %*% beta2[,])
+    shape1.hold[,] <- (Z[,] %*% beta1[,])
+    shape2.hold[,] <- (Z[,] %*% beta2[,])
+    for(j in 1:J){
+      shape1[j,] <- exp(shape1.hold[j,])
+      shape2[j,] <- exp(shape2.hold[j,])
+    }
+    
     for(j in 1:J){
       Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
       for(i in 2:(I-1)){
@@ -43,7 +50,9 @@ inits = list(beta1 = matrix(1, ncol(Z.knots), ncol(Y)),
              beta2 = matrix(1, ncol(Z.knots), ncol(Y)))
 
 dimensions = list(shape1 = c(nrow(Y),ncol(Y)),
-                  shape2 = c(nrow(Y),ncol(Y)), 
+                  shape2 = c(nrow(Y),ncol(Y)),
+                  shape1.hold = c(nrow(Y),ncol(Y)),
+                  shape2.hold = c(nrow(Y),ncol(Y)),
                   Z = dim(Z.knots), 
                   beta1 = c(ncol(Z.knots), ncol(Y)), 
                   beta2 = c(ncol(Z.knots), ncol(Y)),
@@ -57,7 +66,7 @@ model <- nimbleModel(calib_code, inits = inits, constants = constants,
                      data = data, dimensions = dimensions)
 
 # compiled version of the model
-Cmodel <- compileNimble(model)
+Cmodel <- compileNimble(model,showCompilerOutput = T)
 
 # set up MCMC
 spec <- configureMCMC(model, print = TRUE, useConjugacy = FALSE)
@@ -79,7 +88,7 @@ Cmcmc <- compileNimble(Rmcmc, project = model)
 set.seed(0)
 Cmcmc$run(Niters)#50000
 samples.mixed <- as.matrix(Cmcmc$mvSamples)
-save(samples.mixed, Y, biomass, file = paste0("beta.est.group", group_rm, ".Rdata"))
+save(samples.mixed, Y, biomass, file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 return(samples.mixed)
 

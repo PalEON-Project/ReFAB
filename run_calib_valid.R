@@ -26,7 +26,7 @@ load("2018-02-28all.calibration.data.Rdata")
 load("sites_rm.Rdata")
 
 Y <- Y[-sites_rm,]
-Y <- Y[,rev(order(colMeans(Y)))]
+#Y <- Y[,rev(order(colMeans(Y)))]
 biomass <- biomass[-sites_rm]
 
 Niters <- 5000
