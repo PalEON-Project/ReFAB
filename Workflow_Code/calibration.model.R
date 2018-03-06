@@ -22,8 +22,8 @@ calib_code <- nimbleCode({
     shape1.hold[,] <- (Z[,] %*% beta1[,])
     shape2.hold[,] <- (Z[,] %*% beta2[,])
     for(j in 1:J){
-      shape1[j,] <- exp(shape1.hold[j,])
-      shape2[j,] <- exp(shape2.hold[j,])
+      shape1[j,] <- linexp(shape1.hold[j,])
+      shape2[j,] <- linexp(shape2.hold[j,])
     }
     
     for(j in 1:J){

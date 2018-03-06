@@ -22,6 +22,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
+# histogram of betas to see how it looks relative to prior
+# the prior might be too tight now. with linexp
+# rel to an sd of 5. 
+# might want a flat prior like => 1/400 precision
+
 load("2018-02-28all.calibration.data.Rdata")
 load("sites_rm.Rdata")
 
@@ -63,6 +68,15 @@ samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                    Z.knots = Z.knots, u = u, Niters = Niters,
                                    group_rm = group_rm)
 
+pdf('beta.hists.linexp.pdf')
+par(mfrow=c(4,4))
+for(i in 1:ncol(samples.mixed)){
+  plot(samples.mixed[,i],typ='l')
+  hist(samples.mixed[,i],col='gray',freq=F,main=colnames(samples.mixed)[i])
+  lines(density(rnorm(nrow(samples.mixed), 0, sd = 5)), lwd =2)
+}
+dev.off()
+
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                  samples.mixed = samples.mixed, u = u,
@@ -92,7 +106,7 @@ if(group_rm == 10){
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
        xlab="True Biomass", ylab="Predicted Mean Biomass")
   abline(a=0,b=1)
-  lm.mod <- lm(biomass.keep~colMeans(samples.pred.mat)+0)
+  lm.mod <- lm(biomass.keep~colMeans(samples.pred)+0)
   abline(lm.mod,lty=2)
   mtext(paste("r-squared",summary(lm.mod)$r.squared))
   
