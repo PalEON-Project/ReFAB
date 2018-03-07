@@ -77,12 +77,36 @@ for(i in 1:ncol(samples.mixed)){
 }
 dev.off()
 
+burnin <- round(.2 * nrow(samples.mixed))
+new.biomass <- 1:bMax
+Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
+#u <- u #should have defined knots in calibration
+#u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+
+for(i in 1:length(new.biomass)){
+  u_given <- new.biomass[i]
+  Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
+                        N1 = rep(0, (length(u))), 
+                        N2 = rep(0, (length(u)+1)), 
+                        N3 = rep(0, (length(u)+2)))
+}
+
+source('~/ReFAB/Workflow_Code/utils/getLik.R')
+outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
+                 bMax = bMax, Y = Y)
+pdf(paste0('liks_linexp',group_rm,'.pdf'))
+par(mfrow=c(2,4))
+for(i in 1:nrow(Y)){
+  plot(1:bMax, outLik[i,],main=i,typ='l')
+}
+dev.off()
+save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
+
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                  samples.mixed = samples.mixed, u = u,
                  Niters = Niters, bMax = bMax, group_rm = group_rm)
 
-load(file=paste0('outLik.group.',group_rm,'.Rdata'))
 outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.pred))
 
 source('calibration.figs.R')
