@@ -13,8 +13,16 @@ getLik <-  function(Z,u,beta,bMax,Y) {
         Z = Zn
     }
     
-    shape1 <- exp(Z%*%matrix(beta[1:110], nrow = 5))
-    shape2 <- exp(Z%*%matrix(beta[111:220], nrow = 5))
+    shape1 <- linexp(Z%*%matrix(beta[1:110], nrow = 5), I = ncol(Y),
+                     J = nrow(Z.new))
+    shape2 <- linexp(Z%*%matrix(beta[111:220], nrow = 5), I = ncol(Y),
+                     J = nrow(Z.new))
+    
+    # for(j in 1:nrow(shape1.hold)){
+    #   shape1[j,] <- linexp(shape1.hold[j,])
+    #   shape2[j,] <- linexp(shape2.hold[j,])
+    # }
+
     J <- nrow(Y)
     liks <- matrix(0, J, bMax)
     n <- rowSums(Y)
@@ -23,7 +31,8 @@ getLik <-  function(Z,u,beta,bMax,Y) {
     ## if done by species you'd need 'liks' to be 
     ## a 3-d array and not add in the line with the 
     ## second call to dbetabin
-    for(bb in 1:bMax) {    
+    for(bb in 1:bMax) { 
+      print(paste('biomass =',bb))
         for(j in 1:J) {
             liks[j,bb] <- dbetabin(Y[j,1], shape1[bb, 1], shape2[bb, 1], n[j], log = TRUE)
             for(i in 2:(I-1)){

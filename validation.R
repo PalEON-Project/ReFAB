@@ -94,30 +94,6 @@ Rmcmc.pred <- buildMCMC(spec.pred)
 cm <- compileNimble(model_pred)
 Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred) 
 
-new.biomass <- 1:bMax
-Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
-#u <- u #should have defined knots in calibration
-#u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
-
-for(i in 1:length(new.biomass)){
-  u_given <- new.biomass[i]
-  Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
-                        N1 = rep(0, (length(u))), 
-                        N2 = rep(0, (length(u)+1)), 
-                        N3 = rep(0, (length(u)+2)))
-}
-
-outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(samples.mixed),]),
-       bMax = bMax, Y = Y)
-pdf(paste0('liks_linexp',group_rm,'.pdf'))
-par(mfrow=c(2,4))
-for(i in 1:nrow(Y)){
-  plot(1:bMax, liks[i,],main=i,typ='l')
-}
-dev.off()
-
-save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
-
 # bInit <- numeric(J)
 # for(j in 1:j){
 #   bInit[j] <- mean(apply(outLik[,j],2,which.max))

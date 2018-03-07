@@ -19,12 +19,8 @@ calib_code <- nimbleCode({
         beta2[r,i] ~ dnorm(0,.04) #.04
       }  
     }
-    shape1.hold[,] <- (Z[,] %*% beta1[,])
-    shape2.hold[,] <- (Z[,] %*% beta2[,])
-    for(j in 1:J){
-      shape1[j,] <- linexp(shape1.hold[j,])
-      shape2[j,] <- linexp(shape2.hold[j,])
-    }
+    shape1[,] <- linexp(Z[,] %*% beta1[,], J, I)
+    shape2[,] <- linexp(Z[,] %*% beta2[,], J, I)
     
     for(j in 1:J){
       Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
@@ -51,8 +47,6 @@ inits = list(beta1 = matrix(1, ncol(Z.knots), ncol(Y)),
 
 dimensions = list(shape1 = c(nrow(Y),ncol(Y)),
                   shape2 = c(nrow(Y),ncol(Y)),
-                  shape1.hold = c(nrow(Y),ncol(Y)),
-                  shape2.hold = c(nrow(Y),ncol(Y)),
                   Z = dim(Z.knots), 
                   beta1 = c(ncol(Z.knots), ncol(Y)), 
                   beta2 = c(ncol(Z.knots), ncol(Y)),
