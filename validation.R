@@ -4,6 +4,8 @@ validation_model <- function(Y, Z.knots, samples.mixed, u, Niters,
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
 source("Workflow_Code/utils/bs_nimble.R")
+source(file.path('Workflow_Code','utils','linexp.R'))
+  
   
 pred_code <- nimbleCode({
   for(j in 1:J){
@@ -12,12 +14,8 @@ pred_code <- nimbleCode({
     Zb[j,1:knots] <- bs_nimble(b[j], u[1:(knots-2)], N0[1:(knots-3)], N1[1:(knots-2)], N2[1:(knots-1)], N3[1:knots])
   }
   
-  shape1.hold[,] <- (Zb[,] %*% beta1[,])
-  shape2.hold[,] <- (Zb[,] %*% beta2[,])
-  for(j in 1:J){
-    shape1[j,] <- linexp(shape1.hold[j,])
-    shape2[j,] <- linexp(shape2.hold[j,])
-  }
+  shape1[,] <- linexp(Zb[,] %*% beta1[,], J = J, I = I)
+  shape2[,] <- linexp(Zb[,] %*% beta2[,], J = J, I = I)
   
   for(j in 1:J){
     Y[j, 1] ~ dbetabin(shape1[j, 1], shape2[j, 1], n[j])
