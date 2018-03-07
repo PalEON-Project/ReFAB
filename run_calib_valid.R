@@ -63,6 +63,7 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
+if(FALSE){
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                    Z.knots = Z.knots, u = u, Niters = Niters,
@@ -101,6 +102,10 @@ for(i in 1:nrow(Y)){
 }
 dev.off()
 save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
+}
+
+load(paste0('outLik.group.',group_rm,'.Rdata'))
+load(paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
