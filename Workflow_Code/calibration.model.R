@@ -15,8 +15,8 @@ source(file.path('Workflow_Code','utils','linexp.R'))
 calib_code <- nimbleCode({
     for(r in 1:R){ 
       for(i in 1:I){
-        beta1[r,i] ~ dnorm(0,.04) #.04
-        beta2[r,i] ~ dnorm(0,.04) #.04
+        beta1[r,i] ~ dnorm(0,.0025) #.04
+        beta2[r,i] ~ dnorm(0,.0025) #.04
       }  
     }
     shape1[,] <- linexp(Z[,] %*% beta1[,], J, I)

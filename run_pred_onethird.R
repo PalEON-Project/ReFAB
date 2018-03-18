@@ -8,13 +8,13 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("2018-02-28all.calibration.data.Rdata") 
+load("threethirds_v1.0.Rdata") 
 #load("cast.x.Rdata")
 load("sites_rm.Rdata")
 
 Niters <- 10000
-bMax <- 143
-group_rm <- c('TWOTHIRDS_143')
+bMax <- 150
+group_rm <- c('TWOTHIRDS_150')
 
 #### Setting up 2/3 calibration 3/3 prediction
 Y.keep <- Y
@@ -35,6 +35,7 @@ source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                                  samples.mixed = samples.mixed, u = u,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm)
+
 
 pdf(paste0('gold.r2.validation.pdf'))
 par(mfrow=c(1,1))

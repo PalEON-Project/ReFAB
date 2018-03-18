@@ -8,22 +8,20 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("2018-02-28all.calibration.data.Rdata") 
-#load("cast.x.Rdata")
-#load("sites_rm.Rdata")
+load("threethirds_v1.0.Rdata")
 
 Niters <- 10000
-bMax <- 143
-group_rm <- c('ALL_143')
+bMax <- 150
+group_rm <- c('ALL_150')
 
-#### Setting up 2/3 calibration 3/3 prediction
+#### Setting up 3/3 calibration 3/3 prediction
 Y.keep <- Y
 biomass.keep <- biomass
 Y.calib <- Y; Y.pred <- Y
 biomass.calib <- biomass; biomass.pred <- biomass
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
+Z.knots = bs(biomass, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))

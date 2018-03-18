@@ -27,14 +27,9 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load("2018-02-28all.calibration.data.Rdata")
-load("sites_rm.Rdata")
+load("twothirds_v1.0.Rdata")
 
-Y <- Y[-sites_rm,]
-#Y <- Y[,rev(order(colMeans(Y)))]
-biomass <- biomass[-sites_rm]
-
-Niters <- 5000
+Niters <- 50000
 bMax <- 150
 
 #### Setting up 10 fold cross validation
@@ -63,12 +58,16 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-if(FALSE){
 source(file.path('Workflow_Code','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                    Z.knots = Z.knots, u = u, Niters = Niters,
                                    group_rm = group_rm)
 
+source(file.path('Workflow_Code','utils','getLik.R'))
+outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
+                 bMax = bMax, Y = Y)
+
+if(FALSE){
 pdf('beta.hists.linexp.pdf')
 par(mfrow=c(4,4))
 for(i in 1:ncol(samples.mixed)){
@@ -92,9 +91,6 @@ for(i in 1:length(new.biomass)){
                         N3 = rep(0, (length(u)+2)))
 }
 
-source('~/ReFAB/Workflow_Code/utils/getLik.R')
-outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
-                 bMax = bMax, Y = Y)
 pdf(paste0('liks_linexp',group_rm,'.pdf'))
 par(mfrow=c(2,4))
 for(i in 1:nrow(Y)){
@@ -103,9 +99,6 @@ for(i in 1:nrow(Y)){
 dev.off()
 save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
 }
-
-load(paste0('outLik.group.',group_rm,'.Rdata'))
-load(paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
