@@ -1,4 +1,6 @@
 getLik <-  function(Z,u,beta,bMax,Y) {
+  source(file.path('Workflow_Code','utils','linexp.R'))
+
     knots = 5
     #u <- c(rep(attr(Z,"Boundary.knots")[1],1),attr(Z,"knots"),rep(attr(Z,"Boundary.knots")[2],1))
     N0 = rep(0, (length(u)-1))
