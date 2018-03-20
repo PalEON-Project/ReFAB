@@ -59,9 +59,14 @@ for(i in 1:length(biomass.calib)){
 Z.knots <- Z.test
 
 source(file.path('Workflow_Code','calibration.model.R'))
-samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
-                                   Z.knots = Z.knots, u = u, Niters = Niters,
-                                   group_rm = group_rm)
+if(FALSE){
+  samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
+                                     Z.knots = Z.knots, u = u, Niters = Niters,
+                                     group_rm = group_rm)
+}
+
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+
 if(FALSE){
 pdf('beta.hists.linexp.pdf')
 par(mfrow=c(4,4))

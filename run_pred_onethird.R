@@ -27,9 +27,28 @@ Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax)
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source(file.path('Workflow_Code','calibration.model.R'))
-samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
-                                   Z.knots = Z.knots, u = u, Niters = Niters,
-                                   group_rm = group_rm)
+if(FALSE){
+  samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
+                                     Z.knots = Z.knots, u = u, Niters = Niters,
+                                     group_rm = group_rm)
+}
+
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+
+burnin <- round(.2 * nrow(samples.mixed))
+new.biomass <- 1:bMax
+Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
+for(i in 1:length(new.biomass)){
+  u_given <- new.biomass[i]
+  Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
+                        N1 = rep(0, (length(u))), 
+                        N2 = rep(0, (length(u)+1)), 
+                        N3 = rep(0, (length(u)+2)))
+}
+source(file.path('Workflow_Code','utils','getLik.R'))
+outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
+                 bMax = bMax, Y = Y)
+
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
