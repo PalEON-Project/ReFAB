@@ -92,7 +92,7 @@ save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
-Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
+Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z.knots))
 for(i in 1:length(new.biomass)){
   u_given <- new.biomass[i]
   Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),

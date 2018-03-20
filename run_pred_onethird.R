@@ -23,9 +23,16 @@ Y.calib <- Y[-sites_rm,]; Y.pred <- Y
 biomass.calib <- biomass[-sites_rm]; biomass.pred <- biomass
 
 #### Making sure Z.knots and u are the same between calibration and validation
-Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
+source("Workflow_Code/utils/bs_nimble.R")
+Z.test <- matrix(NA,length(biomass.calib),5)
+for(i in 1:length(biomass.calib)){
+  Z.test[i,] <- bs_nimble(u_given = biomass.calib[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
+                          N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+}
+
+Z.knots <- Z.test
 source(file.path('Workflow_Code','calibration.model.R'))
 if(FALSE){
   samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
@@ -37,7 +44,7 @@ load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
-Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z))
+Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z.knots))
 for(i in 1:length(new.biomass)){
   u_given <- new.biomass[i]
   Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
