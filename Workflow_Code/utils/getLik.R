@@ -1,4 +1,6 @@
 getLik <-  function(Z,u,beta,bMax,Y) {
+  library(nimble)
+  source(file.path('genPareto','betabin.R'))
   source(file.path('Workflow_Code','utils','linexp.R'))
 
     knots = 5
