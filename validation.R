@@ -1,5 +1,5 @@
 validation_model <- function(Y, Z.knots, samples.mixed, u, Niters,
-                             bMax = 150, group_rm = NA){
+                             bMax = 150, group_rm = NA, outLik){
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
@@ -96,6 +96,8 @@ Cmcmc.pred <- compileNimble(Rmcmc.pred, project = model_pred)
 # for(j in 1:j){
 #   bInit[j] <- mean(apply(outLik[,j],2,which.max))
 # }
+
+
 
 bInit <- apply(outLik,1,which.max)
 bInit[is.na(bInit)] <- 25

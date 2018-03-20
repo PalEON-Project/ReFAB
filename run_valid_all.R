@@ -32,7 +32,8 @@ samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                                  samples.mixed = samples.mixed, u = u,
-                                 Niters = Niters, bMax = bMax, group_rm = group_rm)
+                                 Niters = Niters, bMax = bMax, group_rm = group_rm,
+                                 outLik = outLik)
 
 pdf(paste0('all4calib.r2.validation.pdf'))
 par(mfrow=c(1,1))
