@@ -6,7 +6,9 @@ if (is.na(arg[1])) {
   runnum <- as.numeric(arg[1])
 }
 
-dat.index <- data.frame(group_rm=sort(rep(1:10,20)),beta_row =rep(round(seq(2000,10000,length.out = 20)),10))
+dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
+                        beta_row =rep(round(seq(2000,10000,length.out = 20)),10),
+                        counter = rep(1:20,10))
 
 group_rm <- dat.index[runnum, 'group_rm']
 beta_row <- dat.index[runnum, 'beta_row']
@@ -59,7 +61,7 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+load(file = paste0("beta.est.group.in", 'ALL_150', ".Rdata")) #'ALL_150' or group_rm
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -81,4 +83,45 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
                                  outLik = outLik, beta_row)
 
+####
+#### Plotting ####
+####
 
+if(FALSE){
+samples.pred.mat <- array(NA,dim=c(1000,length(biomass.keep),20))
+for(i in 1:200){
+  load(file = file.path('~/Downloads','samps.beta.uncert',
+                        paste0('samples.pred.group',dat.index[i,'group_rm'],'beta',dat.index[i,'beta_row'],'.Rdata')))
+  #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+  samples.pred.mat[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- samples.pred[,grep('b',colnames(samples.pred))]
+}
+pdf(paste0('10.fold.r2.validation.beta_uncert.pdf'))
+par(mfrow=c(1,1))
+plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass", ylab="Predicted Mean Biomass",main='10 Fold CV')
+abline(a=0,b=1)
+lm.mod <- lm(biomass.keep ~ apply(samples.pred.mat,2,FUN = quantile,.5)+0)
+abline(lm.mod,lty=2)
+mtext(paste("r-squared",summary(lm.mod)$r.squared))
+
+arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+       x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+       code = 0, lwd=2)
+
+library(calibrate)
+textxy(biomass.keep,  apply(samples.pred.mat,2,FUN = quantile,.5),1:100)
+dev.off()
+
+pdf('trace.hists.beta.uncert.10fold.pdf')
+par(mfrow=c(4,4))
+for(i in 1:100){
+  hist(samples.pred.mat[,i,],col='gray',freq = F,main=i,xlim=c(0,150))
+  plot(samples.pred.mat[,i,1],typ='l',ylim=c(0,150),main = i)
+  for(n in 2:20){
+    points(samples.pred.mat[,i,n],typ='l')
+  }
+}
+dev.off()
+
+}
