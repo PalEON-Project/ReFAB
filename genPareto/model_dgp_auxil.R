@@ -1,3 +1,5 @@
+library(nimble)
+source(file.path('Workflow_Code','utils','linexp.R'))
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
 source(file.path('Workflow_Code','utils','bs_nimble.R')) # code for b-spline basis as user-defined function
 
