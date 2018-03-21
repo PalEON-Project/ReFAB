@@ -56,60 +56,30 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                         N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)),
                         N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
   
-  dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
+  dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y),
+                         beta1 = dim(beta1), beta2=dim(beta2),shape.hold1 = c(1,I), shape.hold2 = c(1,I))
+  
+  inits.pred = list(b=rep(25,TT))
 
   locnClean <- gsub(' ', '-', locn)
   workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rdata')
-  
-  if(!file.exists(paste0('samplesList_',workFile)) | override == TRUE){  
+
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),
-                              dimensions = dimensions_pred)
+                              dimensions = dimensions_pred, inits = inits.pred)
   
   # get normal approx to likelihood for all samples for the location
 
   source(file.path('genPareto','calc_lik_approx.R'))
-  calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
-                  age_index, J, I, bMin = 5, bMax =  bMax-5,
-                  workFile = workFile)
+  if(TRUE){
+    calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
+                    age_index, J, I, bMin = 5, bMax =  bMax-5,
+                    workFile = workFile)
+  }
   
-  if(lik.only==TRUE){
-    print('done')
-  }else{
-
   load(workFile)
   
   Cmodel_pred <- compileNimble(model_pred)
-  
-  if(liks.by.taxa == TRUE){
-    vals <- 1:bMax
-    outLik = outPost = array(NA, dim = c(bMax, J, (ncol(Y)-1)))
-    
-    for(j in 1:J){
-      calcNodes <-  Cmodel_pred$getDependencies(paste0('b[',age_index[j],']'))
-      for(val in vals) {
-        # 1: set b value
-        Cmodel_pred$b[age_index[j]] <- val
-        # 2: do calculate on entire model to update all values:
-        calculate(Cmodel_pred, calcNodes)
-        # 3: for aggregated likelihood, just do calculate on 'Y' 
-        #so we get only the likelihood without the prior for b[j] 
-        #(though is is flat so probably doesn't matter)
-        calculate(Cmodel_pred, paste0("Y[",j,",", 1:ncol(Y),"]"))
-        # likelihood portion
-        # decompose into taxa Y's
-        # look at a matrix of likelihood contributions to each of the taxa
-        # one for each qually time points # one for the calibration outlier
-        for(s in 1:(ncol(Y)-1)){
-          # 4: for likelihood by taxon, need likelihood for each val, j, i triplet:
-          outLik[val,j,s] =  calculate(Cmodel_pred,paste0("Y[",j,",", s,"]")) # cm$calculate(calcNodes[45])  #
-        }
-      }	
-    }
-    
-    save(outLik, age_index, file=paste0('outLik.by.taxa.',locnClean,'.Rdata'))
-    #stop()
-  }
       
   set.seed(seed)
       
@@ -176,86 +146,6 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
-   
-  }
   
-  if(!is.na(group) | FALSE){
- 
-  load(file = paste0('samplesList_',workFile,'.Rda'))     
-      Y = as.matrix(ten_count_use)
-      
-      sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
-      age_bins <- seq(minAge, maxAge, ageInterval)
-      age_index <- as.matrix(as.numeric(
-        cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
-      ))
-      
-      tmp <- data.frame(cbind(age_index, Y))
-      names(tmp)[1] <- 'age_index'
-      
-      Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
-      
-      Y2 <- Y2[group.mat[group,],]
-      
-      Y <- as.matrix(Y2[ , -c(1,2)])
-      age_index <- Y2[,1]
-      
-      Z_knots <- Z
-      TT <- length(age_bins)-1
-      I <- ncol(Y)
-      K <- ncol(Z_knots)
-      J <- length(age_index)
-      n <- rowSums(Y)
-      Zb <- matrix(NA,TT,K)
-      # new_biomass <- seq(1, bMax, 1)  # needed?
-      # Z_new <- matrix(0, nrow=length(new_biomass), ncol=K) # needed?
-      
-      data_pred = list(Y = Y, sigma = sigma, b = colMeans(samplesList[round(nrow(samplesList)*.2):nrow(samplesList),1:100]))
-      
-      constants_pred = list(order = order, beta1 = beta1, beta2 = beta2, I = I, J = J,
-                            T = TT, n = n, u = u, N0 = rep(0, (length(u)-1)), 
-                            N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)),
-                            N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
-      
-      dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y))
-      
-      model_pred <- nimbleModel(pred_code_fix_b, constants = constants_pred,
-                                data = c(data_pred, list(constraint = rep(1,TT))),
-                                dimensions = dimensions_pred)
-      
-      workFile.left.out <- paste0('left.out_workInfo.', locnClean, 'Sigma', sigma, 'Group', group, '.Rda')
-      
-      source(file.path('genPareto','calc_lik_approx.R'))
-      calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
-                      age_index, J, I, bMin = 5,bMax =  bMax-5,
-                      workFile = workFile.left.out)
-      
-      if(FALSE){
-        
-      pdf('qually.liks.mean.pdf')
-      par(mfrow=c(3,3))
-      for(j in 1:J){
-        plot(seq(5, bMax-5, by = 2), exp(out[,j]), typ='l', xlab = 'Biomass', ylab='Likelihood')
-        title(paste0(age_index[j]))
-      } 
-      dev.off()
-      }
-      
-      load(workFile.left.out)
-      
-      model_pred$calculate()
-      log.prob.all <- model_pred$getLogProb('Y')
-
-      log.prob.data <- numeric(length(age_index))
-      for(a in 1:length(age_index)){
-        log.prob.data[a] <- model_pred$getLogProb(paste0('Y[',age_index[a],']'))
-      }
-
-      log.prob.list <- list(log.prob.all=log.prob.all,log.prob.data=log.prob.data, samples.rm = group.mat[group,])
-      
-      save(log.prob.list,file = paste0('log.prob.',locnClean, 'Sigma', sigma, 'Group', group,'.Rdata'))
-   
-  }
-  }
 
 }

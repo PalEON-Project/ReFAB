@@ -38,18 +38,17 @@ control.pts<-read.csv(file.path('Data','control.pts.csv'))
 # load(file.path(dataDir,'allPredData.Rda')) # load for 10K run
 # load('paleon.data.Rdata') # adding via ssh rather than github
 
-load(file = paste0("nimble.betas_1_2_horiz_plus2018-01-08.Rdata")) #load via ssh
+load(file = paste0("beta.est.group.inTWOTHIRDS_150.Rdata")) #load via ssh
 
-i.beta <- grep("beta",colnames(samples.mixed))
-i.beta.pine <- grep("beta.pine",colnames(samples.mixed))
-i.beta1 <- i.beta[-i.beta.pine]
+i.beta1 <- grep("beta1",colnames(samples.mixed))
+i.beta2 <- grep("beta2",colnames(samples.mixed))
 
 beta <- dataID[dataID$ID==runnum,'beta']
 
 Nbeta <- round(seq(250,nrow(samples.mixed),length.out = 20))[beta]
 
 beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],5,ncol(ten.count))
-beta2.est.real = matrix(samples.mixed[Nbeta,i.beta.pine],5,ncol(ten.count))
+beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],5,ncol(ten.count))
 
 #beta1.est.real = matrix(colMeans(samples.mixed[,i.beta1]),5,ncol(ten.count))
 #beta2.est.real = matrix(colMeans(samples.mixed[,i.beta.pine]),5,ncol(ten.count))
@@ -108,11 +107,11 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 5000, nItsSave = 1000, seed = 1,
+                     nIts = 500, nItsSave = 100, seed = 1,
 		                 control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
-		                 liks.by.taxa = TRUE, bMax = 143)
+		                 liks.by.taxa = TRUE, bMax = 150)
 
 stop()
 
@@ -125,10 +124,10 @@ for(l in unique(dataID$name)[39:62]){
 }
 
 ## Individual Site Diagnostics
-site_diag(locn = 'Cub Lake', x.meta = x.meta, ten.count = ten.count,
-          control.pts = control.pts, bMax = 150,
-          path_to_samps = "~/ReFAB/samplesList_workInfo_1_Cub-Lake_Beta_20.Rda",
-          path_to_Info = "~/ReFAB/workInfo_1_Cub-Lake_Beta_20.Rda")
+site_diag(locn = 'Qually Pond', x.meta = x.meta, ten.count = ten.count,
+          control.pts = control.pts, bMax = 143,
+          path_to_samps = "~/Downloads/qually.samps/",
+          path_to_Info = "~/Downloads/qually.liks/")
 
 ## Simple Site Diagnositics
 plot(colMeans(samplesList[,1:100]),col='red',pch=19,ylim=c(0,150))

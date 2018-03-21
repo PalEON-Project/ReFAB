@@ -78,8 +78,12 @@ pred_code_fix_sigma <- nimbleCode({
   # should be best to have each row of shape{1,2} be a node rather than
   # entire shape{1,2} matrices; this syntax accomplishes that
   # this is because b[t] updates have rows of shape{1,2} as dependents
-    shape1[,] <- linexp(Zb[,] %*% beta1[,],J,I)
-    shape2[,] <- linexp(Zb[,] %*% beta2[,],J,I)
+  for(t in 1:T){
+    shape.hold1[,] <- Zb[t,1:5] %*% beta1[1:5,1:I]
+    shape.hold2[,] <- Zb[t,1:5] %*% beta2[1:5,1:I]
+    shape1[t,1:I] <- linexp_vec(shape.hold1[,],I)
+    shape2[t,1:I] <- linexp_vec(shape.hold2[,],I)
+  }
   
   for(j in 1:J){
     Y[j, 1] ~ dbetabin(shape1[age_index[j], 1], shape2[age_index[j], 1], n[j])
