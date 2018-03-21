@@ -1,5 +1,6 @@
 validation_model <- function(Y, Z.knots, samples.mixed, u, Niters,
-                             bMax = 150, group_rm = NA, outLik){
+                             bMax = 150, group_rm = NA, outLik,
+                             beta_row = NA){
   
 library(nimble)
 source(file.path('genPareto','betabin.R')) # code for user-defined beta-binomial distribution
@@ -53,9 +54,13 @@ i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
 
 burnin <- round(.2 * nrow(samples.mixed))
-
-beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z.knots),ncol(Y))
-beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z.knots),ncol(Y))
+if(is.na(beta_row)){
+  beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z.knots),ncol(Y))
+  beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z.knots),ncol(Y))
+}else{
+  beta1.est.real = matrix(samples.mixed[beta_row,i.beta1],ncol(Z.knots),ncol(Y))
+  beta2.est.real = matrix(samples.mixed[beta_row,i.beta2],ncol(Z.knots),ncol(Y))
+}
 
 J = nrow(Y)
 Zb = matrix(NA,J,ncol(Z.knots))
@@ -139,7 +144,7 @@ Cmcmc.pred$run(Niters)
 samples.pred <- as.matrix(Cmcmc.pred$mvSamples)
 proc.time() - ptm
 
-save(samples.pred, file = paste0('samples.pred.group',group_rm,'.Rdata'))
+save(samples.pred, file = paste0('samples.pred.group',group_rm,'beta',beta_row,'.Rdata'))
 
 return(samples.pred)
 

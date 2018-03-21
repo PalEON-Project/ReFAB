@@ -123,30 +123,45 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
 if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
-    load(file = file.path('~/Downloads','samps_bs',paste0('samples.pred.group',i,'.Rdata')))
+    load(file = file.path('~/Downloads','samps.linexp',paste0('samples.pred.group',i,'.Rdata')))
     #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
     samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
   }
-  pdf(paste0('10.fold.r2.validation.pdf'))
+  pdf(paste0('10.fold.r2.validation.linexp.pdf'))
   par(mfrow=c(1,1))
   plot(biomass.keep, colMeans(samples.pred.mat, na.rm = T),
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
-       xlab="True Biomass", ylab="Predicted Mean Biomass")
+       xlab="True Biomass", ylab="Predicted Mean Biomass",main='10 Fold CV')
   abline(a=0,b=1)
-  lm.mod <- lm(biomass.keep~colMeans(samples.pred)+0)
+  lm.mod <- lm(biomass.keep~ apply(samples.pred.mat,2,FUN = quantile,.5)+0)
   abline(lm.mod,lty=2)
   mtext(paste("r-squared",summary(lm.mod)$r.squared))
   
-  arrows(x0 = biomass.keep, y0 = apply(samples.pred,2,FUN = quantile,.05),
-         x1 = biomass.keep, y1 = apply(samples.pred,2,FUN = quantile,.975),
+  arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+         x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
          code = 0, lwd=2)
   
   library(calibrate)
-  textxy(biomass.keep, colMeans(samples.pred, na.rm = T),1:100)
+  textxy(biomass.keep,  apply(samples.pred.mat,2,FUN = quantile,.5),1:100)
   dev.off()
   #10, 1
   #9,10
   #7,5
+  
+  #calibrated on 2/3 predicted on all
+  load('~/Downloads/samps.linexp/samples.pred.groupTWOTHIRDS_150.Rdata')
+  load("threethirds_v1.0.Rdata") 
+  #load("cast.x.Rdata")
+  load("sites_rm.Rdata")
+  plot(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],
+       xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+       xlab="True Biomass", ylab="Predicted Mean Biomass",
+       main='2/3 calibration')
+  points(biomass[sites_rm],colMeans(samples.pred)[sites_rm],
+         pch=19, col='red')
+  textxy(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],1:100)
+  abline(b=1,a=0)
+  
   
 }
 

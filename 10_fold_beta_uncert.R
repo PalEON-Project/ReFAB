@@ -1,3 +1,18 @@
+
+arg <- commandArgs(trailingOnly = TRUE)
+if (is.na(arg[1])) {
+  runnum <- NA
+} else {
+  runum <- as.numeric(arg[1])
+}
+
+dat.index <- data.frame(group_rm=sort(rep(1:10,20)),beta_row =rep(round(seq(2000,10000,length.out = 20)),10))
+
+group_rm <- dat.index[runnum, 'group_rm']
+beta_row <- dat.index[runnum, 'beta_row']
+
+### after get.data
+
 library(nimble)
 library(splines)
 library(maps)
@@ -8,19 +23,31 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("threethirds_v1.0.Rdata")
+# histogram of betas to see how it looks relative to prior
+# the prior might be too tight now. with linexp
+# rel to an sd of 5. 
+# might want a flat prior like => 1/400 precision
 
-Niters <- 50000
+load("twothirds_v1.0.Rdata")
+
+Niters <- 10000
 bMax <- 150
-group_rm <- c('ALL_150')
 
-#### Setting up 3/3 calibration 3/3 prediction
+#### Setting up 10 fold cross validation
+set.seed(5)
+sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
 Y.keep <- Y
 biomass.keep <- biomass
-Y.calib <- Y; Y.pred <- Y
-biomass.calib <- biomass; biomass.pred <- biomass
+Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
+biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
+
+if(is.na(group_rm)){
+  Y.calib <- Y; Y.pred <- Y
+  biomass.calib <- biomass; biomass.pred <- biomass
+}
 
 #### Making sure Z.knots and u are the same between calibration and validation
+#Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
 u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
@@ -32,12 +59,7 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-source(file.path('Workflow_Code','calibration.model.R'))
-samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
-                                     Z.knots = Z.knots, u = u, Niters = Niters,
-                                     group_rm = group_rm)
-load(file = paste0("~/Downloads/beta.linexp/beta.est.group.in", group_rm, ".Rdata"))
-
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -50,31 +72,13 @@ for(i in 1:length(new.biomass)){
                         N3 = rep(0, (length(u)+2)))
 }
 source(file.path('Workflow_Code','utils','getLik.R'))
-outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
+outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed),
                  bMax = bMax, Y = Y.pred)
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                                  samples.mixed = samples.mixed, u = u,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
-                                 outLik = outLik)
-
-pdf(paste0('all4calib.r2.validation.pdf'))
-par(mfrow=c(1,1))
-plot(biomass, colMeans(samples.pred, na.rm = T),
-     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
-     xlab="True Biomass", ylab="Predicted Mean Biomass")
-abline(a=0,b=1)
-lm.mod <- lm(biomass~colMeans(samples.pred)+0)
-abline(lm.mod,lty=2)
-
-points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
-       col='red',pch=19)
-mtext(paste("r2-all",summary(lm.mod)$r.squared))
-
-arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
-       x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
-       code = 0, lwd=2)
-dev.off()
+                                 outLik = outLik, beta_row)
 
 

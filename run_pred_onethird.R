@@ -40,7 +40,7 @@ if(FALSE){
                                      group_rm = group_rm)
 }
 
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+load(file = paste0("/beta.est.group.in", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -54,7 +54,7 @@ for(i in 1:length(new.biomass)){
 }
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
-                 bMax = bMax, Y = Y)
+                 bMax = bMax, Y = Y.pred)
 
 
 source('validation.R')
