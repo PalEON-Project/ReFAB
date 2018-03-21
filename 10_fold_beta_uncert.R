@@ -3,7 +3,7 @@ arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
   runnum <- NA
 } else {
-  runum <- as.numeric(arg[1])
+  runnum <- as.numeric(arg[1])
 }
 
 dat.index <- data.frame(group_rm=sort(rep(1:10,20)),beta_row =rep(round(seq(2000,10000,length.out = 20)),10))
