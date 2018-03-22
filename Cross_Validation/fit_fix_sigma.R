@@ -57,7 +57,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                         N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
   
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y),
-                         beta1 = dim(beta1), beta2=dim(beta2),shape.hold1 = c(1,I), shape.hold2 = c(1,I))
+                         beta1 = dim(beta1), beta2=dim(beta2),shape.hold1 = c(TT,I), shape.hold2 = c(TT,I))
   
   inits.pred = list(b=rep(25,TT))
 
@@ -136,7 +136,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       model_pred$setInits(inits_pred)
       
-      Cmcmc_pred <- compileNimble(Rmcmc_pred, project = model_pred)
+      Cmcmc_pred <- compileNimble(Rmcmc_pred, project = model_pred,resetFunctions = T)
       
       Cmcmc_pred$run(nIts)
       

@@ -14,14 +14,12 @@ linexp <- nimbleFunction(
   })
 
 linexp_vec <- nimbleFunction(
-  run = function(x = double(1), I = double(0)) {
-    returnType(double(1))
-      for(i in 1:I){
-        if(x[i] < 0){
-          x[i] <- exp(x[i])
+  run = function(x = double(0)) {
+    returnType(double(0))
+        if(x < 0){
+          x <- exp(x)
         }else{
-          x[i] <- x[i] + 1
+          x <- x + 1
         }
-      }
     return(x)
   })

@@ -45,7 +45,7 @@ i.beta2 <- grep("beta2",colnames(samples.mixed))
 
 beta <- dataID[dataID$ID==runnum,'beta']
 
-Nbeta <- round(seq(250,nrow(samples.mixed),length.out = 20))[beta]
+Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
 
 beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],5,ncol(ten.count))
 beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],5,ncol(ten.count))
@@ -107,7 +107,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 10000, nItsSave = 100, seed = 1,
+                     nIts = 10000, nItsSave = 5000, seed = 1,
 		                 control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
@@ -125,9 +125,9 @@ for(l in unique(dataID$name)[39:62]){
 
 ## Individual Site Diagnostics
 site_diag(locn = 'Qually Pond', x.meta = x.meta, ten.count = ten.count,
-          control.pts = control.pts, bMax = 143,
-          path_to_samps = "~/Downloads/qually.samps/",
-          path_to_Info = "~/Downloads/qually.liks/")
+          control.pts = control.pts, bMax = 150,
+          path_to_samps = "~/Downloads/samps.pred/",
+          path_to_Info = "~/Downloads/work.pred/")
 
 ## Simple Site Diagnositics
 plot(colMeans(samplesList[,1:100]),col='red',pch=19,ylim=c(0,150))
