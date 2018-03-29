@@ -51,11 +51,9 @@ for(j in 1:22){
     
     val <- props[j] - prop.seq[i] 
     props[j] <- prop.seq[i]
-    while(sum(props)<.99 | sum(props)>1.01){
-      props[-j] <- as.numeric(val/21) + props[-j]
-      props[props < 0] <- 0
-      val <- 1 - sum(props)
-    }
+    
+    props[-j] <- props[-j] * as.numeric((1-props[j]) / (sum(props[-j])))
+                                             
     prop.mat[i,,j] <- as.numeric(props)
   }
   print(j)
