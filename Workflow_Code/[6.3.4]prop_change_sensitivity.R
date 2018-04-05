@@ -38,9 +38,10 @@ load("twothirds_v1.0.Rdata")
 for(k in c(93,94,95,15,58)){
 which_site <- k
 dat51 <- Y[which_site,]
+dat51.big <- round((dat51/sum(dat51))*10000)
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik.real<- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed),
-                      bMax = bMax, Y = dat51)
+                      bMax = bMax, Y = dat51.big)
 
 prop.seq <- seq(0,1,.01)
 prop.mat <- array(NA,dim=c(length(prop.seq),22,22))

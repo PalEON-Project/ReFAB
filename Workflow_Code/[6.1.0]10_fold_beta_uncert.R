@@ -90,12 +90,12 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 if(FALSE){
 samples.pred.mat <- array(NA,dim=c(1000,length(biomass.keep),20))
 for(i in 1:200){
-  load(file = file.path('~/Downloads','samps.beta.uncert',
+  load(file = file.path('~/Downloads','samps.beta.uncert.all',
                         paste0('samples.pred.group',dat.index[i,'group_rm'],'beta',dat.index[i,'beta_row'],'.Rdata')))
   #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
   samples.pred.mat[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- samples.pred[,grep('b',colnames(samples.pred))]
 }
-pdf(paste0('10.fold.r2.validation.beta_uncert.pdf'))
+pdf(paste0('ALL.calib.r2.validation.beta_uncert.pdf'))
 par(mfrow=c(1,1))
 plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,

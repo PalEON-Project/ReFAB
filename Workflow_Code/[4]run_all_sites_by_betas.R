@@ -1,5 +1,4 @@
 
-dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
@@ -7,6 +6,7 @@ if (is.na(arg[1])) {
 } else {
   runnum <- as.numeric(arg[1])
 }
+dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 ## each runnum will be a different beta estimate with a different site so 
 ## we'll have length(runnum) == nrow(beta.est)*length(sites)
@@ -118,16 +118,24 @@ stop()
 source('site_diag.R')
 
 ## Full Site Diagnostics
-for(l in unique(dataID$name)[39:62]){
+## demont, chippewa bog, emrick, ##frains, radtke, wintergreen
+for(l in unique(dataID[621:1240,]$name)[10:31]){
   site_diag(locn = l, x.meta = x.meta, ten.count = ten.count,
-            control.pts = control.pts, bMax = 150)
+            control.pts = control.pts, bMax = 150,
+            path_to_samps = "~/Downloads/sampsList2/",
+            path_to_Info = "~/Downloads/workInfo-2/")
+}
+
+load("~/Downloads/workInfo-2/workInfo_1180_Wintergreen-Lake_Beta_20.Rdata")
+for(i in 1:ncol(out)){
+  plot(exp(out[,i]-max(out[,i]))/-sum(out[,i]),main=i)
 }
 
 ## Individual Site Diagnostics
-site_diag(locn = 'Qually Pond', x.meta = x.meta, ten.count = ten.count,
+site_diag(locn = 'Lake Mendota', x.meta = x.meta, ten.count = ten.count,
           control.pts = control.pts, bMax = 150,
-          path_to_samps = "~/Downloads/samps.pred/",
-          path_to_Info = "~/Downloads/work.pred/")
+          path_to_samps = "~/Downloads/sampsList/",
+          path_to_Info = "~/Downloads/workInfo-2/")
 
 ## Simple Site Diagnositics
 plot(colMeans(samplesList[,1:100]),col='red',pch=19,ylim=c(0,150))

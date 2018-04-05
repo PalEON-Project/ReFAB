@@ -10,7 +10,10 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   
   blue       <- col2rgb("blue")
   alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
-  
+
+  orange       <- col2rgb("orange")
+  alphaorange  <- rgb(orange[1], orange[2], orange[3], 75, max = 255)
+    
   source("Workflow_Code/utils/bs_nimble.R")
   
   i.beta1 <- grep("beta1",colnames(samples.mixed))
@@ -63,8 +66,8 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   
   pdf(paste0('validation_max_liks_pfts_',group_rm,'.pdf'))
   par(mfrow=c(4,5))
-  for(s in 1:(ncol(Y)-1)){
-    for(j in 1:J){
+  for(j in 1:J){
+    for(s in 1:(ncol(Y)-1)){
       if(sum(outLik[,j,s])!=0){
         plot(vals,exp(outLik[,j,s] - max(outLik[,j,s]))/-sum(outLik[,j,s])
              ,typ='l',ylab=NA,main=paste('site',sets10[,group_rm][j],'taxa',colnames(Y)[s]),xlab = 'biomass')
@@ -75,6 +78,15 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
       }
     }
   }
+  
+  for(j in 1:J){
+    plot(apply(outLik[,j,],1,sum)[1:(bMax-1)],typ='l',ylab=NA,
+         main=paste('site',sets10[,group_rm][j]),
+         xlab = 'biomass')
+    abline(v=biomass.pred[j],col='blue',lwd=2)
+    abline(v=colMeans(samples.pred)[j],col='orange',lwd=2)
+  }
+  
   dev.off()
   
   ####
@@ -126,17 +138,17 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   alpha <- exp(Z.new%*%beta1)
   beta <- exp(Z.new%*%beta2)
   
-  mean.betas <- alpha/(alpha+beta)
-  sd.betas <- sqrt(alpha*beta/((alpha+beta)^2*(alpha+beta+1)))
+  mean.betas.ex <- alpha/(alpha+beta)
+  sd.betas.ex <- sqrt(alpha*beta/((alpha+beta)^2*(alpha+beta+1)))
   
-  sd.betas[,2] <- sd.betas[,2] * (1 - (sd.betas[,1]))
-  mean.betas[,2] <- mean.betas[,2] * (1 - (mean.betas[,1]))
+  sd.betas.ex[,2] <- sd.betas.ex[,2] * (1 - (sd.betas.ex[,1]))
+  mean.betas.ex[,2] <- mean.betas.ex[,2] * (1 - (mean.betas.ex[,1]))
   for(i in 3:(ncol(Y)-1)){
-    sd.betas[,i] <- sd.betas[,i] * (1 - rowSums(sd.betas[,1:i-1]))
-    mean.betas[,i] <- mean.betas[,i] * (1 - rowSums(mean.betas[,1:i-1]))
+    sd.betas.ex[,i] <- sd.betas.ex[,i] * (1 - rowSums(sd.betas.ex[,1:i-1]))
+    mean.betas.ex[,i] <- mean.betas.ex[,i] * (1 - rowSums(mean.betas.ex[,1:i-1]))
   }
-  sd.betas[,ncol(Y)] <- 1 - rowSums(sd.betas[,1:(ncol(Y)-1)])
-  mean.betas[,ncol(Y)] <- 1 - rowSums(mean.betas[,1:(ncol(Y)-1)])
+  sd.betas.ex[,ncol(Y)] <- 1 - rowSums(sd.betas.ex[,1:(ncol(Y)-1)])
+  mean.betas.ex[,ncol(Y)] <- 1 - rowSums(mean.betas.ex[,1:(ncol(Y)-1)])
   
   props <- prop.table(as.matrix(Y),1)
   props.pred <- prop.table(as.matrix(Y.pred),1)
@@ -144,6 +156,7 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
   #outlier <- as.numeric(names(sort(abs(biomass-colMeans(samples.pred[,grep('b',colnames(samples.pred))])))))[90]
   
   pdf(paste0('outlier.splines.group.',group_rm,'.pdf'))
+  pdf('splines.together.pdf')
   par(mfrow=c(2,2))
   for(i in 1:ncol(Y)){
     plot(1:bMax, mean.betas[,i],
@@ -151,19 +164,24 @@ calibration.figs <- function(bMax, Z.knots, Y, samples.mixed, outLik,
                       mean.betas[,i] - sd.betas[,i]*2, 
                       props[,i])),
          main = colnames(Y)[i],pch=19)
+    points(1:bMax, mean.betas.ex[,i],col='red')
     ciEnvelope(x = 1:bMax, yhi = mean.betas[,i] + sd.betas[,i]*2,
                ylo = mean.betas[,i] - sd.betas[,i]*2,col = alphablue)
-    points(biomass,props[,i])
-    points(biomass.pred,props.pred[,i],col='red',pch=19)
     
+    ciEnvelope(x = 1:bMax, yhi = mean.betas.ex[,i] + sd.betas.ex[,i]*2,
+               ylo = mean.betas.ex[,i] - sd.betas.ex[,i]*2,col = alphaorange)
+    points(biomass,props[,i])
+    #points(biomass.pred,props.pred[,i],col='red',pch=19)
+    legend('topright',c('bMax = 150','bMax = 143'),pch=c(19,19),col=c(alphablue,alphaorange))
     ###Validation outlier
+    if(FALSE){
     points(biomass.pred[outlier],
-           props[outlier,i],
+           props.pred[outlier,i],
            col='darkblue',pch=19,cex=2)
     points(colMeans(samples.pred[,grep('b',colnames(samples.pred))])[outlier],
-           props[outlier,i],
+           props.pred[outlier,i],
            col='orange',pch=19,cex=2)
-    
+    }
     if(FALSE){
     points(biomass[c(outlier)],
            props[c(outlier),i],

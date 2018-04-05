@@ -37,8 +37,8 @@ bacon <- read.csv(paste0(data.dir,'/sediment_ages_v1.0_varves.csv'))
 cal <- read.csv(paste0(data.dir,'/cal_data_mid_depth_2015-06-10.csv'))
 
 cal.new.pol <- merge(x = pol_cal_count, y = cal, 
-      by.x = c('dataset','depth'), 
-      by.y = c('id','depth'))
+                     by.x = c('dataset','depth'), 
+                     by.y = c('id','depth'))
 length(unique(cal.new.pol$dataset))
 
 # site.find <- cal[-na.omit(match(cal$id,cal.new.pol$dataset)),'site']
@@ -69,20 +69,20 @@ sum(new.pollen$BIRCH - new.pollen$BETULA) #should equal zero
 #####
 
 #original
-x <- new.pollen[new.pollen$age_bacon >= 100, ]
-x <- x[x$age_bacon<=250,]
+#x <- new.pollen[new.pollen$age_bacon >= 100, ]
+#x <- x[x$age_bacon<=250,]
 
 #just settlement horizon
-colnames(cal.new.pol)[9] <- c('lat')
-colnames(cal.new.pol)[10] <- c('long')
-x <- cal.new.pol
+#colnames(cal.new.pol)[9] <- c('lat')
+#colnames(cal.new.pol)[10] <- c('long')
+#x <- cal.new.pol
 
 #settlement horizon + previous 100 years
 pol_settle <- list()
 for(i in 1:length(pol_list)){
   #cal_list <- merge(x = pol_list[[i]], y = cal, 
-   #                 by.x = c('dataset','depth'), 
-    #                by.y = c('id','depth'))
+  #                 by.x = c('dataset','depth'), 
+  #                by.y = c('id','depth'))
   cal_stop <- cal[which(cal$id==names(pol_list)[i]),]
   cal_list <- pol_list[[i]][which(pol_list[[i]]$depth==cal_stop$depth),]
   # this is not using bacon ages I think... Ask Andria if cal has bacon ages. 
@@ -106,14 +106,14 @@ cast.x <- cast.x.full <- as.data.frame(cast.x)
 ##### Remove sites and take subset of points
 #####
 
+set.seed(4)
+sites_rm = sample(1:nrow(cast.x),round(nrow(cast.x)/3))
+save(sites_rm, file = 'sites_rm.Rdata')
+
 if(DRAW == TRUE) pdf(paste0(fig.dir,paste0("all_sites",Sys.Date(),".pdf")))
 map('state', ylim=range(cast.x$lat)+c(-2, 2), xlim=range(cast.x$long)+c(-1, 1),main=NA)
 points(cast.x$long, cast.x$lat, pch=19, cex=1,col="gray")
 title(main="all sites")
-
-set.seed(4)
-sites_rm = sample(1:nrow(cast.x),round(nrow(cast.x)/3))
-save(sites_rm, file = 'sites_rm.Rdata')
 
 points(cast.x$long[-sites_rm], cast.x$lat[-sites_rm], pch=19, cex=1,col="blue")
 if(DRAW == TRUE) dev.off()
@@ -147,9 +147,9 @@ for(i in 1:nrow(cast.x)){
   core_site = albers[i,]
   d = rdist(matrix(core_site, ncol=2), as.matrix(centers_biomass))
   if(min(d)<8000){
-  	idx_cores[i] = which.min(d) 
+    idx_cores[i] = which.min(d) 
   }else{
-  	idx_cores[i] = NA 
+    idx_cores[i] = NA 
   }
   
 }
@@ -164,8 +164,8 @@ if(DRAW == TRUE) dev.off()
 biomass <- list()
 for(i in 1:length(idx_cores)){ 
   biomass[[i]] = biomass_dat_est[idx_cores[i],'Total']
- }
- 
+}
+
 cast.x <- cbind(cast.x,unlist(biomass))
 
 #### Remove places where we do not have settlement biomass
@@ -179,18 +179,21 @@ colors <- rev(terrain.colors(length(breaks)-1))
 data_binned <-  cut(cast.x[,ncol(cast.x)], c(breaks), include.lowest = FALSE, labels = FALSE)
 
 pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
-map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+map('state', xlim=c(-98,-81), ylim=c(41.5,49))
 points(cast.x$long,cast.x$lat, pch=21,
-		cex=1.1, bg=colors[data_binned],lwd=.2)
+       cex=1.1, bg=colors[data_binned],lwd=.2)
+text(cast.x$long[-sites_rm],cast.x$lat[-sites_rm],labels=1:100,cex=.3)
+bimodal_sites <- c(3,98,62,100,73,92,63,55, 76, 4, 87, 79, 51)
+points(cast.x$long[-sites_rm][bimodal_sites],cast.x$lat[-sites_rm][bimodal_sites],col='red',lwd=2)
 title("Biomass Point Estimates at Settlement")
 plotInset(-90,47,-82.5,50,
           expr={
-          	hist(data_binned,col=colors,xaxt="n",xlab=NA,
-          	ylab=NA,main=NA,cex.lab=.5,cex.axis=.5)
-          	axis(side=1,breaks,at = seq(1,12,1),cex.axis = .5,las=2,line=0)
-          	mtext(side = 1, "Biomass (Mg/ha)", line = 1.5,cex=.5)
-         mtext(side = 2, "Frequency", line = 1.7,cex=.5)
-          	})
+            hist(data_binned,col=colors,xaxt="n",xlab=NA,
+                 ylab=NA,main=NA,cex.lab=.5,cex.axis=.5)
+            axis(side=1,breaks,at = seq(1,12,1),cex.axis = .5,las=2,line=0)
+            mtext(side = 1, "Biomass (Mg/ha)", line = 1.5,cex=.5)
+            mtext(side = 2, "Frequency", line = 1.7,cex=.5)
+          })
 dev.off()
 
 #####
@@ -202,26 +205,26 @@ dev.off()
 trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
            'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
            "OSTRYCAR","ULMUS","TILIA","ALNUSX",
-           "CYPERACE","PICEAX",
-           "ABIES","POPULUS","CARYA",
-           "LARIXPSEU","TAXUS","NYSSA","CASTANEA","PLATANUS","SALIX",
-           "LIQUIDAM","CUPRESSA")
+           "CYPERACE","PICEAX","ABIES","POPULUS",
+           "CARYA","LARIXPSEU","CUPRESSA",
+           "TAXUS","NYSSA","CASTANEA","PLATANUS",
+           "SALIX","LIQUIDAM")
 other.trees <- c()#NULL#c()
 drop.taxa <- NA#c('other_herbs')
 
 source('taxa_selection.R')
 Y <- taxa_selection(trees = trees, other.trees = other.trees,
-                    cast.x = cast.x, sites_rm = sites_rm,
+                    cast.x = cast.x, sites_rm = 0,
                     all.pollen.taxa.names = all.pollen.taxa.names,
                     prairie.include = T, other.herbs.include = T,
-                    other.trees.include = T, drop.taxa = drop.taxa,
+                    other.trees.include = F, drop.taxa = drop.taxa,
                     PFT.do = F)
 
 set.seed(5)
 sites_pred <- sample(1:nrow(Y),round(nrow(Y)/3))
 
 Y.all <- Y
-Y <- Y[-sites_pred,]
+#Y <- Y[-sites_pred,]
 
 
 total_counts = round(rowSums(Y,na.rm = TRUE))
@@ -247,10 +250,11 @@ props = as.data.frame(props)
 ##### Drawing Splines (with all data) #####
 #####
 
-Z = bs(unlist(biomass),intercept=TRUE,df=5)
-betas = matrix(0,ncol(Z),ncol(counts)); betas.save = betas
+Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
+u <- c(0,30,150) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+betas = matrix(0,ncol(Z),ncol(Y)); betas.save = betas
 
-
+counts <- Y
 counts[is.na(counts)] <- 0 ### important. Could put above in merge or ten.count creation.
 
 if(DRAW == TRUE) pdf(paste0(fig.dir,"splines.new.pdf"))
@@ -274,23 +278,19 @@ for(i in 1:ncol(counts)){
 
 if(DRAW == TRUE) dev.off()
 
-Z.knots<- Z
-
-u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
-
 library(nimble)
 source('Workflow_Code/utils/bs_nimble.R')
 
 Z.knots.check = matrix(0,nrow=u[length(u)],ncol=(length(u)+2));
 
 for(i in 1:u[length(u)]){
-	u_given <-i
-	Z.knots.check[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+  u_given <-i
+  Z.knots.check[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 }
 
 for(i in 1:length(biomass)){
-    u_given <- biomass[i]
-	Z.knots[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+  u_given <- biomass[i]
+  Z.knots[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
 }
 
 #### Plot basis functions ####
@@ -307,20 +307,14 @@ if(DRAW==TRUE) dev.off()
 ##### Create final calibration datasets #####
 #####
 
-Y = counts[-sites_rm,] #remove sites "sites_rm" defined above
-Y <- Y[,rev(order(colMeans(Y)))]
-biomass = biomass[-sites_rm]
-counts = counts[-sites_rm,]
-counts <- Y[,rev(order(colMeans(Y)))]
-total_counts = rowSums(counts)
+save(Y,biomass,Z,file=paste0(Sys.Date(),'all.calibration.data.Rdata'))
 
+Y = Y[-sites_rm,] #remove sites "sites_rm" defined above
+biomass = biomass[-sites_rm]
+Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
 dim(Y)[1]-length(biomass) # should be zero
 
-save(Y,biomass,Z,file=paste0(Sys.Date(),'calibration.data.Rdata'))
-
-#save.image(file="add.bacon2.Rdata")
-
-u<-c(rep(attr(Z,"Boundary.knots")[1],1),attr(Z,"knots"),rep(attr(Z,"Boundary.knots")[2],1))
+save(Y,biomass,Z,file=paste0(Sys.Date(),'twothirds.calibration.data.Rdata'))
 
 #####
 ##### Create final prediction datasets #####
@@ -397,9 +391,4 @@ for(i in 2:length(plot.seq)){
   title(c(plot.seq[i-1],"-",plot.seq[i]))
 }
 if(DRAW==TRUE) dev.off()
-
-
-
-
-
 

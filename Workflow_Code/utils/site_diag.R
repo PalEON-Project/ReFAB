@@ -30,19 +30,20 @@ Y <- as.matrix(Y2[ , -c(1,2)])
 age_index <- Y2[,1]
 samples.keep <- numeric(300)
 
-out.list <- list()
+out.list <- out.keep <- list()
 
 for(b in 1:20){
   ID <- dataID[dataID$name==as.character(locn),'ID'][b]
-  file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda') #Sigma0.12Group
+  file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata') #Sigma0.12Group
   if(!file.exists(file_name)) next()
   load(file_name)
-  samples.keep <- rbind(samples.keep, samplesList[100:200,])
-  file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda')
+  samples.keep <- rbind(samples.keep, samplesList)
+  file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
   if(!file.exists(file_name1)){
     out <- NA
   }else{
     load(file = file_name1)
+    out.keep[[b]] <- out
     out.list[[b]] <- seq(5, bMax-5, by = 2)[apply(out,2,which.max)]
   }
   
@@ -119,7 +120,15 @@ points(unique(x.meta[x.meta$site.name == locn,'long']),
        pch=19,cex=1.5)
 title(locn)
 
+
+
+for(i in 1:ncol(out)){
+ for(b in c(1,5,10,15)){
+    plot(seq(5, bMax-5, by = 2),
+          exp(out.keep[[b]][,i]-max(out.keep[[b]][,i]))/-sum(out.keep[[b]][,i]),
+          typ='l',main=paste('beta=',b,'age',age_index[i]))
+  }
+}
+
 dev.off()
-
-
 }

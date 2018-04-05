@@ -36,7 +36,7 @@ rownames(testing.save)<-x.meta$Age
 testing.meta <- x.meta
 testing <- testing.save
 
-analog1 <- analog(x=training,y=testing,'SQchord')
+analog1 <- analog(x=training, y=testing,'SQchord')
 sum.analog1 <- summary(analog1)
 sum.analog1
 

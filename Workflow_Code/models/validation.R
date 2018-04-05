@@ -26,28 +26,6 @@ pred_code <- nimbleCode({
     }
   }
   
-  # for(j in 1:J){
-  #   for(i in 1:I){
-  #     exp.phi[j,i] <- exp(phi.first[j,i])
-  #     exp.phi1[j,i] <- exp(phi.first1[j,i])
-  #   }
-  # }
-  # 
-  # for(j in 1:J){
-  #   p.true[j,1] ~ dbeta(exp.phi[j,1],exp.phi1[j,1])
-  #   p.rel[j,1] <- p.true[j,1]
-  #   
-  #   for(i in 2:(I-1)){
-  #     p.rel[j,i]  ~ dbeta(exp.phi[j,i],exp.phi1[j,i]) 
-  #     p.true[j,i] <-  p.rel[j,i] * (1 - sum(p.true[j,1:(i-1)]))
-  #   }	
-  #   p.true[j,I] <- 1 - sum(p.true[j,1:(I-1)])
-  # }    
-  # 
-  # for(j in 1:J){
-  #   Y[j,] ~ dmulti(p.true[j,],n[j])
-  # }
-  
 })
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
