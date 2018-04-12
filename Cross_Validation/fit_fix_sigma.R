@@ -10,7 +10,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   x.meta.use <- x.meta[x.meta$site.name == locn,]
   
-  source('test_site.R')
+  source(file.path('Workflow_Code','utils','test_site.R'))
   test_site(x.meta.use)
   
   ten_count_use = ten.count[which(x.meta$site.name == locn), ]
