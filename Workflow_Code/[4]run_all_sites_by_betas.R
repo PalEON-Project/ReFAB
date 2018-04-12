@@ -14,7 +14,7 @@ dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 #dataID <- read.csv(file.path('Cross_Validation','dataID.csv')) #for 10K
 dataID <- read.csv(file.path('Cross_Validation','beta_run_dataID.csv')) #for paleon mip
 
-load('prediction.data.Rdata')
+load('prediction.data_v2.Rdata')
 ####
 #### Master Setup
 ####
@@ -74,14 +74,17 @@ ageInterval = 100
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 x.meta.use <- x.meta[x.meta$site.name == locn,]
 
-source('test_site.R')
+x.bacon.use <- x.bacon[x.meta$site.name == locn,]
+which_bacon <- seq(2,500,20)[dataID[dataID$ID==runnum,'beta']]
+
+source(file.path('Workflow_Code','utils','test_site.R'))
 test_site(x.meta.use)
 
 ten_count_use = ten.count[which(x.meta$site.name == locn), ]
 ten_count_use[which(is.na(ten_count_use))] <- 0
 Y = as.matrix(ten_count_use)
 
-sample_ages <- x.meta.use$age_bacon
+sample_ages <- x.bacon.use[,which_bacon]#x.meta.use$age_bacon
 age_bins <- seq(minAge, maxAge, ageInterval)
 age_index <- as.matrix(as.numeric(
   cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
@@ -107,7 +110,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 10000, nItsSave = 5000, seed = 1,
+                     nIts = 8000, nItsSave = 4000, seed = 1,
 		                 control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,

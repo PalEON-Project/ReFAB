@@ -28,7 +28,7 @@ comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
 pol_cal_count <- compile_downloads(comp.tax)
 
 save(pol_cal_count,file=paste0('nimble_pull',Sys.Date(),'.Rdata'))
-
+load("~/ReFAB/nimble_pull2018-02-06.Rdata")
 #####
 ##### Add Bacon Pollen Dates #####
 #####
@@ -206,18 +206,16 @@ trees <- c("FAGUS","TSUGAX","QUERCUS","BETULA",
            'PINUSX',"JUGLANSX","ACERX","FRAXINUX",
            "OSTRYCAR","ULMUS","TILIA","ALNUSX",
            "CYPERACE","PICEAX","ABIES","POPULUS",
-           "CARYA","LARIXPSEU","CUPRESSA",
-           "TAXUS","NYSSA","CASTANEA","PLATANUS",
-           "SALIX","LIQUIDAM")
-other.trees <- c()#NULL#c()
+           "CARYA","LARIXPSEU","CUPRESSA") #
+other.trees <- c("CASTANEA","PLATANUS","SALIX","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
 drop.taxa <- NA#c('other_herbs')
 
-source('taxa_selection.R')
+source(file.path('Workflow_Code','utils','taxa_selection.R'))
 Y <- taxa_selection(trees = trees, other.trees = other.trees,
                     cast.x = cast.x, sites_rm = 0,
                     all.pollen.taxa.names = all.pollen.taxa.names,
                     prairie.include = T, other.herbs.include = T,
-                    other.trees.include = F, drop.taxa = drop.taxa,
+                    other.trees.include = T, drop.taxa = drop.taxa,
                     PFT.do = F)
 
 set.seed(5)
@@ -324,22 +322,19 @@ x = new.pollen[new.pollen$age_bacon>=200,]
 x = x[x$age_bacon<=10000,]
 
 x.meta = x[,c('.id','lat',"long","dataset","site.name","age_bacon")]
+x.bacon <- x[,grep(pattern = 'bacon',colnames(x))]
 colnames(x.meta)[1] <- c('site.id')
 
-ten.count = matrix(0,nrow(x),length(trees)+3)
-ten.count[,1] <- unlist(rowSums(x[,prairie],na.rm = TRUE))
-ten.count[,2] <- unlist(rowSums(x[,other.trees],na.rm = TRUE))
-ten.count[,3:(length(trees)+2)] <- as.matrix(x[,trees])
-ten.count[,(length(trees)+3)] <- rowSums(x[,all.pollen.taxa.names],na.rm = TRUE) - rowSums(ten.count,na.rm = TRUE)
-colnames(ten.count)<-c("prairie","other_trees",trees,"other_herbs")
+pred.x <- x[,which(colnames(x)%in%colnames(cast.x))]
 
-ten.count.save = ten.count
-ten.count = round(ten.count.save)
-ten.count <- ten.count[,colnames(counts)]
+ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
+                    cast.x = pred.x, sites_rm = 0,
+                    all.pollen.taxa.names = all.pollen.taxa.names,
+                    prairie.include = T, other.herbs.include = T,
+                    other.trees.include = T, drop.taxa = drop.taxa,
+                    PFT.do = F)
 
-ten.count[is.na(ten.count)] <- 0
-
-save(x.meta, ten.count, Z, u, file = 'prediction.data.Rdata')
+save(x.meta, ten.count, x.bacon , Z, u, file = 'prediction.data_v2.Rdata')
 
 #####
 ##### Create paleon mip datasets #####
