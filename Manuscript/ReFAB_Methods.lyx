@@ -1,9 +1,7 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
-\save_transient_properties true
-\origin unavailable
 \textclass article
 \use_default_options true
 \maintain_unincluded_children false
@@ -11,16 +9,16 @@
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman "default" "default"
-\font_sans "default" "default"
-\font_typewriter "default" "default"
-\font_math "auto" "auto"
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100 100
-\font_tt_scale 100 100
+\font_sf_scale 100
+\font_tt_scale 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -344,7 +342,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="2" columns="4">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="20page%">
 <column alignment="center" valignment="top" width="10page%">
 <column alignment="center" valignment="top" width="10page%">
@@ -716,10 +714,30 @@ Calibration model
 \end_layout
 
 \begin_layout Standard
-Our calibration model determines on the nonlinear multivariate relationship
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+CJP made some edits in these paragraphs and some change in notation to the
+ equations.
+\end_layout
+
+\end_inset
+
+In the calibration phase, we model the nonlinear multivariate relationship
  between pollen proportions and biomass estimates at time of settlement.
- We use a telescoping beta - multinomial structure to relate proportions
- to a spline basis matrix 
+ At a high-level the model regresses pollen on biomass using regression
+ spline basis functions to account for nonlinearity.
+ In the calibration phase we estimate the coefficients of the basis functions;
+ in prediction, these coefficients are used to infer the unknown biomass
+ given pollen proportions from the sediment cores.
+\end_layout
+
+\begin_layout Standard
+More specifically, we use beta distributions combined using a stickbreaking
+ structure structure to relate pollen proportions to nonlinear spline functions
+ of biomass, with one function per taxon, represented using a regression
+ spline basis matrix 
 \shape italic
 
 \begin_inset Formula $\left(\boldsymbol{Z}\right)$
@@ -728,19 +746,39 @@ Our calibration model determines on the nonlinear multivariate relationship
 .
  
 \shape default
-The telescoping beta distributions were chosen over
-\shape italic
+In particular the relative proportion for taxon 
+\begin_inset Formula $i$
+\end_inset
+
+, given the pollen remaining after having accounted for taxa 
+\begin_inset Formula $1,\ldots,i-1$
+\end_inset
+
+, is modeled as a beta distribution whose two shape parameters are spline
+ functions of biomass.
+ By having two spline functions per taxon, we allow both the mean and variance
+ of the beta distribution to vary with biomass separately for each taxon.
+ In contrast, our initial efforts used a Dirichlet distribution where the
+ parameters of the Dirichlet were spline functions of biomass.
+ This structure allowed the mean for each taxon and a single (non-taxon-specific
+) variance to vary with biomass, but we found this was no flexible enough
+ to capture the empirical relationships between pollen proportions and biomass,
+ in particular the fact that different taxa had very different variances
+ in pollen proportion for a given biomass value.
  
-\shape default
-the conjugate Dirichlet - multinomial relationship to better represent variance
- in pollen proportions at different parts of the biomass to pollen relationship.
- Specifically, this reduces issues of non-identifiability because it allows
- for similar pollen composition at two sites to have different biomasses.
- The basis matrix is calculated outside of the model with the R function
- bs() in the 'splines' package.
- Each row is calculated with point estimates of biomass and 5 knots selected
- using the quantiles of the biomass estimates.
- This gives us a likelihood (Eq.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, I would use p_abs not p_True and abs and rel not Abs and Rel
+\end_layout
+
+\end_inset
+
+The model structure is as follows, where the likelihood (Eq.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -776,22 +814,54 @@ and
 \begin_inset Formula $\boldsymbol{\beta_{2}}$
 \end_inset
 
- are vectors of coefficients that relates the biomass basis matrix to the
- pollen proportions.
+ are vectors of coefficients that relates the biomass basis matrix (a function
+ of biomass 
+\begin_inset Formula $b$
+\end_inset
+
+) to the pollen proportions.
  
 \begin_inset Formula 
 \begin{eqnarray}
 y_{ji} & \sim & \textrm{binomial}(p_{True_{ji}},N_{ji})\label{eq:calib likelihood}\\
-p_{True_{j,1}} & \sim & \textrm{beta}(exp(\boldsymbol{Z\beta_{1}})_{j,1},exp(\boldsymbol{Z\beta_{2}})_{j,1})\\
-p_{Rel_{j,1}} & = & p_{True_{j,1}}\\
-p_{True_{j,i}} & \sim & \textrm{beta}(exp(\boldsymbol{Z\beta_{1}})_{j,i},exp(\boldsymbol{Z\beta_{2}})_{j,i})\\
+p_{Rel_{j,1}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,1})\\
+p_{True_{j,1}} & = & p_{Rel_{j,1}}\\
+p_{Rel_{j,i}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,i},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,i}),\,i=2,\ldots,I-1\\
 p_{True_{j,i}} & = & p_{Rel}\left(1-\sum_{i=1}^{i-1}p_{True_{j,i}}\right)\\
- & ...\\
 p_{True_{j,I}} & = & 1-\sum_{i=1}^{I-1}p_{True_{j,i}}
 \end{eqnarray}
 
 \end_inset
 
+where
+\begin_inset Formula 
+\[
+\mbox{linexp}(x)\equiv\exp(x)1(x<0)+(1+x)1(x\geq0)
+\]
+
+\end_inset
+
+linearizes the exponential function for 
+\begin_inset Formula $x\geq0$
+\end_inset
+
+.
+ This improves the stability of the estimation by preventing extreme values
+ of the shape parameters of the beta distributions (and high certainty about
+ 
+\begin_inset Formula $p$
+\end_inset
+
+), which can occur for large values of 
+\begin_inset Formula ${\bf Z}(b)\boldsymbol{\beta}$
+\end_inset
+
+ occurring when there are few ponds with biomasses near a given biomass
+ value.
+ 
+\end_layout
+
+\begin_layout Standard
 There are two sets of 5 
 \begin_inset Formula $\beta$
 \end_inset
@@ -807,6 +877,21 @@ There are two sets of 5
 \end_inset
 
 .
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, please go back to our notes/emails and include some justification of
+ .04.
+\end_layout
+
+\end_inset
+
+ The basis matrix is calculated outside of the model with the R function
+ bs() in the 'splines' package.
+ Each row is calculated with point estimates of biomass and 5 knots selected
+ using the quantiles of the biomass estimates.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -1050,7 +1135,15 @@ Random walk and GP model (CP can add more details on GP model)
 \end_layout
 
 \begin_layout Standard
-The prediction model was fit with a a generalized pareto model.
+[Ann, we used 'i' above to indicate taxon and here to indicate time.
+ Let's use 'i' for time (i.e.
+ sample) here and a different letter (maybe 'k') for taxon]
+\end_layout
+
+\begin_layout Standard
+The prediction model has a similar structure to the calibration model but
+ the uncertain biomass is represented as a smooth temporal process on a
+ discrete time grid (details below).
  After fitting the calibration model to estimate the basis spline coefficients
  
 \begin_inset Formula $\left(\boldsymbol{\beta}\right)$
@@ -1068,7 +1161,11 @@ The prediction model was fit with a a generalized pareto model.
 \end_inset
 
  in years before present.
- The prediction model includes a Beta-binomial likelihood where
+ The prediction model includes a Beta-binomial likelihood where [Ann, the
+ beta-bin is also used for calibration, so please put this at the end of
+ the calibration model description - you can basically say that we can marginali
+ze over the p's, and in the equations make sure to omit the p's since they've
+ been marginalized]
 \end_layout
 
 \begin_layout Standard
@@ -1115,13 +1212,35 @@ Here,
 \end_layout
 
 \begin_layout Standard
-Biomass evolution in forest stands in a long term, smooth process.
- We chose a third order process model to represent that smooth process.
- The third order structure and positive support of biomass gives us a process
- model of 
+Biomass evolution in forest stands is a long term, generally smooth process
+ but event such as fire, drought and other longer-term causes of tree mortality
+ and succession can cause rapid changes in biomass within days (fire), years
+ (tree mortality) or decades (succession).
+ Thus we want a statistical model for the biomass time process that generally
+ enforces smoothness but also allows for rapid change at some times.
+ First note that we work in discrete time (100 year time bins specifically)
+ for several reasons: (1) our scientific interest lies in long-term forest
+ change, (2) the mixing of pollen in sediment and radio-carbon dating uncertaint
+y prevents us from resolving yearly-decadal scale variability, and (3) computati
+onal effiency.
+ 
+\end_layout
+
+\begin_layout Standard
+Our biomass temporal model uses a generalized Pareto distribution to provide
+ nonstationary temporal structure.
+ A GP distribution has a spike at zero (like a Laplace distribution or spike-and
+-slab model) combined with a heavy tail that allows for outlying values.
+ Such distributions have been used for model selection [cites] as well as
+ representing random processes [cites].
+ Here we embed the GP distribution in a third-order process model to induce
+ smoothness as well as nonstationarity: 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-b_{t} & \sim & \mathrm{normal}\left(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t}\right)\mathrm{T}[0,150]
+b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)
 \end{eqnarray}
 
 \end_inset
@@ -1131,56 +1250,28 @@ b_{t} & \sim & \mathrm{normal}\left(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t}\right)
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Subsubsection
-Hierarchical variance structure
+ This model is known in the literature as a trend-filtering model.
 \end_layout
 
 \begin_layout Standard
-We chose a hierarchical variance structure to allow for different levels
- of variance at each time step.
- 
-\begin_inset Formula 
-\begin{eqnarray*}
-\omega_{t} & \sim & \mathrm{Expon}\left(\lambda_{t}\left(\frac{\lambda_{t}}{2}\right)\right)\\
-\lambda_{t} & \sim & \mathrm{gamma}(1,\sigma)
-\end{eqnarray*}
-
+In addition, add a prior constraint that 
+\begin_inset Formula $b_{t}\in[0,150],\,t=1,\ldots,T$
 \end_inset
 
+, imposed during the MCMC sampling [check this].
+\end_layout
+
+\begin_layout Subsubsection
+Process variance
+\end_layout
+
+\begin_layout Standard
 We chose 
 \begin_inset Formula $\sigma=0.12$
 \end_inset
 
  through a cross validation exercise described in the next section.
-\end_layout
-
-\begin_layout Subsubsection
-Model selection overview (more details in "Model selection and assessment")
- 
-\end_layout
-
-\begin_layout Standard
-Biomass evolution in the forest is a long term process.
- Our model needs to borrow strength across time to represent long term biomass
- change.
- We began our model development with a simple random walk model, but found
- that this model was too sensitive to small changes in pollen proportions
- and didn't adequately borrow strength over time.
- We also found that a simple random walk model did not fit well to sites
- with biomodality within the pollen taxa.
- We moved to the generalized pareto because this allowed us to borrow more
- strength across time and cover the variance in the pollen proportion data
- to more fully account for bimodality in different pollen taxa types.
- 
-\end_layout
-
-\begin_layout Standard
-We assessed the predictive power and smoothness of both a first and second
- order biomass evolution models before choosing a third order model.
- We found that the third order random walk was neither over fit nor over
- smooth compared to the maximum likelihood estimates.
+ [Ann please discuss why we use a single sigma value]
 \end_layout
 
 \begin_layout Standard
@@ -1192,6 +1283,57 @@ To chose a static value for
  We chose the sigma value with the highest log likelihood sum across sites.
  We assessed the smoothness in our process model fit by comparing the posterior
  estimates to the maximum likelihood values.
+\end_layout
+
+\begin_layout Subsubsection
+Model selection overview (more details in "Model selection and assessment")
+ 
+\end_layout
+
+\begin_layout Standard
+Biomass evolution in the forest is a long term process.
+ Our model needs to borrow strength across time to represent long term biomass
+ change.
+ 
+\end_layout
+
+\begin_layout Standard
+Note that we considered simple normal random walk models and higher-order
+ versions of such models.
+ The first order random walk model:
+\begin_inset Formula 
+\[
+b_{t}\sim N(b_{t-1},\sigma^{2})
+\]
+
+\end_inset
+
+allows for sharp jumps but does not impose smoothness - the biomass estimates
+ and uncertainty are not smooth and were very sensitive to small changes
+ in pollen proportions, but we expect biomass to generally vary smoothly
+ in time, particularly over short time periods in which fire does not occur
+ (which is most of the time).
+ We also found that a simple random walk model did not fit well to sites
+ with biomodality within the pollen taxa.
+ [Ann, can you remind me of more details about the random walk and bimodality?]
+ We also considered higher-order random walk models, such as 
+\begin_inset Formula 
+\[
+b_{t}\sim N(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2})
+\]
+
+\end_inset
+
+but while this imposed smoothness, it also oversmoothed relative to some
+ sharp changes in biomass suggested by the pollen data.
+ 
+\end_layout
+
+\begin_layout Standard
+We assessed the predictive power and smoothness of both a first and second
+ order biomass evolution models before choosing a third order model.
+ We found that the third order random walk was neither over fit nor over
+ smooth compared to the maximum likelihood estimates.
 \end_layout
 
 \begin_layout Subsection
@@ -1218,8 +1360,9 @@ Implementation
 All model results were calculated in the R 3.2.0 computing environment using
  Markov chain Monte Carlo (MCMC) methods.
  The calibration and prediction models were fit using the 'nimble' package
- which allows for significantly increased computational efficiency and model
- specification flexibility 
+ which allows for significantly increased computational efficiency (via
+ a customized MCMC sampling algorithm) and model specification flexibility
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "de2017programming"
@@ -1246,20 +1389,213 @@ key "gelman1992inference"
 \end_layout
 
 \begin_layout Subsection
-MCMC algorithms for GP-based prediction with beta-binomial
+MCMC algorithms for GP-based prediction with beta-binomial 
 \end_layout
 
 \begin_layout Standard
-We created a custom generalized pareto sampler.
- This was easy because of nimble.
- Not exactly sure what to say here because I don't think we did much but
- a regular random walk with the MCMC right? At least that's what it prints
- when I ask nimble.
+[This section needs some fine-tuning by Chris]
+\end_layout
+
+\begin_layout Standard
+We initially attempted to fit the model above using the default MCMC sampling
+ strategy in NIMBLE as well as the default HMC sampler in Stan.
+ In the former case, we found that strong (and complicated) posterior correlatio
+n between biomass values at nearby points in time caused very poor mixing.
+ In contrast, in Stan, the biomass values appeared to mix well but chains
+ started at different starting points revealed that the sampler was getting
+ stuck in local modes.
  
 \end_layout
 
-\begin_layout Subsection
-marginalization (CP can write this) 
+\begin_layout Standard
+To address the mixing issues, we used NIMBLE's flexibility in adding custom
+ samplers to define a specialized sampler that proposed carefully-tailored
+ proposals for biomass values within small time windows.
+ In particular we want to propose new biomass values that produce a full
+ biomass process that is consistent with the GP structure and that allows
+ for large enough moves in the space of the biomass process.
+ This is not readily done with the form of the generalized Pareto given
+ above because the complicated and strong dependence structure of the biomass
+ values given the higher-order structure and generalized Pareto distribution.
+ However one can use a data augmentation scheme to write the generalized
+ Pareto in terms of normal distributions for the biomass contrasts.
+ We then also developed a normal approximation to the likelihood.
+ Combined these two pieces allow us to propose (using the conditional distributi
+on of biomass given the approximate likelihood) biomass process values consisten
+t with the data and the GP prior structure.
+ 
+\end_layout
+
+\begin_layout Standard
+More specifically, first consider the likelihood approximation, suppressing
+ the dependence on pond 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ Given 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+we can numerically maximize the likelihood (eqn X), producing 
+\begin_inset Formula $\hat{b}_{i}$
+\end_inset
+
+ and a standard error estimate from the second derivative of the likelihood,
+ 
+\begin_inset Formula $\hat{se}_{i}$
+\end_inset
+
+.
+ this defines a normal approximation to the likelihood
+\begin_inset Formula 
+\[
+\hat{b}_{i}\sim N(b(t_{i}),\hat{se}_{i}^{2}).
+\]
+
+\end_inset
+
+Next note that the generalized Pareto can be written as [CJP to insert citation]
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+b_{t} & \sim & N(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t})\\
+\omega_{t} & \sim & \mathrm{Expon}\left(\lambda_{t}\left(\frac{\lambda_{t}}{2}\right)\right)\\
+\lambda_{t} & \sim & \mathrm{gamma}(1,\sigma)
+\end{eqnarray*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ is the same parameter as in the (marginalized) model.
+\end_layout
+
+\begin_layout Standard
+In a default MCMC fit to the augmented model, there is high correlation
+ between 
+\begin_inset Formula $\{\omega_{t},\lambda_{t}\}$
+\end_inset
+
+ and values of 
+\begin_inset Formula $b$
+\end_inset
+
+ for times near to 
+\begin_inset Formula $t$
+\end_inset
+
+, so we can't simply use the conjugate normal structure to sample 
+\begin_inset Formula $b$
+\end_inset
+
+ separately from the variance components.
+ Also note that 
+\begin_inset Formula $\omega_{t}$
+\end_inset
+
+and 
+\begin_inset Formula $\lambda_{t}$
+\end_inset
+
+ are strongly negatively correlated.
+ Given these facts we developed the following joint proposal for 
+\begin_inset Formula $\omega_{t},\lambda_{t},b(l,t)$
+\end_inset
+
+ where 
+\begin_inset Formula $b(l,t)=b_{t-l},\ldots,b_{t-1},b_{t},b_{t+1},\ldots,b_{t+l}$
+\end_inset
+
+ are the biomass values within a time window defined by lag 
+\begin_inset Formula $l$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Propose 
+\begin_inset Formula $\{\log\omega_{t}^{*},\log\lambda_{t}^{*}\}$
+\end_inset
+
+ from a bivariate normal distribution with negative correlation, centered
+ on the current values
+\end_layout
+
+\begin_layout Enumerate
+Given 
+\begin_inset Formula $\{\log\omega_{t}^{*},\log\lambda_{t}^{*}\}$
+\end_inset
+
+, propose 
+\begin_inset Formula $b_{l}^{*}|\log\omega_{t}^{*},b_{\backslash l},\hat{y}$
+\end_inset
+
+ where 
+\begin_inset Formula $b_{\backslash l}=b_{1},\ldots,b_{t-l-1},b_{t+l+1},\ldots,b_{T}$
+\end_inset
+
+ are the biomass values outside the time window and 
+\begin_inset Formula $\hat{y}=\{\hat{b}_{1},\hat{b}_{2},\ldots,\hat{se}_{1},\hat{se}_{2},\ldots,$
+\end_inset
+
+ represents the full set of pseudo-observations and pseudo-standard errors
+ from the normal approximation to the likelihood.
+ The proposal is the conditional normal distribution for 
+\begin_inset Formula $b_{l}$
+\end_inset
+
+ given the likelihood approximation, which can be derived in closed form
+ using standard Bayesian and multivariate normal calculations.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Given that the sampler above is a Metropolis-Hastings proposal in step 1
+ combined with an approximation to the true conditional for 
+\begin_inset Formula $b_{l}$
+\end_inset
+
+ we jointly accept or reject 
+\begin_inset Formula $\{\log\omega_{t}^{*},\log\lambda_{t}^{*},b_{l}^{*}\}$
+\end_inset
+
+ based on standard Metropolis-Hastings calculations.
+ 
+\end_layout
+
+\begin_layout Standard
+Intuitively what we are doing are proposing to shift the biomass values
+ in a small time window given the new values of the variance parameters
+ but in such a way that the new values are consistent with the biomass outside
+ the time window (in particular the transition from inside to outside the
+ window is consistent with the GP prior structure, which can impose very
+ tight constraints given the spike at zero) and with the data.
+ We choose to only shift the biomass values only within a window to avoid
+ relying too heavily on the likelihood approximation and to avoid needing
+ to have good proposals for the entire biomass process.
+ 
+\end_layout
+
+\begin_layout Standard
+Our MCMC sampling scheme consists of the sampler above applied at all time
+ points, as well as simple Metropolis random walk samplers for 
+\begin_inset Formula $\log\omega_{t}$
+\end_inset
+
+ for all time points and simple Metropolis random walk samplers for 
+\begin_inset Formula $\log\lambda_{t}$
+\end_inset
+
+ for all time points [check this].
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1281,6 +1617,13 @@ We propagated uncertainty from the biomass data product at time of settlement,
  draws from the posteriors of the beta estimates from the final calibration
  model fit.
  
+\end_layout
+
+\begin_layout Standard
+[add comment somewhere: Running multiple chains with different spline coefficien
+t values and BACON age estimates has the added advantage of providing some
+ ability to average over multiple modes in the biomass estimation induced
+ by multi-modality from the biomass-pollen relationship]
 \end_layout
 
 \begin_layout Section
