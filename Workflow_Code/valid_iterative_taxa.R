@@ -25,7 +25,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
 
 load("twothirds_v1.0.Rdata")
 
-Niters <- 50000
+Niters <- 5000
 bMax <- 150
 
 #### Setting up taxa removal 
@@ -66,7 +66,7 @@ for(i in 1:length(new.biomass)){
 }
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
-                 bMax = bMax, Y = Y)
+                 bMax = bMax, Y = Y.calib)
 
 source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
