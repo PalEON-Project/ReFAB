@@ -27,10 +27,10 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load("twothirds_v1.0.Rdata")
+load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
-Niters <- 50000
-bMax <- 150
+Niters <- 10000
+bMax <- 232 #232 #130
 
 #### Setting up 10 fold cross validation
 set.seed(5)
@@ -58,12 +58,11 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-source(file.path('Workflow_Code','calibration.model.R'))
-if(FALSE){
-  samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
+source(file.path('Workflow_Code','models','calibration.model.R'))
+
+samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
-}
 
 load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
@@ -110,7 +109,9 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                  Niters = Niters, bMax = bMax, group_rm = group_rm,
                  outLik = outLik)
 
-outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.pred))
+#outlier <- which.max(abs(colMeans(samples.pred[,grep('b',colnames(samples.pred))]) - biomass.pred))
+
+if(group_rm == 12){
 
 source('calibration.figs.R')
 calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
@@ -120,7 +121,6 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
                  biomass.pred = biomass.pred, outlier = outlier,
                  sets10 = sets10)
 
-if(group_rm == 10){
   samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
   for(i in 1:10){
     load(file = file.path('~/Downloads','samps.linexp',paste0('samples.pred.group',i,'.Rdata')))
