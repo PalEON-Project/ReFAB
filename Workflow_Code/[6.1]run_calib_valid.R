@@ -60,9 +60,12 @@ Z.knots <- Z.test
 
 source(file.path('Workflow_Code','models','calibration.model.R'))
 
-samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
+if(FALSE){
+  samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
+  
+}
 
 load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
