@@ -106,7 +106,7 @@ source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
                  bMax = bMax, Y = Y)
 
-source(file.path('Workflow_Code','Models','validation.R'))
+source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                  samples.mixed = samples.mixed, u = u,
                  Niters = Niters, bMax = bMax, group_rm = group_rm,
