@@ -29,7 +29,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
 
 load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
-Niters <- 10000
+Niters <- 50000
 bMax <- 232 #232 #130
 
 #### Setting up 10 fold cross validation
@@ -60,7 +60,7 @@ Z.knots <- Z.test
 
 source(file.path('Workflow_Code','models','calibration.model.R'))
 
-if(FALSE){
+if(TRUE){
   samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
