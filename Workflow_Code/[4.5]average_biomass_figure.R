@@ -5,23 +5,23 @@ biomassCI <- diff.median <-  list()
 prob.of.inc <- matrix(NA,62,99)
 all.samps<- numeric(100)
 nItsSave = 10000
-hem.is <- out.list <- LS.is <- list()
+hem.is <- out.list <- LS.is <- Y.keep <- list()
 lat <- long <- all.samps.list <- name.keep <- age.keep <- list()
-for(i in 39:length(unique(dataID$name))){
+for(i in 1:length(unique(dataID$name))){
   locn <- as.character(unique(dataID$name)[i])
   locnClean <- gsub(' ', '-', unique(dataID$name)[i])
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   
   x.meta.use <- x.meta[x.meta$site.name == locn,]
   
-  source('test_site.R')
+  source(file.path('Workflow_Code','utils','test_site.R'))
   test_site(x.meta.use)
   
   ten_count_use = ten.count[which(x.meta$site.name == locn), ]
   ten_count_use[which(is.na(ten_count_use))] <- 0
   
   Y = as.matrix(ten_count_use)
-  hem.is[[i]]<-max(prop.table(ten_count_use,1)[,11]) + max(prop.table(ten_count_use,1)[,19])#sum(ten_count_use[,11])
+  hem.is[[i]]<-max(prop.table(Y,1)[,'TSUGAX']) + max(prop.table(Y,1)[,'FAGUS'])#sum(ten_count_use[,11])
   
   sample_ages <- x.meta.use$age_bacon
   age_bins <- seq(minAge, maxAge, ageInterval)
@@ -34,12 +34,12 @@ for(i in 39:length(unique(dataID$name))){
   
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
-  if(!is.null(group) | FALSE){
-    Y2 <- Y2[-group.mat[group,],]
-  }
-  
   Y <- as.matrix(Y2[ , -c(1,2)])
-  age_index <- Y2[,1]
+  Y2[,1] <- age_index
+  
+  Y.keep[[i]] <- Y2
+  
+
   
   LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'])
   
@@ -51,10 +51,10 @@ for(i in 39:length(unique(dataID$name))){
     
     for(b in 1:20){
       ID <- dataID[dataID$name==as.character(locn),'ID'][b]
-      file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda')
+      file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
       if(!file.exists(file_name)) next()
       load(file_name)
-      samples.keep <- rbind(samples.keep, samplesList[1000:2000,])
+      samples.keep <- rbind(samples.keep, samplesList)
     }
     
     samplesList <- samples.keep
@@ -62,7 +62,7 @@ for(i in 39:length(unique(dataID$name))){
     if(file.exists(file_name)){
       b <- 1
       ID <- dataID[dataID$name==as.character(locn),'ID'][b]
-      file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rda')
+      file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
 
       if(file.exists(file_name1)){
         load(file = file_name1)
@@ -103,6 +103,30 @@ for(i in 39:length(unique(dataID$name))){
       }
   }
 }
+
+### Sensitivity of biomass prediction to pollen proportion
+
+Y.all <- do.call(rbind,Y.keep)
+prop.all <- prop.table(as.matrix(Y.all),margin = 1)
+
+pdf('pollen.prediction.sensitivity.pdf')
+par(mfrow=c(2,2))
+for(t in 1:22){
+  Y.use <- prop.table(as.matrix(Y.keep[[1]][,3:24]),margin = 1)
+  plot(biomassCI[[1]][2,Y.keep[[1]][,1]],Y.use[,t],
+       ylim=c(0,(max(prop.all[,t+2])+.1*max(prop.all[,t+2]))),xlim=c(0,150),pch=19,cex=.5,
+       ylab='Pollen Prop',xlab='Biomass Prediction (Mg/ha)')
+  title(colnames(Y.use)[t])
+  for(i in 1:62){
+    if(!is.null(biomassCI[[i]])){
+      Y.use <- prop.table(as.matrix(Y.keep[[i]][,3:24]),margin = 1)
+      points(biomassCI[[i]][2,Y.keep[[i]][,1]],Y.use[,t],pch=19,cex=.5)
+    }else{
+      print(paste('not doing',i))
+    }
+  }
+}
+dev.off()
 
 ### For Paleon MIP
 biomass.mean.df <- data.frame(lat=unlist(lat)[-35],lon=unlist(long)[-35],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
@@ -154,7 +178,7 @@ for(i in 1:62){
 }
 
 ## Looking for where to cut all.samps matrix -- changes with number of sites
-site_count <- 60-1 #number of sites minus 1
+site_count <- 59-1 #number of sites minus 1
 
 ## calculation for proportion sites increasing -- barplot
 how.much <- matrix(NA,length(not_burn),99)
