@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass article
 \use_default_options true
 \maintain_unincluded_children false
@@ -9,16 +11,16 @@
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman default
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -342,7 +344,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="2" columns="4">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="20page%">
 <column alignment="center" valignment="top" width="10page%">
 <column alignment="center" valignment="top" width="10page%">
@@ -679,7 +681,7 @@ Notation will be different between calibration and prediction models because
  index the sites or ponds in our domain at the time of settlement for calibratio
 n and the number of samples for a single site for prediction.
  Let 
-\begin_inset Formula $i=1,...,I$
+\begin_inset Formula $k=1,...,K$
 \end_inset
 
  index the number of taxa in each sample.
@@ -735,9 +737,9 @@ In the calibration phase, we model the nonlinear multivariate relationship
 
 \begin_layout Standard
 More specifically, we use beta distributions combined using a stickbreaking
- structure structure to relate pollen proportions to nonlinear spline functions
- of biomass, with one function per taxon, represented using a regression
- spline basis matrix 
+ structure to relate pollen proportions to nonlinear spline functions of
+ biomass, with one function per taxon, represented using a regression spline
+ basis matrix 
 \shape italic
 
 \begin_inset Formula $\left(\boldsymbol{Z}\right)$
@@ -747,11 +749,11 @@ More specifically, we use beta distributions combined using a stickbreaking
  
 \shape default
 In particular the relative proportion for taxon 
-\begin_inset Formula $i$
+\begin_inset Formula $k$
 \end_inset
 
 , given the pollen remaining after having accounted for taxa 
-\begin_inset Formula $1,\ldots,i-1$
+\begin_inset Formula $1,\ldots,k-1$
 \end_inset
 
 , is modeled as a beta distribution whose two shape parameters are spline
@@ -769,15 +771,6 @@ In particular the relative proportion for taxon
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, I would use p_abs not p_True and abs and rel not Abs and Rel
-\end_layout
-
-\end_inset
-
 The model structure is as follows, where the likelihood (Eq.
  
 \begin_inset CommandInset ref
@@ -799,11 +792,11 @@ reference "eq:calib likelihood"
 \end_inset
 
  is the total number of pollen grains, 
-\begin_inset Formula $\boldsymbol{p_{True}}_{j}$
+\begin_inset Formula $\boldsymbol{p_{abs}}_{j}$
 \end_inset
 
  and 
-\begin_inset Formula $\boldsymbol{p_{Rel}}_{j}$
+\begin_inset Formula $\boldsymbol{p_{rel}}_{j}$
 \end_inset
 
  are vectors of underlying pollen proportions, and 
@@ -823,12 +816,12 @@ and
  
 \begin_inset Formula 
 \begin{eqnarray}
-y_{ji} & \sim & \textrm{binomial}(p_{True_{ji}},N_{ji})\label{eq:calib likelihood}\\
-p_{Rel_{j,1}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,1})\\
-p_{True_{j,1}} & = & p_{Rel_{j,1}}\\
-p_{Rel_{j,i}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,i},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,i}),\,i=2,\ldots,I-1\\
-p_{True_{j,i}} & = & p_{Rel}\left(1-\sum_{i=1}^{i-1}p_{True_{j,i}}\right)\\
-p_{True_{j,I}} & = & 1-\sum_{i=1}^{I-1}p_{True_{j,i}}
+y_{jk} & \sim & \textrm{binomial}(p_{abs_{jk}},N_{jk})\label{eq:calib likelihood}\\
+p_{rel_{j,1}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,1})\\
+p_{abs_{j,1}} & = & p_{rel_{j,1}}\\
+p_{rel_{j,k}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,k},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,k}),\,k=2,\ldots,K-1\\
+p_{abs_{j,k}} & = & p_{rel}\left(1-\sum_{i=1}^{k-1}p_{abs_{j,k}}\right)\\
+p_{abs_{j,k}} & = & 1-\sum_{i=1}^{I-1}p_{abs_{j,k}}
 \end{eqnarray}
 
 \end_inset
@@ -872,26 +865,50 @@ There are two sets of 5
 \end_inset
 
 's to estimate.
- They each have an uninformative prior such that 
-\begin_inset Formula $\boldsymbol{\beta}\sim\mathrm{normal}(0,.04)$
+ They each have an uninformative prior with relatively low precision such
+ that 
+\begin_inset Formula $\boldsymbol{\beta}\sim\mathrm{normal}(0,.0025)$
 \end_inset
 
 .
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, please go back to our notes/emails and include some justification of
- .04.
-\end_layout
-
-\end_inset
-
+ This broad prior allows our splines to flexibly fit the data.
  The basis matrix is calculated outside of the model with the R function
  bs() in the 'splines' package.
  Each row is calculated with point estimates of biomass and 5 knots selected
  using the quantiles of the biomass estimates.
  
+\end_layout
+
+\begin_layout Standard
+We marginalize over the 
+\begin_inset Formula $p's$
+\end_inset
+
+ and use a beta binomial distribution as follows.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Not quite sure if this is what you want me to include? Should this be here
+ and in the prediction model? we use linexp in both correct?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+y_{k,j} & \sim & \textrm{Beta-bin}(exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{i})\label{eq:pred likelihood-1}\\
+y_{k,j} & \sim & \textrm{Beta-bin}(exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})
+\end{eqnarray}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1135,12 +1152,6 @@ Random walk and GP model (CP can add more details on GP model)
 \end_layout
 
 \begin_layout Standard
-[Ann, we used 'i' above to indicate taxon and here to indicate time.
- Let's use 'i' for time (i.e.
- sample) here and a different letter (maybe 'k') for taxon]
-\end_layout
-
-\begin_layout Standard
 The prediction model has a similar structure to the calibration model but
  the uncertain biomass is represented as a smooth temporal process on a
  discrete time grid (details below).
@@ -1161,20 +1172,29 @@ The prediction model has a similar structure to the calibration model but
 \end_inset
 
  in years before present.
- The prediction model includes a Beta-binomial likelihood where [Ann, the
- beta-bin is also used for calibration, so please put this at the end of
- the calibration model description - you can basically say that we can marginali
-ze over the p's, and in the equations make sure to omit the p's since they've
- been marginalized]
+ The prediction model includes a Beta-binomial likelihood where 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[Ann, the beta-bin is also used for calibration, so please put this at the
+ end of the calibration model description - you can basically say that we
+ can marginalize over the p's, and in the equations make sure to omit the
+ p's since they've been marginalized]
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-y_{i,j} & \sim & \textrm{Beta-bin}(p_{1_{i,1}},p_{2_{i,1}},N_{i})\label{eq:pred likelihood}\\
-y_{i,j} & \sim & \textrm{Beta-bin}(p_{1_{i,j}},p_{2_{i,j}},N_{j}-\Sigma_{i=1}^{i-1}\boldsymbol{y}_{j})\\
-p_{1_{i,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\\
-p_{2_{i,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})
+y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,1}},p_{2_{k,1}},N_{i})\label{eq:pred likelihood}\\
+y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,j}},p_{2_{k,j}},N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})\\
+p_{1_{k,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\\
+p_{2_{k,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})
 \end{eqnarray}
 
 \end_inset
@@ -1222,7 +1242,7 @@ Biomass evolution in forest stands is a long term, generally smooth process
  for several reasons: (1) our scientific interest lies in long-term forest
  change, (2) the mixing of pollen in sediment and radio-carbon dating uncertaint
 y prevents us from resolving yearly-decadal scale variability, and (3) computati
-onal effiency.
+onal efficiency.
  
 \end_layout
 
@@ -1266,16 +1286,13 @@ Process variance
 \end_layout
 
 \begin_layout Standard
-We chose 
+We use a static sigma value so that we could standardize across sites.
+ We chose 
 \begin_inset Formula $\sigma=0.12$
 \end_inset
 
  through a cross validation exercise described in the next section.
- [Ann please discuss why we use a single sigma value]
-\end_layout
-
-\begin_layout Standard
-To chose a static value for 
+ To chose a static value for 
 \begin_inset Formula $\sigma$
 \end_inset
 
@@ -1315,7 +1332,6 @@ allows for sharp jumps but does not impose smoothness - the biomass estimates
  (which is most of the time).
  We also found that a simple random walk model did not fit well to sites
  with biomodality within the pollen taxa.
- [Ann, can you remind me of more details about the random walk and bimodality?]
  We also considered higher-order random walk models, such as 
 \begin_inset Formula 
 \[
@@ -1324,7 +1340,7 @@ b_{t}\sim N(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2})
 
 \end_inset
 
-but while this imposed smoothness, it also oversmoothed relative to some
+but while this imposed smoothness, it also over-smoothed relative to some
  sharp changes in biomass suggested by the pollen data.
  
 \end_layout
@@ -1393,7 +1409,16 @@ MCMC algorithms for GP-based prediction with beta-binomial
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 [This section needs some fine-tuning by Chris]
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1535,7 +1560,7 @@ Given
 \end_inset
 
 , propose 
-\begin_inset Formula $b_{l}^{*}|\log\omega_{t}^{*},b_{\backslash l},\hat{y}$
+\begin_inset Formula $\left(\right)b_{l}^{*}|\log\omega_{t}^{*},b_{\backslash l},\hat{y}$
 \end_inset
 
  where 
@@ -1989,7 +2014,7 @@ Here we can show the added/subtracted pollen results as well as the change
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
