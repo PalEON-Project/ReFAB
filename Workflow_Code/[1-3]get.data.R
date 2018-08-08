@@ -1,16 +1,20 @@
 library(neotoma)
-library(maptools)
+library(dplyr)
+library(maptools)#
 library(ggplot2)
-library(reshape)
+library(reshape)#
 library(fields)
-library(oce)
+library(oce)#
 library(splines)
 library(mgcv)
+library(ncdf4)#
+library(raster)
 
 data.dir = c("Data/")
 fig.dir = c('Figures/')
 DRAW = TRUE
 
+### Shape files for map plots
 usShp <- readShapeLines(file.path(data.dir, '/us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)
 usFortified <- fortify(usShp, region='id')
@@ -19,40 +23,68 @@ usFortified <- fortify(usShp, region='id')
 ##### Download Data for MN and WI and MI #####
 #####
 
+
 meta <- get_dataset(datasettype='pollen', gpid=c("Wisconsin", 
                                                  "Michigan",
-                                                 "Minnesota"), ageyoung=0)
+                                                 "Minnesota",
+                                                 "Illinois",
+                                                 "Indiana"), ageyoung=0)
 meta_dl <- get_download(meta)
 
 comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
 pol_cal_count <- compile_downloads(comp.tax)
+pol_cal_count <- pol_cal_count %>% mutate(.id = as.numeric(.id))
+
+diff(order((pol_cal_count %>% filter(.id == 1966))$depth))
+
+map('state', ylim=range(pol_cal_count$lat)+c(-2, 2), xlim=range(pol_cal_count$long)+c(-1, 1),main=NA)
+points(pol_cal_count$long, pol_cal_count$lat, pch=19, cex=1,col="gray")
 
 save(pol_cal_count,file=paste0('nimble_pull',Sys.Date(),'.Rdata'))
 load("~/ReFAB/nimble_pull2018-02-06.Rdata")
+load("~/ReFAB/nimble_pull2018-07-13.Rdata")
 #####
 ##### Add Bacon Pollen Dates #####
 #####
 
-bacon <- read.csv(paste0(data.dir,'/sediment_ages_v1.0_varves.csv'))
-cal <- read.csv(paste0(data.dir,'/cal_data_mid_depth_2015-06-10.csv'))
+bacon <- read.csv(paste0(data.dir,'/sediment_ages_v1.0_varves.csv')) #andria bacon
+cal <- read.csv(paste0(data.dir,'/cal_data_mid_depth_2015-06-10.csv')) #andria calibration
 
+pol_cal_count <- pol_cal_count %>% mutate(.id = as.numeric(.id))
+
+#current calibration dataset -> subset of andria's dataset
 cal.new.pol <- merge(x = pol_cal_count, y = cal, 
                      by.x = c('dataset','depth'), 
                      by.y = c('id','depth'))
-length(unique(cal.new.pol$dataset))
 
-# site.find <- cal[-na.omit(match(cal$id,cal.new.pol$dataset)),'site']
-# 
-# d.id <- list()
-# for(i in 1:length(site.find)){
-#   cal[cal$site==site.find[i],'id']<-pol_cal_count[grep(site.find[i],pol_cal_count$site.name),'dataset'][1]
-# }
+pol_all_settle <- pol_cal_count[which(pol_cal_count$age > 50 & pol_cal_count$age < 250),]
+#possible new calibration sites
+pol_all_settle_nocal <-pol_all_settle[-which(pol_all_settle$dataset%in%cal$id),]
 
+### Plot sites that are currently missing from calibration data set
+pdf('calibration.sites.pdf')
+map('state', ylim=range(cal$lat)+c(-2, 2),
+    xlim=range(cal$long)+c(-1, 1),main=NA)
 
-#bacon <- read.csv(paste0(data.dir,'/pollen_ts_bacon_v8.csv'))
+points(cal$long, cal$lat, pch=19, col="blue",cex=.5)
+points(cal.new.pol$long.x, cal.new.pol$lat.x, cex=.5,col="green")
+points(pol_all_settle_nocal$long,
+       pol_all_settle_nocal$lat,cex=.5,pch=19,col='red')
+
+legend('topright',c('Andria cal','Ann current cal','Neotoma Age b/t 50-250'),
+       pch=c(19,1,19), col= c('blue','green','red'))
+dev.off()
+
 new.pollen <- merge(x = pol_cal_count, y = bacon, 
-                    by.x = c('.id','age','depth','PINUSX','lat','long'), 
-                    by.y = c('id','age_default','depth','PINE','lat','long'))
+                    by.x = c('.id','age','depth','BETULA'), 
+                    by.y = c('id','age_default','depth','BIRCH'))
+
+aa <- bacon %>% 
+  dplyr::select(id, age_default, depth, starts_with('bacon_draw')) %>% 
+  left_join(pol_cal_count,
+            by = c('id' = '.id', 'age_default' = 'age', 'depth'))
+
+
 pol_list <- list()
 pol_ids <- unique(pol_cal_count$dataset)
 for(i in 1:length(pol_ids)){
@@ -60,10 +92,9 @@ for(i in 1:length(pol_ids)){
 }
 names(pol_list) <- pol_ids
 
-
 ### Test
-sum(new.pollen$BIRCH - new.pollen$BETULA) #should equal zero
-
+sum(aa$BIRCH - aa$BETULA) #should equal zero
+new.pollen[which(new.pollen$PINE != new.pollen$PINUSX),c('depth','PINE',"PINUSX")]
 #####
 ###### Format settlement pollen data #####
 #####
@@ -108,14 +139,13 @@ cast.x <- cast.x.full <- as.data.frame(cast.x)
 
 set.seed(4)
 sites_rm = sample(1:nrow(cast.x),round(nrow(cast.x)/3))
-save(sites_rm, file = 'sites_rm.Rdata')
+#save(sites_rm, file = paste0(Sys.Date(),'sites_rm.Rdata'))
 
 if(DRAW == TRUE) pdf(paste0(fig.dir,paste0("all_sites",Sys.Date(),".pdf")))
-map('state', ylim=range(cast.x$lat)+c(-2, 2), xlim=range(cast.x$long)+c(-1, 1),main=NA)
+map('state', ylim=range(pol_cal_count$lat)+c(-2, 2), xlim=range(pol_cal_count$long)+c(-1, 1),main=NA)
 points(cast.x$long, cast.x$lat, pch=19, cex=1,col="gray")
-title(main="all sites")
-
 points(cast.x$long[-sites_rm], cast.x$lat[-sites_rm], pch=19, cex=1,col="blue")
+title(main="all sites")
 if(DRAW == TRUE) dev.off()
 
 #plot_biomass_pollen = plot_biomass_pollen[-c(which(props$Other>.5),which(props$POACEAE>.8)),]
@@ -125,7 +155,20 @@ if(DRAW == TRUE) dev.off()
 #####
 
 biomass_dat_est <- read.csv(paste0(data.dir,"biomass_prediction_v0.9-10_bam.csv"))
+nc <- nc_open(file.path(data.dir,'PLS_biomass_western_point_v0.99.nc'))
 
+x <- nc$dim$x$vals
+y <- nc$dim$y$vals
+data <- ncvar_get(nc,varid = c('total'))
+
+rownames(data) <- x
+colnames(data) <- y
+
+r1 <- raster(list(x=x,y=y,z=data))
+plot(r1)
+
+biomass_dat_est <- as.data.frame(rasterToPoints(r1))
+colnames(biomass_dat_est) <- c('x','y','Total')
 
 ##### Changing pollen coordinates so that we can find the right rows when we find the biomass for each pond.
 lat.long.reg <- cbind(as.numeric(as.character(cast.x$long)),as.numeric(as.character(cast.x$lat)))
@@ -168,9 +211,9 @@ for(i in 1:length(idx_cores)){
 
 cast.x <- cbind(cast.x,unlist(biomass))
 
-#### Remove places where we do not have settlement biomass
-cast.x <- cast.x[-which(is.na(cast.x[,ncol(cast.x)])),]
-biomass <- biomass[-which(is.na(biomass))]
+#### Remove places where we do not have settlement biomass # should have all of it eventually
+#### cast.x <- cast.x[-which(is.na(cast.x[,ncol(cast.x)])),]
+#### biomass <- biomass[-which(is.na(biomass))]
 
 biomass <- unlist(biomass)
 
@@ -182,9 +225,9 @@ pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
 map('state', xlim=c(-98,-81), ylim=c(41.5,49))
 points(cast.x$long,cast.x$lat, pch=21,
        cex=1.1, bg=colors[data_binned],lwd=.2)
-text(cast.x$long[-sites_rm],cast.x$lat[-sites_rm],labels=1:100,cex=.3)
-bimodal_sites <- c(3,98,62,100,73,92,63,55, 76, 4, 87, 79, 51)
-points(cast.x$long[-sites_rm][bimodal_sites],cast.x$lat[-sites_rm][bimodal_sites],col='red',lwd=2)
+#text(cast.x$long[-sites_rm],cast.x$lat[-sites_rm],labels=1:100,cex=.3)
+#bimodal_sites <- c(3,98,62,100,73,92,63,55, 76, 4, 87, 79, 51)
+#points(cast.x$long[-sites_rm][bimodal_sites],cast.x$lat[-sites_rm][bimodal_sites],col='red',lwd=2)
 title("Biomass Point Estimates at Settlement")
 plotInset(-90,47,-82.5,50,
           expr={
@@ -245,11 +288,11 @@ if(DRAW==TRUE) dev.off()
 props = as.data.frame(props)
 
 #####
-##### Drawing Splines (with all data) #####
+##### Drawing Splines (with all data) ##### Not super important just for checking
 #####
 
-Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
-u <- c(0,30,150) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,232))
+u <- c(0,30,232) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 betas = matrix(0,ncol(Z),ncol(Y)); betas.save = betas
 
 counts <- Y
@@ -309,19 +352,19 @@ save(Y,biomass,Z,file=paste0(Sys.Date(),'all.calibration.data.Rdata'))
 
 Y = Y[-sites_rm,] #remove sites "sites_rm" defined above
 biomass = biomass[-sites_rm]
-Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,150))
+Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = 30, Boundary.knots=c(0,232))
 dim(Y)[1]-length(biomass) # should be zero
 
 save(Y,biomass,Z,file=paste0(Sys.Date(),'twothirds.calibration.data.Rdata'))
 
 #####
-##### Create final prediction datasets #####
+##### Create final prediction datasets (BACON) #####
 #####
 
 x = new.pollen[new.pollen$age_bacon>=200,]
 x = x[x$age_bacon<=10000,]
 
-x.meta = x[,c('.id','lat',"long","dataset","site.name","age_bacon")]
+x.meta = x[,c('id','lat',"long","dataset","site.name","age_bacon")]
 x.bacon <- x[,grep(pattern = 'bacon',colnames(x))]
 colnames(x.meta)[1] <- c('site.id')
 
@@ -333,8 +376,132 @@ ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
                     prairie.include = T, other.herbs.include = T,
                     other.trees.include = T, drop.taxa = drop.taxa,
                     PFT.do = F)
+load("~/ReFAB/twothirds_v1.0.Rdata")
+ten.count <- ten.count[,colnames(Y)]
 
-save(x.meta, ten.count, x.bacon , Z, u, file = 'prediction.data_v2.Rdata')
+#save(x.meta, ten.count, x.bacon , Z, u, file = 'prediction.data_v1.Rdata')
+
+
+#### Writing data frame to feed to job array
+IDs <- unique(x.meta$site.id)
+name.list <- list()
+site.data <- as.data.frame(matrix(NA,length(IDs),5))
+
+source(file.path('Workflow_Code','utils','test_site.R'))
+for(i in 1:length(IDs)){ 
+  which_rows <- which(x.meta$site.id == IDs[i])
+  x.meta.use <- x.meta[which_rows,]
+  test_site(x.meta.use)
+  
+  ten_count_use = ten.count[which_rows, ]
+  
+  site.data[i,] <- data.frame(max.age = max(x.meta[which_rows,'age_bacon']),
+                              min.age = min(x.meta[which_rows,'age_bacon']),
+                              lat = x.meta[which_rows,'lat.x'][1],
+                              long = x.meta[which_rows,'long.x'][1],
+                              n.samps = length(which_rows))
+  name.list[[i]] <-  x.meta[which_rows,'site.name'][1]
+  
+}
+
+site.data <- cbind(site.data,unlist(name.list),unlist(IDs))
+colnames(site.data) <- c('max.age','min.age','lat','long','n.samps','site.name','site.id')
+
+site_keep <- site.data[which(site.data$max.age>8000&site.data$min.age<2000&site.data$n.samps>10),]
+
+map('state', ylim=range(pol_cal_count$lat)+c(-2, 2), xlim=range(pol_cal_count$long)+c(-1, 1),main=NA)
+#points(pol_cal_count$long, pol_cal_count$lat, pch=19, cex=1,col="gray")
+#points(site.data$long, site.data$lat, pch=19, cex=1,col="blue")
+points(site_keep$long,site_keep$lat,col='red',lwd=1,pch=19)
+
+site_keep_bacon <- site_keep
+
+if(which(table(site_keep$site.name)>1)) {
+  print('Site Doubled Up.')
+  print(table(site_keep$site.name)[which(table(site_keep$site.name)>1)])
+  }
+
+n.sites <- nrow(site_keep)
+n.betas <- 20
+
+dataID <- data.frame(name = sort(rep(site_keep$site.name,n.betas)), ID = 1:n.sites,
+                     sigma = rep(0.12,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
+
+write.csv(dataID, file='dataID_bacon_v3.csv')
+
+#####
+##### Create final prediction datasets (NON - BACON) #####
+#####
+
+nonbacon <- pol_cal_count[-which(pol_cal_count$.id%in%unique(x$.id)),]
+
+x <- nonbacon
+
+x.meta = x[,c('.id','lat',"long","dataset","site.name","age")]
+colnames(x.meta)[1] <- c('site.id')
+
+pred.x <- x[,which(colnames(x)%in%colnames(cast.x))]
+
+ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
+                            cast.x = pred.x, sites_rm = 0,
+                            all.pollen.taxa.names = all.pollen.taxa.names,
+                            prairie.include = T, other.herbs.include = T,
+                            other.trees.include = T, drop.taxa = drop.taxa,
+                            PFT.do = F)
+ten.count <- ten.count[,colnames(Y)]
+
+save(x.meta, ten.count, Z, u, file = 'prediction.data_v3_nonbacon.Rdata')
+
+#### Writing data frame to feed to job array
+IDs <- unique(x.meta$site.id)
+name.list <- list()
+site.data <- as.data.frame(matrix(NA,length(IDs),5))
+
+source(file.path('Workflow_Code','utils','test_site.R'))
+for(i in 1:length(IDs)){ 
+  which_rows <- which(x.meta$site.id == IDs[i])
+  x.meta.use <- x.meta[which_rows,]
+  test_site(x.meta.use)
+  
+  ten_count_use = ten.count[which_rows, ]
+  
+  site.data[i,] <- data.frame(max.age = max(x.meta[which_rows,'age']),
+                              min.age = min(x.meta[which_rows,'age']),
+             lat = x.meta[which_rows,'lat'][1],
+             long = x.meta[which_rows,'long'][1],
+             n.samps = length(which_rows))
+  name.list[[i]] <-  x.meta[which_rows,'site.name'][1]
+  
+}
+
+site.data <- cbind(site.data,unlist(name.list),unlist(IDs))
+colnames(site.data) <- c('max.age','min.age','lat','long','n.samps','site.name','site.id')
+
+site_keep <- site.data[which(site.data$max.age>8000&site.data$min.age<2000&site.data$n.samps>10),]
+
+pdf('new.prediction.sites.pdf')
+map('state', ylim=range(site_keep$lat)+c(-2, 2), xlim=range(site_keep$long)+c(-3, 3),main=NA)
+#points(pol_cal_count$long, pol_cal_count$lat, pch=19, cex=1,col="gray")
+#points(site.data$long, site.data$lat, pch=19, cex=1,col="blue")
+points(site_keep_bacon$long,site_keep_bacon$lat,col='blue',lwd=1,pch=19)
+points(site_keep$long,site_keep$lat,col='red',lwd=1,pch=19)
+legend('topright',c('Baconized','NOT Baconized'),pch=c(19,19),
+       col=c('blue','red'))
+dev.off()
+
+if(which(table(site_keep$site.name)>1)) {
+  print('Site Doubled Up.')
+  print(table(site_keep$site.name)[which(table(site_keep$site.name)>1)])
+}
+
+n.sites <- nrow(site_keep)
+n.betas <- 20
+
+dataID <- data.frame(name = sort(rep(site_keep$site.name,n.betas)), ID = 1:n.sites,
+                     sigma = rep(0.12,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
+
+
+
 
 #####
 ##### Create paleon mip datasets #####
