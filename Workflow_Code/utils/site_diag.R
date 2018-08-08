@@ -52,7 +52,7 @@ for(b in 1:20){
 samplesList <- samples.keep
 
 #### Plotting One Site
-pdf(paste0('SiteDiagnositcs-Mean',locnClean,'.pdf'))
+pdf(paste0('SiteDiagnositcs-Age',locnClean,'.pdf'))
 #quartz()
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
@@ -64,9 +64,9 @@ bio.quants <- apply(samplesList[,1:(maxAge/100)],2,quantile,c(0.025,0.5,0.975))
 
 data_binned <-  cut(rev(bio.quants[2,]), c(breaks), include.lowest = FALSE, labels = FALSE)
 
-fig.mat <- matrix(1,27,1)
+fig.mat <- matrix(1,28,1)
 fig.mat[1:6,]<-1
-fig.mat[7:27,]<-seq(2,22,1)
+fig.mat[7:28,]<-seq(2,23,1)
 #control.pts<-read.csv(text=getURL('https://raw.githubusercontent.com/PalEON-Project/stepps-baconizing/master/data/bacon_age_markers_v1.csv'))
 
 def.par <- par(no.readonly = TRUE)
@@ -86,12 +86,12 @@ for(b in 1:20) {
 #points(0,unique(x.meta[x.meta$site.name == locn,'SettleBiomass']),pch=19,col='purple',cex=2)
 legend('topleft','Mx.Lik.',pch=1)
 
-ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
+ten_count_use = ten.count[which(x.meta$.id == site_number), ]
 Y = as.matrix(ten_count_use)
 prop.use <- prop.table(as.matrix(Y),margin=1)    
 
 for(p in rev(match(names(sort(colMeans(prop.use))),colnames(prop.use)))){
-  prop.plot<- cbind(as.vector(x.meta[which(x.meta$site.id==site_number),]$age_bacon),as.matrix(prop.use[,p]))      	
+  prop.plot<- cbind(as.vector(x.meta[which(x.meta$.id==site_number),]$age_bacon),as.matrix(prop.use[,p]))      	
   prop.plot<-prop.plot[order(prop.plot[,1]),]
   plot(x=prop.plot[,1],y=prop.plot[,2],type="l",xlim=c(maxAge,-10),
        ylim=c(0,max(prop.use[,p])),ylab=NA,yaxt='n', xaxt='n')
