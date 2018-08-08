@@ -52,7 +52,7 @@ samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
 
-load(file = paste0("beta.est.taxa.", group_rm, ".Rdata"))
+#load(file = paste0("beta.est.taxa.", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -73,3 +73,35 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                                  samples.mixed = samples.mixed, u = u,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
                                  outLik = outLik)
+
+
+samps.mat <- array(NA, dim = c(500,100,22))
+r.saved <- numeric(22)
+
+pdf('iterative.taxa.sens.pdf')
+par(mfrow=c(2,2))
+for(i in 1:22){ #order(r.saved)
+  load(paste0('~/Downloads/taxa.samps/samples.pred.group',i,'betaNA.Rdata'))
+  samps.mat[,,i] <- samples.pred
+  
+  bio.median <- apply(samples.pred,2,FUN = quantile,.5)
+  plot(biomass, bio.median,
+       xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+       xlab="True Biomass", ylab="Predicted Mean Biomass",
+       main='New Biomass')
+  abline(a=0,b=1)
+  lm.mod <- lm(biomass ~ bio.median+0)
+  abline(lm.mod,lty=2)
+  mtext(paste("r-squared",summary(lm.mod)$r.squared))
+  
+  r.saved[i] <- summary(lm.mod)$r.squared
+  
+  arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
+         x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
+         code = 0, lwd=2)
+  
+}
+dev.off()
+
+
+
