@@ -34,7 +34,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
-  age_index <- Y2[,1]
+  age_index <- Y2[,1] #group.1 is age_index because age_index gets summed in aggregate()
   
   Z_knots <- Z
   TT <- length(age_bins)-1

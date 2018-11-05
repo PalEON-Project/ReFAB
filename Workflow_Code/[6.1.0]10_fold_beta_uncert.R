@@ -30,10 +30,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load("twothirds_v1.0.Rdata")
+#load("twothirds_v1.0.Rdata")
+load('2018-10-31twothirds.calibration.data.Rdata')
 
 Niters <- 10000
-bMax <- 150
+bMax <- 209
 
 #### Setting up 10 fold cross validation
 set.seed(5)
@@ -50,7 +51,7 @@ if(is.na(group_rm)){
 
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
-u <- c(0,30,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+u <- c(0,37,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),5)
