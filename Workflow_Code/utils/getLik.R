@@ -1,9 +1,9 @@
-getLik <-  function(Z,u,beta,bMax,Y) {
+getLik <-  function(Z,u,beta,bMax,Y,knots) {
   library(nimble)
   source(file.path('genPareto','betabin.R'))
   source(file.path('Workflow_Code','utils','linexp.R'))
 
-    knots = 5
+    #knots = 5
     #u <- c(rep(attr(Z,"Boundary.knots")[1],1),attr(Z,"knots"),rep(attr(Z,"Boundary.knots")[2],1))
     N0 = rep(0, (length(u)-1))
     N1 = rep(0, (length(u)))
@@ -19,9 +19,9 @@ getLik <-  function(Z,u,beta,bMax,Y) {
     
     shape1.end <- length(beta)/2
     
-    shape1 <- linexp(Z%*%matrix(beta[1:shape1.end], nrow = 5), I = ncol(Y),
+    shape1 <- linexp(Z%*%matrix(beta[1:shape1.end], nrow = knots), I = ncol(Y),
                      J = nrow(Z.new))
-    shape2 <- linexp(Z%*%matrix(beta[shape1.end+1:length(beta)], nrow = 5), I = ncol(Y),
+    shape2 <- linexp(Z%*%matrix(beta[shape1.end+1:length(beta)], nrow = knots), I = ncol(Y),
                      J = nrow(Z.new))
     
     # for(j in 1:nrow(shape1.hold)){
