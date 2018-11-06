@@ -62,7 +62,8 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-load(file = paste0("beta.est.group.in", 'ALL_150', ".Rdata")) #'ALL_150' or group_rm
+#### only need to load betas from the left out groups don't need to estimate betas 200 times
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #'ALL_150' or group_rm
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -78,11 +79,13 @@ source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed),
                  bMax = bMax, Y = Y.pred)
 
-source('validation.R')
+save(outLik,file=paste0('outLik_group',group_rm,'_beta_',beta_row,'.Rdata'))
+
+source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                                  samples.mixed = samples.mixed, u = u,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
-                                 outLik = outLik, beta_row)
+                                 outLik = outLik, beta_row = beta_row)
 
 ####
 #### Plotting ####
