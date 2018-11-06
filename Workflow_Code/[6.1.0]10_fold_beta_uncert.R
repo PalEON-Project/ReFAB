@@ -31,7 +31,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # might want a flat prior like => 1/400 precision
 
 #load("twothirds_v1.0.Rdata")
-load('2018-10-31twothirds.calibration.data.Rdata')
+load('2018-11-01twothirds.calibration.data.Rdata')
 
 Niters <- 10000
 bMax <- 209
