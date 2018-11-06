@@ -77,7 +77,7 @@ for(i in 1:length(new.biomass)){
 }
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed),
-                 bMax = bMax, Y = Y.pred)
+                 bMax = bMax, Y = Y.pred,knots=length(u)+2)
 
 save(outLik,file=paste0('outLik_group',group_rm,'_beta_',beta_row,'.Rdata'))
 
