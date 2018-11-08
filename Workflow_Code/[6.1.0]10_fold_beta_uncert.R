@@ -31,27 +31,27 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # might want a flat prior like => 1/400 precision
 
 #load("twothirds_v1.0.Rdata")
-load('2018-11-01twothirds.calibration.data.Rdata')
+load('2018-11-07twothirds.calibration.data.Rdata')
 
-Niters <- 10000
-bMax <- 209
+Niters <- 50000
+bMax <- 228
 
 #### Setting up 10 fold cross validation
 set.seed(5)
-sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
+sets10 <- matrix(sample(x = 1:length(biomass),size = length(biomass), replace = F),10,10)
 Y.keep <- Y
 biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
-if(is.na(group_rm)){
+if(is.na(group_rm)|group_rm > 10){
   Y.calib <- Y; Y.pred <- Y
   biomass.calib <- biomass; biomass.pred <- biomass
 }
 
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
-u <- c(0,37,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+u <- c(1,47,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),5)
@@ -92,14 +92,16 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 ####
 
 if(FALSE){
-samples.pred.mat <- array(NA,dim=c(1000,length(biomass.keep),20))
+dir_to_samples_pred <- c('~/Downloads/archive/')
+samples.pred.mat <- array(NA,dim=c(1000,length(biomass.keep)-3,20))
 for(i in 1:200){
-  load(file = file.path('~/Downloads','samps.beta.uncert.all',
+  load(file = file.path(dir_to_samples_pred,
                         paste0('samples.pred.group',dat.index[i,'group_rm'],'beta',dat.index[i,'beta_row'],'.Rdata')))
   #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+  if(any(is.na(samples.pred))) print(i)
   samples.pred.mat[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- samples.pred[,grep('b',colnames(samples.pred))]
 }
-pdf(paste0('ALL.calib.r2.validation.beta_uncert.pdf'))
+pdf(paste0('ALL.calib.r2.validation.beta_uncert',Sys.Date(),'.pdf'))
 par(mfrow=c(1,1))
 plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
