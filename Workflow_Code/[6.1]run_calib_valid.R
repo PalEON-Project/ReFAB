@@ -23,11 +23,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load('2018-11-01twothirds.calibration.data.Rdata')
+load('2018-11-07twothirds.calibration.data.Rdata')
 #load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
 Niters <- 50000
-bMax <- 209 #232 #130
+bMax <- 228#209 #232 #130
 
 #### Setting up 10 fold cross validation
 set.seed(5)
@@ -37,14 +37,14 @@ biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
-if(is.na(group_rm)){
+if(is.na(group_rm)|group_rm > 10){
   Y.calib <- Y; Y.pred <- Y
   biomass.calib <- biomass; biomass.pred <- biomass
 }
 
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
-u <- c(1,37,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+u <- c(1,47,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),length(u)+2)
@@ -56,29 +56,12 @@ for(i in 1:length(biomass.calib)){
 Z.knots <- Z.test
 
 source(file.path('Workflow_Code','models','calibration.model.R'))
-
 if(TRUE){
   samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
   
 }
-
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
-
-if(FALSE){
-pdf('beta.hists.reorder.pdf')
-par(mfrow=c(4,4))
-for(i in sample(x = 1:ncol(samples.mixed),size = 4)){
-  plot(samples.mixed[,i],typ='l')
-  hist(samples.mixed[,i],col='gray',freq=F,main=colnames(samples.mixed)[i])
-  lines(density(rnorm(nrow(samples.mixed), 0, sd = 5)), lwd =2)
-}
-dev.off()
-
-#u <- u #should have defined knots in calibration
-#u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
-
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -94,6 +77,23 @@ source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
                  bMax = bMax, Y = Y,knots=length(u)+2)
 
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+
+save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
+
+if(FALSE){
+pdf('beta.hists.reorder.pdf')
+par(mfrow=c(4,4))
+for(i in sample(x = 1:ncol(samples.mixed),size = 4)){
+  plot(samples.mixed[,i],typ='l')
+  hist(samples.mixed[,i],col='gray',freq=F,main=colnames(samples.mixed)[i])
+  lines(density(rnorm(nrow(samples.mixed), 0, sd = 5)), lwd =2)
+}
+dev.off()
+
+#u <- u #should have defined knots in calibration
+#u<-c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+
 pdf(paste0('liks_linexp',group_rm,'.pdf'))
 par(mfrow=c(2,4))
 for(i in c(bimodal_sites)){#1:nrow(Y),
@@ -107,9 +107,6 @@ calibrate::textxy(biomass,apply(outLik,1,which.max),1:length(biomass))
 points(biomass[bimodal_sites],apply(outLik,1,which.max)[bimodal_sites],
        col='red',
        lwd=2)
-
-
-save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
 }
 
 source(file.path('Workflow_Code','models','validation.R'))
