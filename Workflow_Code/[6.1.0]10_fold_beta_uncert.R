@@ -38,7 +38,7 @@ bMax <- 228
 
 #### Setting up 10 fold cross validation
 set.seed(5)
-sets10 <- matrix(sample(x = 1:length(biomass),size = length(biomass), replace = F),10,10)
+sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
 Y.keep <- Y
 biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
@@ -92,8 +92,9 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 ####
 
 if(FALSE){
-dir_to_samples_pred <- c('~/Downloads/archive/')
-samples.pred.mat <- array(NA,dim=c(1000,length(biomass.keep)-3,20))
+dir_to_samples_pred <- c('~/Downloads/archive 3/')
+
+samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 for(i in 1:200){
   load(file = file.path(dir_to_samples_pred,
                         paste0('samples.pred.group',dat.index[i,'group_rm'],'beta',dat.index[i,'beta_row'],'.Rdata')))
@@ -107,12 +108,12 @@ plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
      xlab="True Biomass", ylab="Predicted Mean Biomass",main='10 Fold CV')
 abline(a=0,b=1)
-lm.mod <- lm(biomass.keep ~ apply(samples.pred.mat,2,FUN = quantile,.5)+0)
+lm.mod <- lm(biomass.keep ~ apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T)+0)
 abline(lm.mod,lty=2)
 mtext(paste("r-squared",summary(lm.mod)$r.squared))
 
-arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
-       x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05,na.rm=T),
+       x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975,na.rm=T),
        code = 0, lwd=2)
 
 library(calibrate)
