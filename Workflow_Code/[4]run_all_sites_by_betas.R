@@ -43,6 +43,7 @@ bMax <- 227
 u <- c(1,47,227)
 new.biomass <- 1:bMax
 Z = matrix(0,nrow=length(new.biomass),ncol=5)
+source(file.path('Workflow_Code','utils','bs_nimble.R'))
 for(i in 1:length(new.biomass)){
   u_given <- new.biomass[i]
   Z[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
