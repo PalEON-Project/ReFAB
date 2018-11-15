@@ -20,9 +20,9 @@ getLik <-  function(Z,u,beta,bMax,Y,knots) {
     shape1.end <- length(beta)/2
     
     shape1 <- linexp(Z%*%matrix(beta[1:shape1.end], nrow = knots), I = ncol(Y),
-                     J = nrow(Z.new))
+                     J = nrow(Z))
     shape2 <- linexp(Z%*%matrix(beta[shape1.end+1:length(beta)], nrow = knots), I = ncol(Y),
-                     J = nrow(Z.new))
+                     J = nrow(Z))
     
     # for(j in 1:nrow(shape1.hold)){
     #   shape1[j,] <- linexp(shape1.hold[j,])

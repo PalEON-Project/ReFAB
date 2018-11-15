@@ -31,7 +31,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # might want a flat prior like => 1/400 precision
 
 #load("twothirds_v1.0.Rdata")
-load('2018-11-07twothirds.calibration.data.Rdata')
+load('2018-11-13twothirds.calibration.data.Rdata')
 
 Niters <- 50000
 bMax <- 228
@@ -51,7 +51,7 @@ if(is.na(group_rm)|group_rm > 10){
 
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
-u <- c(1,47,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+u <- c(1,43,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),5)
@@ -92,7 +92,7 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 ####
 
 if(FALSE){
-dir_to_samples_pred <- c('~/Downloads/archive 3/')
+dir_to_samples_pred <- c('~/Downloads/archive 4/')
 
 samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 for(i in 1:200){
@@ -102,6 +102,7 @@ for(i in 1:200){
   if(any(is.na(samples.pred))) print(i)
   samples.pred.mat[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- samples.pred[,grep('b',colnames(samples.pred))]
 }
+
 pdf(paste0('ALL.calib.r2.validation.beta_uncert',Sys.Date(),'.pdf'))
 par(mfrow=c(1,1))
 plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),

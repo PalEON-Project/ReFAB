@@ -30,6 +30,7 @@ meta <- get_dataset(datasettype='pollen', gpid=c("Wisconsin",
                                                  "Minnesota",
                                                  "Illinois",
                                                  "Indiana"), ageyoung=0)
+
 meta_dl <- get_download(meta)
 
 comp.tax <- compile_taxa(meta_dl, 'WhitmoreSmall')
@@ -381,11 +382,29 @@ new_pool_biomass <- biomass.save[-TF]
 
 set.seed(4)
 sites_rm_new <- sample(1:nrow(new_pool),round(nrow(new_pool)/3))
+save(sites_rm_new,file='new_sites_rm.Rdata')
+
 new_two_thirds <- new_pool[-sites_rm_new,]
 new_two_thirds_biomass <- new_pool_biomass[-sites_rm_new]
 
 ag_two_thirds <- rbind(old_two_thirds,new_two_thirds)
 ag_two_thirds_biomass <- c(old_two_thirds_biomass,new_two_thirds_biomass)
+
+
+old_albers <- albers.save[TF,]
+old_two_thirds_albers <- old_albers[-sites_rm,]
+new_albers <- albers.save[-TF,]
+new_two_thirds_albers <- new_albers[-sites_rm_new,]
+ag_two_thirds_albers <- rbind(old_two_thirds_albers,new_two_thirds_albers)
+
+cast.x.save <- cast.x
+old.cast.x <- cast.x[TF,]
+old.two.thirds.cast.x <- old.cast.x[-sites_rm,]
+new.cast.x <- cast.x[-TF,]
+new.two.thirds.cast.x <- new.cast.x[-sites_rm_new,]
+ag.two.thirds.cast.x <- rbind(old.two.thirds.cast.x,new.two.thirds.cast.x)
+
+save(ag.two.thirds.cast.x,file='two.thirds.cast.x.Rdata')
 
 #Y = Y[-sites_rm,] #remove sites "sites_rm" defined above
 #biomass = biomass[-sites_rm]
