@@ -5,7 +5,7 @@ if (is.na(arg[1])) {
 } else {
   runnum <- as.numeric(arg[1])
 }
-group_rm <- dat.index[runnum, 'group_rm']
+group_rm <- sort(rep(1:10,20))[runnum]
 
 load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #'ALL_150' or group_rm
 
