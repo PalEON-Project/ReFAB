@@ -23,10 +23,10 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load('2018-11-12twothirds.calibration.data.Rdata')
+load('2018-11-16twothirds.calibration.data.Rdata')
 #load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
-Niters <- 20000
+Niters <- 5000
 bMax <- 227#209 #232 #130
 
 #### Setting up 10 fold cross validation
