@@ -5,9 +5,10 @@ if (is.na(arg[1])) {
 } else {
   runnum <- as.numeric(arg[1])
 }
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #'ALL_150' or group_rm
 
 dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
-                        beta_row =rep(round(seq(2000,10000,length.out = 20)),10),
+                        beta_row =rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10),
                         counter = rep(1:20,10))
 
 group_rm <- dat.index[runnum, 'group_rm']
