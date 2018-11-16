@@ -34,12 +34,13 @@ set.seed(5)
 sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
 Y.keep <- Y
 biomass.keep <- biomass
-Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
-biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
 if(is.na(group_rm)|group_rm > 10){
   Y.calib <- Y; Y.pred <- Y
   biomass.calib <- biomass; biomass.pred <- biomass
+}else{
+  Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
+  biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 }
 
 #### Making sure Z.knots and u are the same between calibration and validation
