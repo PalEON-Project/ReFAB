@@ -23,11 +23,11 @@ ciEnvelope <- function(x,ylo,yhi,...){
 # rel to an sd of 5. 
 # might want a flat prior like => 1/400 precision
 
-load('2018-11-07twothirds.calibration.data.Rdata')
+load('2018-11-12twothirds.calibration.data.Rdata')
 #load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
-Niters <- 50000
-bMax <- 228#209 #232 #130
+Niters <- 20000
+bMax <- 227#209 #232 #130
 
 #### Setting up 10 fold cross validation
 set.seed(5)
@@ -44,7 +44,7 @@ if(is.na(group_rm)|group_rm > 10){
 
 #### Making sure Z.knots and u are the same between calibration and validation
 #Z.knots = bs(biomass.calib, intercept=TRUE, knots = 30, Boundary.knots=c(0,bMax))
-u <- c(1,47,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
+u <- c(0,43,bMax) #c(rep(attr(Z.knots,"Boundary.knots")[1],1),attr(Z.knots,"knots"),rep(attr(Z.knots,"Boundary.knots")[2],1))
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),length(u)+2)
@@ -63,9 +63,12 @@ if(TRUE){
   
 }
 
+stop()
+load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
-Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z.knots))
+Z.new = matrix(0,nrow=length(new.biomass),ncol=5)
 for(i in 1:length(new.biomass)){
   u_given <- new.biomass[i]
   Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
@@ -73,11 +76,9 @@ for(i in 1:length(new.biomass)){
                         N2 = rep(0, (length(u)+1)), 
                         N3 = rep(0, (length(u)+2)))
 }
-source(file.path('Workflow_Code','utils','getLik.R'))
+source(file.path('Workflow_Code','utils','bs_nimble.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = (samples.mixed[nrow(samples.mixed),]),
                  bMax = bMax, Y = Y,knots=length(u)+2)
-
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 save(outLik, file=paste0('outLik.group.',group_rm,'.Rdata'))
 
@@ -96,7 +97,7 @@ dev.off()
 
 pdf(paste0('liks_linexp',group_rm,'.pdf'))
 par(mfrow=c(2,4))
-for(i in c(bimodal_sites)){#1:nrow(Y),
+for(i in 1:nrow(Y)){#1:nrow(Y),
   plot(1:bMax, outLik[i,],main=i,typ='l')
 }
 dev.off()
@@ -159,15 +160,21 @@ calibration.figs(bMax = bMax, Z.knots = Z.knots, Y = Y.keep,
   load("threethirds_v1.0.Rdata") 
   #load("cast.x.Rdata")
   load("sites_rm.Rdata")
-  plot(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],
+  
+  pdf('2_3rds_validation.pdf')
+  plot(biomass,colMeans(samples.pred),
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
        xlab="True Biomass", ylab="Predicted Mean Biomass",
        main='2/3 calibration')
-  points(biomass[sites_rm],colMeans(samples.pred)[sites_rm],
-         pch=19, col='red')
-  textxy(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],1:100)
-  abline(b=1,a=0)
+  lm.mod <- lm(biomass.keep~ apply(samples.pred,2,FUN = quantile,.5)+0)
+  abline(lm.mod,lty=2)
   
+  mtext(paste("r-squared",summary(lm.mod)$r.squared))
+  # points(biomass,colMeans(samples.pred),
+  #       pch=19, col='red')
+  calibrate::textxy(biomass,colMeans(samples.pred),1:length(biomass))
+  abline(b=1,a=0)
+  dev.off()
   
 }
 
