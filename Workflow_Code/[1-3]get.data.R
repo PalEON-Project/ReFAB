@@ -225,10 +225,12 @@ colors <- rev(terrain.colors(length(breaks)-1))
 data_binned <-  cut(cast.x[,ncol(cast.x)], c(breaks), include.lowest = FALSE, labels = FALSE)
 
 if(DRAW==TRUE) pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
+
+pdf('only_calibration_map.pdf')
 map('state', xlim=c(-100,-80), ylim=c(41.5,49))
 points(cast.x$long,cast.x$lat, pch=21,
        cex=1.1, bg=colors[data_binned],lwd=.2)
-text(cast.x$long[-sites_rm],cast.x$lat[-sites_rm],labels=1:103,cex=.3)
+text(cast.x$long,cast.x$lat,labels=1:nrow(cast.x),cex=.3)
 #bimodal_sites <- c(13,31,35,36,15,34,61,11,14,18,21,33)
 #points(cast.x$long[-sites_rm][bimodal_sites],cast.x$lat[-sites_rm][bimodal_sites],col='red',lwd=2)
 title("Biomass Point Estimates at Settlement")
@@ -240,6 +242,7 @@ plotInset(-90,47,-82.5,50,
             mtext(side = 1, "Biomass (Mg/ha)", line = 1.5,cex=.5)
             mtext(side = 2, "Frequency", line = 1.7,cex=.5)
           })
+dev.off()
 if(DRAW==TRUE) dev.off()
 
 #####
@@ -352,7 +355,8 @@ save(Y,biomass,Z,file=paste0(Sys.Date(),'all.calibration.data.Rdata'))
 ##### eventhough the counts are different now because we are using settlement horizon
 ##### when we originally developed the model we were using age-depth model estimated age at time of settelement
 #####
-
+Y.save <- Y
+biomass.save <- biomass
 albers.save <- albers
 sites_rm_save <- sites_rm
 load("~/ReFAB/2018-03-01calibration.albers.Rdata")
@@ -381,7 +385,7 @@ new_pool <- Y.save[-TF,]
 new_pool_biomass <- biomass.save[-TF]
 
 set.seed(4)
-sites_rm_new <- sample(1:nrow(new_pool),round(nrow(new_pool)/3))
+sites_rm_new <- sample(1:nrow(new_pool),round(nrow(new_pool)/3)) #just removing from new_pool that's why it's small
 save(sites_rm_new,file='new_sites_rm.Rdata')
 
 new_two_thirds <- new_pool[-sites_rm_new,]
@@ -414,6 +418,6 @@ biomass <- ag_two_thirds_biomass
 Z = Z.knots = bs(unlist(biomass), intercept=TRUE, knots = median(biomass), Boundary.knots=c(0,max(biomass)))
 dim(Y)[1]-length(biomass) # should be zero
 
-save(Y,biomass,Z,file=paste0(Sys.Date(),'twothirds.calibration.data.Rdata'))
+save(Y,biomass,file=paste0(Sys.Date(),'twothirds.calibration.data.Rdata'))
 
 ### moved prediction dataset creation to [2]create_prediction_dataset.R
