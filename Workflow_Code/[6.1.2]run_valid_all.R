@@ -59,7 +59,7 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
                                  outLik = outLik)
 
-pdf(paste0('all4calib.r2.validation.pdf'))
+pdf(paste0('twothirds-calib.r2.validation.pdf'))
 par(mfrow=c(1,1))
 plot(biomass, colMeans(samples.pred, na.rm = T),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
@@ -68,13 +68,19 @@ abline(a=0,b=1)
 lm.mod <- lm(biomass~colMeans(samples.pred)+0)
 abline(lm.mod,lty=2)
 
-points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
-       col='red',pch=19)
-mtext(paste("r2-all",summary(lm.mod)$r.squared))
+#points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
+#       col='red',pch=19)
+points(biomass[bimodal_sites],colMeans(samples.pred)[bimodal_sites],
+       col='red',
+       lwd=2)
+mtext(paste("r2-twothirds",summary(lm.mod)$r.squared))
 
 arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
        x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
        code = 0, lwd=2)
+library(calibrate)
+textxy(biomass,colMeans(samples.pred),1:length(biomass))
+
 dev.off()
 
 
