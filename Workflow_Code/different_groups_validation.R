@@ -92,8 +92,17 @@ wood_density_group <- trees_look[-which((trees_look)%in%names(c(seed_mass_group,
 
 
 load('two.thirds.cast.x.Rdata')
+load('2018-11-16twothirds.calibration.data.Rdata')
+load('nimble_pull2018-10-31.Rdata')
+trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
+           "FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"ACERX","ALNUSX","PICEAX","ABIES","POPULUS",
+           "LARIXPSEU","CUPRESSA") #
+other.trees <- c("CASTANEA","PLATANUS","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
+drop.taxa <- NA#c('other_herbs')
+all.pollen.taxa.names <- colnames(pol_cal_count)[11:length(colnames(pol_cal_count))]
 
-
+source(file.path('Workflow_Code','utils','taxa_selection.R'))
 Y.pft <- taxa_selection(trees = trees, other.trees = other.trees,
                     cast.x = ag.two.thirds.cast.x, sites_rm = 0,
                     all.pollen.taxa.names = all.pollen.taxa.names,
@@ -228,9 +237,9 @@ plot_calilb_valid <- function(biomass,samples.pred,bMax,TITLE){
 }
 
 ### Setup
-Niters <- 5000
+Niters <- 50000
 u_middle <- 43
-bMax <- 227
+bMax <- 228
 
 ### PFT OLD
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'pft_old',
