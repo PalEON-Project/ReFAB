@@ -26,12 +26,12 @@ ciEnvelope <- function(x,ylo,yhi,...){
 load('2018-11-16twothirds.calibration.data.Rdata')
 #load('2018-07-02twothirds.calibration.data.Rdata')#load("twothirds_v1.0.Rdata")
 
-Niters <- 5000
+Niters <- 50000
 bMax <- 227#209 #232 #130
 
 #### Setting up 10 fold cross validation
 set.seed(5)
-sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
+sets10 <- matrix(sample(x = 1:150,size = 150, replace = F),15,10)
 Y.keep <- Y
 biomass.keep <- biomass
 
