@@ -73,7 +73,7 @@ def.par <- par(no.readonly = TRUE)
 layout(fig.mat)
 par(mar = c(0, 4, 0, 3), oma = c(5, 0, 4, 0),tcl=.5)
 
-plot(bio.quants[2,], xlim = c(maxAge/100,0), ylim = c(0,150), xaxt='n',
+plot(bio.quants[2,], xlim = c(maxAge/100,0), ylim = c(0,bMax), xaxt='n',
      xlab = 'Years BP', ylab = 'Biomass Mg/ha', col = 'white')
 axis(side = 3, at = rev(seq(0,maxAge/100, round((maxAge/100)/6))), labels = rev(seq(0,maxAge,round(maxAge/6))))
 ciEnvelope(x=1:(maxAge/100), ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
@@ -86,12 +86,13 @@ for(b in 1:20) {
 #points(0,unique(x.meta[x.meta$site.name == locn,'SettleBiomass']),pch=19,col='purple',cex=2)
 legend('topleft','Mx.Lik.',pch=1)
 
-ten_count_use = ten.count[which(x.meta$.id == site_number), ]
+ten_count_use = ten.count[which(x.meta$site.name == locn), ]
+
 Y = as.matrix(ten_count_use)
 prop.use <- prop.table(as.matrix(Y),margin=1)    
 
 for(p in rev(match(names(sort(colMeans(prop.use))),colnames(prop.use)))){
-  prop.plot<- cbind(as.vector(x.meta[which(x.meta$.id==site_number),]$age_bacon),as.matrix(prop.use[,p]))      	
+  prop.plot<- cbind(sample_ages,as.matrix(prop.use[,p]))      	
   prop.plot<-prop.plot[order(prop.plot[,1]),]
   plot(x=prop.plot[,1],y=prop.plot[,2],type="l",xlim=c(maxAge,-10),
        ylim=c(0,max(prop.use[,p])),ylab=NA,yaxt='n', xaxt='n')
