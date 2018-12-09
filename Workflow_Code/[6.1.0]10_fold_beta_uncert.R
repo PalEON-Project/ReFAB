@@ -41,7 +41,7 @@ bMax <- 228
 
 #### Setting up 10 fold cross validation
 set.seed(5)
-sets10 <- matrix(sample(x = 1:100,size = 100, replace = F),10,10)
+sets10 <- matrix(sample(x = 1:150,size = 150, replace = F),15,10)
 Y.keep <- Y
 biomass.keep <- biomass
 
@@ -96,7 +96,7 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
 ####
 
 if(FALSE){
-dir_to_samples_pred <- c('~/Downloads/archive 4/')
+dir_to_samples_pred <- c('~/Downloads/preds/')
 
 samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 for(i in 1:200){
@@ -109,7 +109,7 @@ for(i in 1:200){
 
 pdf(paste0('ALL.calib.r2.validation.beta_uncert',Sys.Date(),'.pdf'))
 par(mfrow=c(1,1))
-plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
+plot(biomass.keep[1:100], apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
      xlab="True Biomass", ylab="Predicted Mean Biomass",main='10 Fold CV')
 abline(a=0,b=1)
