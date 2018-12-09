@@ -38,7 +38,7 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
                           evergreen = rowSums(ever.box, na.rm = T),
                           decidious = rowSums(decid.box, na.rm = T))
     
-    test.check <- which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0)
+    test.check <- length(which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0))/nrow(cast.x)
     print(test.check)
     print('If any non-zeros returned, this means that not all pollen was included. Is this what you want?')
     
@@ -59,12 +59,14 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
   }
   if(spp.do == TRUE){
     hemlock <- all.veg.box[,c("TSUGAX")]
-    beech_maple <- all.veg.box[,c("FAGUS","ACERX")]
-    cat.box <- data.frame(prairie = rowSums(all.veg.box[,prairie],na.rm = T),
+    beech <- all.veg.box[,c("FAGUS")]
+    other.box <- all.veg.box[,-which(colnames(all.veg.box)%in%c("TSUGAX",'FAGUS'))]
+    #prairie = rowSums(all.veg.box[,prairie],na.rm = T)
+    cat.box <- data.frame(other = rowSums(other.box,na.rm = T),
                           hemlock = hemlock,
-                          beech_maple = rowSums(beech_maple,na.rm = T))
+                          beech = beech)
     
-    test.check <- which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0)
+    test.check <- length(which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0))/nrow(cast.x)
     print(test.check)
     print('If any non-zeros returned, this means that not all pollen was included. Is this what you want?')
     
@@ -85,21 +87,21 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
     return(Y)
   }
   if(PFT.NEW.do == TRUE){
-    #seed.box <- all.veg.box[,c("JUGLANSX",'CARYA',"CASTANEA")]
+    seed.box <- all.veg.box[,c("JUGLANSX",'CARYA',"CASTANEA")]
     leaf.box <- all.veg.box[,c("FRAXINUX","TILIA","QUERCUS",
                                "BETULA",
                                "ACERX","ALNUSX","POPULUS",
                                "PLATANUS","LIQUIDAM",
-                               "NYSSA")]
+                               "NYSSA",prairie)]
     wood.box <- all.veg.box[,c("OSTRYCAR","ULMUS","FAGUS",
                                "TSUGAX",'PINUSX',"PICEAX",
                                "ABIES","LARIXPSEU","CUPRESSA",
                                "SALIX","TAXUS")]
-    cat.box <- data.frame(prairie = rowSums(all.veg.box[,prairie],na.rm = T),
+    cat.box <- data.frame(seed = rowSums(seed.box,na.rm = T),
                           leaf = rowSums(leaf.box, na.rm = T),
                           wood = rowSums(wood.box, na.rm = T))
     
-    test.check <- which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0)
+    test.check <- length(which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0))/nrow(cast.x)
     print(test.check)
     print('If any non-zeros returned, this means that not all pollen was included. Is this what you want?')
     
@@ -128,7 +130,7 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
                           late = rowSums(late.box, na.rm = T),
                           early = rowSums(early.box, na.rm = T))
     
-    test.check <- which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0)
+    test.check <- length(which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0))/nrow(cast.x)
     print(test.check)
     print('If any non-zeros returned, this means that not all pollen was included. Is this what you want?')
     
@@ -149,13 +151,13 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
   }
   if(biome.do == TRUE){
     forest.box <- all.veg.box[,c(trees,other.trees)]
-    forest.box <- forest.box[,-which(colnames(forest.box)=='QUERCUS')]
-    savannah.box <- all.veg.box[,'QUERCUS']
+    forest.box <- forest.box[,-which(colnames(forest.box)%in%c('QUERCUS','CARYA','ULMUS','POPULUS'))]
+    savannah.box <- all.veg.box[,c('QUERCUS','CARYA','ULMUS','POPULUS')]
     cat.box <- data.frame(prairie = rowSums(all.veg.box[,prairie],na.rm = T),
-                          savannah = (savannah.box),
+                          savannah = rowSums(savannah.box,na.rm=T),
                           forest = rowSums(forest.box, na.rm = T))
     
-    test.check <- which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0)
+    test.check <- length(which(rowSums(cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)],na.rm = T) - rowSums(cat.box,na.rm = T)!=0))/nrow(cast.x)
     print(test.check)
     print('If any non-zeros returned, this means that not all pollen was included. Is this what you want?')
     
