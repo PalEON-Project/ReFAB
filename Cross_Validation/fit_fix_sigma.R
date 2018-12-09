@@ -59,7 +59,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   dimensions_pred = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y),
                          beta1 = dim(beta1), beta2=dim(beta2),shape.hold1 = c(TT,I), shape.hold2 = c(TT,I))
   
-  inits.pred = list(b=rep(25,TT))
+  inits.pred = list(b=rep(35,TT))
 
   locnClean <- gsub(' ', '-', locn)
   workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rdata')
