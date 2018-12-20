@@ -18,7 +18,7 @@ biomass.keep <- biomass
 Y.calib <- Y; Y.pred <- Y
 biomass.calib <- biomass; biomass.pred <- biomass
 
-source("Workflow_Code/utils/bs_nimble.R")
+source(file.path("Workflow_Code","utils","bs_nimble.R"))
 Z.test <- matrix(NA,length(biomass.calib),5)
 for(i in 1:length(biomass.calib)){
   Z.test[i,] <- bs_nimble(u_given = biomass.calib[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
@@ -27,7 +27,7 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-source(file.path('Workflow_Code','calibration.model.R'))
+source(file.path('Workflow_Code','models','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
@@ -49,7 +49,7 @@ source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(samples.mixed),]),
                  bMax = bMax, Y = Y.pred)
 
-source('validation.R')
+source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
                                  samples.mixed = samples.mixed, u = u,
                                  Niters = Niters, bMax = bMax, group_rm = group_rm,
