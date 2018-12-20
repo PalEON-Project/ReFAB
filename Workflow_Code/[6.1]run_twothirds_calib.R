@@ -33,8 +33,6 @@ if(is.na(group_rm) | group_rm > 10){ #if true does full 2/3 fit
   biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 }
 
-u <- c(0,median_use,bMax)
-
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),length(u)+2)
 for(i in 1:length(biomass.calib)){

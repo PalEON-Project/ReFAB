@@ -1,8 +1,9 @@
 #####
 ##### This code runs the validation model for 3/3s of the calibration data
 ##### using betas from the two thirds calibration fit
-##### without beta uncertainty included
-#####
+##### without beta uncertainty included 
+##### no .sh just source
+##### 
 
 library(nimble)
 library(splines)
