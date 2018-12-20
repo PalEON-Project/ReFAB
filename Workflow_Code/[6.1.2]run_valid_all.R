@@ -2,18 +2,19 @@
 ##### This code runs the calibration and validation for 3/3s dataset
 ##### creates final betas. 
 #####
+arg <- commandArgs(trailingOnly = TRUE)
+if (is.na(arg[1])) {
+  runnum <- NA
+  print('runnum is NA')
+} else {
+  runnum <- as.numeric(arg[1])
+}
 
 library(nimble)
 library(splines)
 library(maps)
 library(methods)
 
-arg <- commandArgs(trailingOnly = TRUE)
-if (is.na(arg[1])) {
-  runnum <- NA
-} else {
-  runnum <- as.numeric(arg[1])
-}
 
 load("threethirds_v2.0.Rdata")
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises and full runs
