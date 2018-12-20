@@ -1,4 +1,8 @@
 
+##### This script was created to run the validation exercise with different groups of
+##### plant taxa based off of different ways plants are represented in ecosystem models
+##### It is meant to be run as a script not a job array
+
 ######
 ###### Grouping species by traits
 ######
