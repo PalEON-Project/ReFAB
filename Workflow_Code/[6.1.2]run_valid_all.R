@@ -8,9 +8,21 @@ library(splines)
 library(maps)
 library(methods)
 
+arg <- commandArgs(trailingOnly = TRUE)
+if (is.na(arg[1])) {
+  runnum <- NA
+} else {
+  runnum <- as.numeric(arg[1])
+}
+
 load("threethirds_v2.0.Rdata")
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises and full runs
-group_rm <- c('FULL')
+
+if(is.na(runnum)) stop()
+
+load('biomass_draws.Rdata')
+biomass <- unlist(lapply(biomass_draws,function(x) x[runnum]))
+group_rm <- paste0('FULL',runnum)
 
 #### Setting up 3/3 calibration 3/3 prediction
 Y.keep <- Y
