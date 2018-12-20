@@ -22,7 +22,7 @@ if(is.na(runnum)) stop()
 
 load('biomass_draws.Rdata')
 biomass <- unlist(lapply(biomass_draws,function(x) x[runnum]))
-group_rm <- paste0('FULL',runnum)
+group_rm <- paste0(runnum,'FULL')
 
 #### Setting up 3/3 calibration 3/3 prediction
 Y.keep <- Y
