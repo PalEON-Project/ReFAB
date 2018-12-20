@@ -1,12 +1,12 @@
 
 ######
-###### Figuring out how to groups species by traits
+###### Grouping species by traits
 ######
 
 ####
-#### Shade Tolerance
+#### Shade Tolerance from LINKAGES Model Parameterization
 ####
-spp.params <- read.csv('~/linkages_package/inst/spp_matrix.csv')
+spp.params <- read.csv('~/linkages_package/inst/spp_matrix.csv') #from https://github.com/araiho/linkages_package
 shade_list <- list()
 for(i in 1:length(trees_look)){
   shade_list[[i]] <- spp.params[grep(trees_look[i],spp.params$Spp_Name),'ITOL']
@@ -16,9 +16,9 @@ sort(unlist(lapply(shade_list,mean,na.rm=T))) ## right order?
 
 
 ####
-#### SSD 
+#### SSD from TRY database
 ####
-SSD <- read.csv('~/Downloads/SSD-database.csv')
+SSD <- read.csv(file.path('Data','SSD-database.csv'))
 
 trees_look <- c('Juglans','Fraxinu','Ostry','Carpin','Ulmus','Tilia','Carya','Fagus','Tsuga',
                 'Quercus','Betula','Pinus','Acer','Alnus','Picea','Abies',
@@ -37,9 +37,9 @@ for(i in 1:length(trees_look)){
 names(WD) <- trees_look
 
 ####
-#### Seeds 
+#### Seeds from USDA
 ####
-seeds_dat <- read.csv('seeds_per_pound_USDA.csv')
+seeds_dat <- read.csv(file.path('Data','seeds_per_pound_USDA.csv'))
 
 seeds_list <- list()
 for(i in 1:length(trees_look)){
@@ -51,10 +51,13 @@ names(seeds_list) <- trees_look ## seems low even for grams
 sort(unlist(lapply(seeds_list,mean,na.rm=T))) ## right order?
 
 ####
-#### LMA
+#### LMA from BETY database
 ####
 
-SLA <- betydb_search('SLA')
+SLA <- traits::betydb_search('SLA')
+save(SLA,file=file.path('Data','SLA.Rdata'))
+load(file.path('Data','SLA.Rdata'))
+
 sla_list <- list()
 for(i in 1:length(trees_look)){
   
@@ -92,7 +95,7 @@ wood_density_group <- trees_look[-which((trees_look)%in%names(c(seed_mass_group,
 
 
 load('two.thirds.cast.x.Rdata')
-load('2018-11-16twothirds.calibration.data.Rdata')
+load('twothirds_v2.0.Rdata')
 load('nimble_pull2018-10-31.Rdata')
 trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
            "FAGUS","TSUGAX","QUERCUS","BETULA",
@@ -237,16 +240,14 @@ plot_calilb_valid <- function(biomass,samples.pred,bMax,TITLE){
 }
 
 ### Setup
-Niters <- 50000
-u_middle <- 43
-bMax <- 228
+source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
 ### PFT OLD
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'pft_old',
                 Y.calib = Y.pft, Y.pred = Y.pft, biomass.calib = biomass,
                 biomass.pred = biomass)
 load("~/ReFAB/samples.pred.grouppft_oldbetaNA.Rdata")
-samples.pred_old.pft<- samples.pred
+samples.pred_old.pft <- samples.pred
 plot_calilb_valid(biomass,samples.pred=samples.pred_old.pft,
                   bMax=bMax)
 
@@ -255,7 +256,7 @@ run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'p
                 Y.calib = Y.PFT.NEW, Y.pred = Y.PFT.NEW, biomass.calib = biomass,
                 biomass.pred = biomass)
 load("~/ReFAB/samples.pred.grouppft_newbetaNA.Rdata")
-samples.pred_new.pft<- samples.pred
+samples.pred_new.pft <- samples.pred
 plot_calilb_valid(biomass,samples.pred=samples.pred_new.pft,
                   bMax=bMax)
 
@@ -264,7 +265,7 @@ run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'b
                 Y.calib = Y.biome, Y.pred = Y.biome, biomass.calib = biomass,
                 biomass.pred = biomass)
 load("~/ReFAB/samples.pred.groupbiomebetaNA.Rdata")
-samples.pred_biome<- samples.pred
+samples.pred_biome <- samples.pred
 plot_calilb_valid(biomass,samples.pred=samples.pred_biome,
                   bMax=bMax)
 
