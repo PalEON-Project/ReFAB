@@ -43,9 +43,9 @@ Other = rowSums(hk_counts[,8:ncol(hk_counts)]) - rowSums(hk_counts2[,8:ncol(hk_c
 hk_counts3 = cbind(matrix(0,nrow(hk_counts2),10),hk_counts2,Other)
 colnames(hk_counts3)
 
-hk_counts3[hk_counts3$NAME=="Deep Pine",]$NAME <- c("Deep Pine")
+hk_counts3[hk_counts3$NAME=="DeepPine",]$NAME <- c("Deep Pine")
 
-hk_counts3$NAME = as.factor(as.character(hk_counts3$NAME))
+hk_counts3$NAME = as.character(hk_counts3$NAME)
 
 for(i in 1:nrow(hk_counts3)){
   hk_counts3[i,1:10]<-hk_meta[which(hk_meta$name==hk_counts3$NAME[i]),]
@@ -54,4 +54,4 @@ for(i in 1:nrow(hk_counts3)){
 colnames(hk_counts3)<-c(colnames(hk_meta),colnames(hk_counts3[,11:ncol(hk_counts3)]))
 
 hk_counts3 = as.data.frame(hk_counts3)
-save(hk_counts3,file="hk_counts3.csv")
+write.csv(hk_counts3,file="hk_counts3.csv")

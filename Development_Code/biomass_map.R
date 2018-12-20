@@ -12,13 +12,49 @@ library(gridExtra)
 gpclibPermit()
 library(mgcv)
 library(splines)
+
 library(boot)
 library(gtools)
 library(rjags)
 
-biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-10_bam.csv"))
-xiao_ests <- biomass_dat_est$Total#rowSums(biomass_dat_est[,4:23])
-hem.beech <- rowSums(biomass_dat_est[,c('Hemlock','Beech')])
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+n = 3
+cols = gg_color_hue(n)
+
+
+
+#biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-10_bam.csv"))
+
+nc <- nc_open(file.path('Data','PLS_biomass_western_point_v0.999.nc'))
+
+x <- nc$dim$x$vals
+y <- nc$dim$y$vals
+data <- ncvar_get(nc,varid = c('Total'))
+
+biomass_hemlock <- ncvar_get(nc,varid = c('Hemlock'))
+biomass_beech <- ncvar_get(nc,varid = c('Beech'))
+
+rownames(data) <- x
+colnames(data) <- y
+
+r1 <- raster(list(x=x,y=y,z=data))
+
+r_hem <- raster(list(x=x,y=y,z=biomass_hemlock))
+r_beech <- raster(list(x=x,y=y,z=biomass_beech))
+
+#can do
+#plot(r1)
+
+biomass_dat_est <- as.data.frame(rasterToPoints(r1))
+colnames(biomass_dat_est) <- c('x','y','Total')
+xiao_ests <- biomass_dat_est$Total
+
+hem_beech_mat <- cbind(rasterToPoints(r_hem),rasterToPoints(r_beech))
+hem.beech <- rowSums(hem_beech_mat[,c(3,6)])
 
 usShp <- readShapeLines(file.path("/Users/paleolab/Documents/babySTEPPS/", 'us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
 usShp@data$id <- rownames(usShp@data)
@@ -50,16 +86,32 @@ colnames(full.mat) <- c("x","y","Tot_Biomass",'late_succ')
 tot.biom.df = as.data.frame(full.mat)
 
 ### Density
-density <- read.csv('~/Downloads/plss_density_alb_v0.9-10.csv')
-density.df = data.frame(x = density$x, y = density$y, 
-           density = rowSums(density[,4:ncol(density)]))
+
+nc_d <- nc_open('~/Downloads/PLS_density_western_point_v0.999.nc')
+
+x <- nc_d$dim$x$vals
+y <- nc_d$dim$y$vals
+data <- ncvar_get(nc_d,varid = c('Total'))
+r2 <- raster(list(x=x,y=y,z=data))
+
+density.df = as.data.frame(rasterToPoints(r2))
+colnames(density.df) <- c('x','y','density')
 
 y <- merge(tot.biom.df,density.df,by=c('x','y'))
 
-breaks <-  c(seq(0,50,10),seq(75,200,25))
-colors <- rev(terrain.colors(length(breaks)-1))
+breaks <-  c(0,seq(25,100,25),seq(150,300,50),max(y$Tot_Biomass))
+colors <- rev(c('#d73027',
+  '#f46d43',
+  '#fdae61',
+  '#fee090',
+  '#ffffbf',
+  '#e0f3f8',
+  '#abd9e9',
+  '#74add1',
+  #'#4575b4',
+  cols[3]))#)) #rev(topo.colors(length(breaks)-1))
 
-density.breaks <- c(0,1,48,1300)
+density.breaks <- c(0,1,48,max(y$density))
 
 legendName <- "Biomass (Mg/ha)"
 
@@ -76,7 +128,7 @@ inputData <- data.frame(X = y$x, Y = y$y,
                         density = y$density, LS = y$late_succ)
 inputData_long <- melt(inputData, c('X', 'Y'))
 
-load('calibration.albers.rdata')
+load('2018-11-12calibration.albers.Rdata')
 input_points <- data.frame(albers) # how to add points part A
 colnames(input_points) <- c('lat','lon')
 
@@ -96,17 +148,23 @@ inputdata3 <- inputData[inputData$X>430000&inputData$X<557000&inputData$Y>678000
 colnames(inputdata3)[1:2] <- c('e','f')
 
 d <-   ggplot() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank())+
   geom_tile(data = inputData, aes(x = X, y = Y,fill = factor(data_binned))) +
+  
   scale_fill_manual(labels = breaklabels, name = legendName, drop = FALSE, values = colors, guide = "legend") +
-  geom_tile(data = inputdata1, aes(x = a, y = b, colour = 'Forest'), color='black',alpha=0, size=1) +
+  geom_tile(data = inputdata1, aes(x = a, y = b, colour = 'Forest'), color=cols[1],alpha=0, size=4) +
+  geom_tile(data = inputdata1, aes(x = a, y = b, colour = 'Forest'), color='white',alpha=0, size=.5) +
+  
     #scale_color_manual(values='black', name=element_blank())
   geom_tile(data = inputdata1, aes(x = a, y = b, fill = factor(data_binned1))) + #puts biomass colors on
-  geom_tile(data = inputdata2, aes(x = c, y = d, colour = col.plot2), color = 'blue', alpha=0, size=1) +
+  geom_tile(data = inputdata2, aes(x = c, y = d, colour = col.plot2), color = cols[2], alpha=0, size=4) +
+  geom_tile(data = inputdata2, aes(x = c, y = d, colour = col.plot2), color = 'gray', alpha=0, size=.5) +
+  
     #scale_color_manual(values='blue', name=element_blank())
   geom_tile(data = inputdata2, aes(x = c, y = d, fill = factor(data_binned2))) + #puts biomass colors on
   geom_tile(data = inputdata3, aes(x = e, y = f, color = 'Transect'),
               fill = 'gray', color = NA, size = .25, alpha = .5) +
-  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=1, alpha = .9 ,colour="brown") 
+  geom_point(data = input_points, aes(x=lat,y=lon), pch=16, size=2, alpha = .9 ,colour="brown") 
   
   
   #+ # how to add points part B
@@ -122,10 +180,12 @@ add_map_albers <- function(plot_obj, map_data = usFortified, dat){
 
 d <- add_map_albers(plot_obj = d, map_data = usFortified, dat = inputData_long)
 
-quartz()
-print(d)
+#quartz()
+#print(d)
 
 ggsave(d,filename = paste0(Sys.Date(),'biomass_map.pdf'))
+
+
 
 
 
@@ -142,16 +202,21 @@ LS_binned <- rep('Prairie/Savanna',length(temp.precip.bio$LS))
 LS_binned[temp.precip.bio$density>47] <- 'Forested (No Hemlock)'
 LS_binned[temp.precip.bio$LS>1] <- 'Hemlock'
 
-A <- ggplot()+ labs(x = '',y = "Biomass (Mg/ha)", color = "Ecosystem Type")+geom_jitter(data = temp.precip.bio,aes(x=y,y=tot_biomass,color=LS_binned))
+colors_use <- c(cols[1:2],colors[1])
 
-B <- ggplot()+labs(x = '', y = "Mean Temperature [ºC]", color = "Ecosystem Type")+ geom_jitter(data = temp.precip.bio, aes(x=y,y=Mean,color=LS_binned))#+ stat_smooth(data = temp.precip.bio, aes(x = y, y = Mean), method = "lm",
+A <- ggplot()+ theme_bw()+ labs(x = '',y = "Biomass (Mg/ha)", color = "Ecosystem Type")+
+  geom_jitter(data = temp.precip.bio,aes(x=y,y=tot_biomass,color=LS_binned),size=2)
+
+B <- ggplot()+ theme_bw()+labs(x = '', y = "Mean Temperature [ºC]", color = "Ecosystem Type")+ 
+  geom_jitter(data = temp.precip.bio, aes(x=y,y=Mean,color=LS_binned),size=2)#+ stat_smooth(data = temp.precip.bio, aes(x = y, y = Mean), method = "lm",
                                                                                               # formula = y ~ poly(x, 10), se = FALSE) #mean temp
-C <- ggplot()+ labs(x = "Latitude (Albers Projection)", y = "Total Precip [cm]", color = "Ecosystem Type") +geom_jitter(data = temp.precip.bio, aes(x=y,y=total,color=LS_binned))#+ stat_smooth(data = temp.precip.bio, aes(x = y, y = total), method = "lm",
+C <- ggplot()+ theme_bw()+ labs(x = "Latitude (Albers Projection)", y = "Total Precip [cm]", color = "Ecosystem Type") +
+  geom_jitter(data = temp.precip.bio, aes(x=y,y=total,color=LS_binned),size=2)#+ stat_smooth(data = temp.precip.bio, aes(x = y, y = total), method = "lm",
                                                                               # formula = y ~ poly(x, 10), se = FALSE) #total precip 
 
 library(egg)
 F<-ggarrange(A,B,C, ncol = 1)
-ggsave(F,file='transect_output_scatters.pdf')
+ggsave(F,file=paste0(Sys.Date(),'transect_output_scatters.pdf'))
 
 
 

@@ -1,20 +1,37 @@
-biomass_dat_est <- read.csv(paste0('~/Downloads/',"biomass_prediction_v0.9-10_bam.csv"))
+#biomass_dat_est <- read.csv(paste0('~/Downloads/',"biomass_prediction_v0.9-10_bam.csv"))
 
-b = biomass_dat_est
-tot_b = b[,ncol(b)]
+nc <- nc_open(file.path('Data','PLS_biomass_western_point_v0.999.nc'))
 
-hist(rowSums(b[,4:25]) - b$Total)
+x <- nc$dim$x$vals
+y <- nc$dim$y$vals
+vars <- names(nc$var)
+data <- list()
+biomass_mat <- matrix(NA,11784,length(vars))
+for(i in 1:length(vars)){
+  data[[i]] <- ncvar_get(nc,varid = vars[[i]])
+  r1 <- raster(list(x=x,y=y,z=data[[i]]))
+  biomass_mat[,i] <- rasterToPoints(r1)[,3]
+}
+colnames(biomass_mat) <- vars
 
-table <- rbind(colMeans(prop.table(as.matrix(b[tot_b>=0 & tot_b<10,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=10 & tot_b<20,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=20 & tot_b<30,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=30 & tot_b<40,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=40 & tot_b<50,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=50 & tot_b<75,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=75 & tot_b<100,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=100 & tot_b<125,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=125 & tot_b<150,5:25]),margin = 1)),
-               colMeans(prop.table(as.matrix(b[tot_b>=150,5:25]),margin = 1)))
+b = biomass_mat#biomass_dat_est
+tot_b = b[,'Total']
+
+par(mfrow=c(1,1))
+plot(rowSums(b[,-which(colnames(b)%in%'Total')]), tot_b,
+     ylim=c(0,400),xlim=c(0,400),col='darkgray')
+abline(b=1,a=0,lwd=2)
+
+table <- rbind(colMeans(prop.table(as.matrix(b[tot_b>=0 & tot_b<10,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=10 & tot_b<20,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=20 & tot_b<30,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=30 & tot_b<40,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=40 & tot_b<50,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=50 & tot_b<75,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=75 & tot_b<100,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=100 & tot_b<125,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=125 & tot_b<150,-1]),margin = 1)),
+               colMeans(prop.table(as.matrix(b[tot_b>=150,-1]),margin = 1)))
 
 bluefunc <- colorRampPalette(c('red','orange','yellow','green','blue','purple'))
 bluefuncs <- bluefunc(21)
@@ -41,7 +58,7 @@ cukes$veg <- 'cuke'
 vegLengths <- rbind(carrots, cukes)
 
 
-bio.df<-melt(biomass_dat_est[,4:25])
+bio.df<-melt(biomass_dat_est[,-1])
 #now make your lovely plot
 ggplot(bio.df, aes(length, fill = variable)) + geom_density(alpha = 0.2)
 
@@ -52,7 +69,7 @@ ggplot(vegLengths, aes(length, fill = veg)) + geom_density(alpha = 0.2)
 #hist of each spp over biomass
 
 
-plot.which <- rev(names(sort(colMeans(b[,4:25]))))
+plot.which <- rev(names(sort(colMeans(b[,-1]))))
 
 pdf('pls.explor.scatters.pdf')
 par(mfrow=c(3,3))
@@ -68,48 +85,54 @@ for(i in plot.which[2:length(plot.which)]){
 }
 #legend('right',as.character(plot.which),col=rainbow(length(plot.which)),pch=rep(19,22),cex=1)
 dev.off()
-breaks <-  seq(0,200,10)#c(seq(0,50,10),seq(75,200,25))
+breaks <-  seq(0,max(biomass)+1,10)#c(seq(0,50,10),seq(75,200,25))
 data_binned <-  cut(biomass_dat_est$Total, c(breaks), include.lowest = FALSE, labels = FALSE)
-b<-cbind(biomass_dat_est,data_binned)
+b<-as.data.frame(cbind(biomass_mat,data_binned))
 b.melt <- melt(data = b)
 
-c <- matrix(NA,max(data_binned),21)
+c <- matrix(NA,max(data_binned,na.rm=T),22)
 
-for(i in 1:max(data_binned)){
-  c[i,] <- colSums(b[b$data_binned==i,c(5:25)])
+for(i in 1:max(data_binned,na.rm=T)){
+  c[i,] <- colSums(b[b$data_binned==i,-1],na.rm = T)
 }
+colnames(c) <- colnames(b[,-1])
 
-colnames(c) <- colnames(b[,c(5:25)])
+c <- c[,-22]
+
 
 c1 <- prop.table(c,1)
 c2 <- c1[,order(colMeans(c1))]
-c1.melt<-melt(c2)
+c1.melt <- melt(c2)
 
 
 c2.melt <- within(c1.melt, X2 <- factor(X2,names(sort(colMeans(c1),decreasing = FALSE))))
 
-pdf('settlement.biomass.tiles.pdf')
+pdf(paste0(Sys.Date(),'settlement.biomass.tiles.pdf'))
 ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
   scale_fill_gradient(name = 'Total Bio. Prop.',low="white",high="black") +
   ylab('Tree Taxa') +
   xlab('Biomass Categories Mg/ha') +
-  scale_x_continuous(breaks=seq(.5,( max(data_binned) +.5), 1), labels = breaks[1:(max(data_binned)+1)])
+  scale_x_continuous(breaks=seq(.5,( max(data_binned,na.rm=T) +.5), 1), labels = breaks[1:(max(data_binned,na.rm=T)+1)])
 dev.off()
 
 
 load('add.bacon2.Rdata')
+breaks <- seq(0,max(biomass),30)
 data_binned <-  cut(biomass, c(breaks), include.lowest = FALSE, labels = FALSE)
-b<-as.data.frame(cbind(Y,data_binned))
+Y.prop <- prop.table(as.matrix(Y),1)
+b<-as.data.frame(cbind(Y.prop,data_binned))
 
-c <- matrix(NA,max(data_binned),(ncol(Y)-1))
+c <- matrix(NA,max(data_binned,na.rm = T),(ncol(Y)-1))
 
-for(i in 1:max(data_binned)){
-  c[i,] <- colSums(b[b$data_binned==i,1:(ncol(Y)-1)])
+for(i in 1:max(data_binned,na.rm = T)){
+  c[i,] <- colSums(b[b$data_binned==i,1:(ncol(Y)-1)],na.rm=T)
 }
 
 colnames(c) <- colnames(b[,1:(ncol(Y)-1)])
 
 c1 <- prop.table(c,1)
+#c <- c[-which(rowSums(c)==0),]
+c1[is.na(c1)] <- 0
 c2 <- c1[,order(colMeans(c1))]
 c1.melt<-melt(c2)
 
@@ -121,7 +144,7 @@ ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour =
   scale_fill_gradient(name = 'Count Prop.',low="white",high="black") +
   ylab('Tree Taxa') +
   xlab('Biomass Categories Mg/ha') +
-  scale_x_continuous(breaks=seq(.5,( max(data_binned) +.5), 1), labels = breaks[1:(max(data_binned)+1)])
+  scale_x_continuous(breaks=seq(.5,( max(data_binned,na.rm = T) +.5), 1), labels = breaks[1:(max(data_binned,na.rm = T)+1)])
 dev.off()
 
 
