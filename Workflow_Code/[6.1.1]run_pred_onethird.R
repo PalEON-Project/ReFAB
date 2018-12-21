@@ -46,7 +46,7 @@ for(i in 1:length(new.biomass)){
 
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(samples.mixed),]),
-                 bMax = bMax, Y = Y.pred)
+                 bMax = bMax, Y = Y.pred, knots=length(u)+2)
 
 source('validation.R')
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
