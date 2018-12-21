@@ -10,11 +10,6 @@ library(splines)
 library(maps)
 library(methods)
 
-ciEnvelope <- function(x,ylo,yhi,...){
-  polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
-                                      ylo[1])), border = NA,...) 
-}
-
 ## loading threethirds calibration dataset and constants
 load("threethirds_v2.0.Rdata")
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
@@ -24,8 +19,8 @@ group_rm <- 11
 #### Setting up 3/3 prediction
 Y.keep <- Y
 biomass.keep <- biomass
-Y.pred <- Y
-biomass.pred <- biomass
+Y.pred <- Y.calib <- Y
+biomass.pred <- biomass.calib <- biomass
 
 source("Workflow_Code/utils/bs_nimble.R")
 Z.test <- matrix(NA,length(biomass.calib),5)
