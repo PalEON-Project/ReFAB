@@ -1,4 +1,131 @@
 
+source(file.path('Workflow_Code','utils','validation_args.R'))
+load('twothirds_v2.0.Rdata')
+WANT.NUMS = FALSE
+
+#####
+##### Plot 10 Fold CV R2 Validation
+#####
+
+dir_to_samples_pred <- c('~/Downloads/preds10/')
+samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
+dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
+                        beta_row =rep(round(seq(Niters*.2,Niters,length.out = 20)),10), #picking betas past burnin
+                        counter = rep(1:20,10))
+for(i in 1:200){
+  load(file = file.path(dir_to_samples_pred,
+                        paste0('samples.pred.group',dat.index[i,'group_rm'],'beta',dat.index[i,'beta_row'],'.Rdata')))
+  #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+  if(any(is.na(samples.pred))) print(i)
+  samples.pred.mat[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- samples.pred[,grep('b',colnames(samples.pred))]
+}
+
+pdf(paste0('10.fold.R2',Sys.Date(),'.pdf'))
+par(mfrow=c(1,1))
+biomass.keep <- biomass[1:max(sets10)]
+plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass (Mg/ha)", ylab="Predicted Mean Biomass (Mg/ha)",main='10 Fold Cross Validation')
+abline(a=0,b=1)
+lm.mod <- lm(biomass.keep ~ apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T)+0)
+abline(lm.mod,lty=2)
+mtext(paste("r-squared = ",signif(summary(lm.mod)$r.squared,digits = 2)))
+
+arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05,na.rm=T),
+       x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975,na.rm=T),
+       code = 0, lwd=2)
+
+if(WANT.NUMS ==TRUE) calibrate::textxy(biomass.keep,  apply(samples.pred.mat,2,FUN = quantile,.5),1:max(sets10))
+dev.off()
+
+#####
+##### 2/3s fit validation #####
+#####
+
+load('~/Downloads/samples.pred.group11betaNA.Rdata')
+load("threethirds_v2.0.Rdata") 
+load("~/ReFAB/2018-11-12sites_rm.Rdata")
+
+pdf('2_3rds_validation.pdf')
+par(mfrow=c(1,1))
+plot(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass", ylab="Predicted Mean Biomass",
+     main='2/3 validation')
+lm.mod <- lm(biomass[-sites_rm]~ apply(samples.pred,2,FUN = quantile,.5)[-sites_rm]+0)
+abline(lm.mod,lty=2)
+
+mtext(paste("r-squared",summary(lm.mod)$r.squared))
+
+arrows(x0 = biomass[-sites_rm], y0 = apply(samples.pred,2,FUN = quantile,.05,na.rm=T)[-sites_rm],
+       x1 = biomass[-sites_rm], y1 = apply(samples.pred,2,FUN = quantile,.975,na.rm=T)[-sites_rm],
+       code = 0, lwd=2)
+
+if(WANT.NUMS ==TRUE) calibrate::textxy(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],1:length(biomass[-sites_rm]))
+abline(b=1,a=0)
+dev.off()
+
+
+#####
+##### 3/3s fit R2
+#####
+
+pdf(paste0('gold.r2.validation.pdf'))
+par(mfrow=c(1,1))
+plot(biomass[-sites_rm], colMeans(samples.pred, na.rm = T)[-sites_rm],
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass", ylab="Predicted Mean Biomass",
+     main = 'Gold Validation')
+abline(a=0,b=1)
+lm.mod <- lm(biomass[-sites_rm]~colMeans(samples.pred)[-sites_rm]+0)
+abline(lm.mod,lty=2)
+
+lm.mod.out <- lm(biomass[sites_rm]~colMeans(samples.pred[,sites_rm])+0)
+abline(lm.mod.out,lty=2,col='red')
+
+points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
+       col='red',pch=19)
+mtext(paste("r2-twothirds = ",signif(summary(lm.mod)$r.squared,digits=2),'r2-onethird = ',signif(summary(lm.mod.out)$r.squared,digits = 2)))
+
+arrows(x0 = biomass[-sites_rm], y0 = apply(samples.pred,2,FUN = quantile,.05)[-sites_rm],
+       x1 = biomass[-sites_rm], y1 = apply(samples.pred,2,FUN = quantile,.975)[-sites_rm],
+       code = 0, lwd=2)
+arrows(x0 = biomass[sites_rm], y0 = apply(samples.pred[,sites_rm],2,FUN = quantile,.05),
+       x1 = biomass[sites_rm], y1 = apply(samples.pred[,sites_rm],2,FUN = quantile,.975),
+       code = 0, lwd=2, col = 'red')
+
+dev.off()
+
+
+
+#####
+####################################### Notes below
+#####
+
+samples.pred.mat <- matrix(NA,nrow(samples.pred),length(biomass.keep))
+for(i in 1:10){
+  load(file = file.path('~/Downloads','samps.linexp',paste0('samples.pred.group',i,'.Rdata')))
+  #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+  samples.pred.mat[,sets10[,i]] <- samples.pred[,grep('b',colnames(samples.pred))]
+}
+pdf(paste0('10.fold.r2.validation.linexp.pdf'))
+par(mfrow=c(1,1))
+plot(biomass.keep, colMeans(samples.pred.mat, na.rm = T),
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass", ylab="Predicted Mean Biomass",main='10 Fold CV')
+abline(a=0,b=1)
+lm.mod <- lm(biomass.keep~ apply(samples.pred.mat,2,FUN = quantile,.5)+0)
+abline(lm.mod,lty=2)
+mtext(paste("r-squared",summary(lm.mod)$r.squared))
+
+arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05),
+       x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975),
+       code = 0, lwd=2)
+
+library(calibrate)
+textxy(biomass.keep,  apply(samples.pred.mat,2,FUN = quantile,.5),1:100)
+dev.off()
+#10, 1
 
 
 ciEnvelope <- function(x,ylo,yhi,...){
