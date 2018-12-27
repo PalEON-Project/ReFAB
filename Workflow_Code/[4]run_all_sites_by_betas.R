@@ -1,4 +1,7 @@
 
+#####
+##### This runs all prediction sites with a job array on the cluster
+#####
 
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
@@ -13,10 +16,15 @@ dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 #dataID <- read.csv(file.path('Cross_Validation','dataID.csv')) #for 10K
 #dataID <- read.csv(file.path('Cross_Validation','beta_run_dataID.csv')) #for paleon mip
-dataID <- read.csv('dataID_bacon_v4_means.csv') #for paleon mip
+#dataID <- read.csv('dataID_bacon_v4_means.csv') #for paleon mip
 
+#### These files come from [2]create_prediction_datasets.R
 
+dataID <- read.csv('dataID_bacon_v4.csv') #for paleon mip
 load('prediction.data_v4.Rdata')
+
+source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+
 ####
 #### Master Setup
 ####
@@ -27,11 +35,6 @@ library(maps)
 library(fields)
 library(sp)
 
-ciEnvelope <- function(x,ylo,yhi,...){
-  polygon(cbind(c(x, rev(x), x[1]), c(ylo, rev(yhi),
-                                      ylo[1])), border = NA,...) 
-}
-
 control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
 # load in data for all sites, per Ann's original code
@@ -39,8 +42,6 @@ control.pts<-read.csv(file.path('Data','control.pts.csv'))
 # source(file.path('Workflow_Code','prep_data.R'))
 # load(file.path(dataDir,'allPredData.Rda')) # load for 10K run
 # load('paleon.data.Rdata') # adding via ssh rather than github
-bMax <- 227
-u <- c(1,47,227)
 new.biomass <- 1:bMax
 Z = matrix(0,nrow=length(new.biomass),ncol=5)
 source(file.path('Workflow_Code','utils','bs_nimble.R'))
@@ -52,13 +53,13 @@ for(i in 1:length(new.biomass)){
                         N3 = rep(0, (length(u)+2)))
 }
 
-load(file = paste0("beta.est.group.inNA.Rdata")) #load via ssh
+
+beta <- dataID[dataID$ID==runnum,'beta']
+load(file = paste0("beta.est.group.in",seq(100,120,1)[beta],"FULL.Rdata")) #load via ssh
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
 burnin <- .2*nrow(samples.mixed)
-
-beta <- dataID[dataID$ID==runnum,'beta']
 
 if(!is.na(beta)){
   Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
@@ -69,9 +70,6 @@ if(!is.na(beta)){
   beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
   beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z),ncol(Y))
 }
-
-#beta1.est.real = matrix(colMeans(samples.mixed[,i.beta1]),5,ncol(ten.count))
-#beta2.est.real = matrix(colMeans(samples.mixed[,i.beta.pine]),5,ncol(ten.count))
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
@@ -134,7 +132,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 6000, nItsSave = 1000, seed = 1,
+                     nIts = Niters, nItsSave = 2000, seed = 1,
 		                 control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
