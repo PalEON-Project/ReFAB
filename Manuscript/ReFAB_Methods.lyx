@@ -136,7 +136,7 @@ Pollen data
 status open
 
 \begin_layout Plain Layout
-get.data.R
+[1-3]get.data.R
 \end_layout
 
 \end_inset
@@ -155,7 +155,7 @@ n.
  lakes.
  Soil cores have been collected by numerous research groups in lakes and
  ponds around the world.
- There are 282 sediment cores in our study area (Figure 
+ There are 311 sediment cores in our study area (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Map-of-pollen"
@@ -177,8 +177,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/all.sites.neotoma2017-11-15.pdf
-	scale 40
+	filename /Users/paleolab/ReFAB/Figures/all_pollen_cores_map2018-11-12.pdf
+	scale 50
 
 \end_inset
 
@@ -196,12 +196,12 @@ name "fig:Map-of-pollen"
 
 \end_inset
 
-Map of pollen sites in Minnesota, Wisconsin, and Michigan.
+Map of pollen sites in Minnesota, Wisconsin, Michigan, Indiana, and Illinois.
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-MNWI_dat.R
+[1-3]get_dat.R
 \end_layout
 
 \end_inset
@@ -254,7 +254,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/chrono.10k2017-11-15.pdf
+	filename /Users/paleolab/ReFAB/Figures/chrono_ 2018-11-12 .pdf
 	scale 60
 
 \end_inset
@@ -278,7 +278,7 @@ Sampling points for all 282 ponds across the latitude of our domain.
 status open
 
 \begin_layout Plain Layout
-MNWI_dat.R
+[1-3]get_dat.R
 \end_layout
 
 \end_inset
@@ -354,7 +354,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Arboreal
+Arboreal and Individual Taxa
 \end_layout
 
 \end_inset
@@ -456,11 +456,19 @@ Abies spp.
 \shape italic
 Pinus spp.
 \shape default
-), and poplar (
+), poplar (
 \shape italic
 Populus spp.
 \shape default
-)
+), hickory (
+\shape italic
+Carya spp.
+\shape default
+), sedge (
+\shape italic
+Cyperace spp.
+\shape default
+), and
 \end_layout
 
 \end_inset
@@ -531,6 +539,45 @@ name "tab:Taxa-table"
 
 \end_layout
 
+\begin_layout Subsubsection*
+Calibration Dataset 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[1-3]get_dat.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We selected the calibration dataset based on the settlement horizon that
+ was determined through expert elicitation.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Prediction Dataset 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2]create_prediction_dataset.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We selected our prediction dataset based on the number and age of the samples.
+ 
+\end_layout
+
 \begin_layout Section
 Vegetation data
 \end_layout
@@ -581,7 +628,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/biomass.pts.settlement2017-12-01.pdf
+	filename /Users/paleolab/ReFAB/only_calibration_map.pdf
 	scale 50
 
 \end_inset
@@ -957,6 +1004,111 @@ We evaluate our calibration model development by assessing the convergence
  to observed biomass from the settlement biomass calibration dataset.
  Once the pollen taxa were optimally grouped, we assessed the number of
  spline basis matrix coefficients using the same cross validation methodology.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+all validation plots are made in -> validation_plot.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/10.fold.R22018-12-21.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The the 10 fold cross validation exercise shows that our model does an adequate
+ job predicting settlement biomass from pollen composition (1) 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+calibration in run_twothirds_calib.R then validation in 10_fold_beta_uncert.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/2_3rds_validation.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The the 2/3s fit validation (2)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+calibration and validation in run_twothirds_calib.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -967,66 +1119,28 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-The the 10 fold cross validation exercise shows that our model does an adequate
- job predicting settlement biomass from pollen composition (1)
-\end_layout
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/gold.r2.validation.pdf
+	scale 50
 
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-The the 2/3s fit validation (2)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
 The gold-standard fit to the held-out 1/3 also confirms that our model can
- reproduce the data (3) 
+ reproduce the data (3)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+calibration in run_twothirds_calib.R then validation in 1run_pred_onethird.R
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \end_inset
@@ -1061,7 +1175,14 @@ We assess calibration model fit by looking at the trace plots of the shape
 ).
  All final trace plots were scrutinized visually.
  Here we present a random subset of shape parameter trace plots that are
- representative of the entire set (Figure).
+ representative of the entire set (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:beta-trace-liks"
+
+\end_inset
+
+).
  
 \end_layout
 
@@ -1072,13 +1193,100 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-the in-sample fit of the full 3/3 - while this is overly optimistic because
- it is in-sample, it uses the full ~150 sites so gives an indication of
- how we can do with our full dataset and I think we can argue that with
- this many sites it's not too overly optimistic
+These are trace plots for a random subset of the beta coefficients as well
+ as their likelihood plots.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:beta-trace-liks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also show the final three thirds fit with biomass and beta coefficient
+ uncertainty (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3/3 fit"
+
+\end_inset
+
+).
+ While this is an overly optimistic validation because it is in-sample,
+ it uses the full calibration dataset so this gives us an indication of
+ how we can do with our full dataset.
+ We use this to show that we are not too overly optimistic.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/3_3rds_validation.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+This validation plot was fit using all calibration sites.
+ The vertical lines show the uncertainty in the biomass predictions from
+ our model while the horizontal lines show the uncertainty from the settlement
+ biomass data product that we used for calibration.
+ The points are the mean of the biomass estimate from our model against
+ the mean of the biomass estimate from the settlement data product.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+run_valid_all.R
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3/3 fit"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1117,8 +1325,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/2017-12-22tele.betas.calib_horiz_plus.pdf
-	scale 40
+	filename /Users/paleolab/ReFAB/splines.154.sites.pdf
+	scale 50
 
 \end_inset
 
@@ -1130,7 +1338,33 @@ This figure shows the spline fits for the calibration model.
  The blue points are data.
  The light blue shading are the 95% credible intervals.
  The black dots is the posterior mean.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+splines_plot.R
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+QUESTION: do we need to include beta uncertainty here?
+\end_layout
+
+\end_inset
+
  
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:blue-splines"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1666,7 +1900,8 @@ Taxa Selection
 \begin_layout Standard
 Taxa and groupings used were determined with a combination of expert opinion
  and validation exercises.
- The prairie group was selected using 
+ We began with all arboreal pollen taxa individually and a group of taxa
+ we call 'prairie.' The prairie group was selected using 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "mclauchlan2013tallgrass"
@@ -1677,51 +1912,20 @@ key "mclauchlan2013tallgrass"
  Then we selected arboreal taxa known to be important contributors to abovegroun
 d biomass to be stand alone taxa while grouping the rest of the arboreal
  taxa into an 'other tree' category.
+ We also used cyperace pollen taxa individually because there was high abundance
+ in our samples.
  Once our taxa were grouped in this manner, we performed a 10 fold cross
- validation on 2/3 of the calibration dataset.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/pred_validation_two_betas_horizon_plus2017-12-01.pdf
-	scale 20
+ validation on 2/3 of the calibration dataset to determine if this grouping
+ was sufficient for reconstructing settlement biomass point estimates.
+ The final groups of taxa can be found in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Taxa-table"
 
 \end_inset
 
-
-\begin_inset Graphics
-	filename /Users/paleolab/babySTEPPS/validation_plot.pdf
-	scale 20
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-On the left hand side is a validation plot with uncertainty in the prediction
- shown as a vertical line.
- On the right hand side is the final leave one out cross validation showing
- how the 1/3 and 2/3 of predictions fit the data.
+.
  
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -1732,40 +1936,42 @@ Exploring Different Taxa Groupings and Taxa Specific Statistical Power
 We computed the effects of different pollen taxa by performing separate
  cross validation exercises with the calibration dataset grouped into different
  groups.
- After validating our taxa selection with 10 fold cross validation, we tested
- for the effects of late successional species, prairie, and evergreen versus
- deciduous taxa groupings by performing 10 fold cross validation with three
- different taxa groupings.
- For the test of the importance of late successional species, we threw out
- all of the data except for beech and hemlock and prairie.
- These three groups were able to predict biomass at a surprisingly similar
- rate to the full dataset (R
-\begin_inset Formula $^{2}$
+ These different groups were composed to explore ideas behind large scale
+ biomass explanatory plant traits.
+ First, we grouped our pollen taxa into the original leaf physiology based
+ plant functional type groups: grass (or prairie here), deciduous, and conifer.
+ Second, we categorized pollen taxa into three trait categories based on
+ the first principle component between seed mass, wood density, and leaf
+ mass area.
+ These are the dominant plant traits found to explain global vegetation
+ distribution in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "van2014fully"
+
 \end_inset
 
- = .75?).
- Next, we tested the importance of including prairie as a taxa that indicates
- an ecosystem may be transitioning from forest to prairie or vice versa.
- We found that not including prairie taxa did not affect the results of
- our prediction very much (R
-\begin_inset Formula $^{2}$
+.
+ Third, we organized pollen taxa into dominant biome types: forest, savannah,
+ and prairie.
+ Fourth, we divided pollen taxa into shade tolerance categories.
+ We decided shade tolerance categories based on the dominant species shade
+ tolerance classification in each genus.
+ Finally, we used hemlock and beech pollen individually and aggregated all
+ other pollen types into an 'other' category.
+ We tested each validation fit for three things: linear R2, best fit between
+ non-linear and linear, and average variance for each point prediction to
+ determine which grouping best reproduced settlement point estimates of
+ above ground biomass.
+ These results are reported in the main manuscript text as well as shown
+ below in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:validation-scatters-new-groups"
+
 \end_inset
 
- = .85?) and hypothesize that oak abundance compensates for the absence of
- prairie data because oak is highly present in the savannah.
- Finally, we wanted to know how model plant functional type groupings would
- affect our prediction by dividing all arboreal taxa into either evergreen
- or deciduous.
- This taxa aggregation lead to very poor prediction of settlement biomass
- (R
-\begin_inset Formula $^{2}$
-\end_inset
-
- = .25?).
- These results lead us to conclude that most of the predictive power in
- pollen taxa in terms of aboveground biomass belongs to late successional
- species.
- 
+.
 \end_layout
 
 \begin_layout Standard
@@ -1773,33 +1979,52 @@ We computed the effects of different pollen taxa by performing separate
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/babySTEPPS/pred_validation_tree_v_no_tree2017-03-28.pdf
-	scale 20
+	filename /Users/paleolab/ReFAB/new_groups_validation_scatters_r2.pdf
+	scale 60
 
 \end_inset
 
 
-\begin_inset Graphics
-	filename /Users/paleolab/babySTEPPS/pred_validation_hem_prair_beech2017-03-15.pdf
-	scale 20
+\end_layout
 
-\end_inset
-
-
+\begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-These plots are examples of model fit with different taxa groupings.
- Without information about late successional species we cannot predict biomass
- (left).
- But, with information about grass and late successional species we can
- predict biomass with almost as much accuracy as the full model (right).
+These are plots of validation model fit with different taxa groupings.
+ Each row shows a different grouping of taxa.
+ The first three columns are sorted by pollen abundance as this is how our
+ stick breaking model uses the pollen proportion data.
+ The final column shows the validation plot fit for each grouping.
+ We show the computed R2 in the bottom right of each plot.
+ Dots represent the mean prediction while the vertical lines are the 95%
+ quantiles surrounding each prediction.
+ The species grouping in the final row shows the best linear fit and the
+ best uncertainty constraint.
  
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+code can be found in Workflow_Code/different_groups_validation.R
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:validation-scatters-new-groups"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1823,15 +2048,14 @@ The basis matrix can be more flexible with the addition of more knots.
 ble.
  In order to select the optimal number of basis matrix knots, we again performed
  10 fold cross validation using 5 or 7 knots in the basis matrix.
- This validation exercise lead us to choose a basis matrix with ...
- knots because the R2 was closer to 1 with ...
- knots than ...
- knots in the validation plot.
+ This validation exercise lead us to choose a basis matrix with 5 knots
+ because the R2 was closer to 1 with 5 knots than 7 knots in the validation
+ plot.
  
 \end_layout
 
 \begin_layout Subsection
-Prediction model selection 
+Prediction model selection
 \end_layout
 
 \begin_layout Subsubsection
@@ -1953,8 +2177,8 @@ ns to show that small changes in pollen composition generally correspond
 \end_layout
 
 \begin_layout Standard
-here we talk about how there aren't that many no analog communities in our
- dataset.
+Here, we talk about how there aren't that many no analog communities in
+ our dataset.
  We also show results about how variance maps to no analog communities.
  Another idea in terms of no analogs would be to take all site-times and
  calculate the maximized likelihood (the likelihood at the maximum likelihood
@@ -1970,10 +2194,17 @@ Before implementing the generalized Pareto, we noticed bimodality in biomass
  and pine pollen proportions.
  This makes ecological sense because jack pine and white pine have different
  biomass distributions and has also been found in a recent analysis of oak
- distribution in the settlement biomass data product (Heilman 2018).
+ distribution in the settlement biomass data product (Heilman 20??).
  Once fitting the generalized pareto model we assessed coverage of biomodal
  space by looking at the likelihood fits of the validation dataset as well
- as assessing the uncertainty surrounding the spline fits (blue plot).
+ as assessing the uncertainty surrounding the spline fits (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:blue-splines"
+
+\end_inset
+
+).
  We found the generalized Pareto allowed us to have flexible variance around
  biomodal pollen types like pine.
  
