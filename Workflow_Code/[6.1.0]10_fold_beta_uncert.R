@@ -37,7 +37,7 @@ biomass.keep <- biomass
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
 
-source("Workflow_Code/utils/bs_nimble.R")
+source(file.path("Workflow_Code","utils","bs_nimble.R"))
 Z.test <- matrix(NA,length(biomass.calib),5)
 for(i in 1:length(biomass.calib)){
   Z.test[i,] <- bs_nimble(u_given = biomass.calib[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
