@@ -138,61 +138,11 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
 		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 250)
 
-stop()
-
-source('Workflow_Code/utils/site_diag.R')
-site_diag(locn = locn,x.meta=x.meta,ten.count = ten.count,
-          path_to_samps = '~/ReFAB/',path_to_Info = '~/ReFAB/')
-
-
-## Full Site Diagnostics
-## demont, chippewa bog, emrick, ##frains, radtke, wintergreen
-for(l in unique(dataID[621:1240,]$name)[10:31]){
-  site_diag(locn = l, x.meta = x.meta, ten.count = ten.count,
-            control.pts = control.pts, bMax = 150,
-            path_to_samps = "~/Downloads/sampsList2/",
-            path_to_Info = "~/Downloads/workInfo-2/")
+if(FALSE){
+  ## Simple Site Diagnositics
+  plot(colMeans(smp[,1:100]),col='red',pch=19,ylim=c(0,150))
+  load(workInfo) #to get out load the workInfo file make in fit_fix_sigma
+  points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
 }
 
-load("~/Downloads/workInfo-2/workInfo_1180_Wintergreen-Lake_Beta_20.Rdata")
-for(i in 1:ncol(out)){
-  plot(exp(out[,i]-max(out[,i]))/-sum(out[,i]),main=i)
-}
-
-## Individual Site Diagnostics
-site_diag(locn = 'Lake Mendota', x.meta = x.meta, ten.count = ten.count,
-          control.pts = control.pts, bMax = 150,
-          path_to_samps = "~/Downloads/sampsList/",
-          path_to_Info = "~/Downloads/workInfo-2/")
-
-## Simple Site Diagnositics
-plot(colMeans(samplesList[,1:100]),col='red',pch=19,ylim=c(0,150))
-points(age_index,seq(5, bMax-5, by = 2)[apply(out,2,which.max)])
-
-## Drawing Multiple MCMCs
-load("~/Downloads/samps/samplesList_workInfo_181_Cub-Lake_Beta_1.Rda")
-load("~/Downloads/work/workInfo_181_Cub-Lake_Beta_1.Rda")
-out.save <- out
-samplesList.save <- samplesList
-load("~/Downloads/samps/samplesList_workInfo_184_Cub-Lake_Beta_4.Rda")
-load("~/Downloads/work/workInfo_184_Cub-Lake_Beta_4.Rda")
-samplesList.save.1 <- samplesList
-out.save.1 <- out
-load("~/Downloads/samps/samplesList_workInfo_194_Cub-Lake_Beta_14.Rda")
-load("~/Downloads/work/workInfo_194_Cub-Lake_Beta_14.Rda")
-
-pdf('Cub-Lake-MCMC.pdf')
-par(mfrow=c(2,2))
-for(i in 1:100){
-  plot(samplesList[,i],typ='l',lwd=1.5,ylim=c(0,bMax))
-  #points(samplesList.save[,i],typ='l',lwd=1.5,col='red') 
-  #points(samplesList.save.1[,i],typ='l',lwd=1.5,col='blue') 
-  title(i)
-  if(any(i==age_index)){
-    abline(h = seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],lwd=2)
-    #abline(h = seq(5, bMax-5, by = 2)[apply(out.save,2,which.max)][which(i==age_index)],col='red',lwd=2)
-    #abline(h = seq(5, bMax-5, by = 2)[apply(out.save.1,2,which.max)][which(i==age_index)],col='blue',lwd=2)
-  }
-}
-dev.off()
 
