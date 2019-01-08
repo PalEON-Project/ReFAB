@@ -135,16 +135,18 @@ if(DRAW == TRUE) dev.off()
 ##### Adding settlement biomass data #####
 #####
 
-biomass_dat_est <- read.csv('Data/biomass_prediction_v0.9-10_bam.csv')
-
+###old ###biomass_dat_est <- read.csv('Data/biomass_prediction_v0.9-10_bam.csv')
 nc <- nc_open(file.path(data.dir,'PLS_biomass_western_point_v0.999.nc'))
+nc_draws <- nc_open(file.path(data.dir,'PLS_biomass_western_v0.999.nc'))
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals
 data <- ncvar_get(nc,varid = c('Total'))
+data_draws <- ncvar_get(nc_draws,varid = c('Total'))
 
-rownames(data) <- x
-colnames(data) <- y
+
+rownames(data) <- rownames(data_draws) <- x
+colnames(data) <- colnames(data_draws) <- y
 
 r1 <- raster(list(x=x,y=y,z=data))
 
@@ -190,9 +192,14 @@ plot(usShp, add=T, lwd=2)
 if(DRAW == TRUE) dev.off()
 
 biomass <- list()
+biomass_draws <- list()
 for(i in 1:length(idx_cores)){ 
   biomass[[i]] = biomass_dat_est[idx_cores[i],'Total']
+  biomass_draws[[i]] <- data_draws[as.character(biomass_dat_est[idx_cores[i],'x']),as.character(biomass_dat_est[idx_cores[i],'y']),]
 }
+
+#only need to save for full calibration so no need to take to bottom of script
+save(biomass_draws,file='biomass_draws.Rdata')
 
 breaks <-  c(seq(0,50,10),seq(75,250,25),435)
 colors <- (tim.colors(length(breaks)-1))
@@ -227,13 +234,14 @@ data_binned <-  cut(cast.x[,ncol(cast.x)], c(breaks), include.lowest = FALSE, la
 if(DRAW==TRUE) pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
 
 pdf('only_calibration_map.pdf')
-map('state', xlim=c(-100,-80), ylim=c(41.5,49))
+par(mfrow=c(1,1))
+map('state', xlim=c(-100,-80), ylim=c(39.5,49.5))
 points(cast.x$long,cast.x$lat, pch=21,
        cex=1.1, bg=colors[data_binned],lwd=.2)
-text(cast.x$long,cast.x$lat,labels=1:nrow(cast.x),cex=.3)
+#text(cast.x$long,cast.x$lat,labels=1:nrow(cast.x),cex=.3)
 #bimodal_sites <- c(13,31,35,36,15,34,61,11,14,18,21,33)
 #points(cast.x$long[-sites_rm][bimodal_sites],cast.x$lat[-sites_rm][bimodal_sites],col='red',lwd=2)
-title("Biomass Point Estimates at Settlement")
+#title("Biomass Point Estimates at Settlement")
 plotInset(-90,47,-82.5,50,
           expr={
             hist(data_binned,col=colors,xaxt="n",xlab=NA,
@@ -374,7 +382,7 @@ points(albers.save[TF,1],albers.save[TF,2],pch=1,col='green') #matching new data
 load('sites_rm.Rdata')
 TF_keep <- cbind(albers,TF)[-sites_rm,]
 points(TF_keep[,1],TF_keep[,2],pch=1,col='red') #old 2/3s datasset
-
+save(TF,file='TF.Rdata')
 old_full <- Y.save[TF,]
 old_full_biomass <- biomass.save[TF]
 
