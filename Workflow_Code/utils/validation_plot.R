@@ -202,10 +202,15 @@ dev.off()
 
 load('~/Downloads/FULL.preds/samples.pred.group100FULLbetaNA.Rdata')
 samples.pred.keep <- samples.pred
+samples.pred.ar <- array(NA,c(5000,232,120))
+samples.pred.ar[,,100] <- samples.pred
+plot(colMeans(samples.pred),unlist(lapply(biomass_draws,function(x) (x[100]))))
 for(i in 101:120){
   load(paste0('~/Downloads/FULL.preds/samples.pred.group',i,'FULLbetaNA.Rdata'))
   samples.pred.keep <- rbind(samples.pred.keep,samples.pred)
-}
+  samples.pred.ar[,,i] <- samples.pred
+  points(colMeans(samples.pred),unlist(lapply(biomass_draws,function(x) (x[i]))))
+  }
 
 load('biomass_draws.Rdata')
 biomass <- unlist(lapply(biomass_draws,function(x) mean(x[100:120])))
@@ -214,22 +219,22 @@ biomass.95 <- unlist(lapply(biomass_draws,function(x) quantile(x[100:120],.95)))
 
 pdf('3_3rds_validation.pdf')
 par(mfrow=c(1,1))
-plot(biomass,colMeans(samples.pred),
+plot(biomass,colMeans(samples.pred.keep),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
      xlab="True Biomass", ylab="Predicted Mean Biomass",
      main='3/3 validation')
-lm.mod <- lm(biomass~ apply(samples.pred,2,FUN = quantile,.5)+0)
+lm.mod <- lm(biomass~ apply(samples.pred.keep,2,FUN = quantile,.5)+0)
 abline(a=0,b=1)
 abline(lm.mod,lty=2)
 
 mtext(paste("r-squared",summary(lm.mod)$r.squared))
 
-arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05,na.rm=T),
-       x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975,na.rm=T),
+arrows(x0 = biomass, y0 = apply(samples.pred.keep,2,FUN = quantile,.05,na.rm=T),
+       x1 = biomass, y1 = apply(samples.pred.keep,2,FUN = quantile,.975,na.rm=T),
        code = 0, lwd=2)
 
-arrows(x0 = biomass.05, y0 = colMeans(samples.pred),
-       x1 = biomass.95, y1 = colMeans(samples.pred),
+arrows(x0 = biomass.05, y0 = colMeans(samples.pred.keep),
+       x1 = biomass.95, y1 = colMeans(samples.pred.keep),
        code = 0, lwd=2)
 
 
