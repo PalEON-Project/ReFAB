@@ -1,16 +1,30 @@
+
+load('prediction.data_v4.Rdata')
+source(file.path('Workflow_Code','utils','validation_args.R'))
+control.pts<-read.csv(file.path('Data','control.pts.csv'))
+dataID <- read.csv('dataID_bacon_v4.csv')
+
+path_to_samps <- c('~/samps/')
+path_to_Info <- c('~/workInfo/')
+
 blue       <- col2rgb("blue")
 alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
 
 biomassCI <- diff.median <-  list()
 prob.of.inc <- matrix(NA,62,99)
 all.samps<- numeric(100)
-nItsSave = 10000
+nItsSave = 2000
+minAge = 0
+maxAge = 10000
+ageInterval = 100
 hem.is <- out.list <- LS.is <- Y.keep <- list()
 lat <- long <- all.samps.list <- name.keep <- age.keep <- list()
+
 for(i in 1:length(unique(dataID$name))){
   locn <- as.character(unique(dataID$name)[i])
   locnClean <- gsub(' ', '-', unique(dataID$name)[i])
   site_number = unique(x.meta[x.meta$site.name == locn,1])
+  if(locn == 'Lily Lake' | locn == 'Mud Lake') next()
   
   x.meta.use <- x.meta[x.meta$site.name == locn,]
   
@@ -35,13 +49,11 @@ for(i in 1:length(unique(dataID$name))){
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
   Y <- as.matrix(Y2[ , -c(1,2)])
-  Y2[,1] <- age_index
+  age_index <- Y2[,1] 
   
   Y.keep[[i]] <- Y2
   
-
-  
-  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'])
+  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'] + prop.table(Y,1)[,'ACERX'])
   
   if(length(Y)>21 & nrow(Y) > 10 &
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
@@ -76,7 +88,7 @@ for(i in 1:length(unique(dataID$name))){
       #Takes out modern data estimates where data stop# i.e. 'cut' approach
       #samplesList[,1:min(age_index)] <- NA
       
-      not_burn <- 1:nrow(samplesList)
+      not_burn <- seq(1,nrow(samplesList),length.out = 250)
       biomassCI[[i]] <- apply(samplesList[not_burn,1:100],2,quantile,c(0.025,0.5,0.975),na.rm=TRUE)
       names(biomassCI)[i] <- x.meta[x.meta$site.name == locn,'site.id'][1]
       
@@ -85,8 +97,8 @@ for(i in 1:length(unique(dataID$name))){
 
       diff.median[[i]] <- apply(diff(t(samplesList[not_burn,1:100])),1,quantile,c(0.5),na.rm=TRUE)
       test <- diff(t(samplesList[not_burn,1:100]))
-      lat[[i]] <- x.meta[x.meta$site.name == locn,'lat'][1]
-      long[[i]] <- x.meta[x.meta$site.name == locn,'long'][1]
+      lat[[i]] <- x.meta[x.meta$site.name == locn,'lat.x'][1]
+      long[[i]] <- x.meta[x.meta$site.name == locn,'long.x'][1]
       name.keep[[i]] <- locn
       
       sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
@@ -129,7 +141,7 @@ for(t in 1:22){
 dev.off()
 
 ### For Paleon MIP
-biomass.mean.df <- data.frame(lat=unlist(lat)[-35],lon=unlist(long)[-35],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
+biomass.mean.df <- data.frame(lat=unlist(lat)[-c(35,39)],lon=unlist(long)[-c(35,39)],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
 write.csv(biomass.mean.df,file='biomass.means.csv')
 
 
@@ -172,9 +184,10 @@ bio.quant <- apply(all.samps,2,quantile,c(0.025,0.5,0.975),na.rm=TRUE)
 diff.mat.all<- t(diff(t(all.samps[,100:1])))
 
 ## Find cutoff for time series by last data point
-stop.spot <- list()
+stop.spot <- start.spot <- list()
 for(i in 1:62){
   stop.spot[[i]] <- min(age.keep[[i]],na.rm = TRUE)
+  start.spot[[i]] <- max(age.keep[[i]],na.rm = TRUE)
 }
 
 ## Looking for where to cut all.samps matrix -- changes with number of sites
