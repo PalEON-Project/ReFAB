@@ -51,7 +51,7 @@ for(b in 1:20){
   file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata') #Sigma0.12Group
   if(!file.exists(file_name)) next()
   load(file_name)
-  samples.keep <- rbind(samples.keep, samplesList)
+  samples.keep <- rbind(samples.keep, samplesList[sample(x = 1:nrow(samplesList),size = 100),])
   file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
   if(!file.exists(file_name1)){
     out <- NA
@@ -121,7 +121,7 @@ par(def.par)
 
 par(mfrow=c(3,3))
 for(i in 1:(maxAge/100)){
-  plot(samplesList[,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
+  plot(samplesList[,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,bMax))
   if(any(i==age_index)){
     if(!is.null(path_to_Info)){
     for(b in 1:20){
