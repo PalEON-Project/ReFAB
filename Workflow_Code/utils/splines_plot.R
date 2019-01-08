@@ -1,3 +1,7 @@
+
+
+source(file.path("Workflow_Code","utils","bs_nimble.R"))
+source(file.path("Workflow_Code","utils",'linexp.R'))
 splines_plot <- function(samples.mixed,Y,biomass,bMax){
   
   new.biomass <- 1:bMax
@@ -64,7 +68,7 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax){
     #points(biomass[bimodal_sites],props[,i][bimodal_sites],pch=19,col='blue')
     #points(colMeans(samples.pred)[bimodal_sites],props[,i][bimodal_sites],pch=19,col='red')
     
-    textxy(biomass,props[,i],1:length(biomass),offset = 0)
+    calibrate::textxy(biomass,props[,i],1:length(biomass),offset = 0)
     #textxy(colMeans(samples.pred)[bimodal_sites],props[,i][bimodal_sites],bimodal_sites,offset = 0)
     
     #points(biomass.pred,props.pred[,i],col='red',pch=19)
@@ -74,4 +78,10 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax){
   #dev.off()
 }
 
-splines_plot(samples.mixed,Y,biomass,bMax)
+
+
+if(FALSE){
+  pdf('splines.154.sites.pdf')
+  splines_plot(samples.mixed,Y,biomass,bMax)
+  dev.off()
+}

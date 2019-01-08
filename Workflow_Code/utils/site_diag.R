@@ -1,13 +1,27 @@
-site_diag <- function(bMax = 150, locn, x.meta, minAge = 0, maxAge = 10000, 
+site_diag <- function(bMax = 150, locn, x.meta=NULL, minAge = 0, maxAge = 10000, 
                       ageInterval = 100, path_to_samps = '~/Downloads/samps2zip/',
-                      path_to_Info = '~/Downloads/work_3/', control.pts,
-                      ten.count){
+                      path_to_Info = NULL, control.pts = NULL,
+                      ten.count = NULL, dataID = NULL,out.dir = getwd()){
+
+if(is.null(x.meta)){
+  print('Error: Need meta data for prediction dataset. Look in create_prediction_datasets.R for file name.')
+  stop()
+}
+if(is.null(ten.count)){
+    print('Error: Need pollen count data for prediction dataset. Look in create_prediction_datasets.R for file name.')
+    stop()
+}
+if(is.null(dataID)){
+    print('Error: Need run info for prediction dataset. Look in create_prediction_datasets.R for file name.')
+    stop()
+}
   
 locnClean <- gsub(' ', '-', locn)
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 
 x.meta.use <- x.meta[x.meta$site.name == locn,]
 
+source(file.path('Workflow_Code','utils','test_site.R'))
 test_site(x.meta.use)
 
 ten_count_use = ten.count[which(x.meta$site.name == locn), ]
@@ -52,7 +66,7 @@ for(b in 1:20){
 samplesList <- samples.keep
 
 #### Plotting One Site
-pdf(paste0('SiteDiagnositcs-Age',locnClean,'.pdf'))
+pdf(file.path(out.dir,paste0('SiteDiagnositcs-Age',locnClean,'.pdf')))
 #quartz()
 site_number = unique(x.meta[x.meta$site.name == locn,1])
 keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
@@ -80,8 +94,10 @@ ciEnvelope(x=1:(maxAge/100), ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'gr
 points(bio.quants[2,],cex=1.1,pch=16,col = rev(colors[data_binned]))
 rug(age_index,lwd=2)
 rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
-for(b in 1:20) {
-  points(age_index, out.list[[b]], cex = .5)
+if(!is.null(path_to_Info)){
+  for(b in 1:20) {
+    points(age_index, out.list[[b]], cex = .5)
+  }
 }
 #points(0,unique(x.meta[x.meta$site.name == locn,'SettleBiomass']),pch=19,col='purple',cex=2)
 legend('topleft','Mx.Lik.',pch=1)
@@ -107,28 +123,31 @@ par(mfrow=c(3,3))
 for(i in 1:(maxAge/100)){
   plot(samplesList[,i],ylab = 'Biomass Estimate', xlab = 'MCMC iteration', main = i, typ='l',ylim=c(0,150))
   if(any(i==age_index)){
+    if(!is.null(path_to_Info)){
     for(b in 1:20){
       abline(h=out.list[[b]][which(i==age_index)],col='purple',lwd=1)
+    }
     }
     #abline(h=seq(5, bMax-5, by = 2)[apply(out,2,which.max)][which(i==age_index)],col='purple',lwd=3)
   }
 }
 #plot(samplesList[,grep('sigma',colnames(samplesList))],ylab = 'Sigma Estimate', xlab = 'MCMC iteration', main = 'Sigma', typ='l')
 
-map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+maps:::map('state', xlim=c(-98,-81), ylim=c(41.5,50))
 points(unique(x.meta[x.meta$site.name == locn,'long']),
        unique(x.meta[x.meta$site.name == locn,'lat']),
        pch=19,cex=1.5)
 title(locn)
 
 
-
+if(!is.null(path_to_Info)){
 for(i in 1:ncol(out)){
  for(b in c(1,5,10,15)){
     plot(seq(5, bMax-5, by = 2),
           exp(out.keep[[b]][,i]-max(out.keep[[b]][,i]))/-sum(out.keep[[b]][,i]),
           typ='l',main=paste('beta=',b,'age',age_index[i]))
   }
+}
 }
 
 dev.off()
