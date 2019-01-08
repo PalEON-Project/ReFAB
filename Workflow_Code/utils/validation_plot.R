@@ -7,7 +7,7 @@ WANT.NUMS = FALSE
 ##### Plot 10 Fold CV R2 Validation
 #####
 
-dir_to_samples_pred <- c('~/Downloads/preds10/')
+dir_to_samples_pred <- c('~/10samps/')
 samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
                         beta_row =rep(round(seq(Niters*.2,Niters,length.out = 20)),10), #picking betas past burnin
@@ -38,65 +38,221 @@ arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05,na.rm
 if(WANT.NUMS ==TRUE) calibrate::textxy(biomass.keep,  apply(samples.pred.mat,2,FUN = quantile,.5),1:max(sets10))
 dev.off()
 
+##### Blue Splines Plot for 10 FOLD CV
+source(file.path('Workflow_Code','utils','splines_plot.R'))
+samples.mixed.all <- rep(0,220)
+for(i in 1:10){
+  load(paste0('~/Downloads/betas/beta.est.group.in',i,'.Rdata'))
+  ppp <- nrow(samples.mixed)
+  samples.mixed.all <- rbind(samples.mixed.all,
+                           samples.mixed[seq(ppp*.2,ppp,length.out = 250),]) 
+  print(i)
+}
+
+pdf('splines.10CV.pdf')
+splines_plot(samples.mixed = samples.mixed.all,Y = Y,biomass = biomass,
+             bMax = bMax)
+dev.off()
+
+
 #####
 ##### 2/3s fit validation #####
 #####
 
 load('~/Downloads/samples.pred.group11betaNA.Rdata')
 load("threethirds_v2.0.Rdata") 
-load("~/ReFAB/2018-11-12sites_rm.Rdata")
+load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
+load('~/ReFAB/sites_rm.Rdata') # old 1/3
+load('~/ReFAB/TF.Rata') # old full
 
-pdf('2_3rds_validation.pdf')
+origfull <- samples.pred[,TF]
+origtt <- origfull[,-sites_rm]
+orig3 <- origfull[,sites_rm]
+newfull <- samples.pred[,-TF]
+newtt <- newfull[,-sites_rm_new]
+new3 <- newfull[,sites_rm_new]
+
+samps1_3 <- cbind(orig3,new3)
+samps2_3 <- cbind(origtt,newtt)
+
+bfull <- biomass[TF]
+btt <- bfull[-sites_rm]
+b3 <- bfull[sites_rm]
+newbfull <- biomass[-TF]
+newbtt <- newbfull[-sites_rm_new]
+newb3 <- newbfull[sites_rm_new]
+
+biomass1_3 <- c(b3,newb3)
+biomass2_3 <- c(btt,newbtt)
+
+
+pdf('2_3rds_validation_withnums.pdf')
 par(mfrow=c(1,1))
-plot(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],
+plot(biomass2_3,colMeans(samps2_3),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
      xlab="True Biomass", ylab="Predicted Mean Biomass",
      main='2/3 validation')
-lm.mod <- lm(biomass[-sites_rm]~ apply(samples.pred,2,FUN = quantile,.5)[-sites_rm]+0)
+lm.mod <- lm(biomass2_3~ apply(samps2_3,2,FUN = quantile,.5)+0)
 abline(lm.mod,lty=2)
 
 mtext(paste("r-squared",summary(lm.mod)$r.squared))
 
-arrows(x0 = biomass[-sites_rm], y0 = apply(samples.pred,2,FUN = quantile,.05,na.rm=T)[-sites_rm],
-       x1 = biomass[-sites_rm], y1 = apply(samples.pred,2,FUN = quantile,.975,na.rm=T)[-sites_rm],
+arrows(x0 = biomass2_3, y0 = apply(samps2_3,2,FUN = quantile,.05,na.rm=T),
+       x1 = biomass2_3, y1 = apply(samps2_3,2,FUN = quantile,.975,na.rm=T),
        code = 0, lwd=2)
 
-if(WANT.NUMS ==TRUE) calibrate::textxy(biomass[-sites_rm],colMeans(samples.pred)[-sites_rm],1:length(biomass[-sites_rm]))
+if(WANT.NUMS ==TRUE) calibrate::textxy(biomass2_3,colMeans(samps2_3),1:length(biomass2_3))
 abline(b=1,a=0)
 dev.off()
 
+#### Likelihood Plots for 10 CV versus 2/3s
+dir_to_outs <- c('~/10outs/')
+out.save <- array(NA,c(228,150,20))
+for(i in 1:200){
+  load(file = file.path(dir_to_outs,
+                        paste0('outLik_group',dat.index[i,'group_rm'],'_beta_',dat.index[i,'beta_row'],'.Rdata')))
+  print(paste0('outLik_group',dat.index[i,'group_rm'],'_beta_',dat.index[i,'beta_row'],'.Rdata'))
+  #load(file = file.path(paste0('samples.pred.group',i,'.Rdata')))
+  if(any(is.na(outLik))) print(i)
+  out.save[,sets10[,dat.index[i,'group_rm']],dat.index[i,'counter']] <- t(outLik)
+  outLik <-NULL
+}
+
+burnin <- round(.2 * nrow(samples.mixed))
+new.biomass <- 1:bMax
+source("Workflow_Code/utils/bs_nimble.R")
+biomass.calib <- biomass[-sites_rm]
+
+Z.test <- matrix(NA,length(biomass.calib),length(u)+2)
+for(i in 1:length(biomass.calib)){
+  Z.test[i,] <- bs_nimble(u_given = biomass.calib[i], u = u, N0 = rep(0, (length(u)-1)), N1 = rep(0, (length(u))),
+                          N2 = rep(0, (length(u)+1)), N3 = rep(0, (length(u)+2)))
+}
+Z.knots <- Z.test
+Z.new = matrix(0,nrow=length(new.biomass),ncol=ncol(Z.knots))
+for(i in 1:length(new.biomass)){
+  u_given <- new.biomass[i]
+  Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
+                        N1 = rep(0, (length(u))), 
+                        N2 = rep(0, (length(u)+1)), 
+                        N3 = rep(0, (length(u)+2)))
+}
+
+load('~/Downloads/betas/beta.est.group.in11.Rdata')
+source(file.path('Workflow_Code','utils','getLik.R'))
+outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(samples.mixed),]),
+                 bMax = bMax, Y = Y, knots=length(u)+2)
+save(outLik,'outLiktwothirds.Rdata')
+
+load('twothirds_v2.0.Rdata')
+plot(biomass,colMeans(samps2_3))
+
+pdf('max.liks.23.calib.pdf')
+par(mfrow=c(3,3))
+for(s in 1:150){
+  out <- out.save[,s,]
+  plot(exp(out[,1]-max(out[,1]))/-sum(out[,1]),typ='l',main=paste('site',s),
+       xlab='Biomass',ylab='Likelihood')
+  points(exp(outLik[s,]-max(outLik[s,]))/-sum(outLik[s,]),typ='l',col='red')
+  abline(v=biomass2_3[s],col='blue')
+  abline(v=colMeans(samps2_3)[s],col='red')
+  rug(samps2_3[,s],col='red')
+  if(length(which(s==seq(8,150,by=8)))==1){
+    plot.new()
+    legend('center',c('10 fold CV','2/3s','rug is MCMC','settlement'),col=c('black','red','red','blue'),pch=1)
+  }
+}
+dev.off()
+
+
+
+#####
+##### 2/3s to 1/3s fit R2
+#####
+
+pdf(paste0('gold.r2.validation.pdf'))
+par(mfrow=c(1,1))
+plot(biomass2_3, colMeans(samps2_3, na.rm = T),
+     xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
+     xlab="True Biomass", ylab="Predicted Mean Biomass",
+     main = 'Gold Validation')
+abline(a=0,b=1)
+lm.mod <- lm(biomass2_3~colMeans(samps2_3)+0)
+abline(lm.mod,lty=2)
+
+lm.mod.out <- lm(biomass2_3~colMeans(samps2_3)+0)
+abline(lm.mod.out,lty=2,col='red')
+
+points(biomass1_3,colMeans(samps1_3, na.rm = T),
+       col='red',pch=19)
+mtext(paste("r2-twothirds = ",signif(summary(lm.mod)$r.squared,digits=2),'r2-onethird = ',signif(summary(lm.mod.out)$r.squared,digits = 2)))
+
+arrows(x0 = biomass2_3, y0 = apply(samps2_3,2,FUN = quantile,.05),
+       x1 = biomass2_3, y1 = apply(samps2_3,2,FUN = quantile,.975),
+       code = 0, lwd=2)
+arrows(x0 = biomass1_3, y0 = apply(samps1_3,2,FUN = quantile,.05),
+       x1 = biomass1_3, y1 = apply(samps1_3,2,FUN = quantile,.975),
+       code = 0, lwd=2, col = 'red')
+
+dev.off()
 
 #####
 ##### 3/3s fit R2
 #####
 
-pdf(paste0('gold.r2.validation.pdf'))
+load('~/Downloads/FULL.preds/samples.pred.group100FULLbetaNA.Rdata')
+samples.pred.keep <- samples.pred
+for(i in 101:120){
+  load(paste0('~/Downloads/FULL.preds/samples.pred.group',i,'FULLbetaNA.Rdata'))
+  samples.pred.keep <- rbind(samples.pred.keep,samples.pred)
+}
+
+load('biomass_draws.Rdata')
+biomass <- unlist(lapply(biomass_draws,function(x) mean(x[100:120])))
+biomass.05 <- unlist(lapply(biomass_draws,function(x) quantile(x[100:120],.05)))
+biomass.95 <- unlist(lapply(biomass_draws,function(x) quantile(x[100:120],.95)))
+
+pdf('3_3rds_validation.pdf')
 par(mfrow=c(1,1))
-plot(biomass[-sites_rm], colMeans(samples.pred, na.rm = T)[-sites_rm],
+plot(biomass,colMeans(samples.pred),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
      xlab="True Biomass", ylab="Predicted Mean Biomass",
-     main = 'Gold Validation')
+     main='3/3 validation')
+lm.mod <- lm(biomass~ apply(samples.pred,2,FUN = quantile,.5)+0)
 abline(a=0,b=1)
-lm.mod <- lm(biomass[-sites_rm]~colMeans(samples.pred)[-sites_rm]+0)
 abline(lm.mod,lty=2)
 
-lm.mod.out <- lm(biomass[sites_rm]~colMeans(samples.pred[,sites_rm])+0)
-abline(lm.mod.out,lty=2,col='red')
+mtext(paste("r-squared",summary(lm.mod)$r.squared))
 
-points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
-       col='red',pch=19)
-mtext(paste("r2-twothirds = ",signif(summary(lm.mod)$r.squared,digits=2),'r2-onethird = ',signif(summary(lm.mod.out)$r.squared,digits = 2)))
-
-arrows(x0 = biomass[-sites_rm], y0 = apply(samples.pred,2,FUN = quantile,.05)[-sites_rm],
-       x1 = biomass[-sites_rm], y1 = apply(samples.pred,2,FUN = quantile,.975)[-sites_rm],
+arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05,na.rm=T),
+       x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975,na.rm=T),
        code = 0, lwd=2)
-arrows(x0 = biomass[sites_rm], y0 = apply(samples.pred[,sites_rm],2,FUN = quantile,.05),
-       x1 = biomass[sites_rm], y1 = apply(samples.pred[,sites_rm],2,FUN = quantile,.975),
-       code = 0, lwd=2, col = 'red')
 
+arrows(x0 = biomass.05, y0 = colMeans(samples.pred),
+       x1 = biomass.95, y1 = colMeans(samples.pred),
+       code = 0, lwd=2)
+
+
+if(WANT.NUMS ==TRUE) calibrate::textxy(biomass,colMeans(samples.pred),1:length(biomass))
 dev.off()
 
 
+pdf('max.liks.33.calib.pdf')
+par(mfrow=c(3,3))
+for(s in 1:150){
+  out <- out.save[,s,]
+  plot(exp(out[,1]-max(out[,1]))/-sum(out[,1]),typ='l',main=paste('site',s),
+       xlab='Biomass',ylab='Likelihood')
+  points(exp(outLik[s,]-max(outLik[s,]))/-sum(outLik[s,]),typ='l',col='red')
+  abline(v=biomass2_3[s],col='blue')
+  abline(v=colMeans(samps2_3)[s],col='red')
+  rug(samps2_3[,s],col='red')
+  if(length(which(s==seq(8,150,by=8)))==1){
+    plot.new()
+    legend('center',c('10 fold CV','2/3s','rug is MCMC','settlement'),col=c('black','red','red','blue'),pch=1)
+  }
+}
+dev.off()
 
 #####
 ####################################### Notes below
