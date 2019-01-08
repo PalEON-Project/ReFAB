@@ -4,7 +4,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                           nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
                           nbhd = 5, lik.only = NULL, control.pts, 
                           sigma, group = NULL, group.mat, override = TRUE, 
-                          Nbeta=NA, ID = NA, liks.by.taxa = TRUE) {
+                          Nbeta=NA, ID = NA, liks.by.taxa = TRUE, number.save = 250) {
 
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   
@@ -142,7 +142,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       samplesList = as.matrix(Cmcmc_pred$mvSamples)
       
-      save(samplesList,file = paste0('samplesList_',workFile))
+      set.seed(seed)
+      
+      save(samplesList[sample(x = 1:nrow(samplesList),size=number.save)],file = paste0('samplesList_',workFile))
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
