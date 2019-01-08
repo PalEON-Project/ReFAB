@@ -95,7 +95,7 @@ ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
                             other.trees.include = T, drop.taxa = drop.taxa,
                             PFT.do = F)
 ### Needs to be in same order as calibration so betas match with the right columns
-load("~/ReFAB/2018-11-07twothirds.calibration.data.Rdata")
+load("threethirds_v2.0.Rdata")
 ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally based off of the prediction datasets?
 
 ### Save MAKE SURE TO CHANGE VERSION NUMBER IF YOU CHANGE ANYTHING
