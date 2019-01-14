@@ -1,7 +1,7 @@
 
 #### These are important constants used in all calibrations and predictions
 
-Niters <- 10000
+Niters <- 50000
 bMax <- 228
 median_use <- 45
 u <- c(0,median_use,bMax)
