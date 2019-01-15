@@ -145,6 +145,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       samplesListout = as.matrix(Cmcmc_pred$mvSamples)
       
+      if(number.save > nrow(samplesListout)) number.save = nrow(samplesListout)
       samplesList <- samplesListout[sample(x = 1:nrow(samplesListout),size=number.save),]
       set.seed(seed)
       
