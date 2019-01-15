@@ -48,8 +48,11 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   #settleMean <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassMean[1]
   #settleSD <- x.meta[x.meta[,1] == site_number, ]$SettleBiomassSD[1]
-  
-  data_pred = list(Y = Y, sigma = sigma)#, settleMean = settleMean, settleSD = settleSD)
+  if(!is.na(sigma)){
+    data_pred = list(Y = Y, sigma = sigma)#, settleMean = settleMean, settleSD = settleSD)
+  }else{
+    data_pred = list(Y = Y)#, settleMean = settleMean, settleSD = settleSD)
+  }
   
   constants_pred = list(order = order, beta1 = beta1, beta2 = beta2, I = I, J = J,
                         T = TT, n = n, u = u, N0 = rep(0, (length(u)-1)), 
@@ -144,7 +147,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       set.seed(seed)
       
-      save(samplesList[sample(x = 1:nrow(samplesList),size=number.save)],file = paste0('samplesList_',workFile))
+      save(samplesList[sample(x = 1:nrow(samplesList),size=number.save),],file = paste0('samplesList_',workFile))
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
