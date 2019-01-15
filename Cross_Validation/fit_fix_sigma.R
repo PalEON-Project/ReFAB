@@ -143,11 +143,12 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       Cmcmc_pred$run(nIts)
       
-      samplesList = as.matrix(Cmcmc_pred$mvSamples)
+      samplesListout = as.matrix(Cmcmc_pred$mvSamples)
       
+      samplesList <- samplesListout[sample(x = 1:nrow(samplesListout),size=number.save),]
       set.seed(seed)
       
-      save(samplesList[sample(x = 1:nrow(samplesList),size=number.save),],file = paste0('samplesList_',workFile))
+      save(samplesList,file = paste0('samplesList_',workFile))
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
