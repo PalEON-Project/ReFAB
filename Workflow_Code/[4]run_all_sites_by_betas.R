@@ -126,17 +126,17 @@ if(!is.na(runnum)){
   group <- NULL
 }
 
-smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
+smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
                      u = u, x.meta = x.meta,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = Niters, nItsSave = .2*Niters, seed = 1,
-		                 control.pts = control.pts, sigma = sigma,
+                     nIts = 5000, nItsSave = .2*Niters, seed = 1,
+		                 control.pts = control.pts, sigma = NA,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
-		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 250)
+		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 5000)
 
 if(FALSE){
   ## Simple Site Diagnositics
