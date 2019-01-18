@@ -35,8 +35,8 @@ pred_code <- nimbleCode({
   # entire shape{1,2} matrices; this syntax accomplishes that
   # this is because b[t] updates have rows of shape{1,2} as dependents
   for(t in 1:T){
-    shape1[t,1:I] <- exp(Zb[t,1:5] %*% beta1[1:5,1:I])
-    shape2[t,1:I] <- exp(Zb[t,1:5] %*% beta2[1:5,1:I])
+    shape1[t,1:I] <- linexp_vec(Zb[t,1:5] %*% beta1[1:5,1:I])
+    shape2[t,1:I] <- linexp_vec(Zb[t,1:5] %*% beta2[1:5,1:I])
   }
   
   for(j in 1:J){
