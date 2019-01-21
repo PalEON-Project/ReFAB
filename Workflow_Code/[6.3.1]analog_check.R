@@ -2,6 +2,7 @@ library(nimble)
 library(splines)
 library(maps)
 library(analogue)
+library(fields)
 
 load("threethirds_v2.0.Rdata")
 
@@ -9,10 +10,15 @@ training = prop.table(as.matrix(Y),1)
 rownames(training)<-1:nrow(Y)
 
 load('prediction.data_v4.Rdata')
+dataID <- read.csv('dataID_bacon_v4.csv')
 
-testing.save = prop.table(as.matrix(ten.count),1)
-rownames(testing.save)<-x.meta$age_bacon
-testing.meta <- x.meta
+ten.count.used <- ten.count[x.meta$site.name%in%unique(dataID$name),]
+x.meta.used <- x.meta[x.meta$site.name%in%unique(dataID$name),]
+
+
+testing.save = prop.table(as.matrix(ten.count.used),1)
+rownames(testing.save)<-x.meta.used$age_bacon
+testing.meta <- x.meta.used
 testing <- testing.save
 
 analog1 <- analog(x=training, y=testing,'SQchord')
@@ -71,12 +77,25 @@ for(i in rev(2:length(age.vec))) {
 
 dev.off()
 
+##### bigwoods
+bigwoods_calib <- c(2,10,11,13,14,18,20,26,29,32)
 
-
+testing.save_bw = prop.table(as.matrix(ten.count.used),1)
+rownames(testing.save_bw)<-x.meta.used$age_bacon
+testing.meta_bw <- x.meta.used
+testing_bw <- testing.save_bw
+analog1_bw <- analog(x=training_bw, y=testing_bw,'SQchord')
+mins_bw <- minDC(analog1_bw)$minDC
+breaks_bw <-  c(0, .05, 1)
+colors_bw <- c('green',adjustcolor('darkgray',alpha.f = .4))#adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
+data_binned_bw <-  cut(mins_bw,
+                       breaks_bw,
+                       include.lowest = FALSE,
+                       labels = FALSE)
 
 dissim.values <- minDC(analog1)$minDC
 breaks <-  seq(0, 1, .1)
-colors <- rev(tim.colors(length(breaks)))#rainbow(length(breaks), start = 0, end = .75)
+colors <- adjustcolor(rev(tim.colors(length(breaks)-1)),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
 data_binned <-  cut(dissim.values,
                     breaks,
                     include.lowest = FALSE,
@@ -84,27 +103,85 @@ data_binned <-  cut(dissim.values,
 pdf('no_analog_assessment.pdf')
 par(mfrow=c(1,1))
 plot(
-  x.meta$age_bacon,
-  x.meta$lat.x,
+  x.meta.used$age_bacon,
+  x.meta.used$lat.x,
   bg = colors[data_binned],
   pch = 21,
-  cex = 1.5,
-  xlab = 'Sample Age',
+  col = colors_bw[data_binned_bw],
+  cex = 2,
+  a
+  xlab = 'Sample Age (years before present)',
   ylab = 'Latitude',
   main = 'Pollen Dissimilarity'
 )
 abline(v=10000,lwd=2)
 legend("bottomright",
-       legend = cuts,
-       col = colors,
-       pch = 19,
+       legend = c(cuts,'Bigwoods'),
+       pt.bg = c(colors,'lightgray'),
+       col = c(rep(colors_bw[2],length(breaks)-1),'green'),
+       pch = 21,
+       cex = 1.5,
        title = 'minDC value')
 dev.off()
 
 
+#####
+##### Bigwoods
+#####
+
+load("twothirds_v2.0.Rdata")
+
+breaks <-  c(seq(0,50,10),seq(75,250,25))
+colors <- rev(terrain.colors(length(breaks)-1))
+data_binned_biomass <-  cut(biomass, c(breaks), include.lowest = FALSE, labels = FALSE)
 
 
+bigwoods_calib <- c(2,10,11,13,14,18,20,26,29,32)
+
+map('state', xlim=c(-100,-80), ylim=c(39.5,49.5))
+load('two.thirds.cast.x.Rdata')
+points(ag.two.thirds.cast.x[bigwoods_calib,'long'],
+       ag.two.thirds.cast.x[bigwoods_calib,'lat'])
+text(ag.two.thirds.cast.x[,'long'],
+     ag.two.thirds.cast.x[,'lat'],
+     labels=1:nrow(Y),cex=.3,
+     col=colors[data_binned_biomass])
+
+training_bw = prop.table(as.matrix(Y[bigwoods_calib,]),1)
+rownames(training_bw)<-1:nrow(training_bw)
+
+load('prediction.data_v4.Rdata')
+
+dataID <- read.csv('dataID_bacon_v4.csv')
+
+ten.count.used <- ten.count[x.meta$site.name%in%unique(dataID$name),]
+x.meta.used <- x.meta[x.meta$site.name%in%unique(dataID$name),]
+
+testing.save_bw = prop.table(as.matrix(ten.count.used),1)
+rownames(testing.save_bw)<-x.meta.used$age_bacon
+testing.meta_bw <- x.meta.used
+testing_bw <- testing.save_bw
+analog1_bw <- analog(x=training_bw, y=testing_bw,'SQchord')
 
 
+mins_bw <- minDC(analog1_bw)$minDC
 
+order_mins_bw <- mins_bw[order(mins_bw)]
 
+breaks_bw <-  seq(0, .25, .05)
+colors_bw <- adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
+data_binned_bw <-  cut(order_mins_bw,
+                    breaks,
+                    include.lowest = FALSE,
+                    labels = FALSE)
+
+map('state', xlim=c(-100,-80), ylim=c(39.5,49.5))
+points(x.meta.used[order(mins_bw),c('long.x','lat.x')],
+       col=colors_bw[data_binned_bw],pch=19)
+
+length(which(mins_bw<.25))/length(mins_bw)
+
+sort(table(x.meta.used[which(mins_bw<.1),'site.name'])/table(x.meta.used[,'site.name']))
+
+dist2bigwoods <- mins
+save(dist2bigwoods,file='dist2bigwoods.Rdata')
