@@ -78,6 +78,14 @@ bio.quants <- apply(samplesList[,1:(maxAge/100)],2,quantile,c(0.025,0.5,0.975))
 
 data_binned <-  cut(rev(bio.quants[2,]), c(breaks), include.lowest = FALSE, labels = FALSE)
 
+load('dist2bigwoods.Rdata') #from no analog assessment
+d2b_site <- dist2bigwoods[which(x.meta$site.name == locn)]
+breaks_d2b <- seq(0,1,.05)
+red2white <- colorRampPalette(colors=c('black','lightyellow','white'))
+colors_d2b <- red2white(length(breaks_d2b))#c('darkred','red','orange','yellow','white')#(heat.colors(length(breaks)))
+
+data_binned_d2b <- cut(d2b_site, c(breaks_d2b), include.lowest = TRUE, labels = FALSE)
+
 fig.mat <- matrix(1,28,1)
 fig.mat[1:6,]<-1
 fig.mat[7:28,]<-seq(2,23,1)
@@ -90,13 +98,14 @@ par(mar = c(0, 4, 0, 3), oma = c(5, 0, 4, 0),tcl=.5)
 plot(bio.quants[2,], xlim = c(maxAge/100,0), ylim = c(0,bMax), xaxt='n',
      xlab = 'Years BP', ylab = 'Biomass Mg/ha', col = 'white')
 axis(side = 3, at = rev(seq(0,maxAge/100, round((maxAge/100)/6))), labels = rev(seq(0,maxAge,round(maxAge/6))))
+#abline(v=age_index,col=colors_d2b[data_binned_d2b],lwd=2)
 ciEnvelope(x=1:(maxAge/100), ylo = bio.quants[1,],yhi = bio.quants[3,],col = 'grey')
-points(bio.quants[2,],cex=1.1,pch=16,col = rev(colors[data_binned]))
+points(bio.quants[2,],cex=1.1,typ='l',col='darkgray')#pch=16,col = rev(colors[data_binned]))
 rug(age_index,lwd=2)
 rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
 if(!is.null(path_to_Info)){
   for(b in 1:20) {
-    points(age_index, out.list[[b]], cex = .5)
+    points(age_index, out.list[[b]], cex = .5,col='black')
   }
 }
 #points(0,unique(x.meta[x.meta$site.name == locn,'SettleBiomass']),pch=19,col='purple',cex=2)
@@ -134,8 +143,8 @@ for(i in 1:(maxAge/100)){
 #plot(samplesList[,grep('sigma',colnames(samplesList))],ylab = 'Sigma Estimate', xlab = 'MCMC iteration', main = 'Sigma', typ='l')
 
 maps:::map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-points(unique(x.meta[x.meta$site.name == locn,'long']),
-       unique(x.meta[x.meta$site.name == locn,'lat']),
+points(unique(x.meta[x.meta$site.name == locn,'long.x']),
+       unique(x.meta[x.meta$site.name == locn,'lat.x']),
        pch=19,cex=1.5)
 title(locn)
 
@@ -145,7 +154,8 @@ for(i in 1:ncol(out)){
  for(b in c(1,5,10,15)){
     plot(seq(5, bMax-5, by = 2),
           exp(out.keep[[b]][,i]-max(out.keep[[b]][,i]))/-sum(out.keep[[b]][,i]),
-          typ='l',main=paste('beta=',b,'age',age_index[i]))
+          typ='l',main=paste('LL beta=',b,'age',age_index[i]),
+         xlab = 'Biomass',ylab = 'Log Lik.')
   }
 }
 }
