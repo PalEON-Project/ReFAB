@@ -18,9 +18,14 @@ taxa_selection <- function(trees, other.trees = NULL, cast.x, sites_rm = NULL,
                            other.trees.include=TRUE,
                            drop.taxa = NA, PFT.do = FALSE, spp.do = FALSE,
                            PFT.NEW.do = FALSE,succession.do =FALSE,biome.do=FALSE){
+  
+  
   prairie <- c("ARTEMISIA","ASTERX","POACEAE","AMBROSIA","CHENOAMX","CORYLUS")
   bigwoods <- c("ULMUS","TILIA","OSTRYCAR","CARYA","JUGLANSX","FRAXINUX")
   all.veg.box <- cast.x[,which(colnames(cast.x)%in%all.pollen.taxa.names)]
+  
+  other.trees <- colnames(all.veg.box)[which(colnames(all.veg.box)%in%other.trees)]
+  
   
   if(!is.na(drop.taxa)){
     all.veg.box <- all.veg.box[,-which(colnames(all.veg.box)%in%drop.taxa)]
