@@ -1,24 +1,28 @@
 
 load('prediction.data_v4.Rdata')
-source(file.path('Workflow_Code','utils','validation_args.R'))
-control.pts<-read.csv(file.path('Data','control.pts.csv'))
+source(file.path('Workflow_Code', 'utils', 'validation_args.R'))
+control.pts <- read.csv(file.path('Data', 'control.pts.csv'))
 dataID <- read.csv('dataID_bacon_v4.csv')
 
-path_to_samps <- c('~/samps/')
-path_to_Info <- c('~/workInfo/')
+path_to_samps <- c('~/samps_longer/')
+path_to_Info <- c('~/outs/')
 
 blue       <- col2rgb("blue")
 alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
 
 biomassCI <- diff.median <-  list()
-prob.of.inc <- matrix(NA,62,99)
-all.samps<- numeric(100)
-nItsSave = 2000
-minAge = 0
-maxAge = 10000
-ageInterval = 100
+prob.of.inc <- matrix(NA, 62, 99)
+all.samps <- numeric(100)
+nItsSave <- 250
+minAge <- 0
+maxAge <- 10000
+ageInterval <- 100
 hem.is <- out.list <- LS.is <- Y.keep <- list()
 lat <- long <- all.samps.list <- name.keep <- age.keep <- list()
+do.samps = TRUE
+#####
+##### Load Data #####
+#####
 
 for(i in 1:length(unique(dataID$name))){
   locn <- as.character(unique(dataID$name)[i])
@@ -53,11 +57,11 @@ for(i in 1:length(unique(dataID$name))){
   
   Y.keep[[i]] <- Y2
   
-  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'] + prop.table(Y,1)[,'ACERX'])
+  LS.is[[i]] <- cbind(age_index,prop.table(Y,1)[,'TSUGAX'] + prop.table(Y,1)[,'FAGUS'])
   
   if(length(Y)>21 & nrow(Y) > 10 &
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
-     min(x.meta[x.meta$site.name == locn,'age_bacon'])<2000){
+     min(x.meta[x.meta$site.name == locn,'age_bacon'])<2000 &do.samps == TRUE){
     
     samples.keep <- numeric(300)
     
@@ -114,67 +118,9 @@ for(i in 1:length(unique(dataID$name))){
       
       }
   }
+  
+  
 }
-
-### Sensitivity of biomass prediction to pollen proportion
-
-Y.all <- do.call(rbind,Y.keep)
-prop.all <- prop.table(as.matrix(Y.all),margin = 1)
-
-pdf('pollen.prediction.sensitivity.pdf')
-par(mfrow=c(2,2))
-for(t in 1:22){
-  Y.use <- prop.table(as.matrix(Y.keep[[1]][,3:24]),margin = 1)
-  plot(biomassCI[[1]][2,Y.keep[[1]][,1]],Y.use[,t],
-       ylim=c(0,(max(prop.all[,t+2])+.1*max(prop.all[,t+2]))),xlim=c(0,150),pch=19,cex=.5,
-       ylab='Pollen Prop',xlab='Biomass Prediction (Mg/ha)')
-  title(colnames(Y.use)[t])
-  for(i in 1:62){
-    if(!is.null(biomassCI[[i]])){
-      Y.use <- prop.table(as.matrix(Y.keep[[i]][,3:24]),margin = 1)
-      points(biomassCI[[i]][2,Y.keep[[i]][,1]],Y.use[,t],pch=19,cex=.5)
-    }else{
-      print(paste('not doing',i))
-    }
-  }
-}
-dev.off()
-
-### For Paleon MIP
-biomass.mean.df <- data.frame(lat=unlist(lat)[-c(35,39)],lon=unlist(long)[-c(35,39)],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
-write.csv(biomass.mean.df,file='biomass.means.csv')
-
-
-biomass.settle <- last.index <-numeric(62)
-for(i in 1:62){
-  if(!is.null(name.keep[[i]])&i!=35){
-    biomass.settle[i] <- x.meta[x.meta$site.name==name.keep[[i]],'SettleBiomassMean'][1]
-    if(!is.na(biomass.settle[i])){
-      last.index[i] <- biomassCI[[i]][2,1]
-    }else{
-      last.index[i] <- NA
-    }
-  }
-  }
-
-
-### Creating correlation plot between settlement PLS estimates and settlement ReFAB estiamtes
-last.index <- last.index[-c(which(is.na(last.index)),which(last.index==0))]
-biomass.settle <- biomass.settle[-c(which(is.na(biomass.settle)),which(biomass.settle==0))]
-
-pdf('settle.biomass.corr.pdf')
-par(mfrow=c(1,1))
-plot(biomass.settle,last.index,pch=19,xlab='Settlement Biomass Mean',ylab='Last Prediction Biomass Mean',xlim=c(0,155),ylim=c(0,155))
-abline(a=0,b=1)
-legend('topleft',paste('cor =', cor(x=biomass.settle,y=last.index)),pch=NA)
-dev.off()
-
-### Mapping sites by the last data point to make sure there is no spatial correlation in end of data
-map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-points(unlist(long),unlist(lat), pch=19,
-       cex=1.1,lwd=.2,col=rainbow(20,start = 0,end = .8)[unlist(stop.spot)])
-legend('topright',as.character(1:20),col=rainbow(20,start = 0,end = .8),pch=rep(19,20))
-title('Map Colored by Last Sample Age Index')
 
 #####
 ##### Calculate derived quantities for plotting #####
@@ -233,8 +179,10 @@ data_binned <-  cut(save.median.bucket[2,], c(breaks), include.lowest = FALSE, l
 data_binned_LS <-  cut(unlist(hem.is), c(breaks.LS), include.lowest = TRUE, labels = FALSE)
   
 ##### 
-##### Creating Figure 1 ##### 
+##### Creating Figure ##### 
 ##### 
+
+bMax.use <- max( unlist(lapply(biomassCI,function(x) x[2,]))) +10
 
 pdf(paste0('average.biomass_',Sys.Date(),'.pdf'))
 #quartz()
@@ -243,7 +191,7 @@ layout(zones, widths=c(4/5,1/5), heights=c(1/5,4/5))
 par(mar=c(5,4,1,1))
 plot(seq(100,10000,100),save.median.bucket[2,],
      col=colors[data_binned],pch=19,xlim=c(10000,-10),
-     ylim=c(0,150),xlab = 'Year Before Present',ylab='Biomass (Mg/ha)')
+     ylim=c(0,bMax.use),xlab = 'Year Before Present',ylab='Biomass (Mg/ha)')
 for(i in 1:length(biomassCI)){  
   if(length(biomassCI[[i]])>1){
     #if(hem.is[[i]]>10){
@@ -274,7 +222,7 @@ for(i in 1:length(biomassCI)){
     
   }
 }
-abline(h=150)
+abline(h=bMax)
 ciEnvelope(x = seq(100,10000,100),ylo = save.median.bucket[1,],yhi =save.median.bucket[3,],col=alphablue)
 points(seq(100,10000,100),save.median.bucket[2,],
        col=colors[data_binned],pch=19)
@@ -292,9 +240,70 @@ abline(h=.5)
 dev.off()
 
 
+#################################### END FIGURE 
 
 
+### Sensitivity of biomass prediction to pollen proportion
 
+Y.all <- do.call(rbind,Y.keep)
+prop.all <- prop.table(as.matrix(Y.all),margin = 1)
+
+pdf('pollen.prediction.sensitivity.pdf')
+par(mfrow=c(2,2))
+for(t in 1:22){
+  Y.use <- prop.table(as.matrix(Y.keep[[1]][,3:24]),margin = 1)
+  plot(biomassCI[[1]][2,Y.keep[[1]][,1]],Y.use[,t],
+       ylim=c(0,(max(prop.all[,t+2])+.1*max(prop.all[,t+2]))),xlim=c(0,150),pch=19,cex=.5,
+       ylab='Pollen Prop',xlab='Biomass Prediction (Mg/ha)')
+  title(colnames(Y.use)[t])
+  for(i in 1:62){
+    if(!is.null(biomassCI[[i]])){
+      Y.use <- prop.table(as.matrix(Y.keep[[i]][,3:24]),margin = 1)
+      points(biomassCI[[i]][2,Y.keep[[i]][,1]],Y.use[,t],pch=19,cex=.5)
+    }else{
+      print(paste('not doing',i))
+    }
+  }
+}
+dev.off()
+
+### For Paleon MIP
+biomass.mean.df <- data.frame(lat=unlist(lat)[-c(35,39)],lon=unlist(long)[-c(35,39)],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
+write.csv(biomass.mean.df,file='biomass.means.csv')
+
+
+biomass.settle <- last.index <-numeric(62)
+for(i in 1:62){
+  if(!is.null(name.keep[[i]])&i!=35){
+    biomass.settle[i] <- x.meta[x.meta$site.name==name.keep[[i]],'SettleBiomassMean'][1]
+    if(!is.na(biomass.settle[i])){
+      last.index[i] <- biomassCI[[i]][2,1]
+    }else{
+      last.index[i] <- NA
+    }
+  }
+}
+
+
+### Creating correlation plot between settlement PLS estimates and settlement ReFAB estiamtes
+last.index <- last.index[-c(which(is.na(last.index)),which(last.index==0))]
+biomass.settle <- biomass.settle[-c(which(is.na(biomass.settle)),which(biomass.settle==0))]
+
+pdf('settle.biomass.corr.pdf')
+par(mfrow=c(1,1))
+plot(biomass.settle,last.index,pch=19,xlab='Settlement Biomass Mean',ylab='Last Prediction Biomass Mean',xlim=c(0,155),ylim=c(0,155))
+abline(a=0,b=1)
+legend('topleft',paste('cor =', cor(x=biomass.settle,y=last.index)),pch=NA)
+dev.off()
+
+### Mapping sites by the last data point to make sure there is no spatial correlation in end of data
+pdf('last_age_in_samp_map.pdf')
+map('state', xlim=c(-98,-81), ylim=c(41.5,50))
+points(unlist(long),unlist(lat), pch=19,
+       cex=1.1,lwd=.2,col=rainbow(20,start = 0,end = .8)[unlist(stop.spot)])
+legend('topright',as.character(1:20*100),col=rainbow(20,start = 0,end = .8),pch=rep(19,20))
+title('Map Colored by Last Sample Years BP')
+dev.off()
 
 
 
