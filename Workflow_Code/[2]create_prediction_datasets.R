@@ -44,8 +44,123 @@ length(which(table(x$dataset) > 10))/length(unique(x$dataset))*100
 x <- x[which(x$dataset%in%names(which(table(x$dataset)>10))),]
 
 #####
-##### Add new baconized sites
+##### Find which sites in MN, WI, and MI need to be baconized
 #####
+
+no_bacon <- pol_cal_count[-which(pol_cal_count$.id%in%x$id),]
+
+ids_no_bacon <- unique(no_bacon$.id)
+
+no_bacon_keep <- list()
+
+for(i in 1:length(ids_no_bacon)){
+  
+  no_bacon_look <- no_bacon[which(no_bacon$.id==ids_no_bacon[i]),]
+
+  if(min(no_bacon_look$age) <=2000 &
+     max(no_bacon_look$age) >= 9000 &
+     nrow(no_bacon_look) >= 10 & !is.na(no_bacon_look$age)){
+    no_bacon_keep[[i]] <- no_bacon_look
+  }
+}
+
+no_bacon_make <- do.call(rbind,no_bacon_keep)
+
+###Getting rid of IN and IL sites
+pollen_v1 <- readRDS("~/bulk-baconizing/data/pollen_v1.rds")
+ids <- names(pollen_v1)
+
+no_bacon_make <- no_bacon_make[-which(no_bacon_make$.id%in%ids),]
+
+maps::map('state', ylim=range(new.pollen$lat.x)+c(-2, 2), xlim=range(new.pollen$long.x)+c(-2, 2),main=NA)
+points(no_bacon_make$long, no_bacon_make$lat, pch=19, cex=1,col="gray")
+
+
+new.ids <- unique(no_bacon_make$.id)
+
+save(new.ids,file='~/bulk-baconizing/new.ids.Rdata')
+
+#####
+##### Add new baconized sites from IN and IL
+#####
+
+pollen_v1 <- readRDS("~/bulk-baconizing/data/pollen_v1.rds")
+comp.tax <- compile_taxa(pollen_v1, 'WhitmoreSmall')
+pol_cal_count2 <- compile_downloads(comp.tax)
+length(unique(pol_cal_count2$dataset))
+
+bacon_df <- matrix(NA,nrow = nrow(pol_cal_count2),ncol=50)
+
+handles <- sapply(pollen_v1, function(x) { x$dataset$dataset.meta$collection.handle })
+ids <- names(pollen_v1)
+
+for(i in 1:length(handles)){
+  dir_path <- file.path('~/bulk-baconizing', 'Cores', handles[i])
+  files_get <- list.files(dir_path)
+  pick_file <- grep(files_get, pattern = 'posteriorout.csv')
+  
+  if(any(pick_file)){
+    posts <- read.csv(file.path(dir_path, files_get[pick_file]))
+    bacon_df[which(pol_cal_count2$dataset==ids[i]),] <- as.matrix(posts[,sample(x = 1:1000,size = 50)])
+  }else{
+    print(paste(handles[i],'not run in bacon'))
+  }
+}
+
+pol_hold <- cbind(pol_cal_count2,bacon_df,rowMeans(bacon_df))
+new.pol <- list()
+
+for(i in 1:length(ids)){
+  if(min(bacon_df[which(pol_hold$dataset==ids[i]),],na.rm = T) <=2000 &
+  max(bacon_df[which(pol_hold$dataset==ids[i]),],na.rm = T) >= 9000 &
+  length(which(!is.na(bacon_df[which(pol_hold$dataset==ids[i]),1]))) >= 10){
+    new.pol[[i]] <- pol_hold[which(pol_hold$dataset==ids[i]),]
+  }
+}
+
+np <- do.call(rbind,new.pol)
+
+colnames(np)[87:137] <- c(paste0('bacon_draw',1:50),'age_bacon')
+
+x.meta = np[,c('.id','lat',"long","dataset","site.name","age_bacon")]
+colnames(x.meta) <- c('site.id','lat','long','dataset','site.name','age_bacon')
+
+x.bacon <- np[,grep(pattern = 'bacon_draw',colnames(np))]
+
+## should probably do something different than this
+for(i in 1:nrow(x.meta)){
+  if(is.na(x.meta$age_bacon[i])){
+    x.meta$age_bacon[i] <- np$age[i]
+    x.bacon[i,] <-  np$age[i]
+  } 
+}
+
+### need just the pollen data to give to organizational function
+all.pollen.taxa.names <- colnames(pol_cal_count)[11:length(colnames(pol_cal_count))]
+pred.x <- np[,which(colnames(np)%in%all.pollen.taxa.names)]
+
+### organizing and aggregating pollen data
+trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
+           "FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"ACERX","ALNUSX",
+           "CYPERACE","PICEAX","ABIES","POPULUS",
+           "LARIXPSEU","CUPRESSA") #
+other.trees <- c("CASTANEA","PLATANUS","SALIX","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
+drop.taxa <- NA#c('other_herbs')
+
+source(file.path('Workflow_Code','utils','taxa_selection.R'))
+ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
+                            cast.x = pred.x, sites_rm = 0, bigwoods.include = F,
+                            all.pollen.taxa.names = all.pollen.taxa.names,
+                            prairie.include = T, other.herbs.include = T,
+                            other.trees.include = T, drop.taxa = drop.taxa,
+                            PFT.do = F)
+### Needs to be in same order as calibration so betas match with the right columns
+load("threethirds_v2.0.Rdata")
+ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally based off of the prediction datasets?
+
+save(x.meta,x.bacon,ten.count,file='prediction.data_IL_IN_v1.Rdata')
+
 
 #####
 ##### Look at plots for full prediction dataset
