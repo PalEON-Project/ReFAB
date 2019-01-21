@@ -136,7 +136,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
 		                 control.pts = control.pts, sigma = NA,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
-		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 5000)
+		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 500)
 
 if(FALSE){
   ## Simple Site Diagnositics
