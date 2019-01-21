@@ -28,22 +28,24 @@ Y.keep <- Y
 #biomass.keep <- biomass
 
 #### Adds biomass data product uncertainty
-load('biomass_draws.Rdata')
-biomass.keep <- unlist(lapply(biomass_draws,function(x) x[runnum]))
-load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
-load('~/ReFAB/sites_rm.Rdata') # old 1/3
-load("~/ReFAB/TF.Rdata") # old full
-
-bfull <- biomass.keep[TF]
-btt <- bfull[-sites_rm]
-b3 <- bfull[sites_rm]
-newbfull <- biomass.keep[-TF]
-newbtt <- newbfull[-sites_rm_new]
-newb3 <- newbfull[sites_rm_new]
-
-biomass1_3 <- c(b3,newb3)
-biomass2_3 <- c(btt,newbtt)
-biomass <- biomass2_3
+if(FULL){
+  load('biomass_draws.Rdata')
+  biomass.keep <- unlist(lapply(biomass_draws,function(x) x[runnum]))
+  load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
+  load('~/ReFAB/sites_rm.Rdata') # old 1/3
+  load("~/ReFAB/TF.Rdata") # old full
+  
+  bfull <- biomass.keep[TF]
+  btt <- bfull[-sites_rm]
+  b3 <- bfull[sites_rm]
+  newbfull <- biomass.keep[-TF]
+  newbtt <- newbfull[-sites_rm_new]
+  newb3 <- newbfull[sites_rm_new]
+  
+  biomass1_3 <- c(b3,newb3)
+  biomass2_3 <- c(btt,newbtt)
+  biomass <- biomass2_3
+}
 
 if(is.na(group_rm) | group_rm > 10){ #if true does full 2/3 fit
   Y.calib <- Y; Y.pred <- Y
