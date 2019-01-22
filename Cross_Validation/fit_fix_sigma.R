@@ -65,7 +65,11 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   inits.pred = list(b=rep(35,TT))
 
   locnClean <- gsub(' ', '-', locn)
-  workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rdata')
+  if(is.null(group)){
+    workFile <- paste0('workInfo_', ID, '_', locnClean, '_Beta_', Nbeta, '.Rdata')
+  }else{
+    workFile <- paste0('liks_', ID, '.Rdata')
+  }
 
   model_pred <- nimbleModel(pred_code_fix_sigma, constants = constants_pred,
                               data = c(data_pred, list(constraint = rep(1,TT))),

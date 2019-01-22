@@ -122,5 +122,5 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      beta2 = beta2.est.real,
                      nIts = 50000, nItsSave = 200, seed = 1,
                      control.pts = control.pts, sigma = sigma,
-                     group = group, group.mat = group.mat,lik.only = TRUE,
+                     group = group, group.mat = group.mat, lik.only = TRUE,
                      maxAge = 10000, ID = runnum)
