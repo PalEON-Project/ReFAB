@@ -80,13 +80,57 @@ new.ids <- unique(no_bacon_make$.id)
 
 save(new.ids,file='~/bulk-baconizing/new.ids.Rdata')
 
+##loading new MN, MI, and WI sites with bacon posts
+
+pollen_v2 <- readRDS("~/bulk-baconizing/data/pollen_v2.rds")
+source('~/bulk-bacon-my-fork/R/agg_posts_counts.R')
+
+new_mnwimi <- make_posts_counts(pollen_v1 = pollen_v2,n.samps = 50)
+
+new_mnwimi1 <- new_mnwimi[-which(is.na(new_mnwimi[,ncol(new_mnwimi)])),]
+
+new_mnwimi2 <- new_mnwimi1[-which(new_mnwimi1$site.name%in%names(which(table(new_mnwimi1$site.name)<10))),]
+
+colnames(new_mnwimi2)[ncol(new_mnwimi2)] <- 'age_bacon'
+
+x.meta = new_mnwimi2[,c('.id','lat',"long","dataset","site.name","age_bacon")]
+colnames(x.meta) <- c('site.id','lat','long','dataset','site.name','age_bacon')
+
+x.bacon <- new_mnwimi2[,grep(pattern = 'bacon_draw',colnames(new_mnwimi2))]
+
+### need just the pollen data to give to organizational function
+all.pollen.taxa.names <- colnames(new_mnwimi2)[11:78]
+pred.x <- new_mnwimi2[,which(colnames(new_mnwimi2)%in%all.pollen.taxa.names)]
+
+### organizing and aggregating pollen data
+trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
+           "FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"ACERX","ALNUSX",
+           "CYPERACE","PICEAX","ABIES","POPULUS",
+           "LARIXPSEU","CUPRESSA") #
+other.trees <- c("CASTANEA","PLATANUS","SALIX","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
+drop.taxa <- NA#c('other_herbs')
+
+source(file.path('Workflow_Code','utils','taxa_selection.R'))
+ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
+                            cast.x = pred.x, sites_rm = 0, bigwoods.include = F,
+                            all.pollen.taxa.names = all.pollen.taxa.names,
+                            prairie.include = T, other.herbs.include = T,
+                            other.trees.include = T, drop.taxa = drop.taxa,
+                            PFT.do = F)
+### Needs to be in same order as calibration so betas match with the right columns
+load("threethirds_v2.0.Rdata")
+ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally based off of the prediction datasets?
+
+save(x.meta,x.bacon,ten.count,file='prediction.data_MN_WI_MI_v1.Rdata')
+
 #####
 ##### Add new baconized sites from IN and IL
 #####
 
 pollen_v1 <- readRDS("~/bulk-baconizing/data/pollen_v1.rds")
-comp.tax <- compile_taxa(pollen_v1, 'WhitmoreSmall')
-pol_cal_count2 <- compile_downloads(comp.tax)
+comp.tax <- neotoma::compile_taxa(pollen_v1, 'WhitmoreSmall')
+pol_cal_count2 <- neotoma::compile_downloads(comp.tax)
 length(unique(pol_cal_count2$dataset))
 
 bacon_df <- matrix(NA,nrow = nrow(pol_cal_count2),ncol=50)
@@ -161,6 +205,38 @@ ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally base
 
 save(x.meta,x.bacon,ten.count,file='prediction.data_IL_IN_v1.Rdata')
 
+rm_nobacon <- which(x.bacon[,49]==x.bacon[,50])
+
+x.meta <- x.meta[-rm_nobacon,]
+x.bacon <- x.bacon[-rm_nobacon,]
+ten.count <- ten.count[-rm_nobacon,]
+
+save(x.meta,x.bacon,ten.count,file='prediction.data_IL_IN_v2.Rdata')
+
+load('prediction.data_IL_IN_v2.Rdata')
+
+x.meta.s <- x.meta
+x.bacon.s <- x.bacon
+ten.count.s <- ten.count
+
+load('prediction.data_MN_WI_MI_v1.Rdata')
+
+colnames(x.bacon) <- colnames(x.bacon.s)
+
+x.meta <- rbind(x.meta,x.meta.s)
+x.bacon <- rbind(x.bacon,x.bacon.s)
+ten.count <- rbind(ten.count,ten.count.s)
+
+plot(x.meta$age_bacon,x.meta$lat)
+
+save(x.meta,x.bacon,ten.count,file='prediction.data_new_v1.Rdata')
+
+n.betas <- 20
+n.sites <- length(unique(x.meta$site.name))
+
+dataID <- data.frame(name = sort(rep(unique(x.meta$site.name),n.betas)), ID = 1:n.sites,
+                     sigma = rep(0.12,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
+write.csv(dataID, file='dataID_bacon_new_v1.csv')
 
 #####
 ##### Look at plots for full prediction dataset
