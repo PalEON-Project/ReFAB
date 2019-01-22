@@ -3,7 +3,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                           minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, 
                           nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
                           nbhd = 5, lik.only = NULL, control.pts, 
-                          sigma, group = NULL, group.mat, override = TRUE, 
+                          sigma, group = NULL, group.mat = NULL, override = TRUE, 
                           Nbeta=NA, ID = NA, liks.by.taxa = TRUE, number.save = 250) {
 
   site_number = unique(x.meta[x.meta$site.name == locn,1])
@@ -29,8 +29,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
   
-  if(!is.null(group)){
-    # Y2 <- Y2[-group.mat[group,],]
+  if(!is.null(group) & !is.null(group)){
+    Y2 <- Y2[-group.mat[group,],]
   }
   
   Y <- as.matrix(Y2[ , -c(1,2)])
@@ -78,6 +78,11 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
     calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                     age_index, J, I, bMin = 5, bMax =  bMax-5,
                     workFile = workFile)
+  }
+  
+  if(lik.only) {
+    print(paste('lik.only = TRUE. Likelihoods in ',workFile))
+    stop()
   }
   
   load(workFile)
