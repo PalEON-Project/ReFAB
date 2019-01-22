@@ -38,18 +38,6 @@ i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
 burnin <- .2*nrow(samples.mixed)
 
-beta <- NA
-
-if(!is.na(beta)){
-  Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
-  
-  beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],ncol(Z),ncol(ten.count))
-  beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],ncol(Z),ncol(ten.count))
-}else{
-  beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
-  beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z),ncol(Y))
-}
-
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
 
@@ -113,6 +101,19 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
                       N2 = rep(0, (length(u)+1)), 
                       N3 = rep(0, (length(u)+2)))
   }  
+  
+  beta <- NA
+  
+  if(!is.na(beta)){
+    Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
+    
+    beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],ncol(Z),ncol(ten.count))
+    beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],ncol(Z),ncol(ten.count))
+  }else{
+    beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
+    beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z),ncol(Y))
+  }
+  
   
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
