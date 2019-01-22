@@ -94,7 +94,7 @@ x.meta.use <- x.meta[x.meta$site.name == locn,]
 
 x.bacon.use <- x.bacon[x.meta$site.name == locn,]
 if(!is.na(beta)){
-  which_bacon <- seq(2,500,20)[dataID[dataID$ID==runnum,'beta']]
+  which_bacon <- dataID[dataID$ID==runnum,'beta']
   sample_ages <- x.bacon.use[,which_bacon]#x.meta.use$age_bacon
 }else{
   sample_ages <- rowMeans(x.bacon.use)
