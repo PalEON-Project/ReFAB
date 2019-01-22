@@ -20,8 +20,8 @@ dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 #### These files come from [2]create_prediction_datasets.R
 
-dataID <- read.csv('dataID_bacon_v4.csv') #for paleon mip
-load('prediction.data_v4.Rdata')
+dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- read.csv('dataID_bacon_v4.csv')
+load('prediction.data_new_v1.Rdata')
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
@@ -132,8 +132,8 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
                      ten_count_use = ten_count_use,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 5000, nItsSave = .2*Niters, seed = 1,
-		                 control.pts = control.pts, sigma = NA,
+                     nIts = Niters, nItsSave = .2*Niters, seed = 1,
+		                 control.pts = control.pts, sigma = .12,
                      group = group, group.mat = group.mat, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
 		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 500)
