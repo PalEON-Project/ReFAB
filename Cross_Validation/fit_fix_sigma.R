@@ -165,7 +165,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       #                      inits = ...
       
       if(get.log.prob){
-        data_pred_b = list(Y = Y, sigma = sigma, b = colMeans(samplesListout[round(nrow(samplesListout)*.2):nrow(samplesListout),1:100]))
+        data_pred_b = list(Y = Y,
+                           sigma = sigma,
+                           b = colMeans(samplesListout[round(nrow(samplesListout)*.2):nrow(samplesListout),1:100]))
         
         model_pred_b <- nimbleModel(pred_code_fix_b, constants = constants_pred,
                                     data = c(data_pred_b, list(constraint = rep(1,TT))),
