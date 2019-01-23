@@ -102,8 +102,6 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
                       N3 = rep(0, (length(u)+2)))
   }  
   
-  beta <- NA
-  
   if(!is.na(beta)){
     Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
     
@@ -120,7 +118,7 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      u = u, x.meta = x.meta,
                      ten_count_use = ten_count_use, beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
-                     nIts = 50000, nItsSave = 200, seed = 1,
+                     nIts = 500, nItsSave = 250, seed = 1,
                      control.pts = control.pts, sigma = sigma,
-                     group = group, group.mat = group.mat, lik.only = TRUE,
-                     maxAge = 10000, ID = runnum)
+                     group = group, group.mat = group.mat, lik.only = FALSE,
+                     maxAge = 10000, ID = runnum, get.log.prob = TRUE)
