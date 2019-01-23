@@ -4,7 +4,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                           nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
                           nbhd = 5, lik.only = NULL, control.pts, 
                           sigma, group = NULL, group.mat = NULL, override = TRUE, 
-                          Nbeta=NA, ID = NA, liks.by.taxa = TRUE, number.save = 250) {
+                          Nbeta=NA, ID = NA, liks.by.taxa = TRUE, number.save = 250,
+                          get.log.prob = FALSE) {
 
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   
@@ -162,6 +163,25 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       # or if we want multiple runs: but need to change seed and generate different initial values
       #  samplesList <- runMCMC(mcmc = cm$Rmcmc.pred, niter = 50000, nchains = ...,
       #                      inits = ...
+      
+      if(get.log.prob){
+        data_pred_b = list(Y = Y, sigma = sigma, b = colMeans(samplesListout[round(nrow(samplesListout)*.2):nrow(samplesListout),1:100]))
+        
+        model_pred_b <- nimbleModel(pred_code_fix_b, constants = constants_pred,
+                                    data = c(data_pred_b, list(constraint = rep(1,TT))),
+                                    dimensions = dimensions_pred)
+        
+        #model_pred_b$calculate()
+        log.prob.all <- model_pred_b$getLogProb('Y')
+        log.prob.data <- model_pred_b$getLogProb(paste0('Y[',age_index,']'))
+        
+        log.prob.list <- list(log.prob.all = log.prob.all,
+                              log.prob.data = log.prob.data,
+                              samples.rm = group.mat[group,])
+        
+        save(log.prob.list,file = paste0('log.prob.',workFile))
+      }
+      
   
 
 }
