@@ -102,6 +102,8 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
                       N3 = rep(0, (length(u)+2)))
   }  
   
+  beta <- NA
+  
   if(!is.na(beta)){
     Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
     
