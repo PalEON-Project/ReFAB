@@ -59,7 +59,7 @@ ten_count_use[which(is.na(ten_count_use))] <- 0
 
 Y = as.matrix(ten_count_use)
 minAge = 0
-maxAge = 2000 #10000
+maxAge = 10000
 ageInterval = 100
 
 sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
