@@ -25,10 +25,10 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
     cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
   ))
   
-  tmp <- data.frame(cbind(age_index, Y))
-  names(tmp)[1] <- 'age_index'
+  tmp_y <- data.frame(cbind(age_index, Y))
+  names(tmp_y)[1] <- 'age_index'
   
-  Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
+  Y2 <- aggregate(tmp_y, by = list(tmp_y$age_index), FUN = sum)
   
   if(!is.null(group) & !is.null(group)){
     Y2 <- Y2[-group.mat[group,],]
@@ -165,17 +165,46 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       #                      inits = ...
       
       if(get.log.prob){
+        
+        ### Getting likelihoods of left out biomasses
+        
+        Y2 <- aggregate(tmp_y, by = list(tmp_y$age_index), FUN = sum)
+        
+        Y2 <- Y2[group.mat[group,],]
+        
+        Y <- as.matrix(Y2[ , -c(1,2)])
+        
+        if(any(which(is.na(Y)))) {
+           print('NAs in dataset. Check group and group.mat')
+           stop()
+        }
+        
+        age_index <- Y2[,1]
+        
+        TT <- length(age_bins)-1
+        I <- ncol(Y)
+        J <- length(age_index)
+        n <- rowSums(Y)
+        
+        constants_pred_b = list(order = order, beta1 = beta1, beta2 = beta2, I = I, J = J,
+                              T = TT, n = n, u = u, N0 = rep(0, (length(u)-1)), 
+                              N1 = rep(0, (length(u))), N2 = rep(0, (length(u)+1)),
+                              N3 = rep(0, (length(u)+2)), age_index = age_index, bMax = bMax)
+        
+        dimensions_pred_b = list(shape1 = c(TT,I), shape2 = c(TT,I), Zb = dim(Zb), Y = dim(Y),
+                               beta1 = dim(beta1), beta2=dim(beta2),shape.hold1 = c(TT,I), shape.hold2 = c(TT,I))
+        
         data_pred_b = list(Y = Y,
                            sigma = sigma,
                            b = colMeans(samplesListout[round(nrow(samplesListout)*.2):nrow(samplesListout),1:100]))
         
-        model_pred_b <- nimbleModel(pred_code_fix_b, constants = constants_pred,
+        model_pred_b <- nimbleModel(pred_code_fix_b, constants = constants_pred_b,
                                     data = c(data_pred_b, list(constraint = rep(1,TT))),
-                                    dimensions = dimensions_pred)
+                                    dimensions = dimensions_pred_b)
         
-        #model_pred_b$calculate()
+        model_pred_b$calculate()
         log.prob.all <- model_pred_b$getLogProb('Y')
-        log.prob.data <- model_pred_b$getLogProb(paste0('Y[',age_index,']'))
+        log.prob.data <- model_pred_b$logProb_Y
         
         log.prob.list <- list(log.prob.all = log.prob.all,
                               log.prob.data = log.prob.data,
