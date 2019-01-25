@@ -32,7 +32,7 @@ control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
 load('prediction.data_v4.Rdata')
 group_rm <- dataID[dataID$ID==runnum, 'group']
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+load('~/Downloads/betas/beta.est.group.in8.Rdata')#load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
@@ -123,4 +123,6 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      nIts = 10000, nItsSave = 5000, seed = 1,
                      control.pts = control.pts, sigma = sigma,
                      group = group, group.mat = group.mat, lik.only = FALSE,
+                     bMax = bMax,
                      maxAge = 10000, ID = runnum, number.save = 250, get.log.prob = TRUE)
+
