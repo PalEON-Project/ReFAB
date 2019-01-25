@@ -78,20 +78,23 @@ for(i in rev(2:length(age.vec))) {
 dev.off()
 
 ##### bigwoods
-bigwoods_calib <- c(2,10,11,13,14,18,20,26,29,32)
+if(FALSE){
+  bigwoods_calib <- c(2,10,11,13,14,18,20,26,29,32)
+  
+  testing.save_bw = prop.table(as.matrix(ten.count.used),1)
+  rownames(testing.save_bw)<-x.meta.used$age_bacon
+  testing.meta_bw <- x.meta.used
+  testing_bw <- testing.save_bw
+  analog1_bw <- analog(x=training_bw, y=testing_bw,'SQchord')
+  mins_bw <- minDC(analog1_bw)$minDC
+  breaks_bw <-  c(0, .05, 1)
+  colors_bw <- c(adjustcolor('darkgray',alpha.f = .4))#adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
+  data_binned_bw <-  cut(mins_bw,
+                         breaks_bw,
+                         include.lowest = FALSE,
+                         labels = FALSE)
+}
 
-testing.save_bw = prop.table(as.matrix(ten.count.used),1)
-rownames(testing.save_bw)<-x.meta.used$age_bacon
-testing.meta_bw <- x.meta.used
-testing_bw <- testing.save_bw
-analog1_bw <- analog(x=training_bw, y=testing_bw,'SQchord')
-mins_bw <- minDC(analog1_bw)$minDC
-breaks_bw <-  c(0, .05, 1)
-colors_bw <- c('green',adjustcolor('darkgray',alpha.f = .4))#adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
-data_binned_bw <-  cut(mins_bw,
-                       breaks_bw,
-                       include.lowest = FALSE,
-                       labels = FALSE)
 
 dissim.values <- minDC(analog1)$minDC
 breaks <-  seq(0, 1, .1)
@@ -107,20 +110,19 @@ plot(
   x.meta.used$lat.x,
   bg = colors[data_binned],
   pch = 21,
-  col = colors_bw[data_binned_bw],
+  col = c(adjustcolor('darkgray',alpha.f = .4)),
   cex = 2,
-  a
   xlab = 'Sample Age (years before present)',
   ylab = 'Latitude',
   main = 'Pollen Dissimilarity'
 )
 abline(v=10000,lwd=2)
 legend("bottomright",
-       legend = c(cuts,'Bigwoods'),
-       pt.bg = c(colors,'lightgray'),
-       col = c(rep(colors_bw[2],length(breaks)-1),'green'),
+       legend = c(cuts),
+       pt.bg = c(colors),
+       col = c(rep(colors_bw[2],length(breaks)-1)),
        pch = 21,
-       cex = 1.5,
+       cex = 1,
        title = 'minDC value')
 dev.off()
 
