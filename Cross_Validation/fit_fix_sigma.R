@@ -7,6 +7,9 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
                           Nbeta=NA, ID = NA, liks.by.taxa = TRUE, number.save = 250,
                           get.log.prob = FALSE) {
 
+  print(paste('u =',u))
+  print(paste('bMax =',bMax))
+  
   site_number = unique(x.meta[x.meta$site.name == locn,1])
   
   x.meta.use <- x.meta[x.meta$site.name == locn,]
@@ -197,6 +200,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
         data_pred_b = list(Y = Y,
                            sigma = sigma,
                            b = colMeans(samplesListout[round(nrow(samplesListout)*.2):nrow(samplesListout),1:100]))
+        
+        inits_pred_b = list(omega = omegaInit, lambda = lambdaInit)
         
         model_pred_b <- nimbleModel(pred_code_fix_b, constants = constants_pred_b,
                                     data = c(data_pred_b, list(constraint = rep(1,TT))),
