@@ -11,7 +11,7 @@ if (is.na(arg[1])) {
   runnum <- as.numeric(arg[1])
 }
 
-dataID <- read.csv(file.path('Cross_Validation','dataID.csv')) #for 10K
+dataID <- read.csv(file.path('Cross_Validation','dataID_fine.csv')) #for 10K
 
 ####
 #### Master Setup
