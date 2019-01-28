@@ -1,0 +1,4051 @@
+"","name","ID","sigma","beta"
+"1","Lake Mary",1,0.03,1
+"2","Lake Mary",2,0.03,2
+"3","Lake Mary",3,0.03,3
+"4","Lake Mary",4,0.03,4
+"5","Lake Mary",5,0.03,5
+"6","Lake Mary",6,0.03,6
+"7","Lake Mary",7,0.03,7
+"8","Lake Mary",8,0.03,8
+"9","Lake Mary",9,0.03,9
+"10","Lake Mary",10,0.03,10
+"11","Lake Mary",11,0.03,11
+"12","Lake Mary",12,0.03,12
+"13","Lake Mary",13,0.03,13
+"14","Lake Mary",14,0.03,14
+"15","Lake Mary",15,0.03,15
+"16","Lake Mary",16,0.03,16
+"17","Lake Mary",17,0.03,17
+"18","Lake Mary",18,0.03,18
+"19","Lake Mary",19,0.03,19
+"20","Lake Mary",20,0.03,20
+"21","Lake Mary",21,0.03,21
+"22","Lake Mary",22,0.03,22
+"23","Lake Mary",23,0.03,23
+"24","Lake Mary",24,0.03,24
+"25","Lake Mary",25,0.03,25
+"26","Lake Mary",26,0.03,26
+"27","Lake Mary",27,0.03,27
+"28","Lake Mary",28,0.03,28
+"29","Lake Mary",29,0.03,29
+"30","Lake Mary",30,0.03,30
+"31","Lake Mary",31,0.03,31
+"32","Lake Mary",32,0.03,32
+"33","Lake Mary",33,0.03,33
+"34","Lake Mary",34,0.03,34
+"35","Lake Mary",35,0.03,35
+"36","Lake Mary",36,0.03,36
+"37","Lake Mary",37,0.03,37
+"38","Lake Mary",38,0.03,38
+"39","Lake Mary",39,0.03,39
+"40","Lake Mary",40,0.03,40
+"41","Lake Mary",41,0.03,41
+"42","Lake Mary",42,0.03,42
+"43","Lake Mary",43,0.03,43
+"44","Lake Mary",44,0.03,44
+"45","Lake Mary",45,0.03,45
+"46","Lake Mary",46,0.03,46
+"47","Lake Mary",47,0.03,47
+"48","Lake Mary",48,0.03,48
+"49","Lake Mary",49,0.03,49
+"50","Lake Mary",50,0.03,50
+"51","Billy's Lake",51,0.03,1
+"52","Billy's Lake",52,0.03,2
+"53","Billy's Lake",53,0.03,3
+"54","Billy's Lake",54,0.03,4
+"55","Billy's Lake",55,0.03,5
+"56","Billy's Lake",56,0.03,6
+"57","Billy's Lake",57,0.03,7
+"58","Billy's Lake",58,0.03,8
+"59","Billy's Lake",59,0.03,9
+"60","Billy's Lake",60,0.03,10
+"61","Billy's Lake",61,0.03,11
+"62","Billy's Lake",62,0.03,12
+"63","Billy's Lake",63,0.03,13
+"64","Billy's Lake",64,0.03,14
+"65","Billy's Lake",1,0.03,15
+"66","Billy's Lake",2,0.03,16
+"67","Billy's Lake",3,0.03,17
+"68","Billy's Lake",4,0.03,18
+"69","Billy's Lake",5,0.03,19
+"70","Billy's Lake",6,0.03,20
+"71","Billy's Lake",7,0.03,21
+"72","Billy's Lake",8,0.03,22
+"73","Billy's Lake",9,0.03,23
+"74","Billy's Lake",10,0.03,24
+"75","Billy's Lake",11,0.03,25
+"76","Billy's Lake",12,0.03,26
+"77","Billy's Lake",13,0.03,27
+"78","Billy's Lake",14,0.03,28
+"79","Billy's Lake",15,0.03,29
+"80","Billy's Lake",16,0.03,30
+"81","Billy's Lake",17,0.03,31
+"82","Billy's Lake",18,0.03,32
+"83","Billy's Lake",19,0.03,33
+"84","Billy's Lake",20,0.03,34
+"85","Billy's Lake",21,0.03,35
+"86","Billy's Lake",22,0.03,36
+"87","Billy's Lake",23,0.03,37
+"88","Billy's Lake",24,0.03,38
+"89","Billy's Lake",25,0.03,39
+"90","Billy's Lake",26,0.03,40
+"91","Billy's Lake",27,0.03,41
+"92","Billy's Lake",28,0.03,42
+"93","Billy's Lake",29,0.03,43
+"94","Billy's Lake",30,0.03,44
+"95","Billy's Lake",31,0.03,45
+"96","Billy's Lake",32,0.03,46
+"97","Billy's Lake",33,0.03,47
+"98","Billy's Lake",34,0.03,48
+"99","Billy's Lake",35,0.03,49
+"100","Billy's Lake",36,0.03,50
+"101","Blue Mounds Creek",37,0.03,1
+"102","Blue Mounds Creek",38,0.03,2
+"103","Blue Mounds Creek",39,0.03,3
+"104","Blue Mounds Creek",40,0.03,4
+"105","Blue Mounds Creek",41,0.03,5
+"106","Blue Mounds Creek",42,0.03,6
+"107","Blue Mounds Creek",43,0.03,7
+"108","Blue Mounds Creek",44,0.03,8
+"109","Blue Mounds Creek",45,0.03,9
+"110","Blue Mounds Creek",46,0.03,10
+"111","Blue Mounds Creek",47,0.03,11
+"112","Blue Mounds Creek",48,0.03,12
+"113","Blue Mounds Creek",49,0.03,13
+"114","Blue Mounds Creek",50,0.03,14
+"115","Blue Mounds Creek",51,0.03,15
+"116","Blue Mounds Creek",52,0.03,16
+"117","Blue Mounds Creek",53,0.03,17
+"118","Blue Mounds Creek",54,0.03,18
+"119","Blue Mounds Creek",55,0.03,19
+"120","Blue Mounds Creek",56,0.03,20
+"121","Blue Mounds Creek",57,0.03,21
+"122","Blue Mounds Creek",58,0.03,22
+"123","Blue Mounds Creek",59,0.03,23
+"124","Blue Mounds Creek",60,0.03,24
+"125","Blue Mounds Creek",61,0.03,25
+"126","Blue Mounds Creek",62,0.03,26
+"127","Blue Mounds Creek",63,0.03,27
+"128","Blue Mounds Creek",64,0.03,28
+"129","Blue Mounds Creek",1,0.03,29
+"130","Blue Mounds Creek",2,0.03,30
+"131","Blue Mounds Creek",3,0.03,31
+"132","Blue Mounds Creek",4,0.03,32
+"133","Blue Mounds Creek",5,0.03,33
+"134","Blue Mounds Creek",6,0.03,34
+"135","Blue Mounds Creek",7,0.03,35
+"136","Blue Mounds Creek",8,0.03,36
+"137","Blue Mounds Creek",9,0.03,37
+"138","Blue Mounds Creek",10,0.03,38
+"139","Blue Mounds Creek",11,0.03,39
+"140","Blue Mounds Creek",12,0.03,40
+"141","Blue Mounds Creek",13,0.03,41
+"142","Blue Mounds Creek",14,0.03,42
+"143","Blue Mounds Creek",15,0.03,43
+"144","Blue Mounds Creek",16,0.03,44
+"145","Blue Mounds Creek",17,0.03,45
+"146","Blue Mounds Creek",18,0.03,46
+"147","Blue Mounds Creek",19,0.03,47
+"148","Blue Mounds Creek",20,0.03,48
+"149","Blue Mounds Creek",21,0.03,49
+"150","Blue Mounds Creek",22,0.03,50
+"151","Bog D Pond",23,0.03,1
+"152","Bog D Pond",24,0.03,2
+"153","Bog D Pond",25,0.03,3
+"154","Bog D Pond",26,0.03,4
+"155","Bog D Pond",27,0.03,5
+"156","Bog D Pond",28,0.03,6
+"157","Bog D Pond",29,0.03,7
+"158","Bog D Pond",30,0.03,8
+"159","Bog D Pond",31,0.03,9
+"160","Bog D Pond",32,0.03,10
+"161","Bog D Pond",33,0.03,11
+"162","Bog D Pond",34,0.03,12
+"163","Bog D Pond",35,0.03,13
+"164","Bog D Pond",36,0.03,14
+"165","Bog D Pond",37,0.03,15
+"166","Bog D Pond",38,0.03,16
+"167","Bog D Pond",39,0.03,17
+"168","Bog D Pond",40,0.03,18
+"169","Bog D Pond",41,0.03,19
+"170","Bog D Pond",42,0.03,20
+"171","Bog D Pond",43,0.03,21
+"172","Bog D Pond",44,0.03,22
+"173","Bog D Pond",45,0.03,23
+"174","Bog D Pond",46,0.03,24
+"175","Bog D Pond",47,0.03,25
+"176","Bog D Pond",48,0.03,26
+"177","Bog D Pond",49,0.03,27
+"178","Bog D Pond",50,0.03,28
+"179","Bog D Pond",51,0.03,29
+"180","Bog D Pond",52,0.03,30
+"181","Bog D Pond",53,0.03,31
+"182","Bog D Pond",54,0.03,32
+"183","Bog D Pond",55,0.03,33
+"184","Bog D Pond",56,0.03,34
+"185","Bog D Pond",57,0.03,35
+"186","Bog D Pond",58,0.03,36
+"187","Bog D Pond",59,0.03,37
+"188","Bog D Pond",60,0.03,38
+"189","Bog D Pond",61,0.03,39
+"190","Bog D Pond",62,0.03,40
+"191","Bog D Pond",63,0.03,41
+"192","Bog D Pond",64,0.03,42
+"193","Bog D Pond",1,0.03,43
+"194","Bog D Pond",2,0.03,44
+"195","Bog D Pond",3,0.03,45
+"196","Bog D Pond",4,0.03,46
+"197","Bog D Pond",5,0.03,47
+"198","Bog D Pond",6,0.03,48
+"199","Bog D Pond",7,0.03,49
+"200","Bog D Pond",8,0.03,50
+"201","Camp 11 Lake",9,0.03,1
+"202","Camp 11 Lake",10,0.03,2
+"203","Camp 11 Lake",11,0.03,3
+"204","Camp 11 Lake",12,0.03,4
+"205","Camp 11 Lake",13,0.03,5
+"206","Camp 11 Lake",14,0.03,6
+"207","Camp 11 Lake",15,0.03,7
+"208","Camp 11 Lake",16,0.03,8
+"209","Camp 11 Lake",17,0.03,9
+"210","Camp 11 Lake",18,0.03,10
+"211","Camp 11 Lake",19,0.03,11
+"212","Camp 11 Lake",20,0.03,12
+"213","Camp 11 Lake",21,0.03,13
+"214","Camp 11 Lake",22,0.03,14
+"215","Camp 11 Lake",23,0.03,15
+"216","Camp 11 Lake",24,0.03,16
+"217","Camp 11 Lake",25,0.03,17
+"218","Camp 11 Lake",26,0.03,18
+"219","Camp 11 Lake",27,0.03,19
+"220","Camp 11 Lake",28,0.03,20
+"221","Camp 11 Lake",29,0.03,21
+"222","Camp 11 Lake",30,0.03,22
+"223","Camp 11 Lake",31,0.03,23
+"224","Camp 11 Lake",32,0.03,24
+"225","Camp 11 Lake",33,0.03,25
+"226","Camp 11 Lake",34,0.03,26
+"227","Camp 11 Lake",35,0.03,27
+"228","Camp 11 Lake",36,0.03,28
+"229","Camp 11 Lake",37,0.03,29
+"230","Camp 11 Lake",38,0.03,30
+"231","Camp 11 Lake",39,0.03,31
+"232","Camp 11 Lake",40,0.03,32
+"233","Camp 11 Lake",41,0.03,33
+"234","Camp 11 Lake",42,0.03,34
+"235","Camp 11 Lake",43,0.03,35
+"236","Camp 11 Lake",44,0.03,36
+"237","Camp 11 Lake",45,0.03,37
+"238","Camp 11 Lake",46,0.03,38
+"239","Camp 11 Lake",47,0.03,39
+"240","Camp 11 Lake",48,0.03,40
+"241","Camp 11 Lake",49,0.03,41
+"242","Camp 11 Lake",50,0.03,42
+"243","Camp 11 Lake",51,0.03,43
+"244","Camp 11 Lake",52,0.03,44
+"245","Camp 11 Lake",53,0.03,45
+"246","Camp 11 Lake",54,0.03,46
+"247","Camp 11 Lake",55,0.03,47
+"248","Camp 11 Lake",56,0.03,48
+"249","Camp 11 Lake",57,0.03,49
+"250","Camp 11 Lake",58,0.03,50
+"251","Cedar Bog",59,0.03,1
+"252","Cedar Bog",60,0.03,2
+"253","Cedar Bog",61,0.03,3
+"254","Cedar Bog",62,0.03,4
+"255","Cedar Bog",63,0.03,5
+"256","Cedar Bog",64,0.03,6
+"257","Cedar Bog",1,0.03,7
+"258","Cedar Bog",2,0.03,8
+"259","Cedar Bog",3,0.03,9
+"260","Cedar Bog",4,0.03,10
+"261","Cedar Bog",5,0.03,11
+"262","Cedar Bog",6,0.03,12
+"263","Cedar Bog",7,0.03,13
+"264","Cedar Bog",8,0.03,14
+"265","Cedar Bog",9,0.03,15
+"266","Cedar Bog",10,0.03,16
+"267","Cedar Bog",11,0.03,17
+"268","Cedar Bog",12,0.03,18
+"269","Cedar Bog",13,0.03,19
+"270","Cedar Bog",14,0.03,20
+"271","Cedar Bog",15,0.03,21
+"272","Cedar Bog",16,0.03,22
+"273","Cedar Bog",17,0.03,23
+"274","Cedar Bog",18,0.03,24
+"275","Cedar Bog",19,0.03,25
+"276","Cedar Bog",20,0.03,26
+"277","Cedar Bog",21,0.03,27
+"278","Cedar Bog",22,0.03,28
+"279","Cedar Bog",23,0.03,29
+"280","Cedar Bog",24,0.03,30
+"281","Cedar Bog",25,0.03,31
+"282","Cedar Bog",26,0.03,32
+"283","Cedar Bog",27,0.03,33
+"284","Cedar Bog",28,0.03,34
+"285","Cedar Bog",29,0.03,35
+"286","Cedar Bog",30,0.03,36
+"287","Cedar Bog",31,0.03,37
+"288","Cedar Bog",32,0.03,38
+"289","Cedar Bog",33,0.03,39
+"290","Cedar Bog",34,0.03,40
+"291","Cedar Bog",35,0.03,41
+"292","Cedar Bog",36,0.03,42
+"293","Cedar Bog",37,0.03,43
+"294","Cedar Bog",38,0.03,44
+"295","Cedar Bog",39,0.03,45
+"296","Cedar Bog",40,0.03,46
+"297","Cedar Bog",41,0.03,47
+"298","Cedar Bog",42,0.03,48
+"299","Cedar Bog",43,0.03,49
+"300","Cedar Bog",44,0.03,50
+"301","Chippewa Bog",45,0.03,1
+"302","Chippewa Bog",46,0.03,2
+"303","Chippewa Bog",47,0.03,3
+"304","Chippewa Bog",48,0.03,4
+"305","Chippewa Bog",49,0.03,5
+"306","Chippewa Bog",50,0.03,6
+"307","Chippewa Bog",51,0.03,7
+"308","Chippewa Bog",52,0.03,8
+"309","Chippewa Bog",53,0.03,9
+"310","Chippewa Bog",54,0.03,10
+"311","Chippewa Bog",55,0.03,11
+"312","Chippewa Bog",56,0.03,12
+"313","Chippewa Bog",57,0.03,13
+"314","Chippewa Bog",58,0.03,14
+"315","Chippewa Bog",59,0.03,15
+"316","Chippewa Bog",60,0.03,16
+"317","Chippewa Bog",61,0.03,17
+"318","Chippewa Bog",62,0.03,18
+"319","Chippewa Bog",63,0.03,19
+"320","Chippewa Bog",64,0.03,20
+"321","Chippewa Bog",1,0.03,21
+"322","Chippewa Bog",2,0.03,22
+"323","Chippewa Bog",3,0.03,23
+"324","Chippewa Bog",4,0.03,24
+"325","Chippewa Bog",5,0.03,25
+"326","Chippewa Bog",6,0.03,26
+"327","Chippewa Bog",7,0.03,27
+"328","Chippewa Bog",8,0.03,28
+"329","Chippewa Bog",9,0.03,29
+"330","Chippewa Bog",10,0.03,30
+"331","Chippewa Bog",11,0.03,31
+"332","Chippewa Bog",12,0.03,32
+"333","Chippewa Bog",13,0.03,33
+"334","Chippewa Bog",14,0.03,34
+"335","Chippewa Bog",15,0.03,35
+"336","Chippewa Bog",16,0.03,36
+"337","Chippewa Bog",17,0.03,37
+"338","Chippewa Bog",18,0.03,38
+"339","Chippewa Bog",19,0.03,39
+"340","Chippewa Bog",20,0.03,40
+"341","Chippewa Bog",21,0.03,41
+"342","Chippewa Bog",22,0.03,42
+"343","Chippewa Bog",23,0.03,43
+"344","Chippewa Bog",24,0.03,44
+"345","Chippewa Bog",25,0.03,45
+"346","Chippewa Bog",26,0.03,46
+"347","Chippewa Bog",27,0.03,47
+"348","Chippewa Bog",28,0.03,48
+"349","Chippewa Bog",29,0.03,49
+"350","Chippewa Bog",30,0.03,50
+"351","Cub Lake",31,0.03,1
+"352","Cub Lake",32,0.03,2
+"353","Cub Lake",33,0.03,3
+"354","Cub Lake",34,0.03,4
+"355","Cub Lake",35,0.03,5
+"356","Cub Lake",36,0.03,6
+"357","Cub Lake",37,0.03,7
+"358","Cub Lake",38,0.03,8
+"359","Cub Lake",39,0.03,9
+"360","Cub Lake",40,0.03,10
+"361","Cub Lake",41,0.03,11
+"362","Cub Lake",42,0.03,12
+"363","Cub Lake",43,0.03,13
+"364","Cub Lake",44,0.03,14
+"365","Cub Lake",45,0.03,15
+"366","Cub Lake",46,0.03,16
+"367","Cub Lake",47,0.03,17
+"368","Cub Lake",48,0.03,18
+"369","Cub Lake",49,0.03,19
+"370","Cub Lake",50,0.03,20
+"371","Cub Lake",51,0.03,21
+"372","Cub Lake",52,0.03,22
+"373","Cub Lake",53,0.03,23
+"374","Cub Lake",54,0.03,24
+"375","Cub Lake",55,0.03,25
+"376","Cub Lake",56,0.03,26
+"377","Cub Lake",57,0.03,27
+"378","Cub Lake",58,0.03,28
+"379","Cub Lake",59,0.03,29
+"380","Cub Lake",60,0.03,30
+"381","Cub Lake",61,0.03,31
+"382","Cub Lake",62,0.03,32
+"383","Cub Lake",63,0.03,33
+"384","Cub Lake",64,0.03,34
+"385","Cub Lake",1,0.03,35
+"386","Cub Lake",2,0.03,36
+"387","Cub Lake",3,0.03,37
+"388","Cub Lake",4,0.03,38
+"389","Cub Lake",5,0.03,39
+"390","Cub Lake",6,0.03,40
+"391","Cub Lake",7,0.03,41
+"392","Cub Lake",8,0.03,42
+"393","Cub Lake",9,0.03,43
+"394","Cub Lake",10,0.03,44
+"395","Cub Lake",11,0.03,45
+"396","Cub Lake",12,0.03,46
+"397","Cub Lake",13,0.03,47
+"398","Cub Lake",14,0.03,48
+"399","Cub Lake",15,0.03,49
+"400","Cub Lake",16,0.03,50
+"401","Demont Lake",17,0.03,1
+"402","Demont Lake",18,0.03,2
+"403","Demont Lake",19,0.03,3
+"404","Demont Lake",20,0.03,4
+"405","Demont Lake",21,0.03,5
+"406","Demont Lake",22,0.03,6
+"407","Demont Lake",23,0.03,7
+"408","Demont Lake",24,0.03,8
+"409","Demont Lake",25,0.03,9
+"410","Demont Lake",26,0.03,10
+"411","Demont Lake",27,0.03,11
+"412","Demont Lake",28,0.03,12
+"413","Demont Lake",29,0.03,13
+"414","Demont Lake",30,0.03,14
+"415","Demont Lake",31,0.03,15
+"416","Demont Lake",32,0.03,16
+"417","Demont Lake",33,0.03,17
+"418","Demont Lake",34,0.03,18
+"419","Demont Lake",35,0.03,19
+"420","Demont Lake",36,0.03,20
+"421","Demont Lake",37,0.03,21
+"422","Demont Lake",38,0.03,22
+"423","Demont Lake",39,0.03,23
+"424","Demont Lake",40,0.03,24
+"425","Demont Lake",41,0.03,25
+"426","Demont Lake",42,0.03,26
+"427","Demont Lake",43,0.03,27
+"428","Demont Lake",44,0.03,28
+"429","Demont Lake",45,0.03,29
+"430","Demont Lake",46,0.03,30
+"431","Demont Lake",47,0.03,31
+"432","Demont Lake",48,0.03,32
+"433","Demont Lake",49,0.03,33
+"434","Demont Lake",50,0.03,34
+"435","Demont Lake",51,0.03,35
+"436","Demont Lake",52,0.03,36
+"437","Demont Lake",53,0.03,37
+"438","Demont Lake",54,0.03,38
+"439","Demont Lake",55,0.03,39
+"440","Demont Lake",56,0.03,40
+"441","Demont Lake",57,0.03,41
+"442","Demont Lake",58,0.03,42
+"443","Demont Lake",59,0.03,43
+"444","Demont Lake",60,0.03,44
+"445","Demont Lake",61,0.03,45
+"446","Demont Lake",62,0.03,46
+"447","Demont Lake",63,0.03,47
+"448","Demont Lake",64,0.03,48
+"449","Demont Lake",1,0.03,49
+"450","Demont Lake",2,0.03,50
+"451","Devils Lake",3,0.03,1
+"452","Devils Lake",4,0.03,2
+"453","Devils Lake",5,0.03,3
+"454","Devils Lake",6,0.03,4
+"455","Devils Lake",7,0.03,5
+"456","Devils Lake",8,0.03,6
+"457","Devils Lake",9,0.03,7
+"458","Devils Lake",10,0.03,8
+"459","Devils Lake",11,0.03,9
+"460","Devils Lake",12,0.03,10
+"461","Devils Lake",13,0.03,11
+"462","Devils Lake",14,0.03,12
+"463","Devils Lake",15,0.03,13
+"464","Devils Lake",16,0.03,14
+"465","Devils Lake",17,0.03,15
+"466","Devils Lake",18,0.03,16
+"467","Devils Lake",19,0.03,17
+"468","Devils Lake",20,0.03,18
+"469","Devils Lake",21,0.03,19
+"470","Devils Lake",22,0.03,20
+"471","Devils Lake",23,0.03,21
+"472","Devils Lake",24,0.03,22
+"473","Devils Lake",25,0.03,23
+"474","Devils Lake",26,0.03,24
+"475","Devils Lake",27,0.03,25
+"476","Devils Lake",28,0.03,26
+"477","Devils Lake",29,0.03,27
+"478","Devils Lake",30,0.03,28
+"479","Devils Lake",31,0.03,29
+"480","Devils Lake",32,0.03,30
+"481","Devils Lake",33,0.03,31
+"482","Devils Lake",34,0.03,32
+"483","Devils Lake",35,0.03,33
+"484","Devils Lake",36,0.03,34
+"485","Devils Lake",37,0.03,35
+"486","Devils Lake",38,0.03,36
+"487","Devils Lake",39,0.03,37
+"488","Devils Lake",40,0.03,38
+"489","Devils Lake",41,0.03,39
+"490","Devils Lake",42,0.03,40
+"491","Devils Lake",43,0.03,41
+"492","Devils Lake",44,0.03,42
+"493","Devils Lake",45,0.03,43
+"494","Devils Lake",46,0.03,44
+"495","Devils Lake",47,0.03,45
+"496","Devils Lake",48,0.03,46
+"497","Devils Lake",49,0.03,47
+"498","Devils Lake",50,0.03,48
+"499","Devils Lake",51,0.03,49
+"500","Devils Lake",52,0.03,50
+"501","Disterhaft Farm Bog",53,0.03,1
+"502","Disterhaft Farm Bog",54,0.03,2
+"503","Disterhaft Farm Bog",55,0.03,3
+"504","Disterhaft Farm Bog",56,0.03,4
+"505","Disterhaft Farm Bog",57,0.03,5
+"506","Disterhaft Farm Bog",58,0.03,6
+"507","Disterhaft Farm Bog",59,0.03,7
+"508","Disterhaft Farm Bog",60,0.03,8
+"509","Disterhaft Farm Bog",61,0.03,9
+"510","Disterhaft Farm Bog",62,0.03,10
+"511","Disterhaft Farm Bog",63,0.03,11
+"512","Disterhaft Farm Bog",64,0.03,12
+"513","Disterhaft Farm Bog",1,0.03,13
+"514","Disterhaft Farm Bog",2,0.03,14
+"515","Disterhaft Farm Bog",3,0.03,15
+"516","Disterhaft Farm Bog",4,0.03,16
+"517","Disterhaft Farm Bog",5,0.03,17
+"518","Disterhaft Farm Bog",6,0.03,18
+"519","Disterhaft Farm Bog",7,0.03,19
+"520","Disterhaft Farm Bog",8,0.03,20
+"521","Disterhaft Farm Bog",9,0.03,21
+"522","Disterhaft Farm Bog",10,0.03,22
+"523","Disterhaft Farm Bog",11,0.03,23
+"524","Disterhaft Farm Bog",12,0.03,24
+"525","Disterhaft Farm Bog",13,0.03,25
+"526","Disterhaft Farm Bog",14,0.03,26
+"527","Disterhaft Farm Bog",15,0.03,27
+"528","Disterhaft Farm Bog",16,0.03,28
+"529","Disterhaft Farm Bog",17,0.03,29
+"530","Disterhaft Farm Bog",18,0.03,30
+"531","Disterhaft Farm Bog",19,0.03,31
+"532","Disterhaft Farm Bog",20,0.03,32
+"533","Disterhaft Farm Bog",21,0.03,33
+"534","Disterhaft Farm Bog",22,0.03,34
+"535","Disterhaft Farm Bog",23,0.03,35
+"536","Disterhaft Farm Bog",24,0.03,36
+"537","Disterhaft Farm Bog",25,0.03,37
+"538","Disterhaft Farm Bog",26,0.03,38
+"539","Disterhaft Farm Bog",27,0.03,39
+"540","Disterhaft Farm Bog",28,0.03,40
+"541","Disterhaft Farm Bog",29,0.03,41
+"542","Disterhaft Farm Bog",30,0.03,42
+"543","Disterhaft Farm Bog",31,0.03,43
+"544","Disterhaft Farm Bog",32,0.03,44
+"545","Disterhaft Farm Bog",33,0.03,45
+"546","Disterhaft Farm Bog",34,0.03,46
+"547","Disterhaft Farm Bog",35,0.03,47
+"548","Disterhaft Farm Bog",36,0.03,48
+"549","Disterhaft Farm Bog",37,0.03,49
+"550","Disterhaft Farm Bog",38,0.03,50
+"551","Gass Lake",39,0.03,1
+"552","Gass Lake",40,0.03,2
+"553","Gass Lake",41,0.03,3
+"554","Gass Lake",42,0.03,4
+"555","Gass Lake",43,0.03,5
+"556","Gass Lake",44,0.03,6
+"557","Gass Lake",45,0.03,7
+"558","Gass Lake",46,0.03,8
+"559","Gass Lake",47,0.03,9
+"560","Gass Lake",48,0.03,10
+"561","Gass Lake",49,0.03,11
+"562","Gass Lake",50,0.03,12
+"563","Gass Lake",51,0.03,13
+"564","Gass Lake",52,0.03,14
+"565","Gass Lake",53,0.03,15
+"566","Gass Lake",54,0.03,16
+"567","Gass Lake",55,0.03,17
+"568","Gass Lake",56,0.03,18
+"569","Gass Lake",57,0.03,19
+"570","Gass Lake",58,0.03,20
+"571","Gass Lake",59,0.03,21
+"572","Gass Lake",60,0.03,22
+"573","Gass Lake",61,0.03,23
+"574","Gass Lake",62,0.03,24
+"575","Gass Lake",63,0.03,25
+"576","Gass Lake",64,0.03,26
+"577","Gass Lake",1,0.03,27
+"578","Gass Lake",2,0.03,28
+"579","Gass Lake",3,0.03,29
+"580","Gass Lake",4,0.03,30
+"581","Gass Lake",5,0.03,31
+"582","Gass Lake",6,0.03,32
+"583","Gass Lake",7,0.03,33
+"584","Gass Lake",8,0.03,34
+"585","Gass Lake",9,0.03,35
+"586","Gass Lake",10,0.03,36
+"587","Gass Lake",11,0.03,37
+"588","Gass Lake",12,0.03,38
+"589","Gass Lake",13,0.03,39
+"590","Gass Lake",14,0.03,40
+"591","Gass Lake",15,0.03,41
+"592","Gass Lake",16,0.03,42
+"593","Gass Lake",17,0.03,43
+"594","Gass Lake",18,0.03,44
+"595","Gass Lake",19,0.03,45
+"596","Gass Lake",20,0.03,46
+"597","Gass Lake",21,0.03,47
+"598","Gass Lake",22,0.03,48
+"599","Gass Lake",23,0.03,49
+"600","Gass Lake",24,0.03,50
+"601","Green Lake",25,0.03,1
+"602","Green Lake",26,0.03,2
+"603","Green Lake",27,0.03,3
+"604","Green Lake",28,0.03,4
+"605","Green Lake",29,0.03,5
+"606","Green Lake",30,0.03,6
+"607","Green Lake",31,0.03,7
+"608","Green Lake",32,0.03,8
+"609","Green Lake",33,0.03,9
+"610","Green Lake",34,0.03,10
+"611","Green Lake",35,0.03,11
+"612","Green Lake",36,0.03,12
+"613","Green Lake",37,0.03,13
+"614","Green Lake",38,0.03,14
+"615","Green Lake",39,0.03,15
+"616","Green Lake",40,0.03,16
+"617","Green Lake",41,0.03,17
+"618","Green Lake",42,0.03,18
+"619","Green Lake",43,0.03,19
+"620","Green Lake",44,0.03,20
+"621","Green Lake",45,0.03,21
+"622","Green Lake",46,0.03,22
+"623","Green Lake",47,0.03,23
+"624","Green Lake",48,0.03,24
+"625","Green Lake",49,0.03,25
+"626","Green Lake",50,0.03,26
+"627","Green Lake",51,0.03,27
+"628","Green Lake",52,0.03,28
+"629","Green Lake",53,0.03,29
+"630","Green Lake",54,0.03,30
+"631","Green Lake",55,0.03,31
+"632","Green Lake",56,0.03,32
+"633","Green Lake",57,0.03,33
+"634","Green Lake",58,0.03,34
+"635","Green Lake",59,0.03,35
+"636","Green Lake",60,0.03,36
+"637","Green Lake",61,0.03,37
+"638","Green Lake",62,0.03,38
+"639","Green Lake",63,0.03,39
+"640","Green Lake",64,0.03,40
+"641","Green Lake",1,0.03,41
+"642","Green Lake",2,0.03,42
+"643","Green Lake",3,0.03,43
+"644","Green Lake",4,0.03,44
+"645","Green Lake",5,0.03,45
+"646","Green Lake",6,0.03,46
+"647","Green Lake",7,0.03,47
+"648","Green Lake",8,0.03,48
+"649","Green Lake",9,0.03,49
+"650","Green Lake",10,0.03,50
+"651","Irvin Lake",11,0.03,1
+"652","Irvin Lake",12,0.03,2
+"653","Irvin Lake",13,0.03,3
+"654","Irvin Lake",14,0.03,4
+"655","Irvin Lake",15,0.03,5
+"656","Irvin Lake",16,0.03,6
+"657","Irvin Lake",17,0.03,7
+"658","Irvin Lake",18,0.03,8
+"659","Irvin Lake",19,0.03,9
+"660","Irvin Lake",20,0.03,10
+"661","Irvin Lake",21,0.03,11
+"662","Irvin Lake",22,0.03,12
+"663","Irvin Lake",23,0.03,13
+"664","Irvin Lake",24,0.03,14
+"665","Irvin Lake",25,0.03,15
+"666","Irvin Lake",26,0.03,16
+"667","Irvin Lake",27,0.03,17
+"668","Irvin Lake",28,0.03,18
+"669","Irvin Lake",29,0.03,19
+"670","Irvin Lake",30,0.03,20
+"671","Irvin Lake",31,0.03,21
+"672","Irvin Lake",32,0.03,22
+"673","Irvin Lake",33,0.03,23
+"674","Irvin Lake",34,0.03,24
+"675","Irvin Lake",35,0.03,25
+"676","Irvin Lake",36,0.03,26
+"677","Irvin Lake",37,0.03,27
+"678","Irvin Lake",38,0.03,28
+"679","Irvin Lake",39,0.03,29
+"680","Irvin Lake",40,0.03,30
+"681","Irvin Lake",41,0.03,31
+"682","Irvin Lake",42,0.03,32
+"683","Irvin Lake",43,0.03,33
+"684","Irvin Lake",44,0.03,34
+"685","Irvin Lake",45,0.03,35
+"686","Irvin Lake",46,0.03,36
+"687","Irvin Lake",47,0.03,37
+"688","Irvin Lake",48,0.03,38
+"689","Irvin Lake",49,0.03,39
+"690","Irvin Lake",50,0.03,40
+"691","Irvin Lake",51,0.03,41
+"692","Irvin Lake",52,0.03,42
+"693","Irvin Lake",53,0.03,43
+"694","Irvin Lake",54,0.03,44
+"695","Irvin Lake",55,0.03,45
+"696","Irvin Lake",56,0.03,46
+"697","Irvin Lake",57,0.03,47
+"698","Irvin Lake",58,0.03,48
+"699","Irvin Lake",59,0.03,49
+"700","Irvin Lake",60,0.03,50
+"701","Jacobson Lake",61,0.03,1
+"702","Jacobson Lake",62,0.03,2
+"703","Jacobson Lake",63,0.03,3
+"704","Jacobson Lake",64,0.03,4
+"705","Jacobson Lake",1,0.03,5
+"706","Jacobson Lake",2,0.03,6
+"707","Jacobson Lake",3,0.03,7
+"708","Jacobson Lake",4,0.03,8
+"709","Jacobson Lake",5,0.03,9
+"710","Jacobson Lake",6,0.03,10
+"711","Jacobson Lake",7,0.03,11
+"712","Jacobson Lake",8,0.03,12
+"713","Jacobson Lake",9,0.03,13
+"714","Jacobson Lake",10,0.03,14
+"715","Jacobson Lake",11,0.03,15
+"716","Jacobson Lake",12,0.03,16
+"717","Jacobson Lake",13,0.03,17
+"718","Jacobson Lake",14,0.03,18
+"719","Jacobson Lake",15,0.03,19
+"720","Jacobson Lake",16,0.03,20
+"721","Jacobson Lake",17,0.03,21
+"722","Jacobson Lake",18,0.03,22
+"723","Jacobson Lake",19,0.03,23
+"724","Jacobson Lake",20,0.03,24
+"725","Jacobson Lake",21,0.03,25
+"726","Jacobson Lake",22,0.03,26
+"727","Jacobson Lake",23,0.03,27
+"728","Jacobson Lake",24,0.03,28
+"729","Jacobson Lake",25,0.03,29
+"730","Jacobson Lake",26,0.03,30
+"731","Jacobson Lake",27,0.03,31
+"732","Jacobson Lake",28,0.03,32
+"733","Jacobson Lake",29,0.03,33
+"734","Jacobson Lake",30,0.03,34
+"735","Jacobson Lake",31,0.03,35
+"736","Jacobson Lake",32,0.03,36
+"737","Jacobson Lake",33,0.03,37
+"738","Jacobson Lake",34,0.03,38
+"739","Jacobson Lake",35,0.03,39
+"740","Jacobson Lake",36,0.03,40
+"741","Jacobson Lake",37,0.03,41
+"742","Jacobson Lake",38,0.03,42
+"743","Jacobson Lake",39,0.03,43
+"744","Jacobson Lake",40,0.03,44
+"745","Jacobson Lake",41,0.03,45
+"746","Jacobson Lake",42,0.03,46
+"747","Jacobson Lake",43,0.03,47
+"748","Jacobson Lake",44,0.03,48
+"749","Jacobson Lake",45,0.03,49
+"750","Jacobson Lake",46,0.03,50
+"751","Kellys Hollow",47,0.03,1
+"752","Kellys Hollow",48,0.03,2
+"753","Kellys Hollow",49,0.03,3
+"754","Kellys Hollow",50,0.03,4
+"755","Kellys Hollow",51,0.03,5
+"756","Kellys Hollow",52,0.03,6
+"757","Kellys Hollow",53,0.03,7
+"758","Kellys Hollow",54,0.03,8
+"759","Kellys Hollow",55,0.03,9
+"760","Kellys Hollow",56,0.03,10
+"761","Kellys Hollow",57,0.03,11
+"762","Kellys Hollow",58,0.03,12
+"763","Kellys Hollow",59,0.03,13
+"764","Kellys Hollow",60,0.03,14
+"765","Kellys Hollow",61,0.03,15
+"766","Kellys Hollow",62,0.03,16
+"767","Kellys Hollow",63,0.03,17
+"768","Kellys Hollow",64,0.03,18
+"769","Kellys Hollow",1,0.03,19
+"770","Kellys Hollow",2,0.03,20
+"771","Kellys Hollow",3,0.03,21
+"772","Kellys Hollow",4,0.03,22
+"773","Kellys Hollow",5,0.03,23
+"774","Kellys Hollow",6,0.03,24
+"775","Kellys Hollow",7,0.03,25
+"776","Kellys Hollow",8,0.03,26
+"777","Kellys Hollow",9,0.03,27
+"778","Kellys Hollow",10,0.03,28
+"779","Kellys Hollow",11,0.03,29
+"780","Kellys Hollow",12,0.03,30
+"781","Kellys Hollow",13,0.03,31
+"782","Kellys Hollow",14,0.03,32
+"783","Kellys Hollow",15,0.03,33
+"784","Kellys Hollow",16,0.03,34
+"785","Kellys Hollow",17,0.03,35
+"786","Kellys Hollow",18,0.03,36
+"787","Kellys Hollow",19,0.03,37
+"788","Kellys Hollow",20,0.03,38
+"789","Kellys Hollow",21,0.03,39
+"790","Kellys Hollow",22,0.03,40
+"791","Kellys Hollow",23,0.03,41
+"792","Kellys Hollow",24,0.03,42
+"793","Kellys Hollow",25,0.03,43
+"794","Kellys Hollow",26,0.03,44
+"795","Kellys Hollow",27,0.03,45
+"796","Kellys Hollow",28,0.03,46
+"797","Kellys Hollow",29,0.03,47
+"798","Kellys Hollow",30,0.03,48
+"799","Kellys Hollow",31,0.03,49
+"800","Kellys Hollow",32,0.03,50
+"801","Kellners Lake",33,0.03,1
+"802","Kellners Lake",34,0.03,2
+"803","Kellners Lake",35,0.03,3
+"804","Kellners Lake",36,0.03,4
+"805","Kellners Lake",37,0.03,5
+"806","Kellners Lake",38,0.03,6
+"807","Kellners Lake",39,0.03,7
+"808","Kellners Lake",40,0.03,8
+"809","Kellners Lake",41,0.03,9
+"810","Kellners Lake",42,0.03,10
+"811","Kellners Lake",43,0.03,11
+"812","Kellners Lake",44,0.03,12
+"813","Kellners Lake",45,0.03,13
+"814","Kellners Lake",46,0.03,14
+"815","Kellners Lake",47,0.03,15
+"816","Kellners Lake",48,0.03,16
+"817","Kellners Lake",49,0.03,17
+"818","Kellners Lake",50,0.03,18
+"819","Kellners Lake",51,0.03,19
+"820","Kellners Lake",52,0.03,20
+"821","Kellners Lake",53,0.03,21
+"822","Kellners Lake",54,0.03,22
+"823","Kellners Lake",55,0.03,23
+"824","Kellners Lake",56,0.03,24
+"825","Kellners Lake",57,0.03,25
+"826","Kellners Lake",58,0.03,26
+"827","Kellners Lake",59,0.03,27
+"828","Kellners Lake",60,0.03,28
+"829","Kellners Lake",61,0.03,29
+"830","Kellners Lake",62,0.03,30
+"831","Kellners Lake",63,0.03,31
+"832","Kellners Lake",64,0.03,32
+"833","Kellners Lake",1,0.03,33
+"834","Kellners Lake",2,0.03,34
+"835","Kellners Lake",3,0.03,35
+"836","Kellners Lake",4,0.03,36
+"837","Kellners Lake",5,0.03,37
+"838","Kellners Lake",6,0.03,38
+"839","Kellners Lake",7,0.03,39
+"840","Kellners Lake",8,0.03,40
+"841","Kellners Lake",9,0.03,41
+"842","Kellners Lake",10,0.03,42
+"843","Kellners Lake",11,0.03,43
+"844","Kellners Lake",12,0.03,44
+"845","Kellners Lake",13,0.03,45
+"846","Kellners Lake",14,0.03,46
+"847","Kellners Lake",15,0.03,47
+"848","Kellners Lake",16,0.03,48
+"849","Kellners Lake",17,0.03,49
+"850","Kellners Lake",18,0.03,50
+"851","Kirchner Marsh",19,0.03,1
+"852","Kirchner Marsh",20,0.03,2
+"853","Kirchner Marsh",21,0.03,3
+"854","Kirchner Marsh",22,0.03,4
+"855","Kirchner Marsh",23,0.03,5
+"856","Kirchner Marsh",24,0.03,6
+"857","Kirchner Marsh",25,0.03,7
+"858","Kirchner Marsh",26,0.03,8
+"859","Kirchner Marsh",27,0.03,9
+"860","Kirchner Marsh",28,0.03,10
+"861","Kirchner Marsh",29,0.03,11
+"862","Kirchner Marsh",30,0.03,12
+"863","Kirchner Marsh",31,0.03,13
+"864","Kirchner Marsh",32,0.03,14
+"865","Kirchner Marsh",33,0.03,15
+"866","Kirchner Marsh",34,0.03,16
+"867","Kirchner Marsh",35,0.03,17
+"868","Kirchner Marsh",36,0.03,18
+"869","Kirchner Marsh",37,0.03,19
+"870","Kirchner Marsh",38,0.03,20
+"871","Kirchner Marsh",39,0.03,21
+"872","Kirchner Marsh",40,0.03,22
+"873","Kirchner Marsh",41,0.03,23
+"874","Kirchner Marsh",42,0.03,24
+"875","Kirchner Marsh",43,0.03,25
+"876","Kirchner Marsh",44,0.03,26
+"877","Kirchner Marsh",45,0.03,27
+"878","Kirchner Marsh",46,0.03,28
+"879","Kirchner Marsh",47,0.03,29
+"880","Kirchner Marsh",48,0.03,30
+"881","Kirchner Marsh",49,0.03,31
+"882","Kirchner Marsh",50,0.03,32
+"883","Kirchner Marsh",51,0.03,33
+"884","Kirchner Marsh",52,0.03,34
+"885","Kirchner Marsh",53,0.03,35
+"886","Kirchner Marsh",54,0.03,36
+"887","Kirchner Marsh",55,0.03,37
+"888","Kirchner Marsh",56,0.03,38
+"889","Kirchner Marsh",57,0.03,39
+"890","Kirchner Marsh",58,0.03,40
+"891","Kirchner Marsh",59,0.03,41
+"892","Kirchner Marsh",60,0.03,42
+"893","Kirchner Marsh",61,0.03,43
+"894","Kirchner Marsh",62,0.03,44
+"895","Kirchner Marsh",63,0.03,45
+"896","Kirchner Marsh",64,0.03,46
+"897","Kirchner Marsh",1,0.03,47
+"898","Kirchner Marsh",2,0.03,48
+"899","Kirchner Marsh",3,0.03,49
+"900","Kirchner Marsh",4,0.03,50
+"901","Kitchner Lake",5,0.03,1
+"902","Kitchner Lake",6,0.03,2
+"903","Kitchner Lake",7,0.03,3
+"904","Kitchner Lake",8,0.03,4
+"905","Kitchner Lake",9,0.03,5
+"906","Kitchner Lake",10,0.03,6
+"907","Kitchner Lake",11,0.03,7
+"908","Kitchner Lake",12,0.03,8
+"909","Kitchner Lake",13,0.03,9
+"910","Kitchner Lake",14,0.03,10
+"911","Kitchner Lake",15,0.03,11
+"912","Kitchner Lake",16,0.03,12
+"913","Kitchner Lake",17,0.03,13
+"914","Kitchner Lake",18,0.03,14
+"915","Kitchner Lake",19,0.03,15
+"916","Kitchner Lake",20,0.03,16
+"917","Kitchner Lake",21,0.03,17
+"918","Kitchner Lake",22,0.03,18
+"919","Kitchner Lake",23,0.03,19
+"920","Kitchner Lake",24,0.03,20
+"921","Kitchner Lake",25,0.03,21
+"922","Kitchner Lake",26,0.03,22
+"923","Kitchner Lake",27,0.03,23
+"924","Kitchner Lake",28,0.03,24
+"925","Kitchner Lake",29,0.03,25
+"926","Kitchner Lake",30,0.03,26
+"927","Kitchner Lake",31,0.03,27
+"928","Kitchner Lake",32,0.03,28
+"929","Kitchner Lake",33,0.03,29
+"930","Kitchner Lake",34,0.03,30
+"931","Kitchner Lake",35,0.03,31
+"932","Kitchner Lake",36,0.03,32
+"933","Kitchner Lake",37,0.03,33
+"934","Kitchner Lake",38,0.03,34
+"935","Kitchner Lake",39,0.03,35
+"936","Kitchner Lake",40,0.03,36
+"937","Kitchner Lake",41,0.03,37
+"938","Kitchner Lake",42,0.03,38
+"939","Kitchner Lake",43,0.03,39
+"940","Kitchner Lake",44,0.03,40
+"941","Kitchner Lake",45,0.03,41
+"942","Kitchner Lake",46,0.03,42
+"943","Kitchner Lake",47,0.03,43
+"944","Kitchner Lake",48,0.03,44
+"945","Kitchner Lake",49,0.03,45
+"946","Kitchner Lake",50,0.03,46
+"947","Kitchner Lake",51,0.03,47
+"948","Kitchner Lake",52,0.03,48
+"949","Kitchner Lake",53,0.03,49
+"950","Kitchner Lake",54,0.03,50
+"951","Kotiranta Lake",55,0.03,1
+"952","Kotiranta Lake",56,0.03,2
+"953","Kotiranta Lake",57,0.03,3
+"954","Kotiranta Lake",58,0.03,4
+"955","Kotiranta Lake",59,0.03,5
+"956","Kotiranta Lake",60,0.03,6
+"957","Kotiranta Lake",61,0.03,7
+"958","Kotiranta Lake",62,0.03,8
+"959","Kotiranta Lake",63,0.03,9
+"960","Kotiranta Lake",64,0.03,10
+"961","Kotiranta Lake",1,0.03,11
+"962","Kotiranta Lake",2,0.03,12
+"963","Kotiranta Lake",3,0.03,13
+"964","Kotiranta Lake",4,0.03,14
+"965","Kotiranta Lake",5,0.03,15
+"966","Kotiranta Lake",6,0.03,16
+"967","Kotiranta Lake",7,0.03,17
+"968","Kotiranta Lake",8,0.03,18
+"969","Kotiranta Lake",9,0.03,19
+"970","Kotiranta Lake",10,0.03,20
+"971","Kotiranta Lake",11,0.03,21
+"972","Kotiranta Lake",12,0.03,22
+"973","Kotiranta Lake",13,0.03,23
+"974","Kotiranta Lake",14,0.03,24
+"975","Kotiranta Lake",15,0.03,25
+"976","Kotiranta Lake",16,0.03,26
+"977","Kotiranta Lake",17,0.03,27
+"978","Kotiranta Lake",18,0.03,28
+"979","Kotiranta Lake",19,0.03,29
+"980","Kotiranta Lake",20,0.03,30
+"981","Kotiranta Lake",21,0.03,31
+"982","Kotiranta Lake",22,0.03,32
+"983","Kotiranta Lake",23,0.03,33
+"984","Kotiranta Lake",24,0.03,34
+"985","Kotiranta Lake",25,0.03,35
+"986","Kotiranta Lake",26,0.03,36
+"987","Kotiranta Lake",27,0.03,37
+"988","Kotiranta Lake",28,0.03,38
+"989","Kotiranta Lake",29,0.03,39
+"990","Kotiranta Lake",30,0.03,40
+"991","Kotiranta Lake",31,0.03,41
+"992","Kotiranta Lake",32,0.03,42
+"993","Kotiranta Lake",33,0.03,43
+"994","Kotiranta Lake",34,0.03,44
+"995","Kotiranta Lake",35,0.03,45
+"996","Kotiranta Lake",36,0.03,46
+"997","Kotiranta Lake",37,0.03,47
+"998","Kotiranta Lake",38,0.03,48
+"999","Kotiranta Lake",39,0.03,49
+"1000","Kotiranta Lake",40,0.03,50
+"1001","Lake Ann",41,0.03,1
+"1002","Lake Ann",42,0.03,2
+"1003","Lake Ann",43,0.03,3
+"1004","Lake Ann",44,0.03,4
+"1005","Lake Ann",45,0.03,5
+"1006","Lake Ann",46,0.03,6
+"1007","Lake Ann",47,0.03,7
+"1008","Lake Ann",48,0.03,8
+"1009","Lake Ann",49,0.03,9
+"1010","Lake Ann",50,0.03,10
+"1011","Lake Ann",51,0.03,11
+"1012","Lake Ann",52,0.03,12
+"1013","Lake Ann",53,0.03,13
+"1014","Lake Ann",54,0.03,14
+"1015","Lake Ann",55,0.03,15
+"1016","Lake Ann",56,0.03,16
+"1017","Lake Ann",57,0.03,17
+"1018","Lake Ann",58,0.03,18
+"1019","Lake Ann",59,0.03,19
+"1020","Lake Ann",60,0.03,20
+"1021","Lake Ann",61,0.03,21
+"1022","Lake Ann",62,0.03,22
+"1023","Lake Ann",63,0.03,23
+"1024","Lake Ann",64,0.03,24
+"1025","Lake Ann",1,0.03,25
+"1026","Lake Ann",2,0.03,26
+"1027","Lake Ann",3,0.03,27
+"1028","Lake Ann",4,0.03,28
+"1029","Lake Ann",5,0.03,29
+"1030","Lake Ann",6,0.03,30
+"1031","Lake Ann",7,0.03,31
+"1032","Lake Ann",8,0.03,32
+"1033","Lake Ann",9,0.03,33
+"1034","Lake Ann",10,0.03,34
+"1035","Lake Ann",11,0.03,35
+"1036","Lake Ann",12,0.03,36
+"1037","Lake Ann",13,0.03,37
+"1038","Lake Ann",14,0.03,38
+"1039","Lake Ann",15,0.03,39
+"1040","Lake Ann",16,0.03,40
+"1041","Lake Ann",17,0.03,41
+"1042","Lake Ann",18,0.03,42
+"1043","Lake Ann",19,0.03,43
+"1044","Lake Ann",20,0.03,44
+"1045","Lake Ann",21,0.03,45
+"1046","Lake Ann",22,0.03,46
+"1047","Lake Ann",23,0.03,47
+"1048","Lake Ann",24,0.03,48
+"1049","Lake Ann",25,0.03,49
+"1050","Lake Ann",26,0.03,50
+"1051","Lily Lake",27,0.03,1
+"1052","Lily Lake",28,0.03,2
+"1053","Lily Lake",29,0.03,3
+"1054","Lily Lake",30,0.03,4
+"1055","Lily Lake",31,0.03,5
+"1056","Lily Lake",32,0.03,6
+"1057","Lily Lake",33,0.03,7
+"1058","Lily Lake",34,0.03,8
+"1059","Lily Lake",35,0.03,9
+"1060","Lily Lake",36,0.03,10
+"1061","Lily Lake",37,0.03,11
+"1062","Lily Lake",38,0.03,12
+"1063","Lily Lake",39,0.03,13
+"1064","Lily Lake",40,0.03,14
+"1065","Lily Lake",41,0.03,15
+"1066","Lily Lake",42,0.03,16
+"1067","Lily Lake",43,0.03,17
+"1068","Lily Lake",44,0.03,18
+"1069","Lily Lake",45,0.03,19
+"1070","Lily Lake",46,0.03,20
+"1071","Lily Lake",47,0.03,21
+"1072","Lily Lake",48,0.03,22
+"1073","Lily Lake",49,0.03,23
+"1074","Lily Lake",50,0.03,24
+"1075","Lily Lake",51,0.03,25
+"1076","Lily Lake",52,0.03,26
+"1077","Lily Lake",53,0.03,27
+"1078","Lily Lake",54,0.03,28
+"1079","Lily Lake",55,0.03,29
+"1080","Lily Lake",56,0.03,30
+"1081","Lily Lake",57,0.03,31
+"1082","Lily Lake",58,0.03,32
+"1083","Lily Lake",59,0.03,33
+"1084","Lily Lake",60,0.03,34
+"1085","Lily Lake",61,0.03,35
+"1086","Lily Lake",62,0.03,36
+"1087","Lily Lake",63,0.03,37
+"1088","Lily Lake",64,0.03,38
+"1089","Lily Lake",1,0.03,39
+"1090","Lily Lake",2,0.03,40
+"1091","Lily Lake",3,0.03,41
+"1092","Lily Lake",4,0.03,42
+"1093","Lily Lake",5,0.03,43
+"1094","Lily Lake",6,0.03,44
+"1095","Lily Lake",7,0.03,45
+"1096","Lily Lake",8,0.03,46
+"1097","Lily Lake",9,0.03,47
+"1098","Lily Lake",10,0.03,48
+"1099","Lily Lake",11,0.03,49
+"1100","Lily Lake",12,0.03,50
+"1101","Little Bass Lake",13,0.03,1
+"1102","Little Bass Lake",14,0.03,2
+"1103","Little Bass Lake",15,0.03,3
+"1104","Little Bass Lake",16,0.03,4
+"1105","Little Bass Lake",17,0.03,5
+"1106","Little Bass Lake",18,0.03,6
+"1107","Little Bass Lake",19,0.03,7
+"1108","Little Bass Lake",20,0.03,8
+"1109","Little Bass Lake",21,0.03,9
+"1110","Little Bass Lake",22,0.03,10
+"1111","Little Bass Lake",23,0.03,11
+"1112","Little Bass Lake",24,0.03,12
+"1113","Little Bass Lake",25,0.03,13
+"1114","Little Bass Lake",26,0.03,14
+"1115","Little Bass Lake",27,0.03,15
+"1116","Little Bass Lake",28,0.03,16
+"1117","Little Bass Lake",29,0.03,17
+"1118","Little Bass Lake",30,0.03,18
+"1119","Little Bass Lake",31,0.03,19
+"1120","Little Bass Lake",32,0.03,20
+"1121","Little Bass Lake",33,0.03,21
+"1122","Little Bass Lake",34,0.03,22
+"1123","Little Bass Lake",35,0.03,23
+"1124","Little Bass Lake",36,0.03,24
+"1125","Little Bass Lake",37,0.03,25
+"1126","Little Bass Lake",38,0.03,26
+"1127","Little Bass Lake",39,0.03,27
+"1128","Little Bass Lake",40,0.03,28
+"1129","Little Bass Lake",41,0.03,29
+"1130","Little Bass Lake",42,0.03,30
+"1131","Little Bass Lake",43,0.03,31
+"1132","Little Bass Lake",44,0.03,32
+"1133","Little Bass Lake",45,0.03,33
+"1134","Little Bass Lake",46,0.03,34
+"1135","Little Bass Lake",47,0.03,35
+"1136","Little Bass Lake",48,0.03,36
+"1137","Little Bass Lake",49,0.03,37
+"1138","Little Bass Lake",50,0.03,38
+"1139","Little Bass Lake",51,0.03,39
+"1140","Little Bass Lake",52,0.03,40
+"1141","Little Bass Lake",53,0.03,41
+"1142","Little Bass Lake",54,0.03,42
+"1143","Little Bass Lake",55,0.03,43
+"1144","Little Bass Lake",56,0.03,44
+"1145","Little Bass Lake",57,0.03,45
+"1146","Little Bass Lake",58,0.03,46
+"1147","Little Bass Lake",59,0.03,47
+"1148","Little Bass Lake",60,0.03,48
+"1149","Little Bass Lake",61,0.03,49
+"1150","Little Bass Lake",62,0.03,50
+"1151","Stewart's Dark Lake",63,0.03,1
+"1152","Stewart's Dark Lake",64,0.03,2
+"1153","Stewart's Dark Lake",1,0.03,3
+"1154","Stewart's Dark Lake",2,0.03,4
+"1155","Stewart's Dark Lake",3,0.03,5
+"1156","Stewart's Dark Lake",4,0.03,6
+"1157","Stewart's Dark Lake",5,0.03,7
+"1158","Stewart's Dark Lake",6,0.03,8
+"1159","Stewart's Dark Lake",7,0.03,9
+"1160","Stewart's Dark Lake",8,0.03,10
+"1161","Stewart's Dark Lake",9,0.03,11
+"1162","Stewart's Dark Lake",10,0.03,12
+"1163","Stewart's Dark Lake",11,0.03,13
+"1164","Stewart's Dark Lake",12,0.03,14
+"1165","Stewart's Dark Lake",13,0.03,15
+"1166","Stewart's Dark Lake",14,0.03,16
+"1167","Stewart's Dark Lake",15,0.03,17
+"1168","Stewart's Dark Lake",16,0.03,18
+"1169","Stewart's Dark Lake",17,0.03,19
+"1170","Stewart's Dark Lake",18,0.03,20
+"1171","Stewart's Dark Lake",19,0.03,21
+"1172","Stewart's Dark Lake",20,0.03,22
+"1173","Stewart's Dark Lake",21,0.03,23
+"1174","Stewart's Dark Lake",22,0.03,24
+"1175","Stewart's Dark Lake",23,0.03,25
+"1176","Stewart's Dark Lake",24,0.03,26
+"1177","Stewart's Dark Lake",25,0.03,27
+"1178","Stewart's Dark Lake",26,0.03,28
+"1179","Stewart's Dark Lake",27,0.03,29
+"1180","Stewart's Dark Lake",28,0.03,30
+"1181","Stewart's Dark Lake",29,0.03,31
+"1182","Stewart's Dark Lake",30,0.03,32
+"1183","Stewart's Dark Lake",31,0.03,33
+"1184","Stewart's Dark Lake",32,0.03,34
+"1185","Stewart's Dark Lake",33,0.03,35
+"1186","Stewart's Dark Lake",34,0.03,36
+"1187","Stewart's Dark Lake",35,0.03,37
+"1188","Stewart's Dark Lake",36,0.03,38
+"1189","Stewart's Dark Lake",37,0.03,39
+"1190","Stewart's Dark Lake",38,0.03,40
+"1191","Stewart's Dark Lake",39,0.03,41
+"1192","Stewart's Dark Lake",40,0.03,42
+"1193","Stewart's Dark Lake",41,0.03,43
+"1194","Stewart's Dark Lake",42,0.03,44
+"1195","Stewart's Dark Lake",43,0.03,45
+"1196","Stewart's Dark Lake",44,0.03,46
+"1197","Stewart's Dark Lake",45,0.03,47
+"1198","Stewart's Dark Lake",46,0.03,48
+"1199","Stewart's Dark Lake",47,0.03,49
+"1200","Stewart's Dark Lake",48,0.03,50
+"1201","Lake Mendota",49,0.03,1
+"1202","Lake Mendota",50,0.03,2
+"1203","Lake Mendota",51,0.03,3
+"1204","Lake Mendota",52,0.03,4
+"1205","Lake Mendota",53,0.03,5
+"1206","Lake Mendota",54,0.03,6
+"1207","Lake Mendota",55,0.03,7
+"1208","Lake Mendota",56,0.03,8
+"1209","Lake Mendota",57,0.03,9
+"1210","Lake Mendota",58,0.03,10
+"1211","Lake Mendota",59,0.03,11
+"1212","Lake Mendota",60,0.03,12
+"1213","Lake Mendota",61,0.03,13
+"1214","Lake Mendota",62,0.03,14
+"1215","Lake Mendota",63,0.03,15
+"1216","Lake Mendota",64,0.03,16
+"1217","Lake Mendota",1,0.03,17
+"1218","Lake Mendota",2,0.03,18
+"1219","Lake Mendota",3,0.03,19
+"1220","Lake Mendota",4,0.03,20
+"1221","Lake Mendota",5,0.03,21
+"1222","Lake Mendota",6,0.03,22
+"1223","Lake Mendota",7,0.03,23
+"1224","Lake Mendota",8,0.03,24
+"1225","Lake Mendota",9,0.03,25
+"1226","Lake Mendota",10,0.03,26
+"1227","Lake Mendota",11,0.03,27
+"1228","Lake Mendota",12,0.03,28
+"1229","Lake Mendota",13,0.03,29
+"1230","Lake Mendota",14,0.03,30
+"1231","Lake Mendota",15,0.03,31
+"1232","Lake Mendota",16,0.03,32
+"1233","Lake Mendota",17,0.03,33
+"1234","Lake Mendota",18,0.03,34
+"1235","Lake Mendota",19,0.03,35
+"1236","Lake Mendota",20,0.03,36
+"1237","Lake Mendota",21,0.03,37
+"1238","Lake Mendota",22,0.03,38
+"1239","Lake Mendota",23,0.03,39
+"1240","Lake Mendota",24,0.03,40
+"1241","Lake Mendota",25,0.03,41
+"1242","Lake Mendota",26,0.03,42
+"1243","Lake Mendota",27,0.03,43
+"1244","Lake Mendota",28,0.03,44
+"1245","Lake Mendota",29,0.03,45
+"1246","Lake Mendota",30,0.03,46
+"1247","Lake Mendota",31,0.03,47
+"1248","Lake Mendota",32,0.03,48
+"1249","Lake Mendota",33,0.03,49
+"1250","Lake Mendota",34,0.03,50
+"1251","Lake Minnie",35,0.03,1
+"1252","Lake Minnie",36,0.03,2
+"1253","Lake Minnie",37,0.03,3
+"1254","Lake Minnie",38,0.03,4
+"1255","Lake Minnie",39,0.03,5
+"1256","Lake Minnie",40,0.03,6
+"1257","Lake Minnie",41,0.03,7
+"1258","Lake Minnie",42,0.03,8
+"1259","Lake Minnie",43,0.03,9
+"1260","Lake Minnie",44,0.03,10
+"1261","Lake Minnie",45,0.03,11
+"1262","Lake Minnie",46,0.03,12
+"1263","Lake Minnie",47,0.03,13
+"1264","Lake Minnie",48,0.03,14
+"1265","Lake Minnie",49,0.03,15
+"1266","Lake Minnie",50,0.03,16
+"1267","Lake Minnie",51,0.03,17
+"1268","Lake Minnie",52,0.03,18
+"1269","Lake Minnie",53,0.03,19
+"1270","Lake Minnie",54,0.03,20
+"1271","Lake Minnie",55,0.03,21
+"1272","Lake Minnie",56,0.03,22
+"1273","Lake Minnie",57,0.03,23
+"1274","Lake Minnie",58,0.03,24
+"1275","Lake Minnie",59,0.03,25
+"1276","Lake Minnie",60,0.03,26
+"1277","Lake Minnie",61,0.03,27
+"1278","Lake Minnie",62,0.03,28
+"1279","Lake Minnie",63,0.03,29
+"1280","Lake Minnie",64,0.03,30
+"1281","Lake Minnie",1,0.03,31
+"1282","Lake Minnie",2,0.03,32
+"1283","Lake Minnie",3,0.03,33
+"1284","Lake Minnie",4,0.03,34
+"1285","Lake Minnie",5,0.03,35
+"1286","Lake Minnie",6,0.03,36
+"1287","Lake Minnie",7,0.03,37
+"1288","Lake Minnie",8,0.03,38
+"1289","Lake Minnie",9,0.03,39
+"1290","Lake Minnie",10,0.03,40
+"1291","Lake Minnie",11,0.03,41
+"1292","Lake Minnie",12,0.03,42
+"1293","Lake Minnie",13,0.03,43
+"1294","Lake Minnie",14,0.03,44
+"1295","Lake Minnie",15,0.03,45
+"1296","Lake Minnie",16,0.03,46
+"1297","Lake Minnie",17,0.03,47
+"1298","Lake Minnie",18,0.03,48
+"1299","Lake Minnie",19,0.03,49
+"1300","Lake Minnie",20,0.03,50
+"1301","Mud Lake",21,0.03,1
+"1302","Mud Lake",22,0.03,2
+"1303","Mud Lake",23,0.03,3
+"1304","Mud Lake",24,0.03,4
+"1305","Mud Lake",25,0.03,5
+"1306","Mud Lake",26,0.03,6
+"1307","Mud Lake",27,0.03,7
+"1308","Mud Lake",28,0.03,8
+"1309","Mud Lake",29,0.03,9
+"1310","Mud Lake",30,0.03,10
+"1311","Mud Lake",31,0.03,11
+"1312","Mud Lake",32,0.03,12
+"1313","Mud Lake",33,0.03,13
+"1314","Mud Lake",34,0.03,14
+"1315","Mud Lake",35,0.03,15
+"1316","Mud Lake",36,0.03,16
+"1317","Mud Lake",37,0.03,17
+"1318","Mud Lake",38,0.03,18
+"1319","Mud Lake",39,0.03,19
+"1320","Mud Lake",40,0.03,20
+"1321","Mud Lake",41,0.03,21
+"1322","Mud Lake",42,0.03,22
+"1323","Mud Lake",43,0.03,23
+"1324","Mud Lake",44,0.03,24
+"1325","Mud Lake",45,0.03,25
+"1326","Mud Lake",46,0.03,26
+"1327","Mud Lake",47,0.03,27
+"1328","Mud Lake",48,0.03,28
+"1329","Mud Lake",49,0.03,29
+"1330","Mud Lake",50,0.03,30
+"1331","Mud Lake",51,0.03,31
+"1332","Mud Lake",52,0.03,32
+"1333","Mud Lake",53,0.03,33
+"1334","Mud Lake",54,0.03,34
+"1335","Mud Lake",55,0.03,35
+"1336","Mud Lake",56,0.03,36
+"1337","Mud Lake",57,0.03,37
+"1338","Mud Lake",58,0.03,38
+"1339","Mud Lake",59,0.03,39
+"1340","Mud Lake",60,0.03,40
+"1341","Mud Lake",61,0.03,41
+"1342","Mud Lake",62,0.03,42
+"1343","Mud Lake",63,0.03,43
+"1344","Mud Lake",64,0.03,44
+"1345","Mud Lake",1,0.03,45
+"1346","Mud Lake",2,0.03,46
+"1347","Mud Lake",3,0.03,47
+"1348","Mud Lake",4,0.03,48
+"1349","Mud Lake",5,0.03,49
+"1350","Mud Lake",6,0.03,50
+"1351","Myrtle Lake",7,0.03,1
+"1352","Myrtle Lake",8,0.03,2
+"1353","Myrtle Lake",9,0.03,3
+"1354","Myrtle Lake",10,0.03,4
+"1355","Myrtle Lake",11,0.03,5
+"1356","Myrtle Lake",12,0.03,6
+"1357","Myrtle Lake",13,0.03,7
+"1358","Myrtle Lake",14,0.03,8
+"1359","Myrtle Lake",15,0.03,9
+"1360","Myrtle Lake",16,0.03,10
+"1361","Myrtle Lake",17,0.03,11
+"1362","Myrtle Lake",18,0.03,12
+"1363","Myrtle Lake",19,0.03,13
+"1364","Myrtle Lake",20,0.03,14
+"1365","Myrtle Lake",21,0.03,15
+"1366","Myrtle Lake",22,0.03,16
+"1367","Myrtle Lake",23,0.03,17
+"1368","Myrtle Lake",24,0.03,18
+"1369","Myrtle Lake",25,0.03,19
+"1370","Myrtle Lake",26,0.03,20
+"1371","Myrtle Lake",27,0.03,21
+"1372","Myrtle Lake",28,0.03,22
+"1373","Myrtle Lake",29,0.03,23
+"1374","Myrtle Lake",30,0.03,24
+"1375","Myrtle Lake",31,0.03,25
+"1376","Myrtle Lake",32,0.03,26
+"1377","Myrtle Lake",33,0.03,27
+"1378","Myrtle Lake",34,0.03,28
+"1379","Myrtle Lake",35,0.03,29
+"1380","Myrtle Lake",36,0.03,30
+"1381","Myrtle Lake",37,0.03,31
+"1382","Myrtle Lake",38,0.03,32
+"1383","Myrtle Lake",39,0.03,33
+"1384","Myrtle Lake",40,0.03,34
+"1385","Myrtle Lake",41,0.03,35
+"1386","Myrtle Lake",42,0.03,36
+"1387","Myrtle Lake",43,0.03,37
+"1388","Myrtle Lake",44,0.03,38
+"1389","Myrtle Lake",45,0.03,39
+"1390","Myrtle Lake",46,0.03,40
+"1391","Myrtle Lake",47,0.03,41
+"1392","Myrtle Lake",48,0.03,42
+"1393","Myrtle Lake",49,0.03,43
+"1394","Myrtle Lake",50,0.03,44
+"1395","Myrtle Lake",51,0.03,45
+"1396","Myrtle Lake",52,0.03,46
+"1397","Myrtle Lake",53,0.03,47
+"1398","Myrtle Lake",54,0.03,48
+"1399","Myrtle Lake",55,0.03,49
+"1400","Myrtle Lake",56,0.03,50
+"1401","Pogonia Bog Pond",57,0.03,1
+"1402","Pogonia Bog Pond",58,0.03,2
+"1403","Pogonia Bog Pond",59,0.03,3
+"1404","Pogonia Bog Pond",60,0.03,4
+"1405","Pogonia Bog Pond",61,0.03,5
+"1406","Pogonia Bog Pond",62,0.03,6
+"1407","Pogonia Bog Pond",63,0.03,7
+"1408","Pogonia Bog Pond",64,0.03,8
+"1409","Pogonia Bog Pond",1,0.03,9
+"1410","Pogonia Bog Pond",2,0.03,10
+"1411","Pogonia Bog Pond",3,0.03,11
+"1412","Pogonia Bog Pond",4,0.03,12
+"1413","Pogonia Bog Pond",5,0.03,13
+"1414","Pogonia Bog Pond",6,0.03,14
+"1415","Pogonia Bog Pond",7,0.03,15
+"1416","Pogonia Bog Pond",8,0.03,16
+"1417","Pogonia Bog Pond",9,0.03,17
+"1418","Pogonia Bog Pond",10,0.03,18
+"1419","Pogonia Bog Pond",11,0.03,19
+"1420","Pogonia Bog Pond",12,0.03,20
+"1421","Pogonia Bog Pond",13,0.03,21
+"1422","Pogonia Bog Pond",14,0.03,22
+"1423","Pogonia Bog Pond",15,0.03,23
+"1424","Pogonia Bog Pond",16,0.03,24
+"1425","Pogonia Bog Pond",17,0.03,25
+"1426","Pogonia Bog Pond",18,0.03,26
+"1427","Pogonia Bog Pond",19,0.03,27
+"1428","Pogonia Bog Pond",20,0.03,28
+"1429","Pogonia Bog Pond",21,0.03,29
+"1430","Pogonia Bog Pond",22,0.03,30
+"1431","Pogonia Bog Pond",23,0.03,31
+"1432","Pogonia Bog Pond",24,0.03,32
+"1433","Pogonia Bog Pond",25,0.03,33
+"1434","Pogonia Bog Pond",26,0.03,34
+"1435","Pogonia Bog Pond",27,0.03,35
+"1436","Pogonia Bog Pond",28,0.03,36
+"1437","Pogonia Bog Pond",29,0.03,37
+"1438","Pogonia Bog Pond",30,0.03,38
+"1439","Pogonia Bog Pond",31,0.03,39
+"1440","Pogonia Bog Pond",32,0.03,40
+"1441","Pogonia Bog Pond",33,0.03,41
+"1442","Pogonia Bog Pond",34,0.03,42
+"1443","Pogonia Bog Pond",35,0.03,43
+"1444","Pogonia Bog Pond",36,0.03,44
+"1445","Pogonia Bog Pond",37,0.03,45
+"1446","Pogonia Bog Pond",38,0.03,46
+"1447","Pogonia Bog Pond",39,0.03,47
+"1448","Pogonia Bog Pond",40,0.03,48
+"1449","Pogonia Bog Pond",41,0.03,49
+"1450","Pogonia Bog Pond",42,0.03,50
+"1451","Portage Lake",43,0.03,1
+"1452","Portage Lake",44,0.03,2
+"1453","Portage Lake",45,0.03,3
+"1454","Portage Lake",46,0.03,4
+"1455","Portage Lake",47,0.03,5
+"1456","Portage Lake",48,0.03,6
+"1457","Portage Lake",49,0.03,7
+"1458","Portage Lake",50,0.03,8
+"1459","Portage Lake",51,0.03,9
+"1460","Portage Lake",52,0.03,10
+"1461","Portage Lake",53,0.03,11
+"1462","Portage Lake",54,0.03,12
+"1463","Portage Lake",55,0.03,13
+"1464","Portage Lake",56,0.03,14
+"1465","Portage Lake",57,0.03,15
+"1466","Portage Lake",58,0.03,16
+"1467","Portage Lake",59,0.03,17
+"1468","Portage Lake",60,0.03,18
+"1469","Portage Lake",61,0.03,19
+"1470","Portage Lake",62,0.03,20
+"1471","Portage Lake",63,0.03,21
+"1472","Portage Lake",64,0.03,22
+"1473","Portage Lake",1,0.03,23
+"1474","Portage Lake",2,0.03,24
+"1475","Portage Lake",3,0.03,25
+"1476","Portage Lake",4,0.03,26
+"1477","Portage Lake",5,0.03,27
+"1478","Portage Lake",6,0.03,28
+"1479","Portage Lake",7,0.03,29
+"1480","Portage Lake",8,0.03,30
+"1481","Portage Lake",9,0.03,31
+"1482","Portage Lake",10,0.03,32
+"1483","Portage Lake",11,0.03,33
+"1484","Portage Lake",12,0.03,34
+"1485","Portage Lake",13,0.03,35
+"1486","Portage Lake",14,0.03,36
+"1487","Portage Lake",15,0.03,37
+"1488","Portage Lake",16,0.03,38
+"1489","Portage Lake",17,0.03,39
+"1490","Portage Lake",18,0.03,40
+"1491","Portage Lake",19,0.03,41
+"1492","Portage Lake",20,0.03,42
+"1493","Portage Lake",21,0.03,43
+"1494","Portage Lake",22,0.03,44
+"1495","Portage Lake",23,0.03,45
+"1496","Portage Lake",24,0.03,46
+"1497","Portage Lake",25,0.03,47
+"1498","Portage Lake",26,0.03,48
+"1499","Portage Lake",27,0.03,49
+"1500","Portage Lake",28,0.03,50
+"1501","Radtke Lake",29,0.03,1
+"1502","Radtke Lake",30,0.03,2
+"1503","Radtke Lake",31,0.03,3
+"1504","Radtke Lake",32,0.03,4
+"1505","Radtke Lake",33,0.03,5
+"1506","Radtke Lake",34,0.03,6
+"1507","Radtke Lake",35,0.03,7
+"1508","Radtke Lake",36,0.03,8
+"1509","Radtke Lake",37,0.03,9
+"1510","Radtke Lake",38,0.03,10
+"1511","Radtke Lake",39,0.03,11
+"1512","Radtke Lake",40,0.03,12
+"1513","Radtke Lake",41,0.03,13
+"1514","Radtke Lake",42,0.03,14
+"1515","Radtke Lake",43,0.03,15
+"1516","Radtke Lake",44,0.03,16
+"1517","Radtke Lake",45,0.03,17
+"1518","Radtke Lake",46,0.03,18
+"1519","Radtke Lake",47,0.03,19
+"1520","Radtke Lake",48,0.03,20
+"1521","Radtke Lake",49,0.03,21
+"1522","Radtke Lake",50,0.03,22
+"1523","Radtke Lake",51,0.03,23
+"1524","Radtke Lake",52,0.03,24
+"1525","Radtke Lake",53,0.03,25
+"1526","Radtke Lake",54,0.03,26
+"1527","Radtke Lake",55,0.03,27
+"1528","Radtke Lake",56,0.03,28
+"1529","Radtke Lake",57,0.03,29
+"1530","Radtke Lake",58,0.03,30
+"1531","Radtke Lake",59,0.03,31
+"1532","Radtke Lake",60,0.03,32
+"1533","Radtke Lake",61,0.03,33
+"1534","Radtke Lake",62,0.03,34
+"1535","Radtke Lake",63,0.03,35
+"1536","Radtke Lake",64,0.03,36
+"1537","Radtke Lake",1,0.03,37
+"1538","Radtke Lake",2,0.03,38
+"1539","Radtke Lake",3,0.03,39
+"1540","Radtke Lake",4,0.03,40
+"1541","Radtke Lake",5,0.03,41
+"1542","Radtke Lake",6,0.03,42
+"1543","Radtke Lake",7,0.03,43
+"1544","Radtke Lake",8,0.03,44
+"1545","Radtke Lake",9,0.03,45
+"1546","Radtke Lake",10,0.03,46
+"1547","Radtke Lake",11,0.03,47
+"1548","Radtke Lake",12,0.03,48
+"1549","Radtke Lake",13,0.03,49
+"1550","Radtke Lake",14,0.03,50
+"1551","Reidel Lake",15,0.03,1
+"1552","Reidel Lake",16,0.03,2
+"1553","Reidel Lake",17,0.03,3
+"1554","Reidel Lake",18,0.03,4
+"1555","Reidel Lake",19,0.03,5
+"1556","Reidel Lake",20,0.03,6
+"1557","Reidel Lake",21,0.03,7
+"1558","Reidel Lake",22,0.03,8
+"1559","Reidel Lake",23,0.03,9
+"1560","Reidel Lake",24,0.03,10
+"1561","Reidel Lake",25,0.03,11
+"1562","Reidel Lake",26,0.03,12
+"1563","Reidel Lake",27,0.03,13
+"1564","Reidel Lake",28,0.03,14
+"1565","Reidel Lake",29,0.03,15
+"1566","Reidel Lake",30,0.03,16
+"1567","Reidel Lake",31,0.03,17
+"1568","Reidel Lake",32,0.03,18
+"1569","Reidel Lake",33,0.03,19
+"1570","Reidel Lake",34,0.03,20
+"1571","Reidel Lake",35,0.03,21
+"1572","Reidel Lake",36,0.03,22
+"1573","Reidel Lake",37,0.03,23
+"1574","Reidel Lake",38,0.03,24
+"1575","Reidel Lake",39,0.03,25
+"1576","Reidel Lake",40,0.03,26
+"1577","Reidel Lake",41,0.03,27
+"1578","Reidel Lake",42,0.03,28
+"1579","Reidel Lake",43,0.03,29
+"1580","Reidel Lake",44,0.03,30
+"1581","Reidel Lake",45,0.03,31
+"1582","Reidel Lake",46,0.03,32
+"1583","Reidel Lake",47,0.03,33
+"1584","Reidel Lake",48,0.03,34
+"1585","Reidel Lake",49,0.03,35
+"1586","Reidel Lake",50,0.03,36
+"1587","Reidel Lake",51,0.03,37
+"1588","Reidel Lake",52,0.03,38
+"1589","Reidel Lake",53,0.03,39
+"1590","Reidel Lake",54,0.03,40
+"1591","Reidel Lake",55,0.03,41
+"1592","Reidel Lake",56,0.03,42
+"1593","Reidel Lake",57,0.03,43
+"1594","Reidel Lake",58,0.03,44
+"1595","Reidel Lake",59,0.03,45
+"1596","Reidel Lake",60,0.03,46
+"1597","Reidel Lake",61,0.03,47
+"1598","Reidel Lake",62,0.03,48
+"1599","Reidel Lake",63,0.03,49
+"1600","Reidel Lake",64,0.03,50
+"1601","Rossburg Bog",1,0.03,1
+"1602","Rossburg Bog",2,0.03,2
+"1603","Rossburg Bog",3,0.03,3
+"1604","Rossburg Bog",4,0.03,4
+"1605","Rossburg Bog",5,0.03,5
+"1606","Rossburg Bog",6,0.03,6
+"1607","Rossburg Bog",7,0.03,7
+"1608","Rossburg Bog",8,0.03,8
+"1609","Rossburg Bog",9,0.03,9
+"1610","Rossburg Bog",10,0.03,10
+"1611","Rossburg Bog",11,0.03,11
+"1612","Rossburg Bog",12,0.03,12
+"1613","Rossburg Bog",13,0.03,13
+"1614","Rossburg Bog",14,0.03,14
+"1615","Rossburg Bog",15,0.03,15
+"1616","Rossburg Bog",16,0.03,16
+"1617","Rossburg Bog",17,0.03,17
+"1618","Rossburg Bog",18,0.03,18
+"1619","Rossburg Bog",19,0.03,19
+"1620","Rossburg Bog",20,0.03,20
+"1621","Rossburg Bog",21,0.03,21
+"1622","Rossburg Bog",22,0.03,22
+"1623","Rossburg Bog",23,0.03,23
+"1624","Rossburg Bog",24,0.03,24
+"1625","Rossburg Bog",25,0.03,25
+"1626","Rossburg Bog",26,0.03,26
+"1627","Rossburg Bog",27,0.03,27
+"1628","Rossburg Bog",28,0.03,28
+"1629","Rossburg Bog",29,0.03,29
+"1630","Rossburg Bog",30,0.03,30
+"1631","Rossburg Bog",31,0.03,31
+"1632","Rossburg Bog",32,0.03,32
+"1633","Rossburg Bog",33,0.03,33
+"1634","Rossburg Bog",34,0.03,34
+"1635","Rossburg Bog",35,0.03,35
+"1636","Rossburg Bog",36,0.03,36
+"1637","Rossburg Bog",37,0.03,37
+"1638","Rossburg Bog",38,0.03,38
+"1639","Rossburg Bog",39,0.03,39
+"1640","Rossburg Bog",40,0.03,40
+"1641","Rossburg Bog",41,0.03,41
+"1642","Rossburg Bog",42,0.03,42
+"1643","Rossburg Bog",43,0.03,43
+"1644","Rossburg Bog",44,0.03,44
+"1645","Rossburg Bog",45,0.03,45
+"1646","Rossburg Bog",46,0.03,46
+"1647","Rossburg Bog",47,0.03,47
+"1648","Rossburg Bog",48,0.03,48
+"1649","Rossburg Bog",49,0.03,49
+"1650","Rossburg Bog",50,0.03,50
+"1651","Rutz Lake",51,0.03,1
+"1652","Rutz Lake",52,0.03,2
+"1653","Rutz Lake",53,0.03,3
+"1654","Rutz Lake",54,0.03,4
+"1655","Rutz Lake",55,0.03,5
+"1656","Rutz Lake",56,0.03,6
+"1657","Rutz Lake",57,0.03,7
+"1658","Rutz Lake",58,0.03,8
+"1659","Rutz Lake",59,0.03,9
+"1660","Rutz Lake",60,0.03,10
+"1661","Rutz Lake",61,0.03,11
+"1662","Rutz Lake",62,0.03,12
+"1663","Rutz Lake",63,0.03,13
+"1664","Rutz Lake",64,0.03,14
+"1665","Rutz Lake",1,0.03,15
+"1666","Rutz Lake",2,0.03,16
+"1667","Rutz Lake",3,0.03,17
+"1668","Rutz Lake",4,0.03,18
+"1669","Rutz Lake",5,0.03,19
+"1670","Rutz Lake",6,0.03,20
+"1671","Rutz Lake",7,0.03,21
+"1672","Rutz Lake",8,0.03,22
+"1673","Rutz Lake",9,0.03,23
+"1674","Rutz Lake",10,0.03,24
+"1675","Rutz Lake",11,0.03,25
+"1676","Rutz Lake",12,0.03,26
+"1677","Rutz Lake",13,0.03,27
+"1678","Rutz Lake",14,0.03,28
+"1679","Rutz Lake",15,0.03,29
+"1680","Rutz Lake",16,0.03,30
+"1681","Rutz Lake",17,0.03,31
+"1682","Rutz Lake",18,0.03,32
+"1683","Rutz Lake",19,0.03,33
+"1684","Rutz Lake",20,0.03,34
+"1685","Rutz Lake",21,0.03,35
+"1686","Rutz Lake",22,0.03,36
+"1687","Rutz Lake",23,0.03,37
+"1688","Rutz Lake",24,0.03,38
+"1689","Rutz Lake",25,0.03,39
+"1690","Rutz Lake",26,0.03,40
+"1691","Rutz Lake",27,0.03,41
+"1692","Rutz Lake",28,0.03,42
+"1693","Rutz Lake",29,0.03,43
+"1694","Rutz Lake",30,0.03,44
+"1695","Rutz Lake",31,0.03,45
+"1696","Rutz Lake",32,0.03,46
+"1697","Rutz Lake",33,0.03,47
+"1698","Rutz Lake",34,0.03,48
+"1699","Rutz Lake",35,0.03,49
+"1700","Rutz Lake",36,0.03,50
+"1701","Ryerse Lake",37,0.03,1
+"1702","Ryerse Lake",38,0.03,2
+"1703","Ryerse Lake",39,0.03,3
+"1704","Ryerse Lake",40,0.03,4
+"1705","Ryerse Lake",41,0.03,5
+"1706","Ryerse Lake",42,0.03,6
+"1707","Ryerse Lake",43,0.03,7
+"1708","Ryerse Lake",44,0.03,8
+"1709","Ryerse Lake",45,0.03,9
+"1710","Ryerse Lake",46,0.03,10
+"1711","Ryerse Lake",47,0.03,11
+"1712","Ryerse Lake",48,0.03,12
+"1713","Ryerse Lake",49,0.03,13
+"1714","Ryerse Lake",50,0.03,14
+"1715","Ryerse Lake",51,0.03,15
+"1716","Ryerse Lake",52,0.03,16
+"1717","Ryerse Lake",53,0.03,17
+"1718","Ryerse Lake",54,0.03,18
+"1719","Ryerse Lake",55,0.03,19
+"1720","Ryerse Lake",56,0.03,20
+"1721","Ryerse Lake",57,0.03,21
+"1722","Ryerse Lake",58,0.03,22
+"1723","Ryerse Lake",59,0.03,23
+"1724","Ryerse Lake",60,0.03,24
+"1725","Ryerse Lake",61,0.03,25
+"1726","Ryerse Lake",62,0.03,26
+"1727","Ryerse Lake",63,0.03,27
+"1728","Ryerse Lake",64,0.03,28
+"1729","Ryerse Lake",1,0.03,29
+"1730","Ryerse Lake",2,0.03,30
+"1731","Ryerse Lake",3,0.03,31
+"1732","Ryerse Lake",4,0.03,32
+"1733","Ryerse Lake",5,0.03,33
+"1734","Ryerse Lake",6,0.03,34
+"1735","Ryerse Lake",7,0.03,35
+"1736","Ryerse Lake",8,0.03,36
+"1737","Ryerse Lake",9,0.03,37
+"1738","Ryerse Lake",10,0.03,38
+"1739","Ryerse Lake",11,0.03,39
+"1740","Ryerse Lake",12,0.03,40
+"1741","Ryerse Lake",13,0.03,41
+"1742","Ryerse Lake",14,0.03,42
+"1743","Ryerse Lake",15,0.03,43
+"1744","Ryerse Lake",16,0.03,44
+"1745","Ryerse Lake",17,0.03,45
+"1746","Ryerse Lake",18,0.03,46
+"1747","Ryerse Lake",19,0.03,47
+"1748","Ryerse Lake",20,0.03,48
+"1749","Ryerse Lake",21,0.03,49
+"1750","Ryerse Lake",22,0.03,50
+"1751","Spirit Lake",23,0.03,1
+"1752","Spirit Lake",24,0.03,2
+"1753","Spirit Lake",25,0.03,3
+"1754","Spirit Lake",26,0.03,4
+"1755","Spirit Lake",27,0.03,5
+"1756","Spirit Lake",28,0.03,6
+"1757","Spirit Lake",29,0.03,7
+"1758","Spirit Lake",30,0.03,8
+"1759","Spirit Lake",31,0.03,9
+"1760","Spirit Lake",32,0.03,10
+"1761","Spirit Lake",33,0.03,11
+"1762","Spirit Lake",34,0.03,12
+"1763","Spirit Lake",35,0.03,13
+"1764","Spirit Lake",36,0.03,14
+"1765","Spirit Lake",37,0.03,15
+"1766","Spirit Lake",38,0.03,16
+"1767","Spirit Lake",39,0.03,17
+"1768","Spirit Lake",40,0.03,18
+"1769","Spirit Lake",41,0.03,19
+"1770","Spirit Lake",42,0.03,20
+"1771","Spirit Lake",43,0.03,21
+"1772","Spirit Lake",44,0.03,22
+"1773","Spirit Lake",45,0.03,23
+"1774","Spirit Lake",46,0.03,24
+"1775","Spirit Lake",47,0.03,25
+"1776","Spirit Lake",48,0.03,26
+"1777","Spirit Lake",49,0.03,27
+"1778","Spirit Lake",50,0.03,28
+"1779","Spirit Lake",51,0.03,29
+"1780","Spirit Lake",52,0.03,30
+"1781","Spirit Lake",53,0.03,31
+"1782","Spirit Lake",54,0.03,32
+"1783","Spirit Lake",55,0.03,33
+"1784","Spirit Lake",56,0.03,34
+"1785","Spirit Lake",57,0.03,35
+"1786","Spirit Lake",58,0.03,36
+"1787","Spirit Lake",59,0.03,37
+"1788","Spirit Lake",60,0.03,38
+"1789","Spirit Lake",61,0.03,39
+"1790","Spirit Lake",62,0.03,40
+"1791","Spirit Lake",63,0.03,41
+"1792","Spirit Lake",64,0.03,42
+"1793","Spirit Lake",1,0.03,43
+"1794","Spirit Lake",2,0.03,44
+"1795","Spirit Lake",3,0.03,45
+"1796","Spirit Lake",4,0.03,46
+"1797","Spirit Lake",5,0.03,47
+"1798","Spirit Lake",6,0.03,48
+"1799","Spirit Lake",7,0.03,49
+"1800","Spirit Lake",8,0.03,50
+"1801","Quallen Lake [Terhell Pond]",9,0.03,1
+"1802","Quallen Lake [Terhell Pond]",10,0.03,2
+"1803","Quallen Lake [Terhell Pond]",11,0.03,3
+"1804","Quallen Lake [Terhell Pond]",12,0.03,4
+"1805","Quallen Lake [Terhell Pond]",13,0.03,5
+"1806","Quallen Lake [Terhell Pond]",14,0.03,6
+"1807","Quallen Lake [Terhell Pond]",15,0.03,7
+"1808","Quallen Lake [Terhell Pond]",16,0.03,8
+"1809","Quallen Lake [Terhell Pond]",17,0.03,9
+"1810","Quallen Lake [Terhell Pond]",18,0.03,10
+"1811","Quallen Lake [Terhell Pond]",19,0.03,11
+"1812","Quallen Lake [Terhell Pond]",20,0.03,12
+"1813","Quallen Lake [Terhell Pond]",21,0.03,13
+"1814","Quallen Lake [Terhell Pond]",22,0.03,14
+"1815","Quallen Lake [Terhell Pond]",23,0.03,15
+"1816","Quallen Lake [Terhell Pond]",24,0.03,16
+"1817","Quallen Lake [Terhell Pond]",25,0.03,17
+"1818","Quallen Lake [Terhell Pond]",26,0.03,18
+"1819","Quallen Lake [Terhell Pond]",27,0.03,19
+"1820","Quallen Lake [Terhell Pond]",28,0.03,20
+"1821","Quallen Lake [Terhell Pond]",29,0.03,21
+"1822","Quallen Lake [Terhell Pond]",30,0.03,22
+"1823","Quallen Lake [Terhell Pond]",31,0.03,23
+"1824","Quallen Lake [Terhell Pond]",32,0.03,24
+"1825","Quallen Lake [Terhell Pond]",33,0.03,25
+"1826","Quallen Lake [Terhell Pond]",34,0.03,26
+"1827","Quallen Lake [Terhell Pond]",35,0.03,27
+"1828","Quallen Lake [Terhell Pond]",36,0.03,28
+"1829","Quallen Lake [Terhell Pond]",37,0.03,29
+"1830","Quallen Lake [Terhell Pond]",38,0.03,30
+"1831","Quallen Lake [Terhell Pond]",39,0.03,31
+"1832","Quallen Lake [Terhell Pond]",40,0.03,32
+"1833","Quallen Lake [Terhell Pond]",41,0.03,33
+"1834","Quallen Lake [Terhell Pond]",42,0.03,34
+"1835","Quallen Lake [Terhell Pond]",43,0.03,35
+"1836","Quallen Lake [Terhell Pond]",44,0.03,36
+"1837","Quallen Lake [Terhell Pond]",45,0.03,37
+"1838","Quallen Lake [Terhell Pond]",46,0.03,38
+"1839","Quallen Lake [Terhell Pond]",47,0.03,39
+"1840","Quallen Lake [Terhell Pond]",48,0.03,40
+"1841","Quallen Lake [Terhell Pond]",49,0.03,41
+"1842","Quallen Lake [Terhell Pond]",50,0.03,42
+"1843","Quallen Lake [Terhell Pond]",51,0.03,43
+"1844","Quallen Lake [Terhell Pond]",52,0.03,44
+"1845","Quallen Lake [Terhell Pond]",53,0.03,45
+"1846","Quallen Lake [Terhell Pond]",54,0.03,46
+"1847","Quallen Lake [Terhell Pond]",55,0.03,47
+"1848","Quallen Lake [Terhell Pond]",56,0.03,48
+"1849","Quallen Lake [Terhell Pond]",57,0.03,49
+"1850","Quallen Lake [Terhell Pond]",58,0.03,50
+"1851","Upper Graven Lake",59,0.03,1
+"1852","Upper Graven Lake",60,0.03,2
+"1853","Upper Graven Lake",61,0.03,3
+"1854","Upper Graven Lake",62,0.03,4
+"1855","Upper Graven Lake",63,0.03,5
+"1856","Upper Graven Lake",64,0.03,6
+"1857","Upper Graven Lake",1,0.03,7
+"1858","Upper Graven Lake",2,0.03,8
+"1859","Upper Graven Lake",3,0.03,9
+"1860","Upper Graven Lake",4,0.03,10
+"1861","Upper Graven Lake",5,0.03,11
+"1862","Upper Graven Lake",6,0.03,12
+"1863","Upper Graven Lake",7,0.03,13
+"1864","Upper Graven Lake",8,0.03,14
+"1865","Upper Graven Lake",9,0.03,15
+"1866","Upper Graven Lake",10,0.03,16
+"1867","Upper Graven Lake",11,0.03,17
+"1868","Upper Graven Lake",12,0.03,18
+"1869","Upper Graven Lake",13,0.03,19
+"1870","Upper Graven Lake",14,0.03,20
+"1871","Upper Graven Lake",15,0.03,21
+"1872","Upper Graven Lake",16,0.03,22
+"1873","Upper Graven Lake",17,0.03,23
+"1874","Upper Graven Lake",18,0.03,24
+"1875","Upper Graven Lake",19,0.03,25
+"1876","Upper Graven Lake",20,0.03,26
+"1877","Upper Graven Lake",21,0.03,27
+"1878","Upper Graven Lake",22,0.03,28
+"1879","Upper Graven Lake",23,0.03,29
+"1880","Upper Graven Lake",24,0.03,30
+"1881","Upper Graven Lake",25,0.03,31
+"1882","Upper Graven Lake",26,0.03,32
+"1883","Upper Graven Lake",27,0.03,33
+"1884","Upper Graven Lake",28,0.03,34
+"1885","Upper Graven Lake",29,0.03,35
+"1886","Upper Graven Lake",30,0.03,36
+"1887","Upper Graven Lake",31,0.03,37
+"1888","Upper Graven Lake",32,0.03,38
+"1889","Upper Graven Lake",33,0.03,39
+"1890","Upper Graven Lake",34,0.03,40
+"1891","Upper Graven Lake",35,0.03,41
+"1892","Upper Graven Lake",36,0.03,42
+"1893","Upper Graven Lake",37,0.03,43
+"1894","Upper Graven Lake",38,0.03,44
+"1895","Upper Graven Lake",39,0.03,45
+"1896","Upper Graven Lake",40,0.03,46
+"1897","Upper Graven Lake",41,0.03,47
+"1898","Upper Graven Lake",42,0.03,48
+"1899","Upper Graven Lake",43,0.03,49
+"1900","Upper Graven Lake",44,0.03,50
+"1901","Wintergreen Lake",45,0.03,1
+"1902","Wintergreen Lake",46,0.03,2
+"1903","Wintergreen Lake",47,0.03,3
+"1904","Wintergreen Lake",48,0.03,4
+"1905","Wintergreen Lake",49,0.03,5
+"1906","Wintergreen Lake",50,0.03,6
+"1907","Wintergreen Lake",51,0.03,7
+"1908","Wintergreen Lake",52,0.03,8
+"1909","Wintergreen Lake",53,0.03,9
+"1910","Wintergreen Lake",54,0.03,10
+"1911","Wintergreen Lake",55,0.03,11
+"1912","Wintergreen Lake",56,0.03,12
+"1913","Wintergreen Lake",57,0.03,13
+"1914","Wintergreen Lake",58,0.03,14
+"1915","Wintergreen Lake",59,0.03,15
+"1916","Wintergreen Lake",60,0.03,16
+"1917","Wintergreen Lake",61,0.03,17
+"1918","Wintergreen Lake",62,0.03,18
+"1919","Wintergreen Lake",63,0.03,19
+"1920","Wintergreen Lake",64,0.03,20
+"1921","Wintergreen Lake",1,0.03,21
+"1922","Wintergreen Lake",2,0.03,22
+"1923","Wintergreen Lake",3,0.03,23
+"1924","Wintergreen Lake",4,0.03,24
+"1925","Wintergreen Lake",5,0.03,25
+"1926","Wintergreen Lake",6,0.03,26
+"1927","Wintergreen Lake",7,0.03,27
+"1928","Wintergreen Lake",8,0.03,28
+"1929","Wintergreen Lake",9,0.03,29
+"1930","Wintergreen Lake",10,0.03,30
+"1931","Wintergreen Lake",11,0.03,31
+"1932","Wintergreen Lake",12,0.03,32
+"1933","Wintergreen Lake",13,0.03,33
+"1934","Wintergreen Lake",14,0.03,34
+"1935","Wintergreen Lake",15,0.03,35
+"1936","Wintergreen Lake",16,0.03,36
+"1937","Wintergreen Lake",17,0.03,37
+"1938","Wintergreen Lake",18,0.03,38
+"1939","Wintergreen Lake",19,0.03,39
+"1940","Wintergreen Lake",20,0.03,40
+"1941","Wintergreen Lake",21,0.03,41
+"1942","Wintergreen Lake",22,0.03,42
+"1943","Wintergreen Lake",23,0.03,43
+"1944","Wintergreen Lake",24,0.03,44
+"1945","Wintergreen Lake",25,0.03,45
+"1946","Wintergreen Lake",26,0.03,46
+"1947","Wintergreen Lake",27,0.03,47
+"1948","Wintergreen Lake",28,0.03,48
+"1949","Wintergreen Lake",29,0.03,49
+"1950","Wintergreen Lake",30,0.03,50
+"1951","Wolsfeld Lake",31,0.03,1
+"1952","Wolsfeld Lake",32,0.03,2
+"1953","Wolsfeld Lake",33,0.03,3
+"1954","Wolsfeld Lake",34,0.03,4
+"1955","Wolsfeld Lake",35,0.03,5
+"1956","Wolsfeld Lake",36,0.03,6
+"1957","Wolsfeld Lake",37,0.03,7
+"1958","Wolsfeld Lake",38,0.03,8
+"1959","Wolsfeld Lake",39,0.03,9
+"1960","Wolsfeld Lake",40,0.03,10
+"1961","Wolsfeld Lake",41,0.03,11
+"1962","Wolsfeld Lake",42,0.03,12
+"1963","Wolsfeld Lake",43,0.03,13
+"1964","Wolsfeld Lake",44,0.03,14
+"1965","Wolsfeld Lake",45,0.03,15
+"1966","Wolsfeld Lake",46,0.03,16
+"1967","Wolsfeld Lake",47,0.03,17
+"1968","Wolsfeld Lake",48,0.03,18
+"1969","Wolsfeld Lake",49,0.03,19
+"1970","Wolsfeld Lake",50,0.03,20
+"1971","Wolsfeld Lake",51,0.03,21
+"1972","Wolsfeld Lake",52,0.03,22
+"1973","Wolsfeld Lake",53,0.03,23
+"1974","Wolsfeld Lake",54,0.03,24
+"1975","Wolsfeld Lake",55,0.03,25
+"1976","Wolsfeld Lake",56,0.03,26
+"1977","Wolsfeld Lake",57,0.03,27
+"1978","Wolsfeld Lake",58,0.03,28
+"1979","Wolsfeld Lake",59,0.03,29
+"1980","Wolsfeld Lake",60,0.03,30
+"1981","Wolsfeld Lake",61,0.03,31
+"1982","Wolsfeld Lake",62,0.03,32
+"1983","Wolsfeld Lake",63,0.03,33
+"1984","Wolsfeld Lake",64,0.03,34
+"1985","Wolsfeld Lake",1,0.03,35
+"1986","Wolsfeld Lake",2,0.03,36
+"1987","Wolsfeld Lake",3,0.03,37
+"1988","Wolsfeld Lake",4,0.03,38
+"1989","Wolsfeld Lake",5,0.03,39
+"1990","Wolsfeld Lake",6,0.03,40
+"1991","Wolsfeld Lake",7,0.03,41
+"1992","Wolsfeld Lake",8,0.03,42
+"1993","Wolsfeld Lake",9,0.03,43
+"1994","Wolsfeld Lake",10,0.03,44
+"1995","Wolsfeld Lake",11,0.03,45
+"1996","Wolsfeld Lake",12,0.03,46
+"1997","Wolsfeld Lake",13,0.03,47
+"1998","Wolsfeld Lake",14,0.03,48
+"1999","Wolsfeld Lake",15,0.03,49
+"2000","Wolsfeld Lake",16,0.03,50
+"2001","Wolverine Lake",17,0.03,1
+"2002","Wolverine Lake",18,0.03,2
+"2003","Wolverine Lake",19,0.03,3
+"2004","Wolverine Lake",20,0.03,4
+"2005","Wolverine Lake",21,0.03,5
+"2006","Wolverine Lake",22,0.03,6
+"2007","Wolverine Lake",23,0.03,7
+"2008","Wolverine Lake",24,0.03,8
+"2009","Wolverine Lake",25,0.03,9
+"2010","Wolverine Lake",26,0.03,10
+"2011","Wolverine Lake",27,0.03,11
+"2012","Wolverine Lake",28,0.03,12
+"2013","Wolverine Lake",29,0.03,13
+"2014","Wolverine Lake",30,0.03,14
+"2015","Wolverine Lake",31,0.03,15
+"2016","Wolverine Lake",32,0.03,16
+"2017","Wolverine Lake",33,0.03,17
+"2018","Wolverine Lake",34,0.03,18
+"2019","Wolverine Lake",35,0.03,19
+"2020","Wolverine Lake",36,0.03,20
+"2021","Wolverine Lake",37,0.03,21
+"2022","Wolverine Lake",38,0.03,22
+"2023","Wolverine Lake",39,0.03,23
+"2024","Wolverine Lake",40,0.03,24
+"2025","Wolverine Lake",41,0.03,25
+"2026","Wolverine Lake",42,0.03,26
+"2027","Wolverine Lake",43,0.03,27
+"2028","Wolverine Lake",44,0.03,28
+"2029","Wolverine Lake",45,0.03,29
+"2030","Wolverine Lake",46,0.03,30
+"2031","Wolverine Lake",47,0.03,31
+"2032","Wolverine Lake",48,0.03,32
+"2033","Wolverine Lake",49,0.03,33
+"2034","Wolverine Lake",50,0.03,34
+"2035","Wolverine Lake",51,0.03,35
+"2036","Wolverine Lake",52,0.03,36
+"2037","Wolverine Lake",53,0.03,37
+"2038","Wolverine Lake",54,0.03,38
+"2039","Wolverine Lake",55,0.03,39
+"2040","Wolverine Lake",56,0.03,40
+"2041","Wolverine Lake",57,0.03,41
+"2042","Wolverine Lake",58,0.03,42
+"2043","Wolverine Lake",59,0.03,43
+"2044","Wolverine Lake",60,0.03,44
+"2045","Wolverine Lake",61,0.03,45
+"2046","Wolverine Lake",62,0.03,46
+"2047","Wolverine Lake",63,0.03,47
+"2048","Wolverine Lake",64,0.03,48
+"2049","Wolverine Lake",1,0.03,49
+"2050","Wolverine Lake",2,0.03,50
+"2051","Wood Lake",3,0.03,1
+"2052","Wood Lake",4,0.03,2
+"2053","Wood Lake",5,0.03,3
+"2054","Wood Lake",6,0.03,4
+"2055","Wood Lake",7,0.03,5
+"2056","Wood Lake",8,0.03,6
+"2057","Wood Lake",9,0.03,7
+"2058","Wood Lake",10,0.03,8
+"2059","Wood Lake",11,0.03,9
+"2060","Wood Lake",12,0.03,10
+"2061","Wood Lake",13,0.03,11
+"2062","Wood Lake",14,0.03,12
+"2063","Wood Lake",15,0.03,13
+"2064","Wood Lake",16,0.03,14
+"2065","Wood Lake",17,0.03,15
+"2066","Wood Lake",18,0.03,16
+"2067","Wood Lake",19,0.03,17
+"2068","Wood Lake",20,0.03,18
+"2069","Wood Lake",21,0.03,19
+"2070","Wood Lake",22,0.03,20
+"2071","Wood Lake",23,0.03,21
+"2072","Wood Lake",24,0.03,22
+"2073","Wood Lake",25,0.03,23
+"2074","Wood Lake",26,0.03,24
+"2075","Wood Lake",27,0.03,25
+"2076","Wood Lake",28,0.03,26
+"2077","Wood Lake",29,0.03,27
+"2078","Wood Lake",30,0.03,28
+"2079","Wood Lake",31,0.03,29
+"2080","Wood Lake",32,0.03,30
+"2081","Wood Lake",33,0.03,31
+"2082","Wood Lake",34,0.03,32
+"2083","Wood Lake",35,0.03,33
+"2084","Wood Lake",36,0.03,34
+"2085","Wood Lake",37,0.03,35
+"2086","Wood Lake",38,0.03,36
+"2087","Wood Lake",39,0.03,37
+"2088","Wood Lake",40,0.03,38
+"2089","Wood Lake",41,0.03,39
+"2090","Wood Lake",42,0.03,40
+"2091","Wood Lake",43,0.03,41
+"2092","Wood Lake",44,0.03,42
+"2093","Wood Lake",45,0.03,43
+"2094","Wood Lake",46,0.03,44
+"2095","Wood Lake",47,0.03,45
+"2096","Wood Lake",48,0.03,46
+"2097","Wood Lake",49,0.03,47
+"2098","Wood Lake",50,0.03,48
+"2099","Wood Lake",51,0.03,49
+"2100","Wood Lake",52,0.03,50
+"2101","Yellow Dog Pond",53,0.03,1
+"2102","Yellow Dog Pond",54,0.03,2
+"2103","Yellow Dog Pond",55,0.03,3
+"2104","Yellow Dog Pond",56,0.03,4
+"2105","Yellow Dog Pond",57,0.03,5
+"2106","Yellow Dog Pond",58,0.03,6
+"2107","Yellow Dog Pond",59,0.03,7
+"2108","Yellow Dog Pond",60,0.03,8
+"2109","Yellow Dog Pond",61,0.03,9
+"2110","Yellow Dog Pond",62,0.03,10
+"2111","Yellow Dog Pond",63,0.03,11
+"2112","Yellow Dog Pond",64,0.03,12
+"2113","Yellow Dog Pond",1,0.03,13
+"2114","Yellow Dog Pond",2,0.03,14
+"2115","Yellow Dog Pond",3,0.03,15
+"2116","Yellow Dog Pond",4,0.03,16
+"2117","Yellow Dog Pond",5,0.03,17
+"2118","Yellow Dog Pond",6,0.03,18
+"2119","Yellow Dog Pond",7,0.03,19
+"2120","Yellow Dog Pond",8,0.03,20
+"2121","Yellow Dog Pond",9,0.03,21
+"2122","Yellow Dog Pond",10,0.03,22
+"2123","Yellow Dog Pond",11,0.03,23
+"2124","Yellow Dog Pond",12,0.03,24
+"2125","Yellow Dog Pond",13,0.03,25
+"2126","Yellow Dog Pond",14,0.03,26
+"2127","Yellow Dog Pond",15,0.03,27
+"2128","Yellow Dog Pond",16,0.03,28
+"2129","Yellow Dog Pond",17,0.03,29
+"2130","Yellow Dog Pond",18,0.03,30
+"2131","Yellow Dog Pond",19,0.03,31
+"2132","Yellow Dog Pond",20,0.03,32
+"2133","Yellow Dog Pond",21,0.03,33
+"2134","Yellow Dog Pond",22,0.03,34
+"2135","Yellow Dog Pond",23,0.03,35
+"2136","Yellow Dog Pond",24,0.03,36
+"2137","Yellow Dog Pond",25,0.03,37
+"2138","Yellow Dog Pond",26,0.03,38
+"2139","Yellow Dog Pond",27,0.03,39
+"2140","Yellow Dog Pond",28,0.03,40
+"2141","Yellow Dog Pond",29,0.03,41
+"2142","Yellow Dog Pond",30,0.03,42
+"2143","Yellow Dog Pond",31,0.03,43
+"2144","Yellow Dog Pond",32,0.03,44
+"2145","Yellow Dog Pond",33,0.03,45
+"2146","Yellow Dog Pond",34,0.03,46
+"2147","Yellow Dog Pond",35,0.03,47
+"2148","Yellow Dog Pond",36,0.03,48
+"2149","Yellow Dog Pond",37,0.03,49
+"2150","Yellow Dog Pond",38,0.03,50
+"2151","Canyon Lake",39,0.03,1
+"2152","Canyon Lake",40,0.03,2
+"2153","Canyon Lake",41,0.03,3
+"2154","Canyon Lake",42,0.03,4
+"2155","Canyon Lake",43,0.03,5
+"2156","Canyon Lake",44,0.03,6
+"2157","Canyon Lake",45,0.03,7
+"2158","Canyon Lake",46,0.03,8
+"2159","Canyon Lake",47,0.03,9
+"2160","Canyon Lake",48,0.03,10
+"2161","Canyon Lake",49,0.03,11
+"2162","Canyon Lake",50,0.03,12
+"2163","Canyon Lake",51,0.03,13
+"2164","Canyon Lake",52,0.03,14
+"2165","Canyon Lake",53,0.03,15
+"2166","Canyon Lake",54,0.03,16
+"2167","Canyon Lake",55,0.03,17
+"2168","Canyon Lake",56,0.03,18
+"2169","Canyon Lake",57,0.03,19
+"2170","Canyon Lake",58,0.03,20
+"2171","Canyon Lake",59,0.03,21
+"2172","Canyon Lake",60,0.03,22
+"2173","Canyon Lake",61,0.03,23
+"2174","Canyon Lake",62,0.03,24
+"2175","Canyon Lake",63,0.03,25
+"2176","Canyon Lake",64,0.03,26
+"2177","Canyon Lake",1,0.03,27
+"2178","Canyon Lake",2,0.03,28
+"2179","Canyon Lake",3,0.03,29
+"2180","Canyon Lake",4,0.03,30
+"2181","Canyon Lake",5,0.03,31
+"2182","Canyon Lake",6,0.03,32
+"2183","Canyon Lake",7,0.03,33
+"2184","Canyon Lake",8,0.03,34
+"2185","Canyon Lake",9,0.03,35
+"2186","Canyon Lake",10,0.03,36
+"2187","Canyon Lake",11,0.03,37
+"2188","Canyon Lake",12,0.03,38
+"2189","Canyon Lake",13,0.03,39
+"2190","Canyon Lake",14,0.03,40
+"2191","Canyon Lake",15,0.03,41
+"2192","Canyon Lake",16,0.03,42
+"2193","Canyon Lake",17,0.03,43
+"2194","Canyon Lake",18,0.03,44
+"2195","Canyon Lake",19,0.03,45
+"2196","Canyon Lake",20,0.03,46
+"2197","Canyon Lake",21,0.03,47
+"2198","Canyon Lake",22,0.03,48
+"2199","Canyon Lake",23,0.03,49
+"2200","Canyon Lake",24,0.03,50
+"2201","Sharkey Lake",25,0.03,1
+"2202","Sharkey Lake",26,0.03,2
+"2203","Sharkey Lake",27,0.03,3
+"2204","Sharkey Lake",28,0.03,4
+"2205","Sharkey Lake",29,0.03,5
+"2206","Sharkey Lake",30,0.03,6
+"2207","Sharkey Lake",31,0.03,7
+"2208","Sharkey Lake",32,0.03,8
+"2209","Sharkey Lake",33,0.03,9
+"2210","Sharkey Lake",34,0.03,10
+"2211","Sharkey Lake",35,0.03,11
+"2212","Sharkey Lake",36,0.03,12
+"2213","Sharkey Lake",37,0.03,13
+"2214","Sharkey Lake",38,0.03,14
+"2215","Sharkey Lake",39,0.03,15
+"2216","Sharkey Lake",40,0.03,16
+"2217","Sharkey Lake",41,0.03,17
+"2218","Sharkey Lake",42,0.03,18
+"2219","Sharkey Lake",43,0.03,19
+"2220","Sharkey Lake",44,0.03,20
+"2221","Sharkey Lake",45,0.03,21
+"2222","Sharkey Lake",46,0.03,22
+"2223","Sharkey Lake",47,0.03,23
+"2224","Sharkey Lake",48,0.03,24
+"2225","Sharkey Lake",49,0.03,25
+"2226","Sharkey Lake",50,0.03,26
+"2227","Sharkey Lake",51,0.03,27
+"2228","Sharkey Lake",52,0.03,28
+"2229","Sharkey Lake",53,0.03,29
+"2230","Sharkey Lake",54,0.03,30
+"2231","Sharkey Lake",55,0.03,31
+"2232","Sharkey Lake",56,0.03,32
+"2233","Sharkey Lake",57,0.03,33
+"2234","Sharkey Lake",58,0.03,34
+"2235","Sharkey Lake",59,0.03,35
+"2236","Sharkey Lake",60,0.03,36
+"2237","Sharkey Lake",61,0.03,37
+"2238","Sharkey Lake",62,0.03,38
+"2239","Sharkey Lake",63,0.03,39
+"2240","Sharkey Lake",64,0.03,40
+"2241","Sharkey Lake",1,0.03,41
+"2242","Sharkey Lake",2,0.03,42
+"2243","Sharkey Lake",3,0.03,43
+"2244","Sharkey Lake",4,0.03,44
+"2245","Sharkey Lake",5,0.03,45
+"2246","Sharkey Lake",6,0.03,46
+"2247","Sharkey Lake",7,0.03,47
+"2248","Sharkey Lake",8,0.03,48
+"2249","Sharkey Lake",9,0.03,49
+"2250","Sharkey Lake",10,0.03,50
+"2251","Kimble Pond",11,0.03,1
+"2252","Kimble Pond",12,0.03,2
+"2253","Kimble Pond",13,0.03,3
+"2254","Kimble Pond",14,0.03,4
+"2255","Kimble Pond",15,0.03,5
+"2256","Kimble Pond",16,0.03,6
+"2257","Kimble Pond",17,0.03,7
+"2258","Kimble Pond",18,0.03,8
+"2259","Kimble Pond",19,0.03,9
+"2260","Kimble Pond",20,0.03,10
+"2261","Kimble Pond",21,0.03,11
+"2262","Kimble Pond",22,0.03,12
+"2263","Kimble Pond",23,0.03,13
+"2264","Kimble Pond",24,0.03,14
+"2265","Kimble Pond",25,0.03,15
+"2266","Kimble Pond",26,0.03,16
+"2267","Kimble Pond",27,0.03,17
+"2268","Kimble Pond",28,0.03,18
+"2269","Kimble Pond",29,0.03,19
+"2270","Kimble Pond",30,0.03,20
+"2271","Kimble Pond",31,0.03,21
+"2272","Kimble Pond",32,0.03,22
+"2273","Kimble Pond",33,0.03,23
+"2274","Kimble Pond",34,0.03,24
+"2275","Kimble Pond",35,0.03,25
+"2276","Kimble Pond",36,0.03,26
+"2277","Kimble Pond",37,0.03,27
+"2278","Kimble Pond",38,0.03,28
+"2279","Kimble Pond",39,0.03,29
+"2280","Kimble Pond",40,0.03,30
+"2281","Kimble Pond",41,0.03,31
+"2282","Kimble Pond",42,0.03,32
+"2283","Kimble Pond",43,0.03,33
+"2284","Kimble Pond",44,0.03,34
+"2285","Kimble Pond",45,0.03,35
+"2286","Kimble Pond",46,0.03,36
+"2287","Kimble Pond",47,0.03,37
+"2288","Kimble Pond",48,0.03,38
+"2289","Kimble Pond",49,0.03,39
+"2290","Kimble Pond",50,0.03,40
+"2291","Kimble Pond",51,0.03,41
+"2292","Kimble Pond",52,0.03,42
+"2293","Kimble Pond",53,0.03,43
+"2294","Kimble Pond",54,0.03,44
+"2295","Kimble Pond",55,0.03,45
+"2296","Kimble Pond",56,0.03,46
+"2297","Kimble Pond",57,0.03,47
+"2298","Kimble Pond",58,0.03,48
+"2299","Kimble Pond",59,0.03,49
+"2300","Kimble Pond",60,0.03,50
+"2301","West Olaf Lake",61,0.03,1
+"2302","West Olaf Lake",62,0.03,2
+"2303","West Olaf Lake",63,0.03,3
+"2304","West Olaf Lake",64,0.03,4
+"2305","West Olaf Lake",1,0.03,5
+"2306","West Olaf Lake",2,0.03,6
+"2307","West Olaf Lake",3,0.03,7
+"2308","West Olaf Lake",4,0.03,8
+"2309","West Olaf Lake",5,0.03,9
+"2310","West Olaf Lake",6,0.03,10
+"2311","West Olaf Lake",7,0.03,11
+"2312","West Olaf Lake",8,0.03,12
+"2313","West Olaf Lake",9,0.03,13
+"2314","West Olaf Lake",10,0.03,14
+"2315","West Olaf Lake",11,0.03,15
+"2316","West Olaf Lake",12,0.03,16
+"2317","West Olaf Lake",13,0.03,17
+"2318","West Olaf Lake",14,0.03,18
+"2319","West Olaf Lake",15,0.03,19
+"2320","West Olaf Lake",16,0.03,20
+"2321","West Olaf Lake",17,0.03,21
+"2322","West Olaf Lake",18,0.03,22
+"2323","West Olaf Lake",19,0.03,23
+"2324","West Olaf Lake",20,0.03,24
+"2325","West Olaf Lake",21,0.03,25
+"2326","West Olaf Lake",22,0.03,26
+"2327","West Olaf Lake",23,0.03,27
+"2328","West Olaf Lake",24,0.03,28
+"2329","West Olaf Lake",25,0.03,29
+"2330","West Olaf Lake",26,0.03,30
+"2331","West Olaf Lake",27,0.03,31
+"2332","West Olaf Lake",28,0.03,32
+"2333","West Olaf Lake",29,0.03,33
+"2334","West Olaf Lake",30,0.03,34
+"2335","West Olaf Lake",31,0.03,35
+"2336","West Olaf Lake",32,0.03,36
+"2337","West Olaf Lake",33,0.03,37
+"2338","West Olaf Lake",34,0.03,38
+"2339","West Olaf Lake",35,0.03,39
+"2340","West Olaf Lake",36,0.03,40
+"2341","West Olaf Lake",37,0.03,41
+"2342","West Olaf Lake",38,0.03,42
+"2343","West Olaf Lake",39,0.03,43
+"2344","West Olaf Lake",40,0.03,44
+"2345","West Olaf Lake",41,0.03,45
+"2346","West Olaf Lake",42,0.03,46
+"2347","West Olaf Lake",43,0.03,47
+"2348","West Olaf Lake",44,0.03,48
+"2349","West Olaf Lake",45,0.03,49
+"2350","West Olaf Lake",46,0.03,50
+"2351","Glimmerglass Lake",47,0.03,1
+"2352","Glimmerglass Lake",48,0.03,2
+"2353","Glimmerglass Lake",49,0.03,3
+"2354","Glimmerglass Lake",50,0.03,4
+"2355","Glimmerglass Lake",51,0.03,5
+"2356","Glimmerglass Lake",52,0.03,6
+"2357","Glimmerglass Lake",53,0.03,7
+"2358","Glimmerglass Lake",54,0.03,8
+"2359","Glimmerglass Lake",55,0.03,9
+"2360","Glimmerglass Lake",56,0.03,10
+"2361","Glimmerglass Lake",57,0.03,11
+"2362","Glimmerglass Lake",58,0.03,12
+"2363","Glimmerglass Lake",59,0.03,13
+"2364","Glimmerglass Lake",60,0.03,14
+"2365","Glimmerglass Lake",61,0.03,15
+"2366","Glimmerglass Lake",62,0.03,16
+"2367","Glimmerglass Lake",63,0.03,17
+"2368","Glimmerglass Lake",64,0.03,18
+"2369","Glimmerglass Lake",1,0.03,19
+"2370","Glimmerglass Lake",2,0.03,20
+"2371","Glimmerglass Lake",3,0.03,21
+"2372","Glimmerglass Lake",4,0.03,22
+"2373","Glimmerglass Lake",5,0.03,23
+"2374","Glimmerglass Lake",6,0.03,24
+"2375","Glimmerglass Lake",7,0.03,25
+"2376","Glimmerglass Lake",8,0.03,26
+"2377","Glimmerglass Lake",9,0.03,27
+"2378","Glimmerglass Lake",10,0.03,28
+"2379","Glimmerglass Lake",11,0.03,29
+"2380","Glimmerglass Lake",12,0.03,30
+"2381","Glimmerglass Lake",13,0.03,31
+"2382","Glimmerglass Lake",14,0.03,32
+"2383","Glimmerglass Lake",15,0.03,33
+"2384","Glimmerglass Lake",16,0.03,34
+"2385","Glimmerglass Lake",17,0.03,35
+"2386","Glimmerglass Lake",18,0.03,36
+"2387","Glimmerglass Lake",19,0.03,37
+"2388","Glimmerglass Lake",20,0.03,38
+"2389","Glimmerglass Lake",21,0.03,39
+"2390","Glimmerglass Lake",22,0.03,40
+"2391","Glimmerglass Lake",23,0.03,41
+"2392","Glimmerglass Lake",24,0.03,42
+"2393","Glimmerglass Lake",25,0.03,43
+"2394","Glimmerglass Lake",26,0.03,44
+"2395","Glimmerglass Lake",27,0.03,45
+"2396","Glimmerglass Lake",28,0.03,46
+"2397","Glimmerglass Lake",29,0.03,47
+"2398","Glimmerglass Lake",30,0.03,48
+"2399","Glimmerglass Lake",31,0.03,49
+"2400","Glimmerglass Lake",32,0.03,50
+"2401","Tower Lake",33,0.03,1
+"2402","Tower Lake",34,0.03,2
+"2403","Tower Lake",35,0.03,3
+"2404","Tower Lake",36,0.03,4
+"2405","Tower Lake",37,0.03,5
+"2406","Tower Lake",38,0.03,6
+"2407","Tower Lake",39,0.03,7
+"2408","Tower Lake",40,0.03,8
+"2409","Tower Lake",41,0.03,9
+"2410","Tower Lake",42,0.03,10
+"2411","Tower Lake",43,0.03,11
+"2412","Tower Lake",44,0.03,12
+"2413","Tower Lake",45,0.03,13
+"2414","Tower Lake",46,0.03,14
+"2415","Tower Lake",47,0.03,15
+"2416","Tower Lake",48,0.03,16
+"2417","Tower Lake",49,0.03,17
+"2418","Tower Lake",50,0.03,18
+"2419","Tower Lake",51,0.03,19
+"2420","Tower Lake",52,0.03,20
+"2421","Tower Lake",53,0.03,21
+"2422","Tower Lake",54,0.03,22
+"2423","Tower Lake",55,0.03,23
+"2424","Tower Lake",56,0.03,24
+"2425","Tower Lake",57,0.03,25
+"2426","Tower Lake",58,0.03,26
+"2427","Tower Lake",59,0.03,27
+"2428","Tower Lake",60,0.03,28
+"2429","Tower Lake",61,0.03,29
+"2430","Tower Lake",62,0.03,30
+"2431","Tower Lake",63,0.03,31
+"2432","Tower Lake",64,0.03,32
+"2433","Tower Lake",1,0.03,33
+"2434","Tower Lake",2,0.03,34
+"2435","Tower Lake",3,0.03,35
+"2436","Tower Lake",4,0.03,36
+"2437","Tower Lake",5,0.03,37
+"2438","Tower Lake",6,0.03,38
+"2439","Tower Lake",7,0.03,39
+"2440","Tower Lake",8,0.03,40
+"2441","Tower Lake",9,0.03,41
+"2442","Tower Lake",10,0.03,42
+"2443","Tower Lake",11,0.03,43
+"2444","Tower Lake",12,0.03,44
+"2445","Tower Lake",13,0.03,45
+"2446","Tower Lake",14,0.03,46
+"2447","Tower Lake",15,0.03,47
+"2448","Tower Lake",16,0.03,48
+"2449","Tower Lake",17,0.03,49
+"2450","Tower Lake",18,0.03,50
+"2451","Williams Lake",19,0.03,1
+"2452","Williams Lake",20,0.03,2
+"2453","Williams Lake",21,0.03,3
+"2454","Williams Lake",22,0.03,4
+"2455","Williams Lake",23,0.03,5
+"2456","Williams Lake",24,0.03,6
+"2457","Williams Lake",25,0.03,7
+"2458","Williams Lake",26,0.03,8
+"2459","Williams Lake",27,0.03,9
+"2460","Williams Lake",28,0.03,10
+"2461","Williams Lake",29,0.03,11
+"2462","Williams Lake",30,0.03,12
+"2463","Williams Lake",31,0.03,13
+"2464","Williams Lake",32,0.03,14
+"2465","Williams Lake",33,0.03,15
+"2466","Williams Lake",34,0.03,16
+"2467","Williams Lake",35,0.03,17
+"2468","Williams Lake",36,0.03,18
+"2469","Williams Lake",37,0.03,19
+"2470","Williams Lake",38,0.03,20
+"2471","Williams Lake",39,0.03,21
+"2472","Williams Lake",40,0.03,22
+"2473","Williams Lake",41,0.03,23
+"2474","Williams Lake",42,0.03,24
+"2475","Williams Lake",43,0.03,25
+"2476","Williams Lake",44,0.03,26
+"2477","Williams Lake",45,0.03,27
+"2478","Williams Lake",46,0.03,28
+"2479","Williams Lake",47,0.03,29
+"2480","Williams Lake",48,0.03,30
+"2481","Williams Lake",49,0.03,31
+"2482","Williams Lake",50,0.03,32
+"2483","Williams Lake",51,0.03,33
+"2484","Williams Lake",52,0.03,34
+"2485","Williams Lake",53,0.03,35
+"2486","Williams Lake",54,0.03,36
+"2487","Williams Lake",55,0.03,37
+"2488","Williams Lake",56,0.03,38
+"2489","Williams Lake",57,0.03,39
+"2490","Williams Lake",58,0.03,40
+"2491","Williams Lake",59,0.03,41
+"2492","Williams Lake",60,0.03,42
+"2493","Williams Lake",61,0.03,43
+"2494","Williams Lake",62,0.03,44
+"2495","Williams Lake",63,0.03,45
+"2496","Williams Lake",64,0.03,46
+"2497","Williams Lake",1,0.03,47
+"2498","Williams Lake",2,0.03,48
+"2499","Williams Lake",3,0.03,49
+"2500","Williams Lake",4,0.03,50
+"2501","Emrick Lake",5,0.03,1
+"2502","Emrick Lake",6,0.03,2
+"2503","Emrick Lake",7,0.03,3
+"2504","Emrick Lake",8,0.03,4
+"2505","Emrick Lake",9,0.03,5
+"2506","Emrick Lake",10,0.03,6
+"2507","Emrick Lake",11,0.03,7
+"2508","Emrick Lake",12,0.03,8
+"2509","Emrick Lake",13,0.03,9
+"2510","Emrick Lake",14,0.03,10
+"2511","Emrick Lake",15,0.03,11
+"2512","Emrick Lake",16,0.03,12
+"2513","Emrick Lake",17,0.03,13
+"2514","Emrick Lake",18,0.03,14
+"2515","Emrick Lake",19,0.03,15
+"2516","Emrick Lake",20,0.03,16
+"2517","Emrick Lake",21,0.03,17
+"2518","Emrick Lake",22,0.03,18
+"2519","Emrick Lake",23,0.03,19
+"2520","Emrick Lake",24,0.03,20
+"2521","Emrick Lake",25,0.03,21
+"2522","Emrick Lake",26,0.03,22
+"2523","Emrick Lake",27,0.03,23
+"2524","Emrick Lake",28,0.03,24
+"2525","Emrick Lake",29,0.03,25
+"2526","Emrick Lake",30,0.03,26
+"2527","Emrick Lake",31,0.03,27
+"2528","Emrick Lake",32,0.03,28
+"2529","Emrick Lake",33,0.03,29
+"2530","Emrick Lake",34,0.03,30
+"2531","Emrick Lake",35,0.03,31
+"2532","Emrick Lake",36,0.03,32
+"2533","Emrick Lake",37,0.03,33
+"2534","Emrick Lake",38,0.03,34
+"2535","Emrick Lake",39,0.03,35
+"2536","Emrick Lake",40,0.03,36
+"2537","Emrick Lake",41,0.03,37
+"2538","Emrick Lake",42,0.03,38
+"2539","Emrick Lake",43,0.03,39
+"2540","Emrick Lake",44,0.03,40
+"2541","Emrick Lake",45,0.03,41
+"2542","Emrick Lake",46,0.03,42
+"2543","Emrick Lake",47,0.03,43
+"2544","Emrick Lake",48,0.03,44
+"2545","Emrick Lake",49,0.03,45
+"2546","Emrick Lake",50,0.03,46
+"2547","Emrick Lake",51,0.03,47
+"2548","Emrick Lake",52,0.03,48
+"2549","Emrick Lake",53,0.03,49
+"2550","Emrick Lake",54,0.03,50
+"2551","East Soldier Lake",55,0.03,1
+"2552","East Soldier Lake",56,0.03,2
+"2553","East Soldier Lake",57,0.03,3
+"2554","East Soldier Lake",58,0.03,4
+"2555","East Soldier Lake",59,0.03,5
+"2556","East Soldier Lake",60,0.03,6
+"2557","East Soldier Lake",61,0.03,7
+"2558","East Soldier Lake",62,0.03,8
+"2559","East Soldier Lake",63,0.03,9
+"2560","East Soldier Lake",64,0.03,10
+"2561","East Soldier Lake",1,0.03,11
+"2562","East Soldier Lake",2,0.03,12
+"2563","East Soldier Lake",3,0.03,13
+"2564","East Soldier Lake",4,0.03,14
+"2565","East Soldier Lake",5,0.03,15
+"2566","East Soldier Lake",6,0.03,16
+"2567","East Soldier Lake",7,0.03,17
+"2568","East Soldier Lake",8,0.03,18
+"2569","East Soldier Lake",9,0.03,19
+"2570","East Soldier Lake",10,0.03,20
+"2571","East Soldier Lake",11,0.03,21
+"2572","East Soldier Lake",12,0.03,22
+"2573","East Soldier Lake",13,0.03,23
+"2574","East Soldier Lake",14,0.03,24
+"2575","East Soldier Lake",15,0.03,25
+"2576","East Soldier Lake",16,0.03,26
+"2577","East Soldier Lake",17,0.03,27
+"2578","East Soldier Lake",18,0.03,28
+"2579","East Soldier Lake",19,0.03,29
+"2580","East Soldier Lake",20,0.03,30
+"2581","East Soldier Lake",21,0.03,31
+"2582","East Soldier Lake",22,0.03,32
+"2583","East Soldier Lake",23,0.03,33
+"2584","East Soldier Lake",24,0.03,34
+"2585","East Soldier Lake",25,0.03,35
+"2586","East Soldier Lake",26,0.03,36
+"2587","East Soldier Lake",27,0.03,37
+"2588","East Soldier Lake",28,0.03,38
+"2589","East Soldier Lake",29,0.03,39
+"2590","East Soldier Lake",30,0.03,40
+"2591","East Soldier Lake",31,0.03,41
+"2592","East Soldier Lake",32,0.03,42
+"2593","East Soldier Lake",33,0.03,43
+"2594","East Soldier Lake",34,0.03,44
+"2595","East Soldier Lake",35,0.03,45
+"2596","East Soldier Lake",36,0.03,46
+"2597","East Soldier Lake",37,0.03,47
+"2598","East Soldier Lake",38,0.03,48
+"2599","East Soldier Lake",39,0.03,49
+"2600","East Soldier Lake",40,0.03,50
+"2601","Hemlock Lake",41,0.03,1
+"2602","Hemlock Lake",42,0.03,2
+"2603","Hemlock Lake",43,0.03,3
+"2604","Hemlock Lake",44,0.03,4
+"2605","Hemlock Lake",45,0.03,5
+"2606","Hemlock Lake",46,0.03,6
+"2607","Hemlock Lake",47,0.03,7
+"2608","Hemlock Lake",48,0.03,8
+"2609","Hemlock Lake",49,0.03,9
+"2610","Hemlock Lake",50,0.03,10
+"2611","Hemlock Lake",51,0.03,11
+"2612","Hemlock Lake",52,0.03,12
+"2613","Hemlock Lake",53,0.03,13
+"2614","Hemlock Lake",54,0.03,14
+"2615","Hemlock Lake",55,0.03,15
+"2616","Hemlock Lake",56,0.03,16
+"2617","Hemlock Lake",57,0.03,17
+"2618","Hemlock Lake",58,0.03,18
+"2619","Hemlock Lake",59,0.03,19
+"2620","Hemlock Lake",60,0.03,20
+"2621","Hemlock Lake",61,0.03,21
+"2622","Hemlock Lake",62,0.03,22
+"2623","Hemlock Lake",63,0.03,23
+"2624","Hemlock Lake",64,0.03,24
+"2625","Hemlock Lake",1,0.03,25
+"2626","Hemlock Lake",2,0.03,26
+"2627","Hemlock Lake",3,0.03,27
+"2628","Hemlock Lake",4,0.03,28
+"2629","Hemlock Lake",5,0.03,29
+"2630","Hemlock Lake",6,0.03,30
+"2631","Hemlock Lake",7,0.03,31
+"2632","Hemlock Lake",8,0.03,32
+"2633","Hemlock Lake",9,0.03,33
+"2634","Hemlock Lake",10,0.03,34
+"2635","Hemlock Lake",11,0.03,35
+"2636","Hemlock Lake",12,0.03,36
+"2637","Hemlock Lake",13,0.03,37
+"2638","Hemlock Lake",14,0.03,38
+"2639","Hemlock Lake",15,0.03,39
+"2640","Hemlock Lake",16,0.03,40
+"2641","Hemlock Lake",17,0.03,41
+"2642","Hemlock Lake",18,0.03,42
+"2643","Hemlock Lake",19,0.03,43
+"2644","Hemlock Lake",20,0.03,44
+"2645","Hemlock Lake",21,0.03,45
+"2646","Hemlock Lake",22,0.03,46
+"2647","Hemlock Lake",23,0.03,47
+"2648","Hemlock Lake",24,0.03,48
+"2649","Hemlock Lake",25,0.03,49
+"2650","Hemlock Lake",26,0.03,50
+"2651","Crooked Lake",27,0.03,1
+"2652","Crooked Lake",28,0.03,2
+"2653","Crooked Lake",29,0.03,3
+"2654","Crooked Lake",30,0.03,4
+"2655","Crooked Lake",31,0.03,5
+"2656","Crooked Lake",32,0.03,6
+"2657","Crooked Lake",33,0.03,7
+"2658","Crooked Lake",34,0.03,8
+"2659","Crooked Lake",35,0.03,9
+"2660","Crooked Lake",36,0.03,10
+"2661","Crooked Lake",37,0.03,11
+"2662","Crooked Lake",38,0.03,12
+"2663","Crooked Lake",39,0.03,13
+"2664","Crooked Lake",40,0.03,14
+"2665","Crooked Lake",41,0.03,15
+"2666","Crooked Lake",42,0.03,16
+"2667","Crooked Lake",43,0.03,17
+"2668","Crooked Lake",44,0.03,18
+"2669","Crooked Lake",45,0.03,19
+"2670","Crooked Lake",46,0.03,20
+"2671","Crooked Lake",47,0.03,21
+"2672","Crooked Lake",48,0.03,22
+"2673","Crooked Lake",49,0.03,23
+"2674","Crooked Lake",50,0.03,24
+"2675","Crooked Lake",51,0.03,25
+"2676","Crooked Lake",52,0.03,26
+"2677","Crooked Lake",53,0.03,27
+"2678","Crooked Lake",54,0.03,28
+"2679","Crooked Lake",55,0.03,29
+"2680","Crooked Lake",56,0.03,30
+"2681","Crooked Lake",57,0.03,31
+"2682","Crooked Lake",58,0.03,32
+"2683","Crooked Lake",59,0.03,33
+"2684","Crooked Lake",60,0.03,34
+"2685","Crooked Lake",61,0.03,35
+"2686","Crooked Lake",62,0.03,36
+"2687","Crooked Lake",63,0.03,37
+"2688","Crooked Lake",64,0.03,38
+"2689","Crooked Lake",1,0.03,39
+"2690","Crooked Lake",2,0.03,40
+"2691","Crooked Lake",3,0.03,41
+"2692","Crooked Lake",4,0.03,42
+"2693","Crooked Lake",5,0.03,43
+"2694","Crooked Lake",6,0.03,44
+"2695","Crooked Lake",7,0.03,45
+"2696","Crooked Lake",8,0.03,46
+"2697","Crooked Lake",9,0.03,47
+"2698","Crooked Lake",10,0.03,48
+"2699","Crooked Lake",11,0.03,49
+"2700","Crooked Lake",12,0.03,50
+"2701","Jay Lake",13,0.03,1
+"2702","Jay Lake",14,0.03,2
+"2703","Jay Lake",15,0.03,3
+"2704","Jay Lake",16,0.03,4
+"2705","Jay Lake",17,0.03,5
+"2706","Jay Lake",18,0.03,6
+"2707","Jay Lake",19,0.03,7
+"2708","Jay Lake",20,0.03,8
+"2709","Jay Lake",21,0.03,9
+"2710","Jay Lake",22,0.03,10
+"2711","Jay Lake",23,0.03,11
+"2712","Jay Lake",24,0.03,12
+"2713","Jay Lake",25,0.03,13
+"2714","Jay Lake",26,0.03,14
+"2715","Jay Lake",27,0.03,15
+"2716","Jay Lake",28,0.03,16
+"2717","Jay Lake",29,0.03,17
+"2718","Jay Lake",30,0.03,18
+"2719","Jay Lake",31,0.03,19
+"2720","Jay Lake",32,0.03,20
+"2721","Jay Lake",33,0.03,21
+"2722","Jay Lake",34,0.03,22
+"2723","Jay Lake",35,0.03,23
+"2724","Jay Lake",36,0.03,24
+"2725","Jay Lake",37,0.03,25
+"2726","Jay Lake",38,0.03,26
+"2727","Jay Lake",39,0.03,27
+"2728","Jay Lake",40,0.03,28
+"2729","Jay Lake",41,0.03,29
+"2730","Jay Lake",42,0.03,30
+"2731","Jay Lake",43,0.03,31
+"2732","Jay Lake",44,0.03,32
+"2733","Jay Lake",45,0.03,33
+"2734","Jay Lake",46,0.03,34
+"2735","Jay Lake",47,0.03,35
+"2736","Jay Lake",48,0.03,36
+"2737","Jay Lake",49,0.03,37
+"2738","Jay Lake",50,0.03,38
+"2739","Jay Lake",51,0.03,39
+"2740","Jay Lake",52,0.03,40
+"2741","Jay Lake",53,0.03,41
+"2742","Jay Lake",54,0.03,42
+"2743","Jay Lake",55,0.03,43
+"2744","Jay Lake",56,0.03,44
+"2745","Jay Lake",57,0.03,45
+"2746","Jay Lake",58,0.03,46
+"2747","Jay Lake",59,0.03,47
+"2748","Jay Lake",60,0.03,48
+"2749","Jay Lake",61,0.03,49
+"2750","Jay Lake",62,0.03,50
+"2751","Lake O' Pines",63,0.03,1
+"2752","Lake O' Pines",64,0.03,2
+"2753","Lake O' Pines",1,0.03,3
+"2754","Lake O' Pines",2,0.03,4
+"2755","Lake O' Pines",3,0.03,5
+"2756","Lake O' Pines",4,0.03,6
+"2757","Lake O' Pines",5,0.03,7
+"2758","Lake O' Pines",6,0.03,8
+"2759","Lake O' Pines",7,0.03,9
+"2760","Lake O' Pines",8,0.03,10
+"2761","Lake O' Pines",9,0.03,11
+"2762","Lake O' Pines",10,0.03,12
+"2763","Lake O' Pines",11,0.03,13
+"2764","Lake O' Pines",12,0.03,14
+"2765","Lake O' Pines",13,0.03,15
+"2766","Lake O' Pines",14,0.03,16
+"2767","Lake O' Pines",15,0.03,17
+"2768","Lake O' Pines",16,0.03,18
+"2769","Lake O' Pines",17,0.03,19
+"2770","Lake O' Pines",18,0.03,20
+"2771","Lake O' Pines",19,0.03,21
+"2772","Lake O' Pines",20,0.03,22
+"2773","Lake O' Pines",21,0.03,23
+"2774","Lake O' Pines",22,0.03,24
+"2775","Lake O' Pines",23,0.03,25
+"2776","Lake O' Pines",24,0.03,26
+"2777","Lake O' Pines",25,0.03,27
+"2778","Lake O' Pines",26,0.03,28
+"2779","Lake O' Pines",27,0.03,29
+"2780","Lake O' Pines",28,0.03,30
+"2781","Lake O' Pines",29,0.03,31
+"2782","Lake O' Pines",30,0.03,32
+"2783","Lake O' Pines",31,0.03,33
+"2784","Lake O' Pines",32,0.03,34
+"2785","Lake O' Pines",33,0.03,35
+"2786","Lake O' Pines",34,0.03,36
+"2787","Lake O' Pines",35,0.03,37
+"2788","Lake O' Pines",36,0.03,38
+"2789","Lake O' Pines",37,0.03,39
+"2790","Lake O' Pines",38,0.03,40
+"2791","Lake O' Pines",39,0.03,41
+"2792","Lake O' Pines",40,0.03,42
+"2793","Lake O' Pines",41,0.03,43
+"2794","Lake O' Pines",42,0.03,44
+"2795","Lake O' Pines",43,0.03,45
+"2796","Lake O' Pines",44,0.03,46
+"2797","Lake O' Pines",45,0.03,47
+"2798","Lake O' Pines",46,0.03,48
+"2799","Lake O' Pines",47,0.03,49
+"2800","Lake O' Pines",48,0.03,50
+"2801","Qually Pond",49,0.03,1
+"2802","Qually Pond",50,0.03,2
+"2803","Qually Pond",51,0.03,3
+"2804","Qually Pond",52,0.03,4
+"2805","Qually Pond",53,0.03,5
+"2806","Qually Pond",54,0.03,6
+"2807","Qually Pond",55,0.03,7
+"2808","Qually Pond",56,0.03,8
+"2809","Qually Pond",57,0.03,9
+"2810","Qually Pond",58,0.03,10
+"2811","Qually Pond",59,0.03,11
+"2812","Qually Pond",60,0.03,12
+"2813","Qually Pond",61,0.03,13
+"2814","Qually Pond",62,0.03,14
+"2815","Qually Pond",63,0.03,15
+"2816","Qually Pond",64,0.03,16
+"2817","Qually Pond",1,0.03,17
+"2818","Qually Pond",2,0.03,18
+"2819","Qually Pond",3,0.03,19
+"2820","Qually Pond",4,0.03,20
+"2821","Qually Pond",5,0.03,21
+"2822","Qually Pond",6,0.03,22
+"2823","Qually Pond",7,0.03,23
+"2824","Qually Pond",8,0.03,24
+"2825","Qually Pond",9,0.03,25
+"2826","Qually Pond",10,0.03,26
+"2827","Qually Pond",11,0.03,27
+"2828","Qually Pond",12,0.03,28
+"2829","Qually Pond",13,0.03,29
+"2830","Qually Pond",14,0.03,30
+"2831","Qually Pond",15,0.03,31
+"2832","Qually Pond",16,0.03,32
+"2833","Qually Pond",17,0.03,33
+"2834","Qually Pond",18,0.03,34
+"2835","Qually Pond",19,0.03,35
+"2836","Qually Pond",20,0.03,36
+"2837","Qually Pond",21,0.03,37
+"2838","Qually Pond",22,0.03,38
+"2839","Qually Pond",23,0.03,39
+"2840","Qually Pond",24,0.03,40
+"2841","Qually Pond",25,0.03,41
+"2842","Qually Pond",26,0.03,42
+"2843","Qually Pond",27,0.03,43
+"2844","Qually Pond",28,0.03,44
+"2845","Qually Pond",29,0.03,45
+"2846","Qually Pond",30,0.03,46
+"2847","Qually Pond",31,0.03,47
+"2848","Qually Pond",32,0.03,48
+"2849","Qually Pond",33,0.03,49
+"2850","Qually Pond",34,0.03,50
+"2851","Lima Bog",35,0.03,1
+"2852","Lima Bog",36,0.03,2
+"2853","Lima Bog",37,0.03,3
+"2854","Lima Bog",38,0.03,4
+"2855","Lima Bog",39,0.03,5
+"2856","Lima Bog",40,0.03,6
+"2857","Lima Bog",41,0.03,7
+"2858","Lima Bog",42,0.03,8
+"2859","Lima Bog",43,0.03,9
+"2860","Lima Bog",44,0.03,10
+"2861","Lima Bog",45,0.03,11
+"2862","Lima Bog",46,0.03,12
+"2863","Lima Bog",47,0.03,13
+"2864","Lima Bog",48,0.03,14
+"2865","Lima Bog",49,0.03,15
+"2866","Lima Bog",50,0.03,16
+"2867","Lima Bog",51,0.03,17
+"2868","Lima Bog",52,0.03,18
+"2869","Lima Bog",53,0.03,19
+"2870","Lima Bog",54,0.03,20
+"2871","Lima Bog",55,0.03,21
+"2872","Lima Bog",56,0.03,22
+"2873","Lima Bog",57,0.03,23
+"2874","Lima Bog",58,0.03,24
+"2875","Lima Bog",59,0.03,25
+"2876","Lima Bog",60,0.03,26
+"2877","Lima Bog",61,0.03,27
+"2878","Lima Bog",62,0.03,28
+"2879","Lima Bog",63,0.03,29
+"2880","Lima Bog",64,0.03,30
+"2881","Lima Bog",1,0.03,31
+"2882","Lima Bog",2,0.03,32
+"2883","Lima Bog",3,0.03,33
+"2884","Lima Bog",4,0.03,34
+"2885","Lima Bog",5,0.03,35
+"2886","Lima Bog",6,0.03,36
+"2887","Lima Bog",7,0.03,37
+"2888","Lima Bog",8,0.03,38
+"2889","Lima Bog",9,0.03,39
+"2890","Lima Bog",10,0.03,40
+"2891","Lima Bog",11,0.03,41
+"2892","Lima Bog",12,0.03,42
+"2893","Lima Bog",13,0.03,43
+"2894","Lima Bog",14,0.03,44
+"2895","Lima Bog",15,0.03,45
+"2896","Lima Bog",16,0.03,46
+"2897","Lima Bog",17,0.03,47
+"2898","Lima Bog",18,0.03,48
+"2899","Lima Bog",19,0.03,49
+"2900","Lima Bog",20,0.03,50
+"2901","Capitola Lake",21,0.03,1
+"2902","Capitola Lake",22,0.03,2
+"2903","Capitola Lake",23,0.03,3
+"2904","Capitola Lake",24,0.03,4
+"2905","Capitola Lake",25,0.03,5
+"2906","Capitola Lake",26,0.03,6
+"2907","Capitola Lake",27,0.03,7
+"2908","Capitola Lake",28,0.03,8
+"2909","Capitola Lake",29,0.03,9
+"2910","Capitola Lake",30,0.03,10
+"2911","Capitola Lake",31,0.03,11
+"2912","Capitola Lake",32,0.03,12
+"2913","Capitola Lake",33,0.03,13
+"2914","Capitola Lake",34,0.03,14
+"2915","Capitola Lake",35,0.03,15
+"2916","Capitola Lake",36,0.03,16
+"2917","Capitola Lake",37,0.03,17
+"2918","Capitola Lake",38,0.03,18
+"2919","Capitola Lake",39,0.03,19
+"2920","Capitola Lake",40,0.03,20
+"2921","Capitola Lake",41,0.03,21
+"2922","Capitola Lake",42,0.03,22
+"2923","Capitola Lake",43,0.03,23
+"2924","Capitola Lake",44,0.03,24
+"2925","Capitola Lake",45,0.03,25
+"2926","Capitola Lake",46,0.03,26
+"2927","Capitola Lake",47,0.03,27
+"2928","Capitola Lake",48,0.03,28
+"2929","Capitola Lake",49,0.03,29
+"2930","Capitola Lake",50,0.03,30
+"2931","Capitola Lake",51,0.03,31
+"2932","Capitola Lake",52,0.03,32
+"2933","Capitola Lake",53,0.03,33
+"2934","Capitola Lake",54,0.03,34
+"2935","Capitola Lake",55,0.03,35
+"2936","Capitola Lake",56,0.03,36
+"2937","Capitola Lake",57,0.03,37
+"2938","Capitola Lake",58,0.03,38
+"2939","Capitola Lake",59,0.03,39
+"2940","Capitola Lake",60,0.03,40
+"2941","Capitola Lake",61,0.03,41
+"2942","Capitola Lake",62,0.03,42
+"2943","Capitola Lake",63,0.03,43
+"2944","Capitola Lake",64,0.03,44
+"2945","Capitola Lake",1,0.03,45
+"2946","Capitola Lake",2,0.03,46
+"2947","Capitola Lake",3,0.03,47
+"2948","Capitola Lake",4,0.03,48
+"2949","Capitola Lake",5,0.03,49
+"2950","Capitola Lake",6,0.03,50
+"2951","Steel Lake",7,0.03,1
+"2952","Steel Lake",8,0.03,2
+"2953","Steel Lake",9,0.03,3
+"2954","Steel Lake",10,0.03,4
+"2955","Steel Lake",11,0.03,5
+"2956","Steel Lake",12,0.03,6
+"2957","Steel Lake",13,0.03,7
+"2958","Steel Lake",14,0.03,8
+"2959","Steel Lake",15,0.03,9
+"2960","Steel Lake",16,0.03,10
+"2961","Steel Lake",17,0.03,11
+"2962","Steel Lake",18,0.03,12
+"2963","Steel Lake",19,0.03,13
+"2964","Steel Lake",20,0.03,14
+"2965","Steel Lake",21,0.03,15
+"2966","Steel Lake",22,0.03,16
+"2967","Steel Lake",23,0.03,17
+"2968","Steel Lake",24,0.03,18
+"2969","Steel Lake",25,0.03,19
+"2970","Steel Lake",26,0.03,20
+"2971","Steel Lake",27,0.03,21
+"2972","Steel Lake",28,0.03,22
+"2973","Steel Lake",29,0.03,23
+"2974","Steel Lake",30,0.03,24
+"2975","Steel Lake",31,0.03,25
+"2976","Steel Lake",32,0.03,26
+"2977","Steel Lake",33,0.03,27
+"2978","Steel Lake",34,0.03,28
+"2979","Steel Lake",35,0.03,29
+"2980","Steel Lake",36,0.03,30
+"2981","Steel Lake",37,0.03,31
+"2982","Steel Lake",38,0.03,32
+"2983","Steel Lake",39,0.03,33
+"2984","Steel Lake",40,0.03,34
+"2985","Steel Lake",41,0.03,35
+"2986","Steel Lake",42,0.03,36
+"2987","Steel Lake",43,0.03,37
+"2988","Steel Lake",44,0.03,38
+"2989","Steel Lake",45,0.03,39
+"2990","Steel Lake",46,0.03,40
+"2991","Steel Lake",47,0.03,41
+"2992","Steel Lake",48,0.03,42
+"2993","Steel Lake",49,0.03,43
+"2994","Steel Lake",50,0.03,44
+"2995","Steel Lake",51,0.03,45
+"2996","Steel Lake",52,0.03,46
+"2997","Steel Lake",53,0.03,47
+"2998","Steel Lake",54,0.03,48
+"2999","Steel Lake",55,0.03,49
+"3000","Steel Lake",56,0.03,50
+"3001","Lorraine Lake",57,0.03,1
+"3002","Lorraine Lake",58,0.03,2
+"3003","Lorraine Lake",59,0.03,3
+"3004","Lorraine Lake",60,0.03,4
+"3005","Lorraine Lake",61,0.03,5
+"3006","Lorraine Lake",62,0.03,6
+"3007","Lorraine Lake",63,0.03,7
+"3008","Lorraine Lake",64,0.03,8
+"3009","Lorraine Lake",1,0.03,9
+"3010","Lorraine Lake",2,0.03,10
+"3011","Lorraine Lake",3,0.03,11
+"3012","Lorraine Lake",4,0.03,12
+"3013","Lorraine Lake",5,0.03,13
+"3014","Lorraine Lake",6,0.03,14
+"3015","Lorraine Lake",7,0.03,15
+"3016","Lorraine Lake",8,0.03,16
+"3017","Lorraine Lake",9,0.03,17
+"3018","Lorraine Lake",10,0.03,18
+"3019","Lorraine Lake",11,0.03,19
+"3020","Lorraine Lake",12,0.03,20
+"3021","Lorraine Lake",13,0.03,21
+"3022","Lorraine Lake",14,0.03,22
+"3023","Lorraine Lake",15,0.03,23
+"3024","Lorraine Lake",16,0.03,24
+"3025","Lorraine Lake",17,0.03,25
+"3026","Lorraine Lake",18,0.03,26
+"3027","Lorraine Lake",19,0.03,27
+"3028","Lorraine Lake",20,0.03,28
+"3029","Lorraine Lake",21,0.03,29
+"3030","Lorraine Lake",22,0.03,30
+"3031","Lorraine Lake",23,0.03,31
+"3032","Lorraine Lake",24,0.03,32
+"3033","Lorraine Lake",25,0.03,33
+"3034","Lorraine Lake",26,0.03,34
+"3035","Lorraine Lake",27,0.03,35
+"3036","Lorraine Lake",28,0.03,36
+"3037","Lorraine Lake",29,0.03,37
+"3038","Lorraine Lake",30,0.03,38
+"3039","Lorraine Lake",31,0.03,39
+"3040","Lorraine Lake",32,0.03,40
+"3041","Lorraine Lake",33,0.03,41
+"3042","Lorraine Lake",34,0.03,42
+"3043","Lorraine Lake",35,0.03,43
+"3044","Lorraine Lake",36,0.03,44
+"3045","Lorraine Lake",37,0.03,45
+"3046","Lorraine Lake",38,0.03,46
+"3047","Lorraine Lake",39,0.03,47
+"3048","Lorraine Lake",40,0.03,48
+"3049","Lorraine Lake",41,0.03,49
+"3050","Lorraine Lake",42,0.03,50
+"3051","Penegor Lake",43,0.03,1
+"3052","Penegor Lake",44,0.03,2
+"3053","Penegor Lake",45,0.03,3
+"3054","Penegor Lake",46,0.03,4
+"3055","Penegor Lake",47,0.03,5
+"3056","Penegor Lake",48,0.03,6
+"3057","Penegor Lake",49,0.03,7
+"3058","Penegor Lake",50,0.03,8
+"3059","Penegor Lake",51,0.03,9
+"3060","Penegor Lake",52,0.03,10
+"3061","Penegor Lake",53,0.03,11
+"3062","Penegor Lake",54,0.03,12
+"3063","Penegor Lake",55,0.03,13
+"3064","Penegor Lake",56,0.03,14
+"3065","Penegor Lake",57,0.03,15
+"3066","Penegor Lake",58,0.03,16
+"3067","Penegor Lake",59,0.03,17
+"3068","Penegor Lake",60,0.03,18
+"3069","Penegor Lake",61,0.03,19
+"3070","Penegor Lake",62,0.03,20
+"3071","Penegor Lake",63,0.03,21
+"3072","Penegor Lake",64,0.03,22
+"3073","Penegor Lake",1,0.03,23
+"3074","Penegor Lake",2,0.03,24
+"3075","Penegor Lake",3,0.03,25
+"3076","Penegor Lake",4,0.03,26
+"3077","Penegor Lake",5,0.03,27
+"3078","Penegor Lake",6,0.03,28
+"3079","Penegor Lake",7,0.03,29
+"3080","Penegor Lake",8,0.03,30
+"3081","Penegor Lake",9,0.03,31
+"3082","Penegor Lake",10,0.03,32
+"3083","Penegor Lake",11,0.03,33
+"3084","Penegor Lake",12,0.03,34
+"3085","Penegor Lake",13,0.03,35
+"3086","Penegor Lake",14,0.03,36
+"3087","Penegor Lake",15,0.03,37
+"3088","Penegor Lake",16,0.03,38
+"3089","Penegor Lake",17,0.03,39
+"3090","Penegor Lake",18,0.03,40
+"3091","Penegor Lake",19,0.03,41
+"3092","Penegor Lake",20,0.03,42
+"3093","Penegor Lake",21,0.03,43
+"3094","Penegor Lake",22,0.03,44
+"3095","Penegor Lake",23,0.03,45
+"3096","Penegor Lake",24,0.03,46
+"3097","Penegor Lake",25,0.03,47
+"3098","Penegor Lake",26,0.03,48
+"3099","Penegor Lake",27,0.03,49
+"3100","Penegor Lake",28,0.03,50
+"3101","Fox Lake",29,0.03,1
+"3102","Fox Lake",30,0.03,2
+"3103","Fox Lake",31,0.03,3
+"3104","Fox Lake",32,0.03,4
+"3105","Fox Lake",33,0.03,5
+"3106","Fox Lake",34,0.03,6
+"3107","Fox Lake",35,0.03,7
+"3108","Fox Lake",36,0.03,8
+"3109","Fox Lake",37,0.03,9
+"3110","Fox Lake",38,0.03,10
+"3111","Fox Lake",39,0.03,11
+"3112","Fox Lake",40,0.03,12
+"3113","Fox Lake",41,0.03,13
+"3114","Fox Lake",42,0.03,14
+"3115","Fox Lake",43,0.03,15
+"3116","Fox Lake",44,0.03,16
+"3117","Fox Lake",45,0.03,17
+"3118","Fox Lake",46,0.03,18
+"3119","Fox Lake",47,0.03,19
+"3120","Fox Lake",48,0.03,20
+"3121","Fox Lake",49,0.03,21
+"3122","Fox Lake",50,0.03,22
+"3123","Fox Lake",51,0.03,23
+"3124","Fox Lake",52,0.03,24
+"3125","Fox Lake",53,0.03,25
+"3126","Fox Lake",54,0.03,26
+"3127","Fox Lake",55,0.03,27
+"3128","Fox Lake",56,0.03,28
+"3129","Fox Lake",57,0.03,29
+"3130","Fox Lake",58,0.03,30
+"3131","Fox Lake",59,0.03,31
+"3132","Fox Lake",60,0.03,32
+"3133","Fox Lake",61,0.03,33
+"3134","Fox Lake",62,0.03,34
+"3135","Fox Lake",63,0.03,35
+"3136","Fox Lake",64,0.03,36
+"3137","Fox Lake",1,0.03,37
+"3138","Fox Lake",2,0.03,38
+"3139","Fox Lake",3,0.03,39
+"3140","Fox Lake",4,0.03,40
+"3141","Fox Lake",5,0.03,41
+"3142","Fox Lake",6,0.03,42
+"3143","Fox Lake",7,0.03,43
+"3144","Fox Lake",8,0.03,44
+"3145","Fox Lake",9,0.03,45
+"3146","Fox Lake",10,0.03,46
+"3147","Fox Lake",11,0.03,47
+"3148","Fox Lake",12,0.03,48
+"3149","Fox Lake",13,0.03,49
+"3150","Fox Lake",14,0.03,50
+"3151","South Rhody peatland",15,0.03,1
+"3152","South Rhody peatland",16,0.03,2
+"3153","South Rhody peatland",17,0.03,3
+"3154","South Rhody peatland",18,0.03,4
+"3155","South Rhody peatland",19,0.03,5
+"3156","South Rhody peatland",20,0.03,6
+"3157","South Rhody peatland",21,0.03,7
+"3158","South Rhody peatland",22,0.03,8
+"3159","South Rhody peatland",23,0.03,9
+"3160","South Rhody peatland",24,0.03,10
+"3161","South Rhody peatland",25,0.03,11
+"3162","South Rhody peatland",26,0.03,12
+"3163","South Rhody peatland",27,0.03,13
+"3164","South Rhody peatland",28,0.03,14
+"3165","South Rhody peatland",29,0.03,15
+"3166","South Rhody peatland",30,0.03,16
+"3167","South Rhody peatland",31,0.03,17
+"3168","South Rhody peatland",32,0.03,18
+"3169","South Rhody peatland",33,0.03,19
+"3170","South Rhody peatland",34,0.03,20
+"3171","South Rhody peatland",35,0.03,21
+"3172","South Rhody peatland",36,0.03,22
+"3173","South Rhody peatland",37,0.03,23
+"3174","South Rhody peatland",38,0.03,24
+"3175","South Rhody peatland",39,0.03,25
+"3176","South Rhody peatland",40,0.03,26
+"3177","South Rhody peatland",41,0.03,27
+"3178","South Rhody peatland",42,0.03,28
+"3179","South Rhody peatland",43,0.03,29
+"3180","South Rhody peatland",44,0.03,30
+"3181","South Rhody peatland",45,0.03,31
+"3182","South Rhody peatland",46,0.03,32
+"3183","South Rhody peatland",47,0.03,33
+"3184","South Rhody peatland",48,0.03,34
+"3185","South Rhody peatland",49,0.03,35
+"3186","South Rhody peatland",50,0.03,36
+"3187","South Rhody peatland",51,0.03,37
+"3188","South Rhody peatland",52,0.03,38
+"3189","South Rhody peatland",53,0.03,39
+"3190","South Rhody peatland",54,0.03,40
+"3191","South Rhody peatland",55,0.03,41
+"3192","South Rhody peatland",56,0.03,42
+"3193","South Rhody peatland",57,0.03,43
+"3194","South Rhody peatland",58,0.03,44
+"3195","South Rhody peatland",59,0.03,45
+"3196","South Rhody peatland",60,0.03,46
+"3197","South Rhody peatland",61,0.03,47
+"3198","South Rhody peatland",62,0.03,48
+"3199","South Rhody peatland",63,0.03,49
+"3200","South Rhody peatland",64,0.03,50
+"3201","Disterhaft Farm Bog",1,0.03,1
+"3202","Disterhaft Farm Bog",2,0.03,2
+"3203","Disterhaft Farm Bog",3,0.03,3
+"3204","Disterhaft Farm Bog",4,0.03,4
+"3205","Disterhaft Farm Bog",5,0.03,5
+"3206","Disterhaft Farm Bog",6,0.03,6
+"3207","Disterhaft Farm Bog",7,0.03,7
+"3208","Disterhaft Farm Bog",8,0.03,8
+"3209","Disterhaft Farm Bog",9,0.03,9
+"3210","Disterhaft Farm Bog",10,0.03,10
+"3211","Disterhaft Farm Bog",11,0.03,11
+"3212","Disterhaft Farm Bog",12,0.03,12
+"3213","Disterhaft Farm Bog",13,0.03,13
+"3214","Disterhaft Farm Bog",14,0.03,14
+"3215","Disterhaft Farm Bog",15,0.03,15
+"3216","Disterhaft Farm Bog",16,0.03,16
+"3217","Disterhaft Farm Bog",17,0.03,17
+"3218","Disterhaft Farm Bog",18,0.03,18
+"3219","Disterhaft Farm Bog",19,0.03,19
+"3220","Disterhaft Farm Bog",20,0.03,20
+"3221","Disterhaft Farm Bog",21,0.03,21
+"3222","Disterhaft Farm Bog",22,0.03,22
+"3223","Disterhaft Farm Bog",23,0.03,23
+"3224","Disterhaft Farm Bog",24,0.03,24
+"3225","Disterhaft Farm Bog",25,0.03,25
+"3226","Disterhaft Farm Bog",26,0.03,26
+"3227","Disterhaft Farm Bog",27,0.03,27
+"3228","Disterhaft Farm Bog",28,0.03,28
+"3229","Disterhaft Farm Bog",29,0.03,29
+"3230","Disterhaft Farm Bog",30,0.03,30
+"3231","Disterhaft Farm Bog",31,0.03,31
+"3232","Disterhaft Farm Bog",32,0.03,32
+"3233","Disterhaft Farm Bog",33,0.03,33
+"3234","Disterhaft Farm Bog",34,0.03,34
+"3235","Disterhaft Farm Bog",35,0.03,35
+"3236","Disterhaft Farm Bog",36,0.03,36
+"3237","Disterhaft Farm Bog",37,0.03,37
+"3238","Disterhaft Farm Bog",38,0.03,38
+"3239","Disterhaft Farm Bog",39,0.03,39
+"3240","Disterhaft Farm Bog",40,0.03,40
+"3241","Disterhaft Farm Bog",41,0.03,41
+"3242","Disterhaft Farm Bog",42,0.03,42
+"3243","Disterhaft Farm Bog",43,0.03,43
+"3244","Disterhaft Farm Bog",44,0.03,44
+"3245","Disterhaft Farm Bog",45,0.03,45
+"3246","Disterhaft Farm Bog",46,0.03,46
+"3247","Disterhaft Farm Bog",47,0.03,47
+"3248","Disterhaft Farm Bog",48,0.03,48
+"3249","Disterhaft Farm Bog",49,0.03,49
+"3250","Disterhaft Farm Bog",50,0.03,50
+"3251","Hansen Marsh",51,0.03,1
+"3252","Hansen Marsh",52,0.03,2
+"3253","Hansen Marsh",53,0.03,3
+"3254","Hansen Marsh",54,0.03,4
+"3255","Hansen Marsh",55,0.03,5
+"3256","Hansen Marsh",56,0.03,6
+"3257","Hansen Marsh",57,0.03,7
+"3258","Hansen Marsh",58,0.03,8
+"3259","Hansen Marsh",59,0.03,9
+"3260","Hansen Marsh",60,0.03,10
+"3261","Hansen Marsh",61,0.03,11
+"3262","Hansen Marsh",62,0.03,12
+"3263","Hansen Marsh",63,0.03,13
+"3264","Hansen Marsh",64,0.03,14
+"3265","Hansen Marsh",65,0.03,15
+"3266","Hansen Marsh",66,0.03,16
+"3267","Hansen Marsh",67,0.03,17
+"3268","Hansen Marsh",68,0.03,18
+"3269","Hansen Marsh",69,0.03,19
+"3270","Hansen Marsh",70,0.03,20
+"3271","Hansen Marsh",71,0.03,21
+"3272","Hansen Marsh",72,0.03,22
+"3273","Hansen Marsh",73,0.03,23
+"3274","Hansen Marsh",74,0.03,24
+"3275","Hansen Marsh",75,0.03,25
+"3276","Hansen Marsh",76,0.03,26
+"3277","Hansen Marsh",77,0.03,27
+"3278","Hansen Marsh",78,0.03,28
+"3279","Hansen Marsh",79,0.03,29
+"3280","Hansen Marsh",80,0.03,30
+"3281","Hansen Marsh",81,0.03,31
+"3282","Hansen Marsh",82,0.03,32
+"3283","Hansen Marsh",83,0.03,33
+"3284","Hansen Marsh",84,0.03,34
+"3285","Hansen Marsh",85,0.03,35
+"3286","Hansen Marsh",86,0.03,36
+"3287","Hansen Marsh",87,0.03,37
+"3288","Hansen Marsh",88,0.03,38
+"3289","Hansen Marsh",89,0.03,39
+"3290","Hansen Marsh",90,0.03,40
+"3291","Hansen Marsh",91,0.03,41
+"3292","Hansen Marsh",92,0.03,42
+"3293","Hansen Marsh",93,0.03,43
+"3294","Hansen Marsh",94,0.03,44
+"3295","Hansen Marsh",95,0.03,45
+"3296","Hansen Marsh",96,0.03,46
+"3297","Hansen Marsh",97,0.03,47
+"3298","Hansen Marsh",98,0.03,48
+"3299","Hansen Marsh",99,0.03,49
+"3300","Hansen Marsh",100,0.03,50
+"3301","Iola Bog",101,0.03,1
+"3302","Iola Bog",102,0.03,2
+"3303","Iola Bog",103,0.03,3
+"3304","Iola Bog",104,0.03,4
+"3305","Iola Bog",105,0.03,5
+"3306","Iola Bog",106,0.03,6
+"3307","Iola Bog",107,0.03,7
+"3308","Iola Bog",108,0.03,8
+"3309","Iola Bog",109,0.03,9
+"3310","Iola Bog",110,0.03,10
+"3311","Iola Bog",111,0.03,11
+"3312","Iola Bog",112,0.03,12
+"3313","Iola Bog",113,0.03,13
+"3314","Iola Bog",114,0.03,14
+"3315","Iola Bog",115,0.03,15
+"3316","Iola Bog",116,0.03,16
+"3317","Iola Bog",117,0.03,17
+"3318","Iola Bog",118,0.03,18
+"3319","Iola Bog",119,0.03,19
+"3320","Iola Bog",120,0.03,20
+"3321","Iola Bog",121,0.03,21
+"3322","Iola Bog",122,0.03,22
+"3323","Iola Bog",123,0.03,23
+"3324","Iola Bog",124,0.03,24
+"3325","Iola Bog",125,0.03,25
+"3326","Iola Bog",126,0.03,26
+"3327","Iola Bog",127,0.03,27
+"3328","Iola Bog",128,0.03,28
+"3329","Iola Bog",129,0.03,29
+"3330","Iola Bog",130,0.03,30
+"3331","Iola Bog",131,0.03,31
+"3332","Iola Bog",132,0.03,32
+"3333","Iola Bog",133,0.03,33
+"3334","Iola Bog",134,0.03,34
+"3335","Iola Bog",135,0.03,35
+"3336","Iola Bog",136,0.03,36
+"3337","Iola Bog",137,0.03,37
+"3338","Iola Bog",138,0.03,38
+"3339","Iola Bog",139,0.03,39
+"3340","Iola Bog",140,0.03,40
+"3341","Iola Bog",141,0.03,41
+"3342","Iola Bog",142,0.03,42
+"3343","Iola Bog",143,0.03,43
+"3344","Iola Bog",144,0.03,44
+"3345","Iola Bog",145,0.03,45
+"3346","Iola Bog",146,0.03,46
+"3347","Iola Bog",147,0.03,47
+"3348","Iola Bog",148,0.03,48
+"3349","Iola Bog",149,0.03,49
+"3350","Iola Bog",150,0.03,50
+"3351","Lost Lake",151,0.03,1
+"3352","Lost Lake",152,0.03,2
+"3353","Lost Lake",153,0.03,3
+"3354","Lost Lake",154,0.03,4
+"3355","Lost Lake",155,0.03,5
+"3356","Lost Lake",156,0.03,6
+"3357","Lost Lake",157,0.03,7
+"3358","Lost Lake",158,0.03,8
+"3359","Lost Lake",159,0.03,9
+"3360","Lost Lake",160,0.03,10
+"3361","Lost Lake",161,0.03,11
+"3362","Lost Lake",162,0.03,12
+"3363","Lost Lake",163,0.03,13
+"3364","Lost Lake",164,0.03,14
+"3365","Lost Lake",165,0.03,15
+"3366","Lost Lake",166,0.03,16
+"3367","Lost Lake",167,0.03,17
+"3368","Lost Lake",168,0.03,18
+"3369","Lost Lake",169,0.03,19
+"3370","Lost Lake",170,0.03,20
+"3371","Lost Lake",171,0.03,21
+"3372","Lost Lake",172,0.03,22
+"3373","Lost Lake",173,0.03,23
+"3374","Lost Lake",174,0.03,24
+"3375","Lost Lake",175,0.03,25
+"3376","Lost Lake",176,0.03,26
+"3377","Lost Lake",177,0.03,27
+"3378","Lost Lake",178,0.03,28
+"3379","Lost Lake",179,0.03,29
+"3380","Lost Lake",180,0.03,30
+"3381","Lost Lake",181,0.03,31
+"3382","Lost Lake",182,0.03,32
+"3383","Lost Lake",183,0.03,33
+"3384","Lost Lake",184,0.03,34
+"3385","Lost Lake",185,0.03,35
+"3386","Lost Lake",186,0.03,36
+"3387","Lost Lake",187,0.03,37
+"3388","Lost Lake",188,0.03,38
+"3389","Lost Lake",189,0.03,39
+"3390","Lost Lake",190,0.03,40
+"3391","Lost Lake",191,0.03,41
+"3392","Lost Lake",192,0.03,42
+"3393","Lost Lake",193,0.03,43
+"3394","Lost Lake",194,0.03,44
+"3395","Lost Lake",195,0.03,45
+"3396","Lost Lake",196,0.03,46
+"3397","Lost Lake",197,0.03,47
+"3398","Lost Lake",198,0.03,48
+"3399","Lost Lake",199,0.03,49
+"3400","Lost Lake",200,0.03,50
+"3401","Third Lake",201,0.03,1
+"3402","Third Lake",202,0.03,2
+"3403","Third Lake",203,0.03,3
+"3404","Third Lake",204,0.03,4
+"3405","Third Lake",205,0.03,5
+"3406","Third Lake",206,0.03,6
+"3407","Third Lake",207,0.03,7
+"3408","Third Lake",208,0.03,8
+"3409","Third Lake",209,0.03,9
+"3410","Third Lake",210,0.03,10
+"3411","Third Lake",211,0.03,11
+"3412","Third Lake",212,0.03,12
+"3413","Third Lake",213,0.03,13
+"3414","Third Lake",214,0.03,14
+"3415","Third Lake",215,0.03,15
+"3416","Third Lake",216,0.03,16
+"3417","Third Lake",217,0.03,17
+"3418","Third Lake",218,0.03,18
+"3419","Third Lake",219,0.03,19
+"3420","Third Lake",220,0.03,20
+"3421","Third Lake",221,0.03,21
+"3422","Third Lake",222,0.03,22
+"3423","Third Lake",223,0.03,23
+"3424","Third Lake",224,0.03,24
+"3425","Third Lake",225,0.03,25
+"3426","Third Lake",226,0.03,26
+"3427","Third Lake",227,0.03,27
+"3428","Third Lake",228,0.03,28
+"3429","Third Lake",229,0.03,29
+"3430","Third Lake",230,0.03,30
+"3431","Third Lake",231,0.03,31
+"3432","Third Lake",232,0.03,32
+"3433","Third Lake",233,0.03,33
+"3434","Third Lake",234,0.03,34
+"3435","Third Lake",235,0.03,35
+"3436","Third Lake",236,0.03,36
+"3437","Third Lake",237,0.03,37
+"3438","Third Lake",238,0.03,38
+"3439","Third Lake",239,0.03,39
+"3440","Third Lake",240,0.03,40
+"3441","Third Lake",241,0.03,41
+"3442","Third Lake",242,0.03,42
+"3443","Third Lake",243,0.03,43
+"3444","Third Lake",244,0.03,44
+"3445","Third Lake",245,0.03,45
+"3446","Third Lake",246,0.03,46
+"3447","Third Lake",247,0.03,47
+"3448","Third Lake",248,0.03,48
+"3449","Third Lake",249,0.03,49
+"3450","Third Lake",250,0.03,50
+"3451","Stone Lake Tamarack Swamp",251,0.03,1
+"3452","Stone Lake Tamarack Swamp",252,0.03,2
+"3453","Stone Lake Tamarack Swamp",253,0.03,3
+"3454","Stone Lake Tamarack Swamp",254,0.03,4
+"3455","Stone Lake Tamarack Swamp",255,0.03,5
+"3456","Stone Lake Tamarack Swamp",256,0.03,6
+"3457","Stone Lake Tamarack Swamp",257,0.03,7
+"3458","Stone Lake Tamarack Swamp",258,0.03,8
+"3459","Stone Lake Tamarack Swamp",259,0.03,9
+"3460","Stone Lake Tamarack Swamp",260,0.03,10
+"3461","Stone Lake Tamarack Swamp",261,0.03,11
+"3462","Stone Lake Tamarack Swamp",262,0.03,12
+"3463","Stone Lake Tamarack Swamp",263,0.03,13
+"3464","Stone Lake Tamarack Swamp",264,0.03,14
+"3465","Stone Lake Tamarack Swamp",265,0.03,15
+"3466","Stone Lake Tamarack Swamp",266,0.03,16
+"3467","Stone Lake Tamarack Swamp",267,0.03,17
+"3468","Stone Lake Tamarack Swamp",268,0.03,18
+"3469","Stone Lake Tamarack Swamp",269,0.03,19
+"3470","Stone Lake Tamarack Swamp",270,0.03,20
+"3471","Stone Lake Tamarack Swamp",271,0.03,21
+"3472","Stone Lake Tamarack Swamp",272,0.03,22
+"3473","Stone Lake Tamarack Swamp",273,0.03,23
+"3474","Stone Lake Tamarack Swamp",274,0.03,24
+"3475","Stone Lake Tamarack Swamp",275,0.03,25
+"3476","Stone Lake Tamarack Swamp",276,0.03,26
+"3477","Stone Lake Tamarack Swamp",277,0.03,27
+"3478","Stone Lake Tamarack Swamp",278,0.03,28
+"3479","Stone Lake Tamarack Swamp",279,0.03,29
+"3480","Stone Lake Tamarack Swamp",280,0.03,30
+"3481","Stone Lake Tamarack Swamp",281,0.03,31
+"3482","Stone Lake Tamarack Swamp",282,0.03,32
+"3483","Stone Lake Tamarack Swamp",283,0.03,33
+"3484","Stone Lake Tamarack Swamp",284,0.03,34
+"3485","Stone Lake Tamarack Swamp",285,0.03,35
+"3486","Stone Lake Tamarack Swamp",286,0.03,36
+"3487","Stone Lake Tamarack Swamp",287,0.03,37
+"3488","Stone Lake Tamarack Swamp",288,0.03,38
+"3489","Stone Lake Tamarack Swamp",289,0.03,39
+"3490","Stone Lake Tamarack Swamp",290,0.03,40
+"3491","Stone Lake Tamarack Swamp",291,0.03,41
+"3492","Stone Lake Tamarack Swamp",292,0.03,42
+"3493","Stone Lake Tamarack Swamp",293,0.03,43
+"3494","Stone Lake Tamarack Swamp",294,0.03,44
+"3495","Stone Lake Tamarack Swamp",295,0.03,45
+"3496","Stone Lake Tamarack Swamp",296,0.03,46
+"3497","Stone Lake Tamarack Swamp",297,0.03,47
+"3498","Stone Lake Tamarack Swamp",298,0.03,48
+"3499","Stone Lake Tamarack Swamp",299,0.03,49
+"3500","Stone Lake Tamarack Swamp",300,0.03,50
+"3501","Vestaburg Bog",301,0.03,1
+"3502","Vestaburg Bog",302,0.03,2
+"3503","Vestaburg Bog",303,0.03,3
+"3504","Vestaburg Bog",304,0.03,4
+"3505","Vestaburg Bog",305,0.03,5
+"3506","Vestaburg Bog",306,0.03,6
+"3507","Vestaburg Bog",307,0.03,7
+"3508","Vestaburg Bog",308,0.03,8
+"3509","Vestaburg Bog",309,0.03,9
+"3510","Vestaburg Bog",310,0.03,10
+"3511","Vestaburg Bog",311,0.03,11
+"3512","Vestaburg Bog",312,0.03,12
+"3513","Vestaburg Bog",313,0.03,13
+"3514","Vestaburg Bog",314,0.03,14
+"3515","Vestaburg Bog",315,0.03,15
+"3516","Vestaburg Bog",316,0.03,16
+"3517","Vestaburg Bog",317,0.03,17
+"3518","Vestaburg Bog",318,0.03,18
+"3519","Vestaburg Bog",319,0.03,19
+"3520","Vestaburg Bog",320,0.03,20
+"3521","Vestaburg Bog",321,0.03,21
+"3522","Vestaburg Bog",322,0.03,22
+"3523","Vestaburg Bog",323,0.03,23
+"3524","Vestaburg Bog",324,0.03,24
+"3525","Vestaburg Bog",325,0.03,25
+"3526","Vestaburg Bog",326,0.03,26
+"3527","Vestaburg Bog",327,0.03,27
+"3528","Vestaburg Bog",328,0.03,28
+"3529","Vestaburg Bog",329,0.03,29
+"3530","Vestaburg Bog",330,0.03,30
+"3531","Vestaburg Bog",331,0.03,31
+"3532","Vestaburg Bog",332,0.03,32
+"3533","Vestaburg Bog",333,0.03,33
+"3534","Vestaburg Bog",334,0.03,34
+"3535","Vestaburg Bog",335,0.03,35
+"3536","Vestaburg Bog",336,0.03,36
+"3537","Vestaburg Bog",337,0.03,37
+"3538","Vestaburg Bog",338,0.03,38
+"3539","Vestaburg Bog",339,0.03,39
+"3540","Vestaburg Bog",340,0.03,40
+"3541","Vestaburg Bog",341,0.03,41
+"3542","Vestaburg Bog",342,0.03,42
+"3543","Vestaburg Bog",343,0.03,43
+"3544","Vestaburg Bog",344,0.03,44
+"3545","Vestaburg Bog",345,0.03,45
+"3546","Vestaburg Bog",346,0.03,46
+"3547","Vestaburg Bog",347,0.03,47
+"3548","Vestaburg Bog",348,0.03,48
+"3549","Vestaburg Bog",349,0.03,49
+"3550","Vestaburg Bog",350,0.03,50
+"3551","Weber Lake",351,0.03,1
+"3552","Weber Lake",352,0.03,2
+"3553","Weber Lake",353,0.03,3
+"3554","Weber Lake",354,0.03,4
+"3555","Weber Lake",355,0.03,5
+"3556","Weber Lake",356,0.03,6
+"3557","Weber Lake",357,0.03,7
+"3558","Weber Lake",358,0.03,8
+"3559","Weber Lake",359,0.03,9
+"3560","Weber Lake",360,0.03,10
+"3561","Weber Lake",361,0.03,11
+"3562","Weber Lake",362,0.03,12
+"3563","Weber Lake",363,0.03,13
+"3564","Weber Lake",364,0.03,14
+"3565","Weber Lake",365,0.03,15
+"3566","Weber Lake",366,0.03,16
+"3567","Weber Lake",367,0.03,17
+"3568","Weber Lake",368,0.03,18
+"3569","Weber Lake",369,0.03,19
+"3570","Weber Lake",370,0.03,20
+"3571","Weber Lake",371,0.03,21
+"3572","Weber Lake",372,0.03,22
+"3573","Weber Lake",373,0.03,23
+"3574","Weber Lake",374,0.03,24
+"3575","Weber Lake",375,0.03,25
+"3576","Weber Lake",376,0.03,26
+"3577","Weber Lake",377,0.03,27
+"3578","Weber Lake",378,0.03,28
+"3579","Weber Lake",379,0.03,29
+"3580","Weber Lake",380,0.03,30
+"3581","Weber Lake",381,0.03,31
+"3582","Weber Lake",382,0.03,32
+"3583","Weber Lake",383,0.03,33
+"3584","Weber Lake",384,0.03,34
+"3585","Weber Lake",385,0.03,35
+"3586","Weber Lake",386,0.03,36
+"3587","Weber Lake",387,0.03,37
+"3588","Weber Lake",388,0.03,38
+"3589","Weber Lake",389,0.03,39
+"3590","Weber Lake",390,0.03,40
+"3591","Weber Lake",391,0.03,41
+"3592","Weber Lake",392,0.03,42
+"3593","Weber Lake",393,0.03,43
+"3594","Weber Lake",394,0.03,44
+"3595","Weber Lake",395,0.03,45
+"3596","Weber Lake",396,0.03,46
+"3597","Weber Lake",397,0.03,47
+"3598","Weber Lake",398,0.03,48
+"3599","Weber Lake",399,0.03,49
+"3600","Weber Lake",400,0.03,50
+"3601","Deep Lake",401,0.03,1
+"3602","Deep Lake",402,0.03,2
+"3603","Deep Lake",403,0.03,3
+"3604","Deep Lake",404,0.03,4
+"3605","Deep Lake",405,0.03,5
+"3606","Deep Lake",406,0.03,6
+"3607","Deep Lake",407,0.03,7
+"3608","Deep Lake",408,0.03,8
+"3609","Deep Lake",409,0.03,9
+"3610","Deep Lake",410,0.03,10
+"3611","Deep Lake",411,0.03,11
+"3612","Deep Lake",412,0.03,12
+"3613","Deep Lake",413,0.03,13
+"3614","Deep Lake",414,0.03,14
+"3615","Deep Lake",415,0.03,15
+"3616","Deep Lake",416,0.03,16
+"3617","Deep Lake",417,0.03,17
+"3618","Deep Lake",418,0.03,18
+"3619","Deep Lake",419,0.03,19
+"3620","Deep Lake",420,0.03,20
+"3621","Deep Lake",421,0.03,21
+"3622","Deep Lake",422,0.03,22
+"3623","Deep Lake",423,0.03,23
+"3624","Deep Lake",424,0.03,24
+"3625","Deep Lake",425,0.03,25
+"3626","Deep Lake",426,0.03,26
+"3627","Deep Lake",427,0.03,27
+"3628","Deep Lake",428,0.03,28
+"3629","Deep Lake",429,0.03,29
+"3630","Deep Lake",430,0.03,30
+"3631","Deep Lake",431,0.03,31
+"3632","Deep Lake",432,0.03,32
+"3633","Deep Lake",433,0.03,33
+"3634","Deep Lake",434,0.03,34
+"3635","Deep Lake",435,0.03,35
+"3636","Deep Lake",436,0.03,36
+"3637","Deep Lake",437,0.03,37
+"3638","Deep Lake",438,0.03,38
+"3639","Deep Lake",439,0.03,39
+"3640","Deep Lake",440,0.03,40
+"3641","Deep Lake",441,0.03,41
+"3642","Deep Lake",442,0.03,42
+"3643","Deep Lake",443,0.03,43
+"3644","Deep Lake",444,0.03,44
+"3645","Deep Lake",445,0.03,45
+"3646","Deep Lake",446,0.03,46
+"3647","Deep Lake",447,0.03,47
+"3648","Deep Lake",448,0.03,48
+"3649","Deep Lake",449,0.03,49
+"3650","Deep Lake",450,0.03,50
+"3651","Chatsworth Bog",451,0.03,1
+"3652","Chatsworth Bog",452,0.03,2
+"3653","Chatsworth Bog",453,0.03,3
+"3654","Chatsworth Bog",454,0.03,4
+"3655","Chatsworth Bog",455,0.03,5
+"3656","Chatsworth Bog",456,0.03,6
+"3657","Chatsworth Bog",457,0.03,7
+"3658","Chatsworth Bog",458,0.03,8
+"3659","Chatsworth Bog",459,0.03,9
+"3660","Chatsworth Bog",460,0.03,10
+"3661","Chatsworth Bog",461,0.03,11
+"3662","Chatsworth Bog",462,0.03,12
+"3663","Chatsworth Bog",463,0.03,13
+"3664","Chatsworth Bog",464,0.03,14
+"3665","Chatsworth Bog",465,0.03,15
+"3666","Chatsworth Bog",466,0.03,16
+"3667","Chatsworth Bog",467,0.03,17
+"3668","Chatsworth Bog",468,0.03,18
+"3669","Chatsworth Bog",469,0.03,19
+"3670","Chatsworth Bog",470,0.03,20
+"3671","Chatsworth Bog",471,0.03,21
+"3672","Chatsworth Bog",472,0.03,22
+"3673","Chatsworth Bog",473,0.03,23
+"3674","Chatsworth Bog",474,0.03,24
+"3675","Chatsworth Bog",475,0.03,25
+"3676","Chatsworth Bog",476,0.03,26
+"3677","Chatsworth Bog",477,0.03,27
+"3678","Chatsworth Bog",478,0.03,28
+"3679","Chatsworth Bog",479,0.03,29
+"3680","Chatsworth Bog",480,0.03,30
+"3681","Chatsworth Bog",481,0.03,31
+"3682","Chatsworth Bog",482,0.03,32
+"3683","Chatsworth Bog",483,0.03,33
+"3684","Chatsworth Bog",484,0.03,34
+"3685","Chatsworth Bog",485,0.03,35
+"3686","Chatsworth Bog",486,0.03,36
+"3687","Chatsworth Bog",487,0.03,37
+"3688","Chatsworth Bog",488,0.03,38
+"3689","Chatsworth Bog",489,0.03,39
+"3690","Chatsworth Bog",490,0.03,40
+"3691","Chatsworth Bog",491,0.03,41
+"3692","Chatsworth Bog",492,0.03,42
+"3693","Chatsworth Bog",493,0.03,43
+"3694","Chatsworth Bog",494,0.03,44
+"3695","Chatsworth Bog",495,0.03,45
+"3696","Chatsworth Bog",496,0.03,46
+"3697","Chatsworth Bog",497,0.03,47
+"3698","Chatsworth Bog",498,0.03,48
+"3699","Chatsworth Bog",499,0.03,49
+"3700","Chatsworth Bog",500,0.03,50
+"3701","Clear Lake",501,0.03,1
+"3702","Clear Lake",502,0.03,2
+"3703","Clear Lake",503,0.03,3
+"3704","Clear Lake",504,0.03,4
+"3705","Clear Lake",505,0.03,5
+"3706","Clear Lake",506,0.03,6
+"3707","Clear Lake",507,0.03,7
+"3708","Clear Lake",508,0.03,8
+"3709","Clear Lake",509,0.03,9
+"3710","Clear Lake",510,0.03,10
+"3711","Clear Lake",511,0.03,11
+"3712","Clear Lake",512,0.03,12
+"3713","Clear Lake",513,0.03,13
+"3714","Clear Lake",514,0.03,14
+"3715","Clear Lake",515,0.03,15
+"3716","Clear Lake",516,0.03,16
+"3717","Clear Lake",517,0.03,17
+"3718","Clear Lake",518,0.03,18
+"3719","Clear Lake",519,0.03,19
+"3720","Clear Lake",520,0.03,20
+"3721","Clear Lake",521,0.03,21
+"3722","Clear Lake",522,0.03,22
+"3723","Clear Lake",523,0.03,23
+"3724","Clear Lake",524,0.03,24
+"3725","Clear Lake",525,0.03,25
+"3726","Clear Lake",526,0.03,26
+"3727","Clear Lake",527,0.03,27
+"3728","Clear Lake",528,0.03,28
+"3729","Clear Lake",529,0.03,29
+"3730","Clear Lake",530,0.03,30
+"3731","Clear Lake",531,0.03,31
+"3732","Clear Lake",532,0.03,32
+"3733","Clear Lake",533,0.03,33
+"3734","Clear Lake",534,0.03,34
+"3735","Clear Lake",535,0.03,35
+"3736","Clear Lake",536,0.03,36
+"3737","Clear Lake",537,0.03,37
+"3738","Clear Lake",538,0.03,38
+"3739","Clear Lake",539,0.03,39
+"3740","Clear Lake",540,0.03,40
+"3741","Clear Lake",541,0.03,41
+"3742","Clear Lake",542,0.03,42
+"3743","Clear Lake",543,0.03,43
+"3744","Clear Lake",544,0.03,44
+"3745","Clear Lake",545,0.03,45
+"3746","Clear Lake",546,0.03,46
+"3747","Clear Lake",547,0.03,47
+"3748","Clear Lake",548,0.03,48
+"3749","Clear Lake",549,0.03,49
+"3750","Clear Lake",550,0.03,50
+"3751","Hudson Lake",551,0.03,1
+"3752","Hudson Lake",552,0.03,2
+"3753","Hudson Lake",553,0.03,3
+"3754","Hudson Lake",554,0.03,4
+"3755","Hudson Lake",555,0.03,5
+"3756","Hudson Lake",556,0.03,6
+"3757","Hudson Lake",557,0.03,7
+"3758","Hudson Lake",558,0.03,8
+"3759","Hudson Lake",559,0.03,9
+"3760","Hudson Lake",560,0.03,10
+"3761","Hudson Lake",561,0.03,11
+"3762","Hudson Lake",562,0.03,12
+"3763","Hudson Lake",563,0.03,13
+"3764","Hudson Lake",564,0.03,14
+"3765","Hudson Lake",565,0.03,15
+"3766","Hudson Lake",566,0.03,16
+"3767","Hudson Lake",567,0.03,17
+"3768","Hudson Lake",568,0.03,18
+"3769","Hudson Lake",569,0.03,19
+"3770","Hudson Lake",570,0.03,20
+"3771","Hudson Lake",571,0.03,21
+"3772","Hudson Lake",572,0.03,22
+"3773","Hudson Lake",573,0.03,23
+"3774","Hudson Lake",574,0.03,24
+"3775","Hudson Lake",575,0.03,25
+"3776","Hudson Lake",576,0.03,26
+"3777","Hudson Lake",577,0.03,27
+"3778","Hudson Lake",578,0.03,28
+"3779","Hudson Lake",579,0.03,29
+"3780","Hudson Lake",580,0.03,30
+"3781","Hudson Lake",581,0.03,31
+"3782","Hudson Lake",582,0.03,32
+"3783","Hudson Lake",583,0.03,33
+"3784","Hudson Lake",584,0.03,34
+"3785","Hudson Lake",585,0.03,35
+"3786","Hudson Lake",586,0.03,36
+"3787","Hudson Lake",587,0.03,37
+"3788","Hudson Lake",588,0.03,38
+"3789","Hudson Lake",589,0.03,39
+"3790","Hudson Lake",590,0.03,40
+"3791","Hudson Lake",591,0.03,41
+"3792","Hudson Lake",592,0.03,42
+"3793","Hudson Lake",593,0.03,43
+"3794","Hudson Lake",594,0.03,44
+"3795","Hudson Lake",595,0.03,45
+"3796","Hudson Lake",596,0.03,46
+"3797","Hudson Lake",597,0.03,47
+"3798","Hudson Lake",598,0.03,48
+"3799","Hudson Lake",599,0.03,49
+"3800","Hudson Lake",600,0.03,50
+"3801","Volo Bog",601,0.03,1
+"3802","Volo Bog",602,0.03,2
+"3803","Volo Bog",603,0.03,3
+"3804","Volo Bog",604,0.03,4
+"3805","Volo Bog",605,0.03,5
+"3806","Volo Bog",606,0.03,6
+"3807","Volo Bog",607,0.03,7
+"3808","Volo Bog",608,0.03,8
+"3809","Volo Bog",609,0.03,9
+"3810","Volo Bog",610,0.03,10
+"3811","Volo Bog",611,0.03,11
+"3812","Volo Bog",612,0.03,12
+"3813","Volo Bog",613,0.03,13
+"3814","Volo Bog",614,0.03,14
+"3815","Volo Bog",615,0.03,15
+"3816","Volo Bog",616,0.03,16
+"3817","Volo Bog",617,0.03,17
+"3818","Volo Bog",618,0.03,18
+"3819","Volo Bog",619,0.03,19
+"3820","Volo Bog",620,0.03,20
+"3821","Volo Bog",621,0.03,21
+"3822","Volo Bog",622,0.03,22
+"3823","Volo Bog",623,0.03,23
+"3824","Volo Bog",624,0.03,24
+"3825","Volo Bog",625,0.03,25
+"3826","Volo Bog",626,0.03,26
+"3827","Volo Bog",627,0.03,27
+"3828","Volo Bog",628,0.03,28
+"3829","Volo Bog",629,0.03,29
+"3830","Volo Bog",630,0.03,30
+"3831","Volo Bog",631,0.03,31
+"3832","Volo Bog",632,0.03,32
+"3833","Volo Bog",633,0.03,33
+"3834","Volo Bog",634,0.03,34
+"3835","Volo Bog",635,0.03,35
+"3836","Volo Bog",636,0.03,36
+"3837","Volo Bog",637,0.03,37
+"3838","Volo Bog",638,0.03,38
+"3839","Volo Bog",639,0.03,39
+"3840","Volo Bog",640,0.03,40
+"3841","Volo Bog",641,0.03,41
+"3842","Volo Bog",642,0.03,42
+"3843","Volo Bog",643,0.03,43
+"3844","Volo Bog",644,0.03,44
+"3845","Volo Bog",645,0.03,45
+"3846","Volo Bog",646,0.03,46
+"3847","Volo Bog",647,0.03,47
+"3848","Volo Bog",648,0.03,48
+"3849","Volo Bog",649,0.03,49
+"3850","Volo Bog",650,0.03,50
+"3851","Wells Mastodon Site",651,0.03,1
+"3852","Wells Mastodon Site",652,0.03,2
+"3853","Wells Mastodon Site",653,0.03,3
+"3854","Wells Mastodon Site",654,0.03,4
+"3855","Wells Mastodon Site",655,0.03,5
+"3856","Wells Mastodon Site",656,0.03,6
+"3857","Wells Mastodon Site",657,0.03,7
+"3858","Wells Mastodon Site",658,0.03,8
+"3859","Wells Mastodon Site",659,0.03,9
+"3860","Wells Mastodon Site",660,0.03,10
+"3861","Wells Mastodon Site",661,0.03,11
+"3862","Wells Mastodon Site",662,0.03,12
+"3863","Wells Mastodon Site",663,0.03,13
+"3864","Wells Mastodon Site",664,0.03,14
+"3865","Wells Mastodon Site",665,0.03,15
+"3866","Wells Mastodon Site",666,0.03,16
+"3867","Wells Mastodon Site",667,0.03,17
+"3868","Wells Mastodon Site",668,0.03,18
+"3869","Wells Mastodon Site",669,0.03,19
+"3870","Wells Mastodon Site",670,0.03,20
+"3871","Wells Mastodon Site",671,0.03,21
+"3872","Wells Mastodon Site",672,0.03,22
+"3873","Wells Mastodon Site",673,0.03,23
+"3874","Wells Mastodon Site",674,0.03,24
+"3875","Wells Mastodon Site",675,0.03,25
+"3876","Wells Mastodon Site",676,0.03,26
+"3877","Wells Mastodon Site",677,0.03,27
+"3878","Wells Mastodon Site",678,0.03,28
+"3879","Wells Mastodon Site",679,0.03,29
+"3880","Wells Mastodon Site",680,0.03,30
+"3881","Wells Mastodon Site",681,0.03,31
+"3882","Wells Mastodon Site",682,0.03,32
+"3883","Wells Mastodon Site",683,0.03,33
+"3884","Wells Mastodon Site",684,0.03,34
+"3885","Wells Mastodon Site",685,0.03,35
+"3886","Wells Mastodon Site",686,0.03,36
+"3887","Wells Mastodon Site",687,0.03,37
+"3888","Wells Mastodon Site",688,0.03,38
+"3889","Wells Mastodon Site",689,0.03,39
+"3890","Wells Mastodon Site",690,0.03,40
+"3891","Wells Mastodon Site",691,0.03,41
+"3892","Wells Mastodon Site",692,0.03,42
+"3893","Wells Mastodon Site",693,0.03,43
+"3894","Wells Mastodon Site",694,0.03,44
+"3895","Wells Mastodon Site",695,0.03,45
+"3896","Wells Mastodon Site",696,0.03,46
+"3897","Wells Mastodon Site",697,0.03,47
+"3898","Wells Mastodon Site",698,0.03,48
+"3899","Wells Mastodon Site",699,0.03,49
+"3900","Wells Mastodon Site",700,0.03,50
+"3901","Pretty Lake",701,0.03,1
+"3902","Pretty Lake",702,0.03,2
+"3903","Pretty Lake",703,0.03,3
+"3904","Pretty Lake",704,0.03,4
+"3905","Pretty Lake",705,0.03,5
+"3906","Pretty Lake",706,0.03,6
+"3907","Pretty Lake",707,0.03,7
+"3908","Pretty Lake",708,0.03,8
+"3909","Pretty Lake",709,0.03,9
+"3910","Pretty Lake",710,0.03,10
+"3911","Pretty Lake",711,0.03,11
+"3912","Pretty Lake",712,0.03,12
+"3913","Pretty Lake",713,0.03,13
+"3914","Pretty Lake",714,0.03,14
+"3915","Pretty Lake",715,0.03,15
+"3916","Pretty Lake",716,0.03,16
+"3917","Pretty Lake",717,0.03,17
+"3918","Pretty Lake",718,0.03,18
+"3919","Pretty Lake",719,0.03,19
+"3920","Pretty Lake",720,0.03,20
+"3921","Pretty Lake",721,0.03,21
+"3922","Pretty Lake",722,0.03,22
+"3923","Pretty Lake",723,0.03,23
+"3924","Pretty Lake",724,0.03,24
+"3925","Pretty Lake",725,0.03,25
+"3926","Pretty Lake",726,0.03,26
+"3927","Pretty Lake",727,0.03,27
+"3928","Pretty Lake",728,0.03,28
+"3929","Pretty Lake",729,0.03,29
+"3930","Pretty Lake",730,0.03,30
+"3931","Pretty Lake",731,0.03,31
+"3932","Pretty Lake",732,0.03,32
+"3933","Pretty Lake",733,0.03,33
+"3934","Pretty Lake",734,0.03,34
+"3935","Pretty Lake",735,0.03,35
+"3936","Pretty Lake",736,0.03,36
+"3937","Pretty Lake",737,0.03,37
+"3938","Pretty Lake",738,0.03,38
+"3939","Pretty Lake",739,0.03,39
+"3940","Pretty Lake",740,0.03,40
+"3941","Pretty Lake",741,0.03,41
+"3942","Pretty Lake",742,0.03,42
+"3943","Pretty Lake",743,0.03,43
+"3944","Pretty Lake",744,0.03,44
+"3945","Pretty Lake",745,0.03,45
+"3946","Pretty Lake",746,0.03,46
+"3947","Pretty Lake",747,0.03,47
+"3948","Pretty Lake",748,0.03,48
+"3949","Pretty Lake",749,0.03,49
+"3950","Pretty Lake",750,0.03,50
+"3951","Pinhook Bog",751,0.03,1
+"3952","Pinhook Bog",752,0.03,2
+"3953","Pinhook Bog",753,0.03,3
+"3954","Pinhook Bog",754,0.03,4
+"3955","Pinhook Bog",755,0.03,5
+"3956","Pinhook Bog",756,0.03,6
+"3957","Pinhook Bog",757,0.03,7
+"3958","Pinhook Bog",758,0.03,8
+"3959","Pinhook Bog",759,0.03,9
+"3960","Pinhook Bog",760,0.03,10
+"3961","Pinhook Bog",761,0.03,11
+"3962","Pinhook Bog",762,0.03,12
+"3963","Pinhook Bog",763,0.03,13
+"3964","Pinhook Bog",764,0.03,14
+"3965","Pinhook Bog",765,0.03,15
+"3966","Pinhook Bog",766,0.03,16
+"3967","Pinhook Bog",767,0.03,17
+"3968","Pinhook Bog",768,0.03,18
+"3969","Pinhook Bog",769,0.03,19
+"3970","Pinhook Bog",770,0.03,20
+"3971","Pinhook Bog",771,0.03,21
+"3972","Pinhook Bog",772,0.03,22
+"3973","Pinhook Bog",773,0.03,23
+"3974","Pinhook Bog",774,0.03,24
+"3975","Pinhook Bog",775,0.03,25
+"3976","Pinhook Bog",776,0.03,26
+"3977","Pinhook Bog",777,0.03,27
+"3978","Pinhook Bog",778,0.03,28
+"3979","Pinhook Bog",779,0.03,29
+"3980","Pinhook Bog",780,0.03,30
+"3981","Pinhook Bog",781,0.03,31
+"3982","Pinhook Bog",782,0.03,32
+"3983","Pinhook Bog",783,0.03,33
+"3984","Pinhook Bog",784,0.03,34
+"3985","Pinhook Bog",785,0.03,35
+"3986","Pinhook Bog",786,0.03,36
+"3987","Pinhook Bog",787,0.03,37
+"3988","Pinhook Bog",788,0.03,38
+"3989","Pinhook Bog",789,0.03,39
+"3990","Pinhook Bog",790,0.03,40
+"3991","Pinhook Bog",791,0.03,41
+"3992","Pinhook Bog",792,0.03,42
+"3993","Pinhook Bog",793,0.03,43
+"3994","Pinhook Bog",794,0.03,44
+"3995","Pinhook Bog",795,0.03,45
+"3996","Pinhook Bog",796,0.03,46
+"3997","Pinhook Bog",797,0.03,47
+"3998","Pinhook Bog",798,0.03,48
+"3999","Pinhook Bog",799,0.03,49
+"4000","Pinhook Bog",800,0.03,50
+"4001","Spicer Lake",801,0.03,1
+"4002","Spicer Lake",802,0.03,2
+"4003","Spicer Lake",803,0.03,3
+"4004","Spicer Lake",804,0.03,4
+"4005","Spicer Lake",805,0.03,5
+"4006","Spicer Lake",806,0.03,6
+"4007","Spicer Lake",807,0.03,7
+"4008","Spicer Lake",808,0.03,8
+"4009","Spicer Lake",809,0.03,9
+"4010","Spicer Lake",810,0.03,10
+"4011","Spicer Lake",811,0.03,11
+"4012","Spicer Lake",812,0.03,12
+"4013","Spicer Lake",813,0.03,13
+"4014","Spicer Lake",814,0.03,14
+"4015","Spicer Lake",815,0.03,15
+"4016","Spicer Lake",816,0.03,16
+"4017","Spicer Lake",817,0.03,17
+"4018","Spicer Lake",818,0.03,18
+"4019","Spicer Lake",819,0.03,19
+"4020","Spicer Lake",820,0.03,20
+"4021","Spicer Lake",821,0.03,21
+"4022","Spicer Lake",822,0.03,22
+"4023","Spicer Lake",823,0.03,23
+"4024","Spicer Lake",824,0.03,24
+"4025","Spicer Lake",825,0.03,25
+"4026","Spicer Lake",826,0.03,26
+"4027","Spicer Lake",827,0.03,27
+"4028","Spicer Lake",828,0.03,28
+"4029","Spicer Lake",829,0.03,29
+"4030","Spicer Lake",830,0.03,30
+"4031","Spicer Lake",831,0.03,31
+"4032","Spicer Lake",832,0.03,32
+"4033","Spicer Lake",833,0.03,33
+"4034","Spicer Lake",834,0.03,34
+"4035","Spicer Lake",835,0.03,35
+"4036","Spicer Lake",836,0.03,36
+"4037","Spicer Lake",837,0.03,37
+"4038","Spicer Lake",838,0.03,38
+"4039","Spicer Lake",839,0.03,39
+"4040","Spicer Lake",840,0.03,40
+"4041","Spicer Lake",841,0.03,41
+"4042","Spicer Lake",842,0.03,42
+"4043","Spicer Lake",843,0.03,43
+"4044","Spicer Lake",844,0.03,44
+"4045","Spicer Lake",845,0.03,45
+"4046","Spicer Lake",846,0.03,46
+"4047","Spicer Lake",847,0.03,47
+"4048","Spicer Lake",848,0.03,48
+"4049","Spicer Lake",849,0.03,49
+"4050","Spicer Lake",850,0.03,50
