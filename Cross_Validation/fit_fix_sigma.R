@@ -82,7 +82,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   # get normal approx to likelihood for all samples for the location
 
   source(file.path('genPareto','calc_lik_approx.R'))
-  if(TRUE){
+  if(!file.exists(workFile)){
     calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                     age_index, J, I, bMin = 5, bMax =  bMax-5,
                     workFile = workFile)
@@ -159,8 +159,8 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       samplesListout = as.matrix(Cmcmc_pred$mvSamples)
       
       if(number.save > nrow(samplesListout)) number.save = nrow(samplesListout)
-      samplesList <- samplesListout[sample(x = 1:nrow(samplesListout),size=number.save),]
       set.seed(seed)
+      samplesList <- samplesListout[sample(x = 1:nrow(samplesListout),size=number.save),]
       
       save(samplesList,file = paste0('samplesList_',workFile))
       # or if we want multiple runs: but need to change seed and generate different initial values
