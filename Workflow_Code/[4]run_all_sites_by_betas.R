@@ -59,17 +59,11 @@ load(file = paste0("beta.est.group.in",seq(100,150,1)[beta],"FULL.Rdata")) #load
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
-burnin <- .2*nrow(samples.mixed)
+last_get <- nrow(samples.mixed)
 
-if(FALSE){
-  Nbeta <- round(seq(burnin,nrow(samples.mixed),length.out = 50))[beta]
-  
-  beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],ncol(Z),ncol(ten.count))
-  beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],ncol(Z),ncol(ten.count))
-}else{
-  beta1.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta1]),ncol(Z),ncol(Y))
-  beta2.est.real = matrix(colMeans(samples.mixed[burnin:nrow(samples.mixed),i.beta2]),ncol(Z),ncol(Y))
-}
+beta1.est.real = matrix(samples.mixed[last_get,i.beta1],ncol(Z),ncol(ten.count))
+beta2.est.real = matrix(samples.mixed[last_get,i.beta2],ncol(Z),ncol(ten.count))
+
 
 source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
 source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
