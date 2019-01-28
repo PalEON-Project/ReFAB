@@ -33,7 +33,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   Y2 <- aggregate(tmp_y, by = list(tmp_y$age_index), FUN = sum)
   
-  if(!is.null(group) & !is.null(group)){
+  if(!is.null(group)){
     Y2 <- Y2[-group.mat[group,],]
   }
   
