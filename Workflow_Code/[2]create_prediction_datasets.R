@@ -234,7 +234,7 @@ save(x.meta,x.bacon,ten.count,file='prediction.data_new_v1.Rdata')
 n.betas <- 20
 n.sites <- length(unique(x.meta$site.name))
 
-dataID <- data.frame(name = sort(rep(unique(x.meta$site.name),n.betas)), ID = 1:n.sites,
+dataID <- data.frame(name = sort(rep(unique(x.meta$site.name),n.betas)), ID = 1:(n.sites*n.betas),
                      sigma = rep(0.12,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
 write.csv(dataID, file='dataID_bacon_new_v1.csv')
 
@@ -285,7 +285,7 @@ ten.count <- taxa_selection(trees = trees, other.trees = other.trees,
                             prairie.include = T, other.herbs.include = T,
                             other.trees.include = T, drop.taxa = drop.taxa,
                             PFT.do = F)
-### Needs to be in same order as calibration so betas match with the right columns
+### IMPORTANT! Needs to be in same order as calibration so betas match with the right columns
 load("threethirds_v2.0.Rdata")
 ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally based off of the prediction datasets?
 
@@ -303,15 +303,18 @@ source(file.path('Workflow_Code','utils','test_site.R'))
 for(i in 1:length(IDs)){ 
   which_rows <- which(x.meta$site.id == IDs[i])
   x.meta.use <- x.meta[which_rows,]
+  
+  n.samps <- length(which(x.meta.use$age_bacon<10000&x.meta.use$age_bacon>2000))
+  
   test_site(x.meta.use)
   
   ten_count_use = ten.count[which_rows, ]
   
   site.data[i,] <- data.frame(max.age = max(x.meta[which_rows,'age_bacon']),
                               min.age = min(x.meta[which_rows,'age_bacon']),
-                              lat = x.meta[which_rows,'lat'][1],
-                              long = x.meta[which_rows,'long'][1],
-                              n.samps = length(which_rows))
+                              lat = x.meta[which_rows,'lat.x'][1],
+                              long = x.meta[which_rows,'long.x'][1],
+                              n.samps = n.samps)
   name.list[[i]] <-  x.meta[which_rows,'site.name'][1]
   
 }
@@ -319,26 +322,36 @@ for(i in 1:length(IDs)){
 site.data <- cbind(site.data,unlist(name.list),unlist(IDs))
 colnames(site.data) <- c('max.age','min.age','lat','long','n.samps','site.name','site.id')
 
-site_keep_bacon <- site.data
+pp <- site.data[site.data$max.age>8000,]
+pp <- pp[pp$min.age<=2000,]
+pp <- pp[pp$n.samps>=10,]
+
+site.data[-which(site.data$site.name%in%pp$site.name),]
+
+site.data <- pp
+
+site_keep <- site.data
 
 if(which(table(site.data$site.name)>1)) {
   print('Site Doubled Up.')
   print(table(site_keep$site.name)[which(table(site_keep$site.name)>1)])
 }
 
+site.data <- site.data[-which(site.data$site.name=='Kellys Hollow')[1],]
+site.data <- site.data[-which(site.data$site.name=='Lily Lake')[2],]
+
 n.sites <- nrow(site.data)
 n.betas <- 1
 
 # Means
-dataID <- data.frame(name = sort(rep(site.data$site.name,n.betas)), ID = 1:n.sites,
-                     sigma = rep(0.12,n.sites*n.betas), beta = rep(NA,n.sites))
+dataID <- data.frame(name = sort(rep(site.data$site.name,n.betas)),
+                     ID = 1:n.sites,
+                     sigma = rep(0.03,n.sites*n.betas),
+                     beta = rep(NA,n.sites))
 write.csv(dataID, file='dataID_bacon_v4_means.csv')
 
-n.betas <- 20
+n.betas <- 50
 # Beta Draws
 dataID <- data.frame(name = sort(rep(site.data$site.name,n.betas)), ID = 1:n.sites,
-                     sigma = rep(0.12,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
-write.csv(dataID, file='dataID_bacon_v4.csv')
-
-
-
+                     sigma = rep(0.03,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
+write.csv(dataID, file='dataID_v5.csv')
