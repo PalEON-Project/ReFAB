@@ -20,8 +20,8 @@ dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 #### These files come from [2]create_prediction_datasets.R
 
-dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- read.csv('dataID_bacon_v4.csv')
-load('prediction.data_new_v1.Rdata')
+read.csv('dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
+load('prediction.data_v4.Rdata') #load('prediction.data_new_v1.Rdata') #
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
@@ -55,14 +55,14 @@ for(i in 1:length(new.biomass)){
 
 
 beta <- dataID[dataID$ID==runnum,'beta']
-load(file = paste0("beta.est.group.in",seq(100,120,1)[beta],"FULL.Rdata")) #load via ssh
+load(file = paste0("beta.est.group.in",seq(100,150,1)[beta],"FULL.Rdata")) #load via ssh
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
 burnin <- .2*nrow(samples.mixed)
 
-if(!is.na(beta)){
-  Nbeta <- round(seq(8000,nrow(samples.mixed),length.out = 20))[beta]
+if(FALSE){
+  Nbeta <- round(seq(burnin,nrow(samples.mixed),length.out = 50))[beta]
   
   beta1.est.real = matrix(samples.mixed[Nbeta,i.beta1],ncol(Z),ncol(ten.count))
   beta2.est.real = matrix(samples.mixed[Nbeta,i.beta2],ncol(Z),ncol(ten.count))
@@ -124,6 +124,7 @@ if(!is.na(runnum)){
 }else{
   sigma <- as.numeric(readline(prompt = 'sigma = '))
   group <- NULL
+  group.mat <- NULL
 }
 
 smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
@@ -133,10 +134,10 @@ smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
                      beta1 =  beta1.est.real,
                      beta2 = beta2.est.real,
                      nIts = Niters, nItsSave = .2*Niters, seed = 1,
-		                 control.pts = control.pts, sigma = .12,
-                     group = group, group.mat = group.mat, lik.only = FALSE,
+		                 control.pts = control.pts, sigma = .03, lik.only = FALSE,
                      maxAge = 10000, Nbeta = beta, ID = runnum,
-		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 500)
+		                 liks.by.taxa = TRUE, bMax = bMax, number.save = 250,
+		                 get.log.prob = FALSE, group = NULL)
 
 if(FALSE){
   ## Simple Site Diagnositics
