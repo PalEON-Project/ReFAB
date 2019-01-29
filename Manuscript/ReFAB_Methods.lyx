@@ -5,6 +5,9 @@
 \save_transient_properties true
 \origin unavailable
 \textclass article
+\begin_preamble
+
+\end_preamble
 \use_default_options true
 \maintain_unincluded_children false
 \language english
@@ -1016,8 +1019,8 @@ Not quite sure if this is what you want me to include? Should this be here
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-y_{k,j} & \sim & \textrm{Beta-bin}(exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{i})\label{eq:pred likelihood-1}\\
-y_{k,j} & \sim & \textrm{Beta-bin}(exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})
+y_{k,j} & \sim & \textrm{Beta-bin}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{i})\label{eq:pred likelihood-1}\\
+y_{k,j} & \sim & \textrm{Beta-bin}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})
 \end{eqnarray}
 
 \end_inset
@@ -1234,7 +1237,7 @@ We assess calibration model fit by looking at the trace plots of the shape
  parameters of the beta binomial likelihood (
 \shape italic
 
-\begin_inset Formula $exp(\boldsymbol{Z\beta_{1}})_{j,1}\ \mathrm{and}\ exp(\boldsymbol{Z\beta_{2}})_{j,1}$
+\begin_inset Formula $\mbox{linexp}(\boldsymbol{Z\beta_{1}})_{j,1}\ \mathrm{and}\ \mbox{linexp}(\boldsymbol{Z\beta_{2}})_{j,1}$
 \end_inset
 
 
@@ -1494,8 +1497,8 @@ status open
 \begin{eqnarray}
 y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,1}},p_{2_{k,1}},N_{i})\label{eq:pred likelihood}\\
 y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,j}},p_{2_{k,j}},N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})\\
-p_{1_{k,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\\
-p_{2_{k,j}} & = & exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})
+p_{1_{k,j}} & = & \mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\\
+p_{2_{k,j}} & = & \mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})
 \end{eqnarray}
 
 \end_inset
@@ -1510,7 +1513,7 @@ Here,
 
  from a single site ordered by the age of the samples.
  At every time step, the shape parameters for the beta distributions 
-\begin_inset Formula $\left(exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\:\mathrm{and}\:exp(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})\right)$
+\begin_inset Formula $\left(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\:\mathrm{and}\:\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})\right)$
 \end_inset
 
  are calculated, but data may not be present for every time interval.
