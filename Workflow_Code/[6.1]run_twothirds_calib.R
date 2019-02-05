@@ -28,8 +28,9 @@ Y.keep <- Y
 
 #biomass.keep <- biomass
 
+FULL = FALSE
 #### Adds biomass data product uncertainty
-if(FULL){
+if(FULL==TRUE){
   load('biomass_draws.Rdata')
   biomass.keep <- unlist(lapply(biomass_draws,function(x) x[runnum]))
   load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
