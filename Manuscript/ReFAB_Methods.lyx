@@ -1677,7 +1677,7 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-All model results were calculated in the R 3.2.0 computing environment using
+All model results were calculated in the R 3.5.1 computing environment using
  Markov chain Monte Carlo (MCMC) methods.
  The calibration and prediction models were fit using the 'nimble' package
  which allows for significantly increased computational efficiency (via
@@ -2300,10 +2300,6 @@ reference "fig:No-analog-figure"
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
