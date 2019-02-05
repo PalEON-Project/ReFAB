@@ -20,7 +20,8 @@ library(methods)
 
 load('twothirds_v2.0.Rdata')
 
-source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+#source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
 
 #### Setting up 10 fold cross validation
 Y.keep <- Y

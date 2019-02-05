@@ -82,7 +82,7 @@ Cmcmc <- compileNimble(Rmcmc, project = model)
 set.seed(0)
 Cmcmc$run(Niters)#50000
 samples.mixed <- as.matrix(Cmcmc$mvSamples)
-save(samples.mixed, Y, biomass, file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+save(samples.mixed, Y, biomass, file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata"))
 
 return(samples.mixed)
 
