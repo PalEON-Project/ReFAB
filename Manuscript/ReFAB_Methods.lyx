@@ -756,7 +756,8 @@ ip between pollen proportions and biomass.
  (100 years before present) to 10,000 years before present.
  We do not explicitly model pollen dispersal, because we do not specify
  a model for species composition.
- This inverse modeling approach as opposed to a regression style model 
+ This inverse modeling approach as opposed to a process style pollen accumulatio
+n model 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
@@ -769,7 +770,10 @@ key "blarquez2015tree,seppa2009calibrated"
 status open
 
 \begin_layout Plain Layout
-Ann, I'm not really understanding what that means
+Ann, I'm not really understanding what that means.
+ Chris, trying to say it's better than using the pollen accumulation rate
+ or some other type of pollen process model.
+ I'll try to make more clear, but let me know if you have suggestions.
 \end_layout
 
 \end_inset
@@ -927,11 +931,11 @@ reference "eq:calib likelihood"
 \end_inset
 
  is the total number of pollen grains, 
-\begin_inset Formula $\boldsymbol{p_{abs}}_{j}$
+\begin_inset Formula $\boldsymbol{p}_{j}^{abs}$
 \end_inset
 
  and 
-\begin_inset Formula $\boldsymbol{p_{rel}}_{j}$
+\begin_inset Formula $\boldsymbol{p}_{j}^{rel}$
 \end_inset
 
  are vectors of underlying pollen proportions, and 
@@ -951,44 +955,31 @@ and
  
 \begin_inset Formula 
 \begin{eqnarray}
-y_{jk} & \sim & \textrm{binomial}(p_{abs_{jk}},N_{jk})\label{eq:calib likelihood}\\
-p_{rel_{j,1}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,1})\\
-p_{abs_{j,1}} & = & p_{rel_{j,1}}\\
-p_{rel_{j,k}} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,k},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,k}),\,k=2,\ldots,K-1\\
-p_{abs_{j,k}} & = & p_{rel_{j,k}}\left(1-\sum_{i=1}^{k-1}p_{abs_{j,k}}\right)\\
-p_{abs_{j,k}} & = & 1-\sum_{i=1}^{I-1}p_{abs_{j,k}}
+y_{jk} & \sim & \textrm{binomial}(p_{jk}^{abs},N_{jk})\label{eq:calib likelihood}\\
+p_{j,1}^{rel} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,1})\\
+p_{j,1}^{abs} & = & p_{j,1}^{rel}\\
+p_{j,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{1}})_{j,k},\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta_{2}})_{j,k}),\,k=2,\ldots,K-1\\
+p_{j,k}^{abs} & = & p_{j,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{j,k}^{abs}\right)
 \end{eqnarray}
 
 \end_inset
 
 where 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, I'd suggest putting 'abs' and 'rel' as superscripts and keeping the
- indexes as subscripts, so we don't have nested subscripts.
- 
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-(6) looks wrong and I don't think we need it anyway, since p_abs is already
- defined.
-\end_layout
-
-\end_inset
-
-
 \begin_inset Formula 
 \[
 \mbox{linexp}(x)\equiv\exp(x)1(x<0)+(1+x)1(x\geq0)
 \]
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Chris, should the 'abs' and 'rel' be in roman font or is the latex default
+ font fine? Also, should there be commas between the subscripts?
+\end_layout
 
 \end_inset
 
@@ -1013,17 +1004,7 @@ linearizes the exponential function for
 \end_layout
 
 \begin_layout Standard
-There are two sets of 5
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Minor comment - standard practice is to spell out numbers less than 10
-\end_layout
-
-\end_inset
-
- 
+There are two sets of five 
 \begin_inset Formula $\beta$
 \end_inset
 
@@ -1042,62 +1023,14 @@ Minor comment - standard practice is to spell out numbers less than 10
  This broad prior allows our splines to flexibly fit the data.
  The basis matrix is calculated outside of the model with the R function
  bs() in the 'splines' package.
- Each row is calculated with point estimates of biomass and 5 knots selected
+ Each row is calculated with point estimates of biomass and five knots selected
  using the quantiles of the biomass estimates.
- 
-\end_layout
-
-\begin_layout Standard
-We marginalize over the 
+ We can analytically marginalize over the 
 \begin_inset Formula $p's$
 \end_inset
 
- and use a beta binomial distribution as follows.
+ and use a beta binomial distribution to improve MCMC performance.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Not quite sure if this is what you want me to include? Should this be here
- and in the prediction model? we use linexp in both correct?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann - if you fit the calibration model based on beta-binomial, then yes,
- just say here that we can analytically marginalize over the p's to improve
- MCMC performance.
- I don't think you can use 'y' as the observations are the relative counts
- not the absolute counts.
- So you'll need to fix the notation.
- Also, as far as linexp(), I assume you are using linexp in the calibration
- model - just check the code and make sure things are consistent between
- calibration and prediction models.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-y_{k,j} & \sim & \textrm{Beta-bin}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{i})\label{eq:pred likelihood-1}\\
-y_{k,j} & \sim & \textrm{Beta-bin}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}}),\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}}),N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})
-\end{eqnarray}
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -1127,26 +1060,22 @@ Model selection overview (*more details in 'Model selection and assessment')
 \end_layout
 
 \begin_layout Standard
-We evaluate our calibration model development by assessing the convergence
- of the basis spline coefficients 
+We check our biomass predictions against the true biomass values at time
+ of settlement 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-Ann - MCMC convergence doesn't directly relate to model quality, so I would
- take out discussion of convergence here 
+Are we okay with saying 'time of settlement'? or is there something more
+ correct to say?
 \end_layout
 
 \end_inset
 
-and the fit of the basis splines to the settlement pollen proportion data.
- This allows us to check our assumption that specific types of pollen taxa
- in larger quantities will correspond to predictable biomass estimates.
- Also during this phase, we check our biomass predictions against the true
- biomass values at time of settlement to determine whether or not the model
- fit is valid using three types of model validation 1) Ten-fold cross validation
- 2) The calibration model was fit using only 2/3s of the calibration data
- then we estimated biomass for those 2/3s of calibration sites for validation.
+ to determine whether or not the model fit is valid using three types of
+ model validation 1) Ten-fold cross validation 2) The calibration model
+ was fit using only 2/3s of the calibration data then we estimated biomass
+ for those 2/3s of calibration sites for validation.
  We will call this the '2/3s fit.' 3) The calibration model is fit using
  2/3s of the data then we estimate biomass for the remaining 1/3 of the
  calibration data.
@@ -1161,6 +1090,20 @@ status open
 
 \begin_layout Plain Layout
 all validation plots are made in -> validation_plot.R
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Chris, should code be in the main text or in the notes? I would sort of
+ like to put them somewhere else besides notes because the notes indicate
+ to me that something still needs to be done.
+ But, I can't think of how they should be in the text.
+ 
 \end_layout
 
 \end_inset
@@ -1495,16 +1438,6 @@ splines_plot.R
 
 \end_inset
 
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-QUESTION: do we need to include beta uncertainty here?
-\end_layout
-
-\end_inset
-
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -1565,15 +1498,21 @@ status open
  p's since they've been marginalized]
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
+\begin_layout Plain Layout
 Ann, same comment as before - the p's have been marginalized, so they can't
  appear in the beta-binomial equations.
  
+\end_layout
+
+\begin_layout Plain Layout
+Chris, I'm a little confused about this.
+ Maybe we can talk about it on the call.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1615,8 +1554,8 @@ Here,
 \begin_inset Formula $\left(\boldsymbol{\boldsymbol{z}}_{t\left[i\right]}\right)$
 \end_inset
 
- is calculated within the model using the 5 knot locations from the calibration
- model and the estimated biomass.
+ is calculated within the model using the five knot locations from the calibrati
+on model and the estimated biomass.
 \end_layout
 
 \begin_layout Standard
@@ -1652,7 +1591,7 @@ Our biomass temporal model uses a generalized Pareto (GP) distribution to
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)
+b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\label{eq:GP}
 \end{eqnarray}
 
 \end_inset
@@ -1662,7 +1601,7 @@ with the third-order model chosen as discussed in the next section.
 
 \begin_layout Standard
 The initial conditions for biomass are 
-\begin_inset Formula $b_{t}\sim\mathrm{uniform}(0,150)$
+\begin_inset Formula $b_{t}\sim\mathrm{uniform}(0,b_{max})$
 \end_inset
 
 .
@@ -1671,20 +1610,20 @@ The initial conditions for biomass are
 
 \begin_layout Standard
 In addition, add a prior constraint that 
-\begin_inset Formula $b_{t}\in[0,150],\,t=1,\ldots,T$
+\begin_inset Formula $b_{t}\in[0,b_{max}],\,t=1,\ldots,T$
 \end_inset
 
 , imposed during the MCMC sampling.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, please modify the bits about 150 based on what you actually have done.
 \end_layout
 
+\begin_layout Standard
+We selected the upper limit on biomass based on the maximum point estimates
+ of biomass in our calibration dataset where 
+\begin_inset Formula $b_{max}=228$
 \end_inset
 
-
+.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -1737,7 +1676,7 @@ allows for sharp jumps but does not impose smoothness - the biomass estimates
  in time, particularly over short time periods in which fire does not occur
  (which is most of the time).
  We also found that a simple random walk model did not fit well to sites
- with biomodality within the pollen taxa.
+ with bimodality within the pollen taxa.
  We also considered higher-order random walk models, such as this third-order
  random walk:
 \begin_inset Formula 
@@ -1840,15 +1779,9 @@ status open
 \end_layout
 
 \begin_layout Standard
-While the calibration model was fit using NIMBLE's default MCMC samplers
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann can you do printSamplers() and insert some text here summarizing what
- samplers are used for the calibration model
-\end_layout
-
+While the calibration model was fit using Metropolis random walk MCMC samplers
+ for each 
+\begin_inset Formula $\beta$
 \end_inset
 
 , achieving good MCMC performance for the prediction model required additional
@@ -1898,17 +1831,15 @@ More specifically, first consider the likelihood approximation, suppressing
 \begin_inset Formula $y_{i}$
 \end_inset
 
-we can numerically maximize the likelihood (eqn X) 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, please update the ref to the right equation
-\end_layout
+ we can numerically maximize the likelihood (Eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:pred likelihood"
 
 \end_inset
 
-, producing 
+) , producing 
 \begin_inset Formula $\hat{b}_{i}$
 \end_inset
 
@@ -1945,17 +1876,15 @@ where
 \begin_inset Formula $\sigma$
 \end_inset
 
- is the same parameter as in the (marginalized) model 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, please insert equation ref
-\end_layout
+ is the same parameter as in the (marginalized) model (Eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:GP"
 
 \end_inset
 
-.
+).
 \begin_inset Note Note
 status open
 
@@ -2626,6 +2555,141 @@ name "fig:pollen-perturbation"
 LatexCommand bibtex
 bibfiles "ReFAB_refs"
 options "/Users/paleolab/Downloads/ecology"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+DONE COMMENTS
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, I'd suggest putting 'abs' and 'rel' as superscripts and keeping the
+ indexes as subscripts, so we don't have nested subscripts.
+ 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+(6) looks wrong and I don't think we need it anyway, since p_abs is already
+ defined.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Minor comment - standard practice is to spell out numbers less than 10
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Not quite sure if this is what you want me to include? Should this be here
+ and in the prediction model? we use linexp in both correct?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann - if you fit the calibration model based on beta-binomial, then yes,
+ just say here that we can analytically marginalize over the p's to improve
+ MCMC performance.
+ I don't think you can use 'y' as the observations are the relative counts
+ not the absolute counts.
+ So you'll need to fix the notation.
+ Also, as far as linexp(), I assume you are using linexp in the calibration
+ model - just check the code and make sure things are consistent between
+ calibration and prediction models.
+\end_layout
+
+\begin_layout Plain Layout
+Yes, it is in Workflow_Code/models/calibration.model.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann - MCMC convergence doesn't directly relate to model quality, so I would
+ take out discussion of convergence here 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, please modify the bits about 150 based on what you actually have done.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, please insert equation ref
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, please update the ref to the right equation
+\end_layout
 
 \end_inset
 
