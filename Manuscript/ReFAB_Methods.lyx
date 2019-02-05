@@ -145,6 +145,20 @@ status open
 \end_inset
 
 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Chris, should code be in the main text or in the notes? I would sort of
+ like to put them somewhere else besides notes because the notes indicate
+ to me that something still needs to be done.
+ But, I can't think of how they should be in the text.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -316,14 +330,7 @@ Pollen taxa
 Based on exploratory analyses, we chose 22 pollen taxa categories that had
  the greatest influence on above ground biomass in our domain.
  While making these selections, we removed sites for post selection validation,
- which will be discussed in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Model-selection-and-assessment"
-
-\end_inset
-
-.
+ which will be discussed in following sections.
  We started by including all arboreal pollen taxa and all types of herbaceous
  taxa considered indicative of prairie.
  Then, we aggregated less common arboreal taxa into an 'other arboreal'
@@ -350,6 +357,37 @@ reference "tab:Taxa-table"
  well as non-oak dominated woodlands, and with non-tree pollen in the model,
  we can distinguish different biomasses even when tree (particularly oak)
  composition at different sites may be similar.
+\end_layout
+
+\begin_layout Standard
+Taxa and groupings used were determined with a combination of expert opinion
+ and validation exercises.
+ We began with all arboreal pollen taxa individually and a group of taxa
+ we call 'prairie.' The prairie group was selected using 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mclauchlan2013tallgrass"
+
+\end_inset
+
+ identification of what pollen groups are indicative of prairie presence.
+ Then we selected arboreal taxa known to be important contributors to abovegroun
+d biomass to be stand alone taxa while grouping the rest of the arboreal
+ taxa into an 'other tree' category.
+ We also used cyperace pollen taxa individually because there was high abundance
+ in our samples.
+ Once our taxa were grouped in this manner, we performed a 10 fold cross
+ validation on 2/3 of the calibration dataset to determine if this grouping
+ was sufficient for reconstructing settlement biomass point estimates.
+ The final groups of taxa can be found in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Taxa-table"
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -584,17 +622,34 @@ key "dawson2016quantifying"
  We were able to add points to the original calibration dataset because
  more soil cores were added to the Neotoma database between 2016 and now.
  The calibration dataset was determined using expert elicitation.
- Palynologist experts (Jackson and Williams) selected the depth in each
- core immediately proceeding an increase species, which indicates an increase
- in agricultural activities representing the settlement horizon.
- Expert elicitation methods and results can be found in more detail in 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
+ We chose pollen samples to be used for calibration at time of settlement
+ using expert elicitation to determine the settlement horizon in each pollen
+ core record.
+ These methods are covered more extensively in Dawson 2016.
+ Basically, each pollen core diagram was sent to expert paleo-ecologists
+ who were surveyed about when settlement began to occur on the landscape
+ according to the pollen diagram.
+ Paleo-ecologists determine the settlement horizon by looking at pollen
+ abundances and typically select a settlement horizon when more grass type
+ pollen enters the pollen diagram.
+ Palynologist experts (Jackson and Williams
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Jason has not yet completed the EE
+\end_layout
 
 \end_inset
 
-.
+) selected the depth in each core immediately proceeding an increase species,
+ which indicates an increase in agricultural activities representing the
+ settlement horizon.
+ These pollen types are indicative of a land use change which is a symptom
+ of settlement.
+ Sites were excluded if any expert could not select a settlement horizon
+ sample or if experts disagreed within two samples of what the settlement
+ horizon should be.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -609,10 +664,17 @@ status open
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Prediction-Dataset"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Our prediction dataset includes 79 sediment cores.
+Our prediction dataset includes 77 sediment cores.
  We pulled all data from the Neotoma database for Minnesota, Wisconsin,
  Michigan, Illinois, and Indiana.
  We then sifted out sites based on the average sample ages.
@@ -747,8 +809,77 @@ Overview
 There are two distinct parts in our modeling framework.
  We begin with a calibration model to define a nonlinear multivariate relationsh
 ip between pollen proportions and biomass.
- The calibration model estimates coefficients of spline basis functions
- that relate pollen taxa vectors to biomass point estimates.
+ The basic assumption of this model is that species composition (~ therefore
+ pollen composition) is related to biomass.
+ We assert this by plotting the species biomass composition for different
+ total biomass bins on the settlement landscape ( Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tiles"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/2019-02-05settlement.biomass.tiles.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The shading in each box represents the proportion of each tree species in
+ each biomass category.
+ Biomass level can be distinguished by the relative composition of each
+ species.
+ This plot was created using the settlement biomass data product across
+ the Upper Midwest.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tiles"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Chris, not sure if this is the right spot for this?
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The calibration model estimates coefficients of spline basis functions that
+ relate pollen taxa vectors to biomass point estimates.
  Then, we move to a random walk prediction model that uses the coefficients
  estimated in the calibration model and pollen count data through time to
  make biomass point predictions at individual sites.
@@ -1022,7 +1153,7 @@ There are two sets of five
 .
  This broad prior allows our splines to flexibly fit the data.
  The basis matrix is calculated outside of the model with the R function
- bs() in the 'splines' package.
+ bs() in the 'splines' package version 3.5.1.
  Each row is calculated with point estimates of biomass and five knots selected
  using the quantiles of the biomass estimates.
  We can analytically marginalize over the 
@@ -1034,29 +1165,7 @@ There are two sets of five
 \end_layout
 
 \begin_layout Subsubsection
-Selecting Pollen Data for Calibration
-\end_layout
-
-\begin_layout Standard
-We chose pollen samples to be used for calibration at time of settlement
- using expert elicitation to determine the settlement horizon in each pollen
- core record.
- These methods are covered more extensively in Dawson 2016.
- Basically, each pollen core diagram was sent to expert paleo-ecologists
- who were surveyed about when settlement began to occur on the landscape
- according to the pollen diagram.
- Paleo-ecologists determine the settlement horizon by looking at pollen
- abundances and typically select a settlement horizon when more grass type
- pollen enters the pollen diagram.
- These pollen types are indicative of a land use change which is a symptom
- of settlement.
- This expert elicitation exercise then becomes part of the BACON age depth
- analysis.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Model selection overview (*more details in 'Model selection and assessment')
+Model selection overview 
 \end_layout
 
 \begin_layout Standard
@@ -1066,8 +1175,8 @@ We check our biomass predictions against the true biomass values at time
 status open
 
 \begin_layout Plain Layout
-Are we okay with saying 'time of settlement'? or is there something more
- correct to say?
+Chris, are we okay with saying 'time of settlement'? or is there something
+ more correct to say?
 \end_layout
 
 \end_inset
@@ -1095,20 +1204,19 @@ all validation plots are made in -> validation_plot.R
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Chris, should code be in the main text or in the notes? I would sort of
- like to put them somewhere else besides notes because the notes indicate
- to me that something still needs to be done.
- But, I can't think of how they should be in the text.
- 
 \end_layout
 
-\end_inset
-
-
+\begin_layout Standard
+The basis matrix can be more flexible with the addition of more knots.
+ This could be advantageous for representing the multivariate relationship
+ of pollen proportion to biomass, or it may make the relationship less identifia
+ble.
+ In order to select the optimal number of basis matrix knots, we again performed
+ 10 fold cross validation using 5 or 7 knots in the basis matrix.
+ This validation exercise lead us to choose a basis matrix with 5 knots
+ because the R2 was closer to 1 with 5 knots than 7 knots in the validation
+ plot.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1141,6 +1249,66 @@ status open
 \begin_layout Plain Layout
 calibration in run_twothirds_calib.R then validation in 10_fold_beta_uncert.R
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Based on visual inspection, the splines effectively captured the uncertainty
+ in the relationship between biomass and pollen proportion.
+ This allows us to capture pollen-biomass relationships with pollen types
+ that are present in both high and low biomass environments.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/splines.10CV.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+This figure shows the spline fits for the calibration model.
+ The blue points are data.
+ The light blue shading are the 95% credible intervals.
+ The black dots is the posterior mean.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+splines_plot.R
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:blue-splines"
 
 \end_inset
 
@@ -1253,62 +1421,14 @@ calibration in run_twothirds_calib.R then validation in run_pred_onethird.R
 \end_layout
 
 \begin_layout Subsubsection
-Final model fit based on point estimates and with coefficient uncertainty
- (may end up in results)
-\end_layout
-
-\begin_layout Standard
-We assess calibration model fit by looking at the trace plots of the shape
- parameters of the beta binomial likelihood (
-\shape italic
-
-\begin_inset Formula $\mbox{linexp}(\boldsymbol{Z\beta_{1}})_{j,1}\ \mathrm{and}\ \mbox{linexp}(\boldsymbol{Z\beta_{2}})_{j,1}$
-\end_inset
-
-
-\shape default
-).
- All final trace plots were scrutinized visually.
- Here we present a random subset of shape parameter trace plots that are
- representative of the entire set (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:beta-trace-liks"
-
-\end_inset
-
-).
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
+Final model fit 
+\begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-These are trace plots for a random subset of the beta coefficients as well
- as their likelihood plots.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:beta-trace-liks"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
+Chris, not sure if there's enough info here.
+ But, also not sure what else to say.
+ 
 \end_layout
 
 \end_inset
@@ -1317,8 +1437,9 @@ name "fig:beta-trace-liks"
 \end_layout
 
 \begin_layout Standard
-We also show the final three thirds fit with biomass and beta coefficient
- uncertainty (Figure 
+We also show the final calibration model fit using the full three thirds
+ of the sites in our calibration dataset including uncertainty from the
+ settlement biomass data product (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:3/3 fit"
@@ -1326,10 +1447,19 @@ reference "fig:3/3 fit"
 \end_inset
 
 ).
+ Full description of incorporating settlement biomass data product uncertainty
+ can be found in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Uncertainty-propagation"
+
+\end_inset
+
+.
  While this is an overly optimistic validation because it is in-sample,
- it uses the full calibration dataset so this gives us an indication of
- how we can do with our full dataset.
- We use this to show that we are not too overly optimistic.
+ using the full calibration dataset gives us an indication of how well our
+ model can perform with our full dataset.
+ Our final model fit is good and not overly fit to the data.
  
 \end_layout
 
@@ -1394,21 +1524,40 @@ name "fig:3/3 fit"
 
 \end_layout
 
-\begin_layout Paragraph
-blue plots of pollen vs biomass
-\end_layout
-
 \begin_layout Standard
-Based on visual inspection, the splines effectively captured the uncertainty
- in the relationship between biomass and pollen proportion.
- This allows us to capture pollen-biomass relationships with pollen types
- that are present in both high and low biomass environments.
+Beyond performing model validation exercises, we also assess MCMC model
+ performance by looking at the trace plots of the 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficients.
+ These trace plots were created by concatenating the last 100 MCMC iterations
+ from 50 fits of the calibration model.
+ Each fit uses a different draw from the settlement biomass data product
+ to incorporate settlement biomass uncertainty.
+ For more information on uncertainty propagation see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Uncertainty-propagation"
+
+\end_inset
+
+ .
+ All final trace plots were scrutinized visually.
+ Here we present a random subset of shape parameter trace plots that are
+ representative of the full 220 set (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:beta-trace-liks"
+
+\end_inset
+
+).
  
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement H
 wide false
 sideways false
 status open
@@ -1416,7 +1565,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/splines.10CV.pdf
+	filename /Users/paleolab/ReFAB/beta.trace.plots.pdf
 	scale 50
 
 \end_inset
@@ -1425,23 +1574,25 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-This figure shows the spline fits for the calibration model.
- The blue points are data.
- The light blue shading are the 95% credible intervals.
- The black dots is the posterior mean.
+These are trace plots for a random subset of the 220 estimated 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficients.
+ 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-splines_plot.R
+beta_trace_plots.R
 \end_layout
 
 \end_inset
 
- 
+
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:blue-splines"
+name "fig:beta-trace-liks"
 
 \end_inset
 
@@ -1579,11 +1730,22 @@ Our biomass temporal model uses a generalized Pareto (GP) distribution to
  provide nonstationary temporal structure.
  A GP distribution has a spike at zero (like a Laplace distribution or spike-and
 -slab model) combined with a heavy tail that allows for outlying values.
- Such distributions have been used for model selection (Taddy 2013, Armagan
- et al.
- 2013) as well as representing random processes, which is know as trend
- filtering (Ramdas and Tibshirani 2016, Roualdes 2015, Tansey et al.
- 2017) .
+ Such distributions have been used for model selection (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "taddy2013multinomial,armagan2013generalized"
+
+\end_inset
+
+) as well as representing random processes, which is know as trend filtering
+ (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "tansey2017multiscale,ramdas2016fast,roualdes2015bayesian"
+
+\end_inset
+
+ .
  Here we embed the GP distribution in a third-order random walk process
  model to induce smoothness as well as nonstationarity: 
 \end_layout
@@ -1633,7 +1795,7 @@ Process variance
 \begin_layout Standard
 We use a static sigma value so that we could standardize across sites.
  We chose 
-\begin_inset Formula $\sigma=0.12$
+\begin_inset Formula $\sigma=0.03$
 \end_inset
 
  through a cross validation exercise described in the next section.
@@ -1645,6 +1807,25 @@ We use a static sigma value so that we could standardize across sites.
  We chose the sigma value with the highest log likelihood sum across sites.
  We assessed the smoothness in our process model fit by comparing the posterior
  estimates to the maximum likelihood values.
+\end_layout
+
+\begin_layout Standard
+We chose to find a static value for sigma to be consistent in smoothness
+ across site estimates.
+ We selected sigma by conducting an assessment of log likelihoods across
+ sites at various sigma values.
+ We fit each prediction site using 9/10th of the pollen samples over a grid
+ of sigma values from 0 to 1.
+ We did this for each 10th of the data for each sigma.
+ Then, for each run we calculated the log probability of the 1/10th of the
+ data that was left out of each run.
+ We summed these log probabilities by each sigma value.
+ We narrowed in on a sigma value area and repeated the process on a finer
+ grid scale.
+ This lead us to choose a sigma of 0.12 to be used across sites.
+ Example fits for sites with different fixed sigma values can be found in
+ the data repository.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -1722,7 +1903,20 @@ We computed two metrics to assess average biomass change across sites for
  Second, we calculated the probability of biomass increase across sites
  by taking the 95% quantiles of the difference of biomass estimates for
  each MCMC iteration at each site and each time step.
- 
+ All sites were selected with sample criterion described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Prediction-Dataset"
+
+\end_inset
+
+.
+ We chose not to cut the estimates at the first or last samples to maintain
+ consistency throughout our time series estimates.
+ We estimate 10,000 years of biomass for each site no matter when the first
+ and last sample date is.
+ This is reflected in the uncertainty of each time series estimate where
+ the uncertainty grows with distance from the nearest data point.
 \end_layout
 
 \begin_layout Section
@@ -1733,8 +1927,8 @@ Implementation
 All model results were calculated in the R 3.5.1 computing environment using
  Markov chain Monte Carlo (MCMC) methods.
  The calibration and prediction models were fit using the 'nimble' package
- which allows for significantly increased computational efficiency (via
- a customized MCMC sampling algorithm) and model specification flexibility
+ version 0.6-12 which allows for significantly increased computational efficiency
+ (via a customized MCMC sampling algorithm) and model specification flexibility
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1857,9 +2051,14 @@ reference "eq:pred likelihood"
 
 \end_inset
 
-Next note that following [Taddy 2013, Armagan et al.
- 2013, Tansey et al.
- 2017] the generalized Pareto can be written as:
+Next note that following [
+\begin_inset CommandInset citation
+LatexCommand citet
+key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
+
+\end_inset
+
+] the generalized Pareto can be written as:
 \end_layout
 
 \begin_layout Standard
@@ -2019,98 +2218,232 @@ Our MCMC sampling scheme consists of the sampler above applied at all time
 
  for all time points.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, can you check on this based on printSamplers()
-\end_layout
-
-\end_inset
-
- 
 \end_layout
 
 \begin_layout Subsection
 Uncertainty propagation
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Uncertainty-propagation"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-We propagated uncertainty from the biomass data product at time of settlement,
- the ages of the pollen samples, and the beta coefficients estimated in
- the calibration model.
+We propagated uncertainty from the biomass data product at time of settlement
+ into the calibration model and the ages of the pollen samples and the beta
+ coefficients estimated in the calibration model into the prediction model.
  Uncertainty from the biomass at time of settlement was propagated through
- by fitting the calibration model multiple times with different draws from
- the posteriors of the biomass at time of settlement data product at our
- 151 calibration sites.
- Uncertainty from BACON age depth models were fit in a similar fashion.
- Draws from the posteriors of BACON age estimates for each sample were used
- in several model fittings.
- Finally, uncertainty from the beta coefficients was propagated by taking
- draws from the posteriors of the beta estimates from the final calibration
- model fit.
+ by fitting the calibration model 50 times with 50 draws from the posteriors
+ of the biomass at time of settlement data product at our 151 calibration
+ sites.
+ The final MCMC iteration from each of the 50 calibration model fits was
+ used in the prediction model.
+ Then, each prediction site was fit 50 times using draws from the bacon
+ age depth model estimates.
+ This allowed us to propagate uncertainty from the biomass estimate at time
+ of settlement, the ages of the pollen samples, and the estimated beta coefficie
+nts into our final estimates of biomass at each prediction site.
+ Fitting the prediction model multiple times for different biomass estimates,
+ dating estimates, and beta spline coefficients has the added benefit of
+ allowing us to average over multiple modes that are the result of bimodality
+ issues in the prediction model posterior distributions.
+\end_layout
+
+\begin_layout Section
+Bimodality assessment
+\end_layout
+
+\begin_layout Standard
+We found in our calibration model that different 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficient estimates led to different biomass estimates.
+ This led us to look into bimodality on the settlement landscape where similar
+ pollen compositions result in different biomasses both on the landscape
+ and on therefore in our model.
  
 \end_layout
 
 \begin_layout Standard
-Note that running different MCMC chains for different biomass estimates,
- dating estimates, and spline coefficients has the added benefit of allowing
- us to average over multiple modes in the prediction model posterior distributio
-ns.
+methods - pred mod- you can change betas and get different biomass and you
+ can get differtn stuff slcoe in time.
+ also in likelihoods.
+ at some points and some locations -> problem.
+ methods - then figures - show some example sites.
+ 1.
+ in calibration data we can have different biomass estimates with similar
+ pollen types.
+ illistrate to the extent that happens.
+ can be hard to figure that out with our model.
+ 2.
+ 1e in email.
+ if you change comp by a little do you get very different biomass? distance
+ between compositions versus differences between liks.
+ to what extent do we get big jumps from little changes? take one example
+ and look at change in biomass vs univariate difference in pollen samples.
+ are the changes coming from changes in pollen or the model? 
+\end_layout
+
+\begin_layout Standard
+Before implementing the generalized Pareto, we noticed bimodality in biomass
+ and pine pollen proportions.
+ This makes ecological sense because jack pine and white pine have different
+ biomass distributions and has also been found in a recent analysis of oak
+ distribution in the settlement biomass data product (Heilman 20??).
+ Once fitting the generalized pareto model we assessed coverage of biomodal
+ space by looking at the likelihood fits of the validation dataset as well
+ as assessing the uncertainty surrounding the spline fits (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:blue-splines"
+
+\end_inset
+
+).
+ We found the generalized Pareto allowed us to have flexible variance around
+ biomodal pollen types like pine.
  
 \end_layout
 
 \begin_layout Section
-Model selection and assessment 
+No Analog Assessment 
 \begin_inset CommandInset label
 LatexCommand label
-name "sec:Model-selection-and-assessment"
+name "subsec:No-analog-assessment"
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Calibration Model Selection 
-\end_layout
-
-\begin_layout Subsubsection
-Taxa Selection
 \end_layout
 
 \begin_layout Standard
-Taxa and groupings used were determined with a combination of expert opinion
- and validation exercises.
- We began with all arboreal pollen taxa individually and a group of taxa
- we call 'prairie.' The prairie group was selected using 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "mclauchlan2013tallgrass"
+First, we check all pollen count samples used in the prediction model for
+ no analog communities.
+ No analog communities are communities of vegetation that do not exist on
+ the modern landscape.
+ We need to be particularly careful of them because they are not represented
+ in our calibration model and therefore cannot be estimated correctly in
+ our prediction model.
+ We look for no analog communities by measuring the chord distance between
+ samples.
+ Eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:chord dist"
 
 \end_inset
 
- identification of what pollen groups are indicative of prairie presence.
- Then we selected arboreal taxa known to be important contributors to abovegroun
-d biomass to be stand alone taxa while grouping the rest of the arboreal
- taxa into an 'other tree' category.
- We also used cyperace pollen taxa individually because there was high abundance
- in our samples.
- Once our taxa were grouped in this manner, we performed a 10 fold cross
- validation on 2/3 of the calibration dataset to determine if this grouping
- was sufficient for reconstructing settlement biomass point estimates.
- The final groups of taxa can be found in Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:Taxa-table"
+ is the equation for chord distance between samples 
+\begin_inset Formula $j$
+\end_inset
+
+ and 
+\begin_inset Formula $k$
+\end_inset
+
+, 
+\begin_inset Formula $d_{jk}$
+\end_inset
+
+ 
+\begin_inset Formula 
+\begin{equation}
+d_{jk}=\sqrt{\sum_{k=1}^{m}\left(x_{ij}^{0.5}-x_{ik}^{0.5}\right)^{2}}\label{eq:chord dist}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $x_{ij}$
+\end_inset
+
+ is the proportion of taxon 
+\begin_inset Formula $i$
+\end_inset
+
+ in sample 
+\begin_inset Formula $k$
+\end_inset
+
+.
+ We compute the distances using the R package 'analogue' version 0.17-0 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "simpson2013analogue"
 
 \end_inset
 
 .
+ Furthermore, we use these distances to assess our differences between predictio
+ns to show that small changes in pollen composition generally correspond
+ to small changes in biomass.
  
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+Here, we talk about how there aren't that many no analog communities in
+ our dataset.
+ We also show results about how variance maps to no analog communities.
+ Another idea in terms of no analogs would be to take all site-times and
+ calculate the maximized likelihood (the likelihood at the maximum likelihood
+ estimate for biomass).
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:No-analog-figure"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/no_analog_assessment.pdf
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+No analog figure
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:No-analog-figure"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Exploring Different Taxa Groupings and Taxa Specific Statistical Power
 \end_layout
 
@@ -2203,337 +2536,6 @@ code can be found in Workflow_Code/different_groups_validation.R
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:validation-scatters-new-groups"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Basis Matrix Knot Selection
-\end_layout
-
-\begin_layout Standard
-The basis matrix can be more flexible with the addition of more knots.
- This could be advantageous for representing the multivariate relationship
- of pollen proportion to biomass, or it may make the relationship less identifia
-ble.
- In order to select the optimal number of basis matrix knots, we again performed
- 10 fold cross validation using 5 or 7 knots in the basis matrix.
- This validation exercise lead us to choose a basis matrix with 5 knots
- because the R2 was closer to 1 with 5 knots than 7 knots in the validation
- plot.
- 
-\end_layout
-
-\begin_layout Subsection
-Prediction model selection
-\end_layout
-
-\begin_layout Subsubsection
-Example fits under different models
-\end_layout
-
-\begin_layout Standard
-We initially fit the prediction model using a random walk model instead
- of the generalized Pareto.
- The initial random walk model was overconfident in each individual pollen
- sample causing biomass estimates to change sharply over short time intervals.
- By choosing the generalized Pareto, the model became more smooth by borrowing
- more strength across time.
- This biomass evolution matches our assumption of how biomass changes over
- long time periods more than the random walk model.
-\end_layout
-
-\begin_layout Standard
-We also initially fit our model using an exponential to relate the splines
- to biomass, but this produced too high of confidence in low biomass values.
- The linear exponential allows us to have flexibility near zero with biomass
- estimates.
- 
-\end_layout
-
-\begin_layout Subsubsection
-cross-validation (I thought we did some held-out assessment of likelihoods?)
- 
-\end_layout
-
-\begin_layout Standard
-We assessed the ability of our model to capture biomass in between pollen
- samples by performing leave one out cross validation on a random subset
- of ponds.
- Here, we calculated biomass time series with all the data included than
- removed some data and measured the impact of removing some of the data
- from each core.
- We did this 10 times for each site leaving out 1/10th of the data for a
- given site.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Sigma Selection
-\end_layout
-
-\begin_layout Standard
-We chose to find a static value for sigma to be consistent in smoothness
- across site estimates.
- We selected sigma by conducting an assessment of log likelihoods across
- sites at various sigma values.
- We fit each prediction site using 9/10th of the pollen samples over a grid
- of sigma values from 0 to 1.
- We did this for each 10th of the data for each sigma.
- Then, for each run we calculated the log probability of the 1/10th of the
- data that was left out of each run.
- We summed these log probabilities by each sigma value.
- We narrowed in on a sigma value area and repeated the process on a finer
- grid scale.
- This lead us to choose a sigma of 0.12 to be used across sites.
- Example fits for sites with different fixed sigma values can be found in
- the data repository.
- 
-\end_layout
-
-\begin_layout Subsection
-Model assessment 
-\end_layout
-
-\begin_layout Subsubsection
-No analog assessment 
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:No-analog-assessment"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-First, we check all pollen count samples used in the prediction model for
- no analog communities.
- No analog communities are communities of vegetation that do not exist on
- the modern landscape.
- We need to be particularly careful of them because they are not represented
- in our calibration model and therefore cannot be estimated correctly in
- our prediction model.
- We look for no analog communities by measuring the chord distance between
- samples.
- Eqn.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:chord dist"
-
-\end_inset
-
- is the equation for chord distance between samples 
-\begin_inset Formula $j$
-\end_inset
-
- and 
-\begin_inset Formula $k$
-\end_inset
-
-, 
-\begin_inset Formula $d_{jk}$
-\end_inset
-
- 
-\begin_inset Formula 
-\begin{equation}
-d_{jk}=\sqrt{\sum_{k=1}^{m}\left(x_{ij}^{0.5}-x_{ik}^{0.5}\right)^{2}}\label{eq:chord dist}
-\end{equation}
-
-\end_inset
-
-where 
-\begin_inset Formula $x_{ij}$
-\end_inset
-
- is the proportion of taxon 
-\begin_inset Formula $i$
-\end_inset
-
- in sample 
-\begin_inset Formula $k$
-\end_inset
-
-.
- We compute the distances using the R package 'analogue' 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "simpson2013analogue"
-
-\end_inset
-
-.
- Furthermore, we use these distances to assess our differences between predictio
-ns to show that small changes in pollen composition generally correspond
- to small changes in biomass.
- 
-\end_layout
-
-\begin_layout Standard
-Here, we talk about how there aren't that many no analog communities in
- our dataset.
- We also show results about how variance maps to no analog communities.
- Another idea in terms of no analogs would be to take all site-times and
- calculate the maximized likelihood (the likelihood at the maximum likelihood
- estimate for biomass).
- (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:No-analog-figure"
-
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/no_analog_assessment.pdf
-	scale 60
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-No analog figure
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:No-analog-figure"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Bimodality assessment 
-\end_layout
-
-\begin_layout Standard
-Before implementing the generalized Pareto, we noticed bimodality in biomass
- and pine pollen proportions.
- This makes ecological sense because jack pine and white pine have different
- biomass distributions and has also been found in a recent analysis of oak
- distribution in the settlement biomass data product (Heilman 20??).
- Once fitting the generalized pareto model we assessed coverage of biomodal
- space by looking at the likelihood fits of the validation dataset as well
- as assessing the uncertainty surrounding the spline fits (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:blue-splines"
-
-\end_inset
-
-).
- We found the generalized Pareto allowed us to have flexible variance around
- biomodal pollen types like pine.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Pollen grain perturbation assessment
-\end_layout
-
-\begin_layout Standard
-Second, we test the sensitivity of our predictions to number of pollen grains
- in each sample.
- It is possible that a pollen grain may be misidentified by the scientist
- that analyzes the sample.
- It is important that we account for these types of errors by assuring that
- our model predictions are robust to small changes in pollen proportions.
- It is also possible that similar pollen compositions lead to different
- forest biomass levels 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "seppa2009calibrated"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Here we can show the added/subtracted pollen results as well as the change
- in biomass to the change in pollen proportion to show that the magnitude
- of change in the pollen composition generally maps to the change in biomass.
- (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pollen-perturbation"
-
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/babySTEPPS/pollen_count_sensitivity_valid_sites2.pdf
-	scale 40
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-This figure shows maps of model sensitivity to additions and subtractions
- of each pollen taxa type at each site.
- While some taxa show more sensitivity than others, none are extremely sensitive
- to small changes in pollen counts.
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:pollen-perturbation"
 
 \end_inset
 
@@ -2689,6 +2691,38 @@ status open
 
 \begin_layout Plain Layout
 Ann, please update the ref to the right equation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann, can you check on this based on printSamplers().
+ Checked.
+ 
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Note that running different MCMC chains for different biomass estimates,
+ dating estimates, and spline coefficients has the added benefit of allowing
+ us to average over multiple modes in the prediction model posterior distributio
+ns.
+ 
 \end_layout
 
 \end_inset
