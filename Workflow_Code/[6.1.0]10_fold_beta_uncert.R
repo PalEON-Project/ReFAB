@@ -14,7 +14,7 @@ if (is.na(arg[1])) {
 } else {
   runnum <- as.numeric(arg[1])
 }
-group_rm <- sort(rep(1:10,20))[runnum]
+group_rm <- sort(rep(1:10,1))[runnum]
 
 #source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
@@ -25,9 +25,9 @@ source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants t
 load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
 
 #### way to pick the the same betas across groups because the estimates are correlated so can't be random
-dat.index <- data.frame(group_rm = sort(rep(1:10,10)),
+dat.index <- data.frame(group_rm = sort(rep(1:10,1)),
                         beta_row = nrow(samples.mixed),#rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10), #picking betas past burnin
-                        counter = rep(1:10,10))
+                        counter = rep(1:10,1))
 
 beta_row <- dat.index[runnum, 'beta_row']
 
