@@ -887,8 +887,7 @@ The calibration model estimates coefficients of spline basis functions that
  (100 years before present) to 10,000 years before present.
  We do not explicitly model pollen dispersal, because we do not specify
  a model for species composition.
- This inverse modeling approach as opposed to a process style pollen accumulatio
-n model 
+ This inverse modeling approach as opposed to a regression style model 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
@@ -902,9 +901,15 @@ status open
 
 \begin_layout Plain Layout
 Ann, I'm not really understanding what that means.
- Chris, trying to say it's better than using the pollen accumulation rate
- or some other type of pollen process model.
- I'll try to make more clear, but let me know if you have suggestions.
+ Chris, I'm trying to explain something you said in the annotated doc 'that
+ inverse model as opposed to biomass = pollen*coeffs regression-style model
+ allows us to have prediction model with latent structure assuming smooth
+ biomass in time; better allows us to combine info from pollen data with
+ prior over trend
+\begin_inset Quotes erd
+\end_inset
+
+ But, I might be missing the point
 \end_layout
 
 \end_inset
@@ -1229,6 +1234,13 @@ status open
 \align center
 \begin_inset Graphics
 	filename /Users/paleolab/ReFAB/10.fold.R22018-12-21.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/10.fold.R2.7knots2019-02-06.pdf
 	scale 50
 
 \end_inset
@@ -1745,7 +1757,7 @@ key "tansey2017multiscale,ramdas2016fast,roualdes2015bayesian"
 
 \end_inset
 
- .
+).
  Here we embed the GP distribution in a third-order random walk process
  model to induce smoothness as well as nonstationarity: 
 \end_layout
@@ -1826,6 +1838,16 @@ We chose to find a static value for sigma to be consistent in smoothness
  Example fits for sites with different fixed sigma values can be found in
  the data repository.
  
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+master_cross_validation.R
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1881,7 +1903,7 @@ status open
 
 \begin_layout Plain Layout
 Ann, let's try to remember how we decided in the third-order model.
- We migh show illustrative runs with normal in place of GP and with 2nd
+ We might show illustrative runs with normal in place of GP and with 2nd
  or 1st order in place of third order.
 \end_layout
 
@@ -2241,7 +2263,7 @@ We propagated uncertainty from the biomass data product at time of settlement
  sites.
  The final MCMC iteration from each of the 50 calibration model fits was
  used in the prediction model.
- Then, each prediction site was fit 50 times using draws from the bacon
+ Then, each prediction site was fit 50 times using 50 draws from the bacon
  age depth model estimates.
  This allowed us to propagate uncertainty from the biomass estimate at time
  of settlement, the ages of the pollen samples, and the estimated beta coefficie
@@ -2262,10 +2284,93 @@ We found in our calibration model that different
 \end_inset
 
  coefficient estimates led to different biomass estimates.
- This led us to look into bimodality on the settlement landscape where similar
- pollen compositions result in different biomasses both on the landscape
- and on therefore in our model.
+ For example, our ten fold cross validation exercise versus the two thirds
+ fit led to different estimates of biomass for some sites.
+ In figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2/3 liks"
+
+\end_inset
+
+, we show the likelihood plots for settlement biomass estimated using two
+ different sets of 
+\begin_inset Formula $\beta$
+\end_inset
+
+ estimates.
+ Sites 1, 3, and 4 show bimodality because their maximum likelihood estimates
+ are different between fits.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/max.liks.23.calib.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+These are likelihood plots for eight different sites on the settlement landscape.
+ The black curve is the 10 fold cross validation likelihood which is the
+ result of the particular site not being included in the estimates of the
+ 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficients.
+ The red curve is the two thirds fit where the site is included in the estimates
+ of the 
+\begin_inset Formula $\beta$
+\end_inset
+
+ in the calibration model.
+ The vertical lines show the true mean biomass estimate from the settlement
+ biomass product (blue) and the MCMC estimate for the two thirds fit (red).
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2/3 liks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This led us to look into bimodality on the settlement landscape where similar
+ pollen compositions result in different biomasses both on the landscape
+ and therefore in our model.
+ 
+\end_layout
+
+\begin_layout Paragraph*
+Notes
 \end_layout
 
 \begin_layout Standard
@@ -2435,6 +2540,51 @@ name "fig:No-analog-figure"
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/max_lik_by_age.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Each point represents at pollen sample in our prediction dataset.
+ The maximum likelihood value is shown on the y-axis.
+ The age of the pollen sample is shown on the x-axis.
+ This plot indicates that our maximum likelihood values do not change in
+ deep time, another indication that our prediction dataset does not contain
+ no analog compositions.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
 
 \end_layout
 
