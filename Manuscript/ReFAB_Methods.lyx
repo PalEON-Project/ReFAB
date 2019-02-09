@@ -194,7 +194,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/all_pollen_cores_map2018-11-12.pdf
+	filename /Users/paleolab/ReFAB/all_pollen_cores_map2018-11-12.pdf
 	scale 50
 
 \end_inset
@@ -280,7 +280,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/chrono_ 2018-11-12 .pdf
+	filename /Users/paleolab/ReFAB/chrono_ 2018-11-12 .pdf
 	scale 60
 
 \end_inset
@@ -712,6 +712,17 @@ key "Goring2019"
 
 \begin_layout Section
 Vegetation data
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Chris, are we okay with saying 'time of settlement'? or is there something
+ more correct to say?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1170,35 +1181,45 @@ There are two sets of five
 \end_layout
 
 \begin_layout Subsubsection
-Model selection overview 
+Calibration model selection 
 \end_layout
 
 \begin_layout Standard
 We check our biomass predictions against the true biomass values at time
- of settlement 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Chris, are we okay with saying 'time of settlement'? or is there something
- more correct to say?
-\end_layout
-
-\end_inset
-
- to determine whether or not the model fit is valid using three types of
- model validation 1) Ten-fold cross validation 2) The calibration model
- was fit using only 2/3s of the calibration data then we estimated biomass
- for those 2/3s of calibration sites for validation.
- We will call this the '2/3s fit.' 3) The calibration model is fit using
- 2/3s of the data then we estimate biomass for the remaining 1/3 of the
- calibration data.
- We will call this the 'gold standard' validation.
+ of settlement to determine whether or not the model fit is valid using
+ three types of model validation 2) The calibration model was fit using
+ only 2/3s of the calibration data then we estimated biomass for those 2/3s
+ of calibration sites for validation.
+ We will call this the '2/3s fit.' 1) Ten-fold cross validation using only
+ 2/3s of the calibration data.
+ 3) The calibration model is fit using 2/3s of the calibration data then
+ we estimate biomass for the remaining 1/3 of the calibration data.
+ We will call this final assessment the 'gold standard' validation.
+ We used 2/3s of the calibration dataset to explore different groupings
+ of taxa.
  We assessed various pollen taxa groupings based on the vegetation abundance
  observed on the pre-settlement landscape by comparing predicted biomass
  to observed biomass from the settlement biomass calibration dataset.
- Once the pollen taxa were optimally grouped, we assessed the number of
- spline basis matrix coefficients using the same cross validation methodology.
+ We determined through numerous 2/3s validation exercises that 22 groups
+ of pollen taxa were sufficient to predict biomass on the settlement landscape
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:twothirds->twothirds"
+
+\end_inset
+
+).
+ We further explore the effects of each taxa on biomass prediction in section
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Exploring-Different-Taxa"
+
+\end_inset
+
+.
+ 
 \begin_inset Note Note
 status open
 
@@ -1212,15 +1233,81 @@ all validation plots are made in -> validation_plot.R
 \end_layout
 
 \begin_layout Standard
-The basis matrix can be more flexible with the addition of more knots.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/2_3rds_validation.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Validation plot showing how 2/3s of the calibration dataset predicts settlement
+ biomass that was used for model calibration using 22 taxa groups listed
+ in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Taxa-table"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:twothirds->twothirds"
+
+\end_inset
+
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+calibration and validation in run_twothirds_calib.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the pollen taxa were optimally grouped, we assessed the number of spline
+ basis matrix coefficients using the same cross validation methodology.
+ The basis matrix can be more flexible with the addition of more knots.
  This could be advantageous for representing the multivariate relationship
  of pollen proportion to biomass, or it may make the relationship less identifia
 ble.
  In order to select the optimal number of basis matrix knots, we again performed
- 10 fold cross validation using 5 or 7 knots in the basis matrix.
+ 10 fold cross validation using 7 knots in the basis matrix.
  This validation exercise lead us to choose a basis matrix with 5 knots
  because the R2 was closer to 1 with 5 knots than 7 knots in the validation
- plot.
+ plot (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:10foldCV-5v7knots"
+
+\end_inset
+
+).
  
 \end_layout
 
@@ -1253,14 +1340,26 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-The the 10 fold cross validation exercise shows that our model does an adequate
- job predicting settlement biomass from pollen composition (1) 
+The the 10 fold cross validation exercise was used both to select the correct
+ taxa groupings and to select the number of knots used in our basis matrix.
+ These plots illustrate the difference between the 10 fold cross validation
+ exercise between 5 knots and 7 knots.
+ A basis matrix with 5 knots more adequately predicts settlement biomass,
+ so we chose to use a 5 knot basis matrix in our final model.
+ 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
 calibration in run_twothirds_calib.R then validation in 10_fold_beta_uncert.R
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:10foldCV-5v7knots"
 
 \end_inset
 
@@ -1278,7 +1377,19 @@ calibration in run_twothirds_calib.R then validation in 10_fold_beta_uncert.R
 \end_layout
 
 \begin_layout Standard
-Based on visual inspection, the splines effectively captured the uncertainty
+One of the benefits of using the beta binomial was the ability to have flexible
+ splines that incorporate uncertainty around pollen proportions.
+ Using the posteriors of the beta estimates we can draw the relationship
+ between pollen proportion and biomass with associated estimated uncertainty
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:blue-splines"
+
+\end_inset
+
+).
+ Based on visual inspection, the splines effectively captured the uncertainty
  in the relationship between biomass and pollen proportion.
  This allows us to capture pollen-biomass relationships with pollen types
  that are present in both high and low biomass environments.
@@ -1306,8 +1417,9 @@ status open
 \begin_layout Plain Layout
 This figure shows the spline fits for the calibration model.
  The blue points are data.
- The light blue shading are the 95% credible intervals.
- The black dots is the posterior mean.
+ The light blue shading are the 95% credible intervals calculated using
+ the posterior estimates of the beta coefficients.
+ The sequential black dots are the posterior means.
 \begin_inset Note Note
 status open
 
@@ -1338,52 +1450,23 @@ name "fig:blue-splines"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/2_3rds_validation.pdf
-	scale 50
+Finally, we validated our model with the gold standard validation fit with
+ 1/3 of the data that remained left out of all model selection exercises
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-gold-standard-fit"
 
 \end_inset
 
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-The the 2/3s fit validation (2)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-calibration and validation in run_twothirds_calib.R
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+).
+ The 2/3s of the data used to do model selection reproduced the settlement
+ landscape exactly the same (R2 = 0.86) to the 1/3 of the left out data (R2
+ = 0.86).
+ This gives us great confidence that our model selection process lead us
+ to an adequate calibration model for estimating the beta coefficients to
+ be used in the prediction model.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1405,7 +1488,14 @@ status open
 
 \begin_layout Plain Layout
 The gold-standard fit to the held-out 1/3 also confirms that our model can
- reproduce the data (3)
+ reproduce the data 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-gold-standard-fit"
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
@@ -1651,27 +1741,17 @@ The prediction model has a similar structure to the calibration model but
 
  in years before present.
  The prediction model includes a Beta-binomial likelihood where 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-[Ann, the beta-bin is also used for calibration, so please put this at the
- end of the calibration model description - you can basically say that we
- can marginalize over the p's, and in the equations make sure to omit the
- p's since they've been marginalized]
 \end_layout
 
-\begin_layout Plain Layout
-Ann, same comment as before - the p's have been marginalized, so they can't
- appear in the beta-binomial equations.
- 
-\end_layout
-
-\begin_layout Plain Layout
-Chris, I'm a little confused about this.
- Maybe we can talk about it on the call.
- 
-\end_layout
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+y_{jk} & \sim & \textrm{binomial}(p_{jk}^{abs},N_{jk})\label{eq:pred likelihood}\\
+p_{j,1}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})_{j,1},\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})_{j,1})\\
+p_{j,1}^{abs} & = & p_{j,1}^{rel}\\
+p_{j,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})_{j,k},\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})_{j,k}),\,k=2,\ldots,K-1\\
+p_{j,k}^{abs} & = & p_{j,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{j,k}^{abs}\right)
+\end{eqnarray}
 
 \end_inset
 
@@ -1679,16 +1759,6 @@ Chris, I'm a little confused about this.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,1}},p_{2_{k,1}},N_{i})\label{eq:pred likelihood}\\
-y_{k,j} & \sim & \textrm{Beta-bin}(p_{1_{k,j}},p_{2_{k,j}},N_{j}-\Sigma_{k=1}^{k-1}\boldsymbol{y}_{j})\\
-p_{1_{k,j}} & = & \mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{1}})\\
-p_{2_{k,j}} & = & \mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta_{2}})
-\end{eqnarray}
-
-\end_inset
-
 Here, 
 \begin_inset Formula $\boldsymbol{y}_{i}$
 \end_inset
@@ -1851,8 +1921,7 @@ master_cross_validation.R
 \end_layout
 
 \begin_layout Subsubsection
-Model selection overview (more details in "Model selection and assessment")
- 
+Prediction model selection
 \end_layout
 
 \begin_layout Standard
@@ -2279,6 +2348,32 @@ Bimodality assessment
 \end_layout
 
 \begin_layout Standard
+1.
+ Bimodality in likelihoods means that even without changing the pollen compositi
+on there is some instability in our predictions.
+\end_layout
+
+\begin_layout Standard
+2.
+ Unsurprisingly, this also means small changes in betas can produce different
+ biomasses for a given pollen composition.
+ 
+\end_layout
+
+\begin_layout Standard
+3.
+ While most changes are caused by actual changes from the pollen some are
+ caused by this instability.
+ 
+\end_layout
+
+\begin_layout Standard
+4.
+ The degree to which it is caused by changing pollen versus instability
+ is Figure 
+\end_layout
+
+\begin_layout Standard
 We found in our calibration model that different 
 \begin_inset Formula $\beta$
 \end_inset
@@ -2301,6 +2396,38 @@ reference "fig:2/3 liks"
  estimates.
  Sites 1, 3, and 4 show bimodality because their maximum likelihood estimates
  are different between fits.
+ 
+\end_layout
+
+\begin_layout Standard
+Here are two maps one for the calibration dataset and one for the prediction
+ dataset.
+ 
+\end_layout
+
+\begin_layout Standard
+Calib: I calculated the standard deviation of the maximum likelihood estimates
+ based on the 50 different beta estimates.
+ The points are colored by this stand deviation.
+ Then I went through the likelihood plots and looked for places that were
+ underestimated by at least 50Mg and places that had bimodal likelihoods
+ which was defined as two modes that had significant mass.
+\end_layout
+
+\begin_layout Standard
+Pred: I calculated the standard deviation of the maximum likelihood estiamtes
+ base on the 50 different beta estimates for each time point where there
+ was data and took the mean for each site.
+ The points are colored by this average standard deviation value.
+ Then, I took the points beyond the 75% quantile representing the sites
+ that are most unstable in terms of likelihoods.
+ I organized this group into two.
+ One group based on the hex plots.
+ unstable preds have two modes meaning that composition may not change a
+ lot but biomass does while changing biomass has a more linear relationship
+ between composition change and biomass change.
+ Two sites not included are wintergreen and blue mounds because they do
+ not have a lot of hex points so it was hard to tell where they belonged.
  
 \end_layout
 
@@ -2342,6 +2469,117 @@ These are likelihood plots for eight different sites on the settlement landscape
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:2/3 liks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_calib.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_pred.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_lake_mendota.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:hexplots"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/map_unstable_calibration.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/map_prediction_unstable.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:maps-calib-pred-bimodal"
 
 \end_inset
 
@@ -2412,6 +2650,20 @@ reference "fig:blue-splines"
  We found the generalized Pareto allowed us to have flexible variance around
  biomodal pollen types like pine.
  
+\end_layout
+
+\begin_layout Standard
+sparse data:Blue Mounds Creek,wintergreen lake, 
+\end_layout
+
+\begin_layout Standard
+linear:Demont Lake, qually pond, hansen marsh,wells mastodon site,pinhook
+ bog ,vestaburg bog
+\end_layout
+
+\begin_layout Standard
+bimodal:Devils Lake, gass,kellners,lake mendota,radtke lake,kimble pond,
+ emrick lake,south rhody peatland, volo bog,fox lake ,clear lake
 \end_layout
 
 \begin_layout Section
@@ -2595,6 +2847,13 @@ Each point represents at pollen sample in our prediction dataset.
 
 \begin_layout Section
 Exploring Different Taxa Groupings and Taxa Specific Statistical Power
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Exploring-Different-Taxa"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2637,6 +2896,16 @@ reference "fig:validation-scatters-new-groups"
 \end_inset
 
 .
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+explain that we're not overfitting with just 2/3s
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2709,6 +2978,13 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/iterative.taxa.sens2019-02-09.pdf
+	scale 50
+
+\end_inset
+
 
 \end_layout
 
@@ -2906,7 +3182,7 @@ Ann, can you check on this based on printSamplers().
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Note that running different MCMC chains for different biomass estimates,
@@ -2914,6 +3190,38 @@ Note that running different MCMC chains for different biomass estimates,
  us to average over multiple modes in the prediction model posterior distributio
 ns.
  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+[Ann, the beta-bin is also used for calibration, so please put this at the
+ end of the calibration model description - you can basically say that we
+ can marginalize over the p's, and in the equations make sure to omit the
+ p's since they've been marginalized]
+\end_layout
+
+\begin_layout Plain Layout
+Ann, same comment as before - the p's have been marginalized, so they can't
+ appear in the beta-binomial equations.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Chris, I'm a little confused about this.
+ Maybe we can talk about it on the call.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+y~binomial
 \end_layout
 
 \end_inset
