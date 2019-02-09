@@ -2348,40 +2348,16 @@ Bimodality assessment
 \end_layout
 
 \begin_layout Standard
-1.
- Bimodality in likelihoods means that even without changing the pollen compositi
-on there is some instability in our predictions.
-\end_layout
-
-\begin_layout Standard
-2.
- Unsurprisingly, this also means small changes in betas can produce different
- biomasses for a given pollen composition.
- 
-\end_layout
-
-\begin_layout Standard
-3.
- While most changes are caused by actual changes from the pollen some are
- caused by this instability.
- 
-\end_layout
-
-\begin_layout Standard
-4.
- The degree to which it is caused by changing pollen versus instability
- is Figure 
-\end_layout
-
-\begin_layout Standard
-We found in our calibration model that different 
+While assessing our likelihoods in both validation and prediction models
+ we found that some biomass likelihoods were bimodal.
+ Unsurprisingly, we also found in our calibration model that different 
 \begin_inset Formula $\beta$
 \end_inset
 
- coefficient estimates led to different biomass estimates.
+ coefficient estimates led to different biomass maximum likelihoods.
  For example, our ten fold cross validation exercise versus the two thirds
  fit led to different estimates of biomass for some sites.
- In figure 
+ In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:2/3 liks"
@@ -2394,41 +2370,33 @@ reference "fig:2/3 liks"
 \end_inset
 
  estimates.
- Sites 1, 3, and 4 show bimodality because their maximum likelihood estimates
- are different between fits.
- 
-\end_layout
+ This bimodality can lead to instability in our biomass predictions.
+ To assess the number of samples with instability we looked that the difference
+ in maximum likelihood estimates of biomass versus the difference in pollen
+ compositions (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hexplots"
 
-\begin_layout Standard
-Here are two maps one for the calibration dataset and one for the prediction
- dataset.
- 
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Calib: I calculated the standard deviation of the maximum likelihood estimates
- based on the 50 different beta estimates.
- The points are colored by this stand deviation.
- Then I went through the likelihood plots and looked for places that were
- underestimated by at least 50Mg and places that had bimodal likelihoods
- which was defined as two modes that had significant mass.
-\end_layout
+).
+ We did this by computing the pairwise difference between the biomass maximum
+ likelihood value and the difference in pollen composition using square
+ cord distance (Eqn 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:chord dist"
 
-\begin_layout Standard
-Pred: I calculated the standard deviation of the maximum likelihood estiamtes
- base on the 50 different beta estimates for each time point where there
- was data and took the mean for each site.
- The points are colored by this average standard deviation value.
- Then, I took the points beyond the 75% quantile representing the sites
- that are most unstable in terms of likelihoods.
- I organized this group into two.
- One group based on the hex plots.
- unstable preds have two modes meaning that composition may not change a
- lot but biomass does while changing biomass has a more linear relationship
- between composition change and biomass change.
- Two sites not included are wintergreen and blue mounds because they do
- not have a lot of hex points so it was hard to tell where they belonged.
- 
+\end_inset
+
+) for all samples in the calibration and prediction datasets.
+ As the difference in composition increases, the difference in the maximum
+ likelihood of biomass also increases in general in both the calibration
+ and prediction datasets.
+ But, when viewing this relationship at individual sites, we see that some
+ sites are more prone to small changes in composition leading to large changes
+ in maximum likelihood biomass values.
 \end_layout
 
 \begin_layout Standard
@@ -2469,6 +2437,17 @@ These are likelihood plots for eight different sites on the settlement landscape
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:2/3 liks"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I think we're probably going to want different likelihoods here but I wasn't
+ sure which ones
+\end_layout
 
 \end_inset
 
@@ -2526,9 +2505,21 @@ status open
 \end_inset
 
 
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_allsites.pdf
+	scale 50
+
+\end_inset
+
+
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+Plots of the difference in maximum likelihood estimates for biomass versus
+ the difference in composition measured in square chord distance for A)
+ the calibration dataset B) the prediction dataset C) the individual bimodal
+ site Lake Mendota D) the individual non-bimodal site Lake Mary.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:hexplots"
@@ -2550,6 +2541,39 @@ name "fig:hexplots"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+While bimodality can lead to unstable biomass predictions, there are also
+ sites where changes in composition leads to large changes in biomass that
+ are not from unstable predictions but from changes in composition.
+ In order to understand how many sites in both our calibration and prediction
+ datasets were affected by bimodality we calculated the standard deviation
+ of the maximum likelihood estimates based on the 50 different beta estimates
+ for all samples.
+ In the prediction dataset we subsetted the sites with high maximum likelihood
+ value standard deviations and determined whether or not they were caused
+ by large changes in composition or bimodality by assessing the individual
+ site hex plot like Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hexplots"
+
+\end_inset
+
+.
+ We found that most sites that exhibited bimodality were near pollen sources
+ from both late successional taxa beech and hemlock and savanna taxa oak
+ and prairie (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:maps-calib-pred-bimodal"
+
+\end_inset
+
+).
+ Sites that were affected in our prediction dataset also contained these
+ taxa groupings.
 \end_layout
 
 \begin_layout Standard
@@ -2577,6 +2601,15 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+Maps with points colored by the standard deviation of maximum likelihood
+ estimates for 50 beta draws.
+ In the calibration data set, sites that were consistently under predicted
+ are labeled in green triangles while sites with bimodal likelihoods are
+ labeling in green squares.
+ In the prediction dataset, sites that showed bimodality are labelled with
+ green triangles while sites that had large changes due to large changes
+ in composition are labelled in green squares.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:maps-calib-pred-bimodal"
@@ -2591,79 +2624,9 @@ name "fig:maps-calib-pred-bimodal"
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-This led us to look into bimodality on the settlement landscape where similar
- pollen compositions result in different biomasses both on the landscape
- and therefore in our model.
- 
-\end_layout
-
-\begin_layout Paragraph*
-Notes
-\end_layout
-
-\begin_layout Standard
-methods - pred mod- you can change betas and get different biomass and you
- can get differtn stuff slcoe in time.
- also in likelihoods.
- at some points and some locations -> problem.
- methods - then figures - show some example sites.
- 1.
- in calibration data we can have different biomass estimates with similar
- pollen types.
- illistrate to the extent that happens.
- can be hard to figure that out with our model.
- 2.
- 1e in email.
- if you change comp by a little do you get very different biomass? distance
- between compositions versus differences between liks.
- to what extent do we get big jumps from little changes? take one example
- and look at change in biomass vs univariate difference in pollen samples.
- are the changes coming from changes in pollen or the model? 
-\end_layout
-
-\begin_layout Standard
-Before implementing the generalized Pareto, we noticed bimodality in biomass
- and pine pollen proportions.
- This makes ecological sense because jack pine and white pine have different
- biomass distributions and has also been found in a recent analysis of oak
- distribution in the settlement biomass data product (Heilman 20??).
- Once fitting the generalized pareto model we assessed coverage of biomodal
- space by looking at the likelihood fits of the validation dataset as well
- as assessing the uncertainty surrounding the spline fits (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:blue-splines"
-
-\end_inset
-
-).
- We found the generalized Pareto allowed us to have flexible variance around
- biomodal pollen types like pine.
- 
-\end_layout
-
-\begin_layout Standard
-sparse data:Blue Mounds Creek,wintergreen lake, 
-\end_layout
-
-\begin_layout Standard
-linear:Demont Lake, qually pond, hansen marsh,wells mastodon site,pinhook
- bog ,vestaburg bog
-\end_layout
-
-\begin_layout Standard
-bimodal:Devils Lake, gass,kellners,lake mendota,radtke lake,kimble pond,
- emrick lake,south rhody peatland, volo bog,fox lake ,clear lake
 \end_layout
 
 \begin_layout Section
@@ -2743,13 +2706,8 @@ ns to show that small changes in pollen composition generally correspond
 \end_layout
 
 \begin_layout Standard
-Here, we talk about how there aren't that many no analog communities in
- our dataset.
- We also show results about how variance maps to no analog communities.
- Another idea in terms of no analogs would be to take all site-times and
- calculate the maximized likelihood (the likelihood at the maximum likelihood
- estimate for biomass).
- (Figure 
+The vast majority of our prediction dataset was under .2 distance from the
+ calibration dataset (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:No-analog-figure"
@@ -2757,6 +2715,27 @@ reference "fig:No-analog-figure"
 \end_inset
 
 ).
+ Standard paleo-ecological studies use a benchmark of 0.3 as a threshold
+ for no-analog communities (
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Need citation
+\end_layout
+
+\end_inset
+
+).
+ We also computed the maximum likelihood value for each of the samples and
+ compared them to the sample ages.
+ This gives us an idea if sites become less likely further back in time
+ which would indicate no analog communities as we approached 10,000 years
+ before present.
+ However, we found that our likelihoods to not change by sample age as they
+ approach 10,000 years before present, giving us extra confidence that our
+ dataset and our choice to model Holocene level biomass is supported.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2780,7 +2759,9 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-No analog figure
+Sample age by latitude colored by the minimum dissimilarity value measured
+ using square chord distance from the calibration dataset.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:No-analog-figure"
@@ -2850,6 +2831,74 @@ Exploring Different Taxa Groupings and Taxa Specific Statistical Power
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Exploring-Different-Taxa"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To understand the effects of individual taxa on overall prediction we repeated
+ the 2/3s cross validation exercise 22 times iteratively removing one taxa
+ at a time (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:iterative_taxa"
+
+\end_inset
+
+).
+ We found that removing no taxa in particular had a large affect on our
+ overall validation (R2 = 0.86).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/iterative.taxa.sens2019-02-09.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+True biomass versus predicted biomass for 22 different model fits each removing
+ the pollen taxa listed in the heading.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:iterative_taxa"
+
+\end_inset
+
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+valid_iterative_taxa.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -2963,54 +3012,6 @@ name "fig:validation-scatters-new-groups"
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/iterative.taxa.sens2019-02-09.pdf
-	scale 50
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-R2 for the taking out one taxa at a time 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-valid_iterative_taxa.R
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
