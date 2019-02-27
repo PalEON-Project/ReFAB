@@ -59,6 +59,7 @@ if(FULL==TRUE){
 if(is.na(group_rm) | group_rm > 10){ #if true does full 2/3 fit
   Y.calib <- Y; Y.pred <- Y
   biomass.calib <- biomass; biomass.pred <- biomass
+  print('keeping full dataset. is this what you want?')
 }else{
   Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
   biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
