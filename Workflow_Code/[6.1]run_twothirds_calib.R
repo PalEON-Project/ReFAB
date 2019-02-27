@@ -20,11 +20,19 @@ library(methods)
 
 load('twothirds_v2.0.Rdata')
 
-#source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
-source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
+source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+#source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
 
 #### Setting up 10 fold cross validation
 Y.keep <- Y
+
+#### For running with only arborel pollen
+arboreal = TRUE
+if(arboreal == TRUE){
+  Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
+  Niters <- 10000
+  group_rm <- paste0(runnum,'nograss')
+}
 
 #biomass.keep <- biomass
 
