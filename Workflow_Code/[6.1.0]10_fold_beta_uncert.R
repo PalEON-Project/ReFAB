@@ -16,13 +16,16 @@ if (is.na(arg[1])) {
 }
 group_rm <- sort(rep(1:10,1))[runnum]
 
-#source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
-source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
+source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+#source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
 
 #### only need to load betas from the left out groups don't need to estimate betas 200 times
 #load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #original
 
-load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
+#load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
+if(arboreal==TRUE){
+  load(file = paste0(length(u),"beta.est.group.in", group_rm, "nograss.Rdata")) #running with no grass
+}
 
 #### way to pick the the same betas across groups because the estimates are correlated so can't be random
 dat.index <- data.frame(group_rm = sort(rep(1:10,1)),
@@ -37,6 +40,12 @@ load("twothirds_v2.0.Rdata")
 #### Setting up 10 fold cross validation
 Y.keep <- Y
 biomass.keep <- biomass
+
+arboreal = TRUE
+if(arboreal == TRUE){
+  Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
+  Niters <- 10000
+}
 
 Y.calib <- Y[-sets10[,group_rm],]; Y.pred <- Y[sets10[,group_rm],]
 biomass.calib <- biomass[-sets10[,group_rm]]; biomass.pred <- biomass[sets10[,group_rm]]
@@ -65,6 +74,10 @@ for(i in 1:length(new.biomass)){
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed),
                  bMax = bMax, Y = Y.pred,knots=length(u)+2)
+
+if(arboreal==TRUE){
+  group_rm <- paste0(runnum,'nograss')
+}
 
 save(outLik,file=paste0('outLik_group',group_rm,'_beta_',beta_row,'.Rdata'))
 
