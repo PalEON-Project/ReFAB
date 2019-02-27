@@ -31,7 +31,6 @@ arboreal = TRUE
 if(arboreal == TRUE){
   Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
   Niters <- 10000
-  group_rm <- paste0(runnum,'nograss')
 }
 
 #biomass.keep <- biomass
@@ -73,6 +72,10 @@ for(i in 1:length(biomass.calib)){
 }
 
 Z.knots <- Z.test
+
+if(arboreal == TRUE){
+  group_rm <- paste0(runnum,'nograss')
+}
 
 source(file.path('Workflow_Code','models','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
