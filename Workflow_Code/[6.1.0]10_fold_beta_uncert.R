@@ -23,6 +23,7 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
 #load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #original
 
 #load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
+arboreal = TRUE
 if(arboreal==TRUE){
   load(file = paste0(length(u),"beta.est.group.in", group_rm, "nograss.Rdata")) #running with no grass
 }
@@ -41,7 +42,7 @@ load("twothirds_v2.0.Rdata")
 Y.keep <- Y
 biomass.keep <- biomass
 
-arboreal = TRUE
+
 if(arboreal == TRUE){
   Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
   Niters <- 10000
