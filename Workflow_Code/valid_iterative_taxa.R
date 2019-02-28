@@ -16,7 +16,8 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-load("twothirds_v2.0.Rdata")
+#load("twothirds_v2.0.Rdata") #for calibration
+load('threethirds_v2.0.Rdata') #for validation
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
@@ -65,30 +66,33 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                                  outLik = outLik)
 
 if(FALSE){ ### To plot use the following after running on the server
-  samps.mat <- array(NA, dim = c(500,100,22))
+  samps.mat <- array(NA, dim = c(5000,154,22))
   r.saved <- numeric(22)
   
-  pdf('iterative.taxa.sens.pdf')
-  par(mfrow=c(2,2))
-  for(i in 1:22){ #order(r.saved)
-    load(paste0('~/Downloads/taxa.samps/samples.pred.group',i,'betaNA.Rdata'))
+  load('samps2_3.Rdata')
+  
+  pdf(paste0('iterative.taxa.sens',Sys.Date(),'.pdf'))
+  par(mfrow=c(3,3))
+  for(i in order(r.saved)){ #order(r.saved)
+    load(paste0('~/Downloads/iter.taxa.samps/samples.pred.group',i,'betaNA.Rdata'))
     samps.mat[,,i] <- samples.pred
     
     bio.median <- apply(samples.pred,2,FUN = quantile,.5)
-    plot(biomass, bio.median,
+    plot(biomass,colMeans(samps2_3),
          xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
          xlab="True Biomass", ylab="Predicted Mean Biomass",
-         main='New Biomass')
+         main=colnames(Y)[i],col='red',cex = .5)
+    points(biomass, bio.median,pch=19,col='black',cex = .5)
     abline(a=0,b=1)
     lm.mod <- lm(biomass ~ bio.median+0)
     abline(lm.mod,lty=2)
-    mtext(paste("r-squared",summary(lm.mod)$r.squared))
+    mtext(paste("r-squared",signif(summary(lm.mod)$r.squared,digits = 4)))
     
     r.saved[i] <- summary(lm.mod)$r.squared
     
     arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
            x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
-           code = 0, lwd=2)
+           code = 0, lwd=.5)
     
   }
   dev.off()  
