@@ -1,6 +1,6 @@
 #####
 ##### This code runs the calibration and validation for 3/3s dataset
-##### creates final betas. 
+##### creates final betas. job.array.pred.threethird.sh on geo
 #####
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
@@ -63,6 +63,10 @@ for(i in 1:length(new.biomass)){
 source(file.path('Workflow_Code','utils','getLik.R'))
 outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(samples.mixed),]),
                  bMax = bMax, Y = Y.pred, knots=length(u)+2)
+
+save(outLik, file = paste0('outLik',group_rm,'.Rdata'))
+
+stop()
 
 source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
