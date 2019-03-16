@@ -78,28 +78,89 @@
 
 \begin_body
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Make sure that you are refering to sites and not ponds, lakes, or cores
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+should we make clear some sites are bogs? I'd ask Jason
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Not sure what to do about the chrono figure.
+ Should it be only our prediction dataset? we don't use some sites because
+ they don't cover 2000 to 10000.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+trunc at 150 for gold r2 to see if they are closer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+1-(sum(true) - predict^2)/(sum(true)-mean(true)^2)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Study area
 \end_layout
 
 \begin_layout Standard
-We chose our study area based on the vast 
+We chose our study area based on the extensive amount of paleoecological
+ data that is available, relatively steady climate 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-how about 'extensive'
-\end_layout
-
-\end_inset
-
-amount of paleoecological data that is available, relatively stable climate
- change
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I'm not sure what stable climate change means
+I'm not sure what stable climate change means.
+ Chris, not sure how much detail to go into here.
+ Just trying to say that not so much was happening in terms of climate at
+ this time in this region.
 \end_layout
 
 \end_inset
@@ -164,20 +225,6 @@ status open
 \end_inset
 
 
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Chris, should code be in the main text or in the notes? I would sort of
- like to put them somewhere else besides notes because the notes indicate
- to me that something still needs to be done.
- But, I can't think of how they should be in the text.
- 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -200,7 +247,7 @@ where they are stored in the sediment layers over millennia.
  lakes.
  Soil cores have been collected by numerous research groups in lakes and
  ponds around the world.
- There are 311 sediment cores in our study area (Figure 
+ There are 253 sediment core sites in our study area (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Map-of-pollen"
@@ -208,6 +255,8 @@ reference "fig:Map-of-pollen"
 \end_inset
 
 ).
+ Henceforth, when will refer to lake, ponds, or bogs where the cores were
+ collected as pollen core sites.
  These data are archived in the publicly available paleoecological database
  Neotoma.
 \end_layout
@@ -222,7 +271,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/all_pollen_cores_map2018-11-12.pdf
+	filename /Users/paleolab/ReFAB/Figures/all_pollen_cores_map2019-02-27.pdf
 	scale 50
 
 \end_inset
@@ -241,7 +290,8 @@ name "fig:Map-of-pollen"
 
 \end_inset
 
-Map of pollen sites in Minnesota, Wisconsin, Michigan, Indiana, and Illinois.
+Map of 253 total pollen sites in Minnesota, Wisconsin, Michigan, Northern
+ Indiana, and Northern Illinois in the Neotoma Database.
 \begin_inset Note Note
 status open
 
@@ -252,18 +302,6 @@ status open
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-not clear we should show the southern IL/IN sites.
- If we do you need to make clear that we then excluded them.
- Also I'd use somewhat smaller dots.
 \end_layout
 
 \end_inset
@@ -287,27 +325,8 @@ key "blaauw2011flexible,goring2012deposition"
 \end_inset
 
 .
- The temporal extent of the ponds in our domain is 20,000 years before present
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-temporal extent of the ponds is 20000 years
-\begin_inset Quotes erd
-\end_inset
-
- sounds awkward to me.
- How about 'the sampling period for the ponds in our domain extends from
- the present to as far as 20000 years before present for some points'
-\end_layout
-
-\end_inset
-
-(Figure 
+ The sampling period for the ponds in our domain extends from the present
+ to as far as 20000 years before present for some cores (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sampling-points-for"
@@ -339,7 +358,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/chrono_ 2018-11-12 .pdf
+	filename /Users/paleolab/ReFAB/Figures/chrono_ 2019-02-27 .pdf
 	scale 60
 
 \end_inset
@@ -358,17 +377,7 @@ name "fig:Sampling-points-for"
 
 \end_inset
 
-Sampling points for all 282 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-we say 311 above
-\end_layout
-
-\end_inset
-
-ponds across the latitude of our domain.
+Sampling points for all 195 ponds across the latitude of our domain.
 \begin_inset Note Note
 status open
 
@@ -410,13 +419,12 @@ I can't see the legend.
 \end_layout
 
 \begin_layout Subsubsection*
-Pollen taxa
+Calibration Dataset 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-I think it would be clearer to put this after the calibration and prediction
- sections below
+[1-3]get_dat.R
 \end_layout
 
 \end_inset
@@ -425,62 +433,171 @@ I think it would be clearer to put this after the calibration and prediction
 \end_layout
 
 \begin_layout Standard
-Based on exploratory analyses, we chose 22 pollen taxa categories that had
- the greatest association with above ground biomass in our domain.
- We started by including all arboreal pollen taxa and all types of herbaceous
- taxa considered indicative of prairie
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-this statement is confusing because below you also talk about 'other herbaceous'
-\end_layout
-
-\end_inset
-
-.
- Then, we aggregated less common arboreal taxa into an 'other arboreal'
- category and herbaceous prairie taxa into a 'prairie' category 
+We calibrate our estimate of biomass at the time of settlement because we
+ have more robust estimates of forest biomass at this time than at modern
+ time, forests at this time were much less affected by massive human land
+ use change, and these forests are more representative of forests in the
+ deep past than modern forests 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "mclauchlan2013tallgrass"
+key "goring2015changes"
 
 \end_inset
 
 .
- This aggregation reduces the dimensionality of the relationship with pollen
- and biomass while maximizing the information gained from these different
- types of pollen taxa.
- The individual taxa used in each group are listed in (Table 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "tab:Taxa-table"
+ This is similar to the approach used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "dawson2016quantifying"
 
 \end_inset
 
-).
- By calibrating against PLS biomass data, The deposition sites occur in
- areas with prairie, savanna, and oak woodlands as well as non-oak dominated
- woodlands, so by calibrating pollen (in particular including non-tree pollen)
- against PLS biomass estimates, we can distinguish different biomasses even
- when tree (particularly oak) composition at different sites may be similar.
- 
+.
+ We used the calibration dataset from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "dawson2016quantifying"
+
+\end_inset
+
+ with 47 additional calibration points from cores added to Neotoma since
+ 2016, giving us a total of 232 calibration points across the Upper Midwest.
+ The choice of which pollen sample at each site would be part of the calibration
+ dataset was determined using expert elicitation.
+ We chose pollen samples to be used for calibration from just before the
+ time of settlement using expert elicitation to determine the settlement
+ horizon in each pollen core record.
+ These methods are covered more extensively in Dawson 2016.
+ Basically, each pollen core diagram was sent to expert paleo-ecologists
+ who were surveyed about when settlement began to occur on the landscape
+ according to the pollen diagram.
+ Paleo-ecologists determine the settlement horizon by looking at pollen
+ abundances and typically select a settlement horizon when more grass type
+ pollen enters the pollen diagram, indicative of land use change that is
+ a symptom of settlement.
+ Palynologist experts (Jackson and Williams
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-next paragraph is somewhat repetitive of previous paragraph - I think the
- next paragraph wording is more clear, so try to remove the discussion of
- what taxa are included and what is aggrgated from the above paragraph and,
- as needed, add additional text to the next paragraph.
- Also try to just mention briefly the assessment of model performance and
- leave all discussion of CV to the section later where you really talk about
- that.
+Jason has not yet completed the EE
+\end_layout
+
+\end_inset
+
+) selected the depth in each core immediately preceding an increase herbaceous
+ species, which indicates an increase in agricultural activities representing
+ the settlement horizon.
+ Each site's samples were organized by sample age.
+ Sites were excluded if any expert could not select a settlement horizon
+ sample or if experts disagreed about the location of the settlement horizon
+ sample within plus or minus two samples.
+\end_layout
+
+\begin_layout Standard
+Before doing the exploratory analyses and initial model fitting to choose
+ the taxa to use in the modeling and the model structure, we removed one-third
+ of the sites as a held-out test set on which to evaluate the final model,
+ discussed further in following sections.
+ The remaining two-thirds of the sites were considered to be our calibration
+ training dataset.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Prediction Dataset 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2]create_prediction_dataset.R
 \end_layout
 
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Prediction-Dataset"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our prediction dataset includes 77 sediment cores
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+77 does not equal 17+62.
+ Chris, it's actually 60 original sites there were two that don't fit the
+ final criteria that had been originally included.
+ Sorry for the confusion.
+ Will we want to list them all in here like Andria has in her paper?
+\end_layout
+
+\end_inset
+
+.
+ We pulled all data from the Neotoma database for Minnesota, Wisconsin,
+ Michigan, Northern Illinois, and Northern Indiana.
+ We excluded southern Illinois and Indiana because the climate and vegetation
+ composition are not similar to the rest of our calibration dataset 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+need to make clear the exclusion of southern IL/IN.
+ Chris, Is that a good enough justification?
+\end_layout
+
+\end_inset
+
+We used the Bacon age-depth model (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "blaauw2011flexible"
+
+\end_inset
+
+) to estimate the ages of samples at each site, relying on existing Bacon
+ estimates for 220 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+presumably more than 62 before sifting, right? She has 220 sites in her
+ dataset: sediment_ages_v1.0_varves.csv
+\end_layout
+
+\end_inset
+
+ sites from from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "dawson2016quantifying"
+
+\end_inset
+
+ and running Bacon ourselves using the bulk-baconizing package in the R
+ computing environment (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "Goring2019"
+
+\end_inset
+
+) for 17 additional sites that met our prediction site criteria (Bacon output
+ available in our data repository).
+ Based on the posterior mean sample ages from Bacon, we then selected sites
+ with at least 10 samples between 8000 and 2000 years before present, giving
+ a total of 77 sites in the prediction dataset.
+\end_layout
+
+\begin_layout Subsubsection*
+Pollen taxa
 \end_layout
 
 \begin_layout Standard
@@ -498,12 +615,12 @@ key "mclauchlan2013tallgrass"
  identification of what pollen groups are indicative of prairie presence.
  Then we selected arboreal taxa known to be important contributors to abovegroun
 d biomass to be stand-alone taxa while grouping the rest of the arboreal
- taxa into an 'other tree' category.
- We also used Cyperaceae pollen taxa individually because there was high
- abundance in our samples.
- Once our taxa were grouped in this manner, we performed a 10 fold cross
- validation on the calibration dataset to determine if this grouping was
- sufficient for reconstructing settlement biomass point estimates.
+ taxa into an 'other arboreal' category.
+ We used Cyperaceae pollen taxa individually because there was high abundance
+ in our samples.
+ The remaining herbaceous taxa were grouped into an 'other herbaceous' category.
+ The 'other' categories allow us to use all pollen counts while reducing
+ dimensionality somewhat.
  The final groups of taxa can be found in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -512,17 +629,6 @@ reference "tab:Taxa-table"
 \end_inset
 
 .
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-say something about 'other herbaceous'
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -546,18 +652,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-Arboreal and Individual Taxa
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-sedge is not arboreal so this should probably just be called individual
- taxa here and in the caption
-\end_layout
-
-\end_inset
-
-
+Individual Taxa
 \end_layout
 
 \end_inset
@@ -680,6 +775,8 @@ Cyperaceae spp.
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\shape italic
 Artemisia, Aster, Poaceae, Ambrosia, Chemoam, and Corylus
 \end_layout
 
@@ -689,6 +786,8 @@ Artemisia, Aster, Poaceae, Ambrosia, Chemoam, and Corylus
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\shape italic
 Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidam.
 \end_layout
 
@@ -698,11 +797,17 @@ Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidam.
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\shape italic
 Apiaceae, Brassicaceae, Ephedra, Equisetu, Fabaceae, Iva, Myricacas, Plantagin,
  Polygona, Polypod, Pteridium, Rosacea, Rumeoxyr, Sarcobatus, Sphagnum,
  Thalictrum, Urticac, Xanthium, Ericace, Lamiaceae, Onagraceae, Lycopod,
  Selagine, Rhamnaceae, Rubiaceae, Caryophyll, Liliaceae, Shepherdia, Cornus,
- Ranuncul, Boraginaceae, Polemoni, and Rubus
+ Ranuncul, Boraginaceae, Polemoni, 
+\shape default
+and
+\shape italic
+ Rubus
 \end_layout
 
 \end_inset
@@ -716,8 +821,8 @@ Apiaceae, Brassicaceae, Ephedra, Equisetu, Fabaceae, Iva, Myricacas, Plantagin,
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-This table shows the grouping of the pollen taxa.
- The arboreal species are used individually while the prairie, other arboreal,
+Table showing the groupings of the pollen taxa.
+ The individual taxa are used individually while the prairie, other arboreal,
  and other herbaceous are aggregated.
 \begin_inset CommandInset label
 LatexCommand label
@@ -726,16 +831,6 @@ name "tab:Taxa-table"
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-all latin names should be italicized
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -750,225 +845,6 @@ all latin names should be italicized
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsubsection*
-Calibration Dataset 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-[1-3]get_dat.R
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We used the calibration dataset from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
- with ### additional calibration points from cores added to Neotoma since
- 2016.
- The choice of which pollen sample at each site would be part of the calibration
- dataset was determined using expert elicitation.
- We chose pollen samples to be used for calibration from just before the
- time of settlement using expert elicitation to determine the settlement
- horizon in each pollen core record.
- These methods are covered more extensively in Dawson 2016.
- Basically, each pollen core diagram was sent to expert paleo-ecologists
- who were surveyed about when settlement began to occur on the landscape
- according to the pollen diagram.
- Paleo-ecologists determine the settlement horizon by looking at pollen
- abundances and typically select a settlement horizon when more grass type
- pollen enters the pollen diagram, indicative of land use change that is
- a symptom of settlement.
- Palynologist experts (Jackson and Williams
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Jason has not yet completed the EE
-\end_layout
-
-\end_inset
-
-) selected the depth in each core immediately preceding an increase species
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-do you mean 
-\begin_inset Quotes eld
-\end_inset
-
-increase in grass
-\begin_inset Quotes erd
-\end_inset
-
-?
-\end_layout
-
-\end_inset
-
-, which indicates an increase in agricultural activities representing the
- settlement horizon.
- Sites were excluded if any expert could not select a settlement horizon
- sample or if experts disagreed within two samples
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-make more clear what 'disagreed within two samples' means
-\end_layout
-
-\end_inset
-
- of what the settlement horizon should be.
-\end_layout
-
-\begin_layout Standard
-Before doing the exploratory analyses and initial model fitting to choose
- the taxa to use in the modeling and the model structure, we removed one-third
- of the sites as a held-out test set on which to evaluate the final model,
- discussed further in following sections.
- The remaining two-thirds of the sites were considered to be our calibration
- training dataset.
- 
-\end_layout
-
-\begin_layout Subsubsection*
-Prediction Dataset 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-[2]create_prediction_dataset.R
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Prediction-Dataset"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Our prediction dataset includes 77 sediment cores
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-77 does not equal 17+62
-\end_layout
-
-\end_inset
-
-.
- We pulled all data from the Neotoma database for Minnesota, Wisconsin,
- Michigan, Illinois, and Indiana.
- We then sifted out sites based on the average sample ages.
- We then selected sites with at least 10 samples with average ages between
- 8000 and 2000 years before present.
- We calculated average sample ages using the Bacon age depth model (
-\begin_inset CommandInset citation
-LatexCommand citealt
-key "blaauw2011flexible"
-
-\end_inset
-
-).
- We used Bacon age depth model estimates for 62 sites from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
-.
- We added 17 sites by computing the Bacon age depth posteriors using the
- bulk-baconizing package in the R computing environment (
-\begin_inset CommandInset citation
-LatexCommand citealt
-key "Goring2019"
-
-\end_inset
-
-).
- The bacon output for our 17 additional prediction sites is available in
- our data repository.
- 
-\end_layout
-
-\begin_layout Standard
-Chris' suggested rewording:
-\end_layout
-
-\begin_layout Standard
-Our prediction dataset includes 77 sediment cores
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-77 does not equal 17+62
-\end_layout
-
-\end_inset
-
-.
- We pulled all data from the Neotoma database for Minnesota, Wisconsin,
- Michigan, Illinois, and Indiana.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-need to make clear the exclusion of southern IL/IN
-\end_layout
-
-\end_inset
-
-We used the Bacon age-depth model to estimate the ages of samples at each
- site, relying on existing Bacon estimates for XXX 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-presumably more than 62 before sifting, right?
-\end_layout
-
-\end_inset
-
- sites from from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
- and running Bacon ourselves using the bulk-baconizing package in the R
- computing environment (
-\begin_inset CommandInset citation
-LatexCommand citealt
-key "Goring2019"
-
-\end_inset
-
-) for 17 additional sites (Bacon output available in our data repository).
- Based on the posterior mean sample ages from Bacon, we then selected sites
- with at least 10 samples between 8000 and 2000 years before present, giving
- a total of 77 sites in the prediction dataset.
 \end_layout
 
 \begin_layout Section
@@ -987,29 +863,7 @@ Chris, are we okay with saying 'time of settlement'? or is there something
 \end_layout
 
 \begin_layout Standard
-We calibrate our estimate of biomass at the time of settlement 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-this is stated in a weird place because previous sections already just assume
- the use of time of settlement, so you need to make this point earlier 
-\end_layout
-
-\end_inset
-
-because we have more robust estimates of forest biomass at this time than
- at modern time, forests at this time were much less affected by massive
- human land use change, and these forests are more representative of forests
- in the deep past than modern forests 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "goring2015changes"
-
-\end_inset
-
-.
- Forest biomass at time of settlement is derived from historical surveys,
+Forest biomass at time of settlement is derived from historical surveys,
  which were collected over decades.
  Since settlement is not a fixed time point and pollen is a smoothed representat
 ion of vegetation, we aggregate pollen samples from 1750 - 1850 to use as
@@ -1026,7 +880,7 @@ key "goring2015changes"
 
 .
  Here we use the posterior estimate of forest biomass for our model calibration.
- This rich dataset allows us to estimate biomass at all 151 
+ This rich dataset allows us to estimate biomass at all 232 
 \begin_inset Note Note
 status open
 
@@ -1123,7 +977,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/2019-02-05settlement.biomass.tiles.pdf
+	filename /Users/paleolab/ReFAB/2019-02-27settlement.biomass.tiles.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/settlement.pollen.tiles.pdf
 	scale 50
 
 \end_inset
@@ -1132,12 +993,16 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-The shading in each box represents the proportion of pollen
+(left) The shading in each box represents the proportion of total biomass
+ that each species contributes in each biomass category from the PLS biomass
+ estimates.
+ (right) The shading in each box represents the proportion of pollen
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-I inserted 'pollen' - right?
+I inserted 'pollen' - right? The pollen one is now on the right the settlement
+ biomass on the left
 \end_layout
 
 \end_inset
@@ -1147,7 +1012,7 @@ I inserted 'pollen' - right?
 status open
 
 \begin_layout Plain Layout
-inserted language ok?
+inserted language ok? Chris, yeah I think so
 \end_layout
 
 \end_inset
@@ -1167,18 +1032,13 @@ name "fig:tiles"
 status open
 
 \begin_layout Plain Layout
-Chris, not sure if this is the right spot for this? Ann, I think it's ok.
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
 Legend label is confusing.
- Also why are non-arboreal categories not included?
+ Also why are non-arboreal categories not included? Chris, originally I
+ was just showing the biomass data product and the contribution of each
+ species to total biomass.
+ Now, I've inserted the pollen contribution plot.
+ Let me know if you think we should have both or just one or the other.
+ 
 \end_layout
 
 \end_inset
@@ -1218,7 +1078,7 @@ key "blarquez2015tree,seppa2009calibrated"
 
 \end_inset
 
- for examples of the regresson approach).
+ for examples of the regression approach).
  The inverse modeling approach allows us to build a statistical model for
  changes in biomass over time that enforces smoothness in the biomass process
  through a prior distribution on biomass as a latent (i.e., unobserved) temporal
@@ -1276,19 +1136,7 @@ Notation will be different between calibration and prediction models because
 \begin_inset Formula $j=1,...,J$
 \end_inset
 
- index the sites or ponds 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-try to be consistent about 'lake' vs 'site' vs 'pond' - perhaps discuss
- lakes,ponds,bogs at the very start of document and then say you will refer
- to these as 'sites' throughout the document
-\end_layout
-
-\end_inset
-
- in our domain at the time of settlement for calibration.
+ index the sites in our domain at the time of settlement for calibration.
  and the number of samples for a single site for prediction.
  Let 
 \begin_inset Formula $k=1,...,K$
@@ -1321,17 +1169,8 @@ try to be consistent about 'lake' vs 'site' vs 'pond' - perhaps discuss
 \end_inset
 
  is 10,000 years before present.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-define 'present'
-\end_layout
-
-\end_inset
-
-The age of each sample determines which time interval the sample will inform.
+ We define present as the year 1950.
+ The age of each sample determines which time interval the sample will inform.
  We denote this with 
 \begin_inset Formula $t\left[i\right]$
 \end_inset
@@ -1356,13 +1195,10 @@ In the calibration phase, we model the nonlinear multivariate relationship
 \begin_layout Standard
 More specifically, we use beta distributions combined using a stickbreaking
  structure (with similarity to the Dirichlet tree structure discussed in
- Wang and Zhao 2017
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann please deal with bib here
-\end_layout
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "wang2017dirichlet"
 
 \end_inset
 
@@ -1505,27 +1341,20 @@ Note that the nested series of binomial likelihoods can be equivalently
 \begin_inset Formula $\boldsymbol{y}_{j}\sim\text{multinomial}(\boldsymbol{p}_{j}^{abs},N_{j})$
 \end_inset
 
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-say how we ordered the taxa for the model fitting
-\end_layout
-
-\end_inset
-
-
+.
+ We ordered taxa from highest proportion to lowest proportion based on the
+ average pollen proportions from the calibration dataset.
 \end_layout
 
 \begin_layout Standard
-Based on exploratory fitting discussed below, we chose to use five degrees
- of freedom for the splines
+Based on exploratory fitting discussed below, we chose to use three knots
+ for the spline basis matrix
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-is it 5 df or 5 knots?
+is it 5 df or 5 knots? df I think 3 knots.
+ changed to state knots 3knots = 4 coefficients + an itercept using bs()
 \end_layout
 
 \end_inset
@@ -1537,18 +1366,7 @@ is it 5 df or 5 knots?
  This broad prior allows our splines to flexibly fit the data.
  The basis matrix is calculated outside of the model with the R function
  bs() in the 'splines' package version 3.5.1.
- Each row is calculated with point estimates of biomass
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I think this is incorrect now that you propagate uncertainty; perhaps move
- this discussion to later
-\end_layout
-
-\end_inset
-
-.
+ Each row is calculated with point estimates of biomass.
  Note that to fit the model it is possible to analytically marginalize (integrat
 e) over the 
 \begin_inset Formula $p's$
@@ -1578,7 +1396,7 @@ The initial model fitting to determine the taxonomic groupings was done
  using the 10-fold cross-validation (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:twothirds->twothirds"
+reference "fig:10-fold-final"
 
 \end_inset
 
@@ -1592,7 +1410,21 @@ reference "sec:Exploring-Different-Taxa"
 \end_inset
 
 .
+ However, we illustrate the 10-fold cross-validation exercise for including
+ the prairie pollen group (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:10foldCV-5v7knots"
+
+\end_inset
+
+).
+ We choose to include the prairie pollen group because it improves the R2
+ and the MSE of the validation plot.
  
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -1634,15 +1466,24 @@ We assessed various pollen taxa groupings based on the vegetation abundance
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+So this figure that is now in this note is the two thirds predicting two
+ thirds.
+ I think there was some confusion about this.
+ The final 10 fold CV is now in the plot below.
+ Does that make sense?
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/2_3rds_validation.pdf
+	filename /Users/paleolab/ReFAB/new_training_set_2_3rds_validation.pdf
 	scale 50
 
 \end_inset
@@ -1700,12 +1541,59 @@ in all figures, round the R2 to 3 decimal places
 
 \end_layout
 
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/new_10.fold.R22019-03-07.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Validation plot for 10 fold cross validation for two thirds of the final
+ calibration dataset.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:10-fold-final"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Once the pollen taxa were optimally grouped, we assessed the number of spline
  basis matrix coefficients using the same cross validation methodology.
  The basis matrix can be more flexible with the addition of more knots,
- thereby allowing more fluctations in the nonlinear relationship between
+ thereby allowing more fluctuations in the nonlinear relationship between
  biomass and pollen proportion for each taxon.
+ The the 10 fold cross validation exercise was used both to select the correct
+ taxa groupings and to select the number of knots used in our basis matrix.
  As seen in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1713,8 +1601,8 @@ reference "fig:10foldCV-5v7knots"
 
 \end_inset
 
-, use of seven knots results in decreased predictive performance compared
- to five knots.
+, use of five knots results in decreased predictive performance compared
+ to three knots.
  
 \end_layout
 
@@ -1727,14 +1615,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/10.fold.R22018-12-21.pdf
+	filename /Users/paleolab/ReFAB/10.fold.R2.nograss2019-03-08.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/10.fold.R2.7knots2019-02-06.pdf
+	filename /Users/paleolab/ReFAB/10.fold.R2.7knots2019-03-08.pdf
 	scale 50
 
 \end_inset
@@ -1747,22 +1635,8 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-The the 10 fold cross validation exercise was used both to select the correct
- taxa groupings and to select the number of knots used in our basis matrix.
- These plots illustrate the difference between the 10 fold cross validation
- exercise between 5 knots and 7 knots.
- A basis matrix with 5 knots more adequately predicts settlement biomass,
- so we chose to use a 5 knot basis matrix in our final model.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I'd just describe what the plot is and move the interpretation to the main
- text
-\end_layout
-
-\end_inset
-
+Validation plots for 10 fold cross validation exercise between removal of
+ the 'prairie' pollen group (left) and the use of five knots (right).
  
 \begin_inset Note Note
 status open
@@ -1786,7 +1660,10 @@ status open
 
 \begin_layout Plain Layout
 why is 5 knot result here different than in previous figure? We shouldn't
- even need the 5 knot figure if we can just refer to previous figure
+ even need the 5 knot figure if we can just refer to previous figure.
+ Chris, so I think there was some confusion based off the old wording of
+ one third two third etc.
+ We should check in about this.
 \end_layout
 
 \end_inset
@@ -1820,19 +1697,7 @@ reference "fig:blue-splines"
 ).
  Based on visual inspection, the splines effectively captured the relationship,
  including the high variability, between biomass and pollen proportion.
- This allows us to capture pollen-biomass relationships with pollen types
- that are present in both high and low biomass environments.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I'm not quite sure what this last sentence means
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1856,7 +1721,9 @@ status open
 
 \begin_layout Plain Layout
 in what sense is this 10CV - it should just be based on fitting the full
- 2/3, no?
+ 2/3, no? Chris, I created these with all of the samples from the 10CV exercise.
+ I can go back and make another for just the 2/3s fit but i thought we wanted
+ to see all the uncertainty that might come from different beta draws?
 \end_layout
 
 \end_inset
@@ -1955,7 +1822,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/gold.r2.validation.pdf
+	filename /Users/paleolab/ReFAB/new_gold.r2.validation.pdf
 	scale 50
 
 \end_inset
@@ -1988,7 +1855,9 @@ status open
 
 \begin_layout Plain Layout
 take out 'gold validation' and call the 'twothirds' the 'training set' and
- 'onethird' the 'test set'
+ 'onethird' the 'test set'.
+ Chris, do you want me to do that in the figure titles themselves too? like
+ change the name 'new_gold.r2.validation.pdf' to 'new_testing.r2.validation.pdf'?
 \end_layout
 
 \end_inset
@@ -2027,7 +1896,7 @@ Chris, not sure if there's enough info here.
 \end_layout
 
 \begin_layout Standard
-We show the final calibration model fit using the full set of XXX sites
+We show the final calibration model fit using the full set of 232 sites
  in our calibration dataset (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2063,7 +1932,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/3_3rds_validation.pdf
+	filename /Users/paleolab/ReFAB/new_3_3rds_validation.pdf
 	scale 50
 
 \end_inset
@@ -2125,124 +1994,6 @@ figure needs a legend - red vs black; also take out the
 \end_layout
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-move all of this to the model implementation/MCMC section
-\end_layout
-
-\end_inset
-
-We assess MCMC performance of the calibration model based on trace plots
- of the 
-\begin_inset Formula $\beta$
-\end_inset
-
- coefficients.
- These trace plots were created by concatenating the last 100 MCMC iterations
- from 50 fits of the calibration model
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-you haven't yet said anything about where the 50 fits come from
-\end_layout
-
-\end_inset
-
-.
- Each fit uses a different draw from the settlement biomass data product
- to incorporate settlement biomass uncertainty.
- For more information on uncertainty propagation see section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "subsec:Uncertainty-propagation"
-
-\end_inset
-
-.
- All final trace plots were scrutinized visually; we did not employ common
- MCMC diagnostics such as the Gelman-Rubin diagnostic because the use of
- 50 chains allows us to visually assess convergence, albeit in light of
- real differences in the posteriors conditional on the settlement biomass
- draws.
- Here we present a random subset of shape parameter trace plots that are
- representative of the full set of 220 coefficients (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:beta-trace-liks"
-
-\end_inset
-
-).
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/beta.trace.plots.pdf
-	scale 50
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-These are trace plots for a random subset of the 220 estimated 
-\begin_inset Formula $\beta$
-\end_inset
-
- coefficients.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-beta_trace_plots.R
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:beta-trace-liks"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-take out site indexes unless we plan to refer to them
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -2314,6 +2065,7 @@ Ann, you need b(t) here.
 \end_inset
 
 Also I think we should change from 'j' to 'i' with 'i' indexing samples.
+ Chris, let me know if that is right.
 \end_layout
 
 \end_inset
@@ -2324,11 +2076,12 @@ Also I think we should change from 'j' to 'i' with 'i' indexing samples.
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-y_{j,1} & \sim & \text{binomial}(p_{j,1}^{abs},N_{j})\label{eq:pred likelihood}\\
-y_{j,k} & \sim & \textrm{binomial}(p_{j,k}^{rel},N_{j}-\sum_{i=1}^{k-1}y_{j,i}),\,k=2,\ldots,K-1\\
-p_{j,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta}_{1,k}),\mbox{linexp}(\boldsymbol{z}_{t\left[i\right]}\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
-p_{j,1}^{abs} & = & p_{j,1}^{rel}\\
-p_{j,k}^{abs} & = & p_{j,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{j,k}^{abs}\right).
+y_{i,1} & \sim & \text{binomial}(p_{i,1}^{abs},N_{i})\label{eq:pred likelihood}\\
+y_{i,k} & \sim & \textrm{binomial}(p_{i,k}^{rel},N_{i}-\sum_{i=1}^{k-1}y_{i,k}),\,k=2,\ldots,K-1\\
+p_{i,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{1,k}),\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
+b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\\
+p_{i,1}^{abs} & = & p_{i,1}^{rel}\\
+p_{i,k}^{abs} & = & p_{i,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{i,k}^{abs}\right).
 \end{eqnarray}
 
 \end_inset
@@ -2342,7 +2095,8 @@ status open
 
 \begin_layout Plain Layout
 I removed a bunch of text as I thought it was unneeded given notation in
- the earlier notation section and our decription of calibration model
+ the earlier notation section and our decription of calibration model.
+ Chris, sounds good.
 \end_layout
 
 \end_inset
@@ -2436,30 +2190,15 @@ We also imposed a prior constraint that
 status open
 
 \begin_layout Plain Layout
-228 is not consistent with what is shown in Fig 4 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The initial conditions for biomass are 
-\begin_inset Formula $b_{t}\sim\mathrm{uniform}(0,b_{max})$
-\end_inset
-
-.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-do you mean for b_1,b_2,b_3 or do you mean the initial values for the MCMC?
-\end_layout
-
-\end_inset
-
+228 is not consistent with what is shown in Fig 4.
+ Chris, i put an end point in fig 4 to make even bins, but i see your point
+ and can change that.
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2467,7 +2206,7 @@ In the MCMC, we sample
 \begin_inset Formula $b_{t}$
 \end_inset
 
-for 
+ for 
 \begin_inset Formula $t=1,2,...,100$
 \end_inset
 
@@ -2527,43 +2266,20 @@ please integrate the next two paragraphs together
 \end_layout
 
 \begin_layout Standard
-sigma value so that we could standardize across sites.
- We chose 
+We chose 
 \begin_inset Formula $\sigma=0.03$
 \end_inset
 
- through a cross validation exercise described in the next section.
+ through a cross validation exercise.
  To chose a static value for 
 \begin_inset Formula $\sigma$
 \end_inset
 
-, we assessed the log likelihoods across a grid of sigma values.
+, we assessed the log likelihoods across a grid of sigma values from 0 to
+ 1.
  We chose the sigma value with the highest log likelihood sum across sites.
  We assessed the smoothness in our process model fit by comparing the posterior
  estimates to the maximum likelihood values.
-\end_layout
-
-\begin_layout Standard
-We selected sigma by conducting an assessment of log likelihoods across
- sites at various sigma values.
- We fit each prediction site using 9/10th of the pollen samples over a grid
- of sigma values from 0 to 1.
- We did this for each 10th of the data for each sigma.
- Then, for each run we calculated the log probability of the 1/10th of the
- data that was left out of each run.
- We summed these log probabilities across sites for each each sigma value.
- We narrowed in on an interval of reasonable sigma values and repeated the
- process on a finer grid scale.
- This lead us to choose a sigma of 0.12 to be used across sites.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-.12 or .03?
-\end_layout
-
-\end_inset
-
  Example fits for sites with different fixed sigma values can be found in
  the data repository.
  
@@ -2588,21 +2304,24 @@ We computed two metrics to assess overall, region-wide biomass change across
  sites for the last 10,000 years from the MCMC output of the prediction
  model applied to each site.
  First, we calculated median biomass across sites by calculating the median
- biomass (across MCMC samples)at each time step at each site then calculating
+ biomass (across MCMC samples) at each time step at each site then calculating
  the quantiles of the medians (across sites) at each time step.
  Second, we calculated the probability of biomass increase across sites
- by taking the 95% quantiles of the difference of biomass estimates for
- each MCMC iteration at each site and each time step
+ by calculating the difference between biomass estimates for each MCMC iteration
+ at each site and each time step.
+ From this difference matrix, we calculate the 95% quantiles.
+ 
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
-I don't understand this sentence
+I don't understand this sentence.
+ Chris, is this better.
+ This is a description of the boxplot in figure 3 in the main text.
 \end_layout
 
 \end_inset
 
-.
  All sites were selected with sample criterion described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2639,31 +2358,8 @@ key "de2017programming"
 .
  We propagated uncertainty through to the biomass predictions by fitting
  the prediction model 50 times; each using a different draw of the coefficients
- from the calibration model and drawsof sample age values from the BACON
+ from the calibration model and draws of sample age values from the BACON
  model.
- We accumulated over 100,000 samples for each 
-\begin_inset Formula $b_{t}$
-\end_inset
-
- and assessed convergence through visual inspection of trace plots 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "gelman1992inference"
-
-\end_inset
-
-.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-this last sentence duplicates what is present later; also note material
- from earlier section that should be moved to Section 5.2
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -2960,6 +2656,95 @@ nts into our final estimates of biomass at each prediction site.
  issues in the prediction model posterior distributions.
 \end_layout
 
+\begin_layout Standard
+We assess MCMC performance of the calibration model based on trace plots
+ of the 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficients.
+ These trace plots were created by concatenating the last 100 MCMC iterations
+ from 50 fits of the calibration model.
+ Each fit uses a different draw from the settlement biomass data product
+ to incorporate settlement biomass uncertainty.
+ For more information on uncertainty propagation see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Uncertainty-propagation"
+
+\end_inset
+
+.
+ All final trace plots were scrutinized visually; we did not employ common
+ MCMC diagnostics such as the Gelman-Rubin diagnostic because the use of
+ 50 chains allows us to visually assess convergence, albeit in light of
+ real differences in the posteriors conditional on the settlement biomass
+ draws.
+ Here we present a random subset of shape parameter trace plots that are
+ representative of the full set of 220 coefficients (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:beta-trace-liks"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/beta.trace.plots.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+These are trace plots for a random subset of the 220 estimated 
+\begin_inset Formula $\beta$
+\end_inset
+
+ coefficients.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+beta_trace_plots.R
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:beta-trace-liks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Instability and Outliers in Model Predictions
 \end_layout
@@ -2971,7 +2756,7 @@ status open
 \begin_layout Plain Layout
 somewhere in here need to introduce fact that the scatterplots in earlier
  sections show a few sites where we underpredict and that we want to investigate
- that further her
+ that further here
 \end_layout
 
 \end_inset
@@ -2992,19 +2777,6 @@ While assessing the calibration and prediction models we found that the
 
  coefficient estimates led to different maximum likelihood estimates of
  biomass.
- For example, our ten fold cross validation exercise versus the two thirds
- fit led to different estimates of biomass for some sites
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I'd take this sentence out - it's a bit confusing and the previous sentence
- should sufficiently make the point
-\end_layout
-
-\end_inset
-
-.
  In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3053,48 +2825,6 @@ reference "eq:chord dist"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Bunch of thoughts on Fig.
- 11.
- 
-\end_layout
-
-\begin_layout Plain Layout
-1) where is blue for sites 3 and 4?
-\end_layout
-
-\begin_layout Plain Layout
-2) Only site 1 shows a lot of bimodality (site 3 somewhat but just distinctions
- at higher values).
- Is there a reason not to show a couple more with serious bimodality?
-\end_layout
-
-\begin_layout Plain Layout
-3) We can talk about it more, but I'm not sure the 2/3 vs CV distinction
- is important and I think that will confuse the reader because overfitting
- is not the key thing.
- Rather, I think we want to show that (a) for a given beta vector we get
- bimodality for some sites and (b) if we show a few beta values, we can
- get different max lik values for different betas.
- One idea is to show the likelihood simply using the 2/3 fit for one beta
- and have the rug be the 50 max lik estimates .
- Or show likelihoods for 3-4 beta values under the 2/3.
- 
-\end_layout
-
-\begin_layout Plain Layout
-4) I don't think the MCMC rug adds value
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -3103,8 +2833,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/max.liks.23.calib.pdf
-	scale 50
+	filename /Users/paleolab/ReFAB/unstable_liks_calib_FULL.pdf
+	scale 45
 
 \end_inset
 
@@ -3112,22 +2842,11 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-These are likelihood plots for eight different sites on the settlement landscape.
- The black curve is the 10 fold cross validation likelihood which is the
- result of the particular site not being included in the estimates of the
- 
-\begin_inset Formula $\beta$
-\end_inset
-
- coefficients.
- The red curve is the two thirds fit where the site is included in the estimates
- of the 
-\begin_inset Formula $\beta$
-\end_inset
-
- in the calibration model.
+Likelihood plots for eighteen different calibration sites with various amounts
+ of bimodality for one set of beta estimates from the calibration model.
  The vertical lines show the true mean biomass estimate from the settlement
- biomass product (blue) and the MCMC estimate for the two thirds fit (red).
+ biomass product (blue) and rug red shows the maximum likelihood estimates
+ from the other 49 beta estimates.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -3136,19 +2855,6 @@ name "fig:2/3 liks"
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I think we're probably going to want different likelihoods here but I wasn't
- sure which ones.
- Ann, I think we need to find a few that show a lot of bimodality, and a
- few with various biomass values that don't show bimodality
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -3172,78 +2878,35 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_calib_smooth.pdf
+	scale 30
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/compvbiom_pred_smooth.pdf
+	scale 30
+
+\end_inset
+
 
 \end_layout
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_calib.pdf
-	scale 50
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_pred.pdf
-	scale 50
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_lake_mendota.pdf
-	scale 50
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_allsites.pdf
-	scale 50
-
-\end_inset
-
-
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Plots of the difference in maximum likelihood estimates for biomass versus
- the difference in composition measured in square chord distance for A)
- the calibration dataset B) the prediction dataset C) the individual bimodal
- site Lake Mendota D) the individual non-bimodal site Lake Mary.
+Density plots for the difference in maximum likelihood estimates for biomass
+ versus the difference in composition measured in square chord distance
+ for the calibration dataset (left) and the prediction dataset (right).
  
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:hexplots"
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I wonder if one of the other plotting styles I emailed you about would be
- clearer - I think the legend for the hex plotting requires work by the
- reader to interpret and the sizes of the hexes varying by subplot is not
- something we want.
- 
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-what are blue points in upper right panel?
-\end_layout
 
 \end_inset
 
@@ -3269,89 +2932,37 @@ While bimodality can lead to unstable biomass predictions, there are also
  sites where changes in composition lead to large changes in biomass that
  are not from limitations in the model's ability to predict biomass given
  a pollen sample but from from changes in composition.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-next few sentences need to be updated in light of recent work
-\end_layout
-
-\end_inset
-
-In order to understand how many sites in both our calibration and prediction
- datasets were affected by bimodality we calculated the standard deviation
- of the maximum likelihood estimates based on the 50 different beta estimates
- for all samples.
- In the prediction dataset we subsetted the sites with high maximum likelihood
- value standard deviations and determined whether or not they were caused
- by large changes in composition or bimodality by assessing the individual
- site hex plot like Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:hexplots"
-
-\end_inset
-
-.
- We found that most sites that exhibited bimodality were near pollen sources
- from both late successional taxa beech and hemlock
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I don't think this is true regarding hemlock
-\end_layout
-
-\end_inset
-
- and savanna taxa oak and prairie (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:maps-calib-pred-bimodal"
-
-\end_inset
-
-).
- Sites that were affected in our prediction dataset also contained these
- taxa groupings.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Here's some initial text on I might word this.
- Please look more carefully at the pollen compositions for these sites,
- e.g., in the blue spline plots to make sure I have this right.
-\end_layout
-
-\begin_layout Plain Layout
-Underprediction of biomass appears to occur at sites near prairie-forest
+ Underprediction of biomass appears to occur at sites near prairie-forest
  ecotones, in particular the Big Woods of Minnesota that have unexpectedly
  low proportions of non-oak arboreal pollen types that would indicate higher
  biomass (elm, maple, basswood, and ash) relative to the PLS tree composition
  from Paciorek et al.
- 2016.
- Note that Dawson et al.
- also found it difficult to predict high levels of non-oak tree species
- in the Big Woods area because of limited representation of typical Big
- Woods taxa in the pollen samples.
-\end_layout
+ 2016
+\begin_inset Note Note
+status open
 
 \begin_layout Plain Layout
-Sites with bimodal likelihoods tend to have a large amount of oak pollen
- [right?], small amounts of prairie pollen, and at some sites moderate amounts
- of beech pollen, indicating the model has a hard time predicting biomass
- in savanna-like conditions, particularly when late-successional arboreal
- pollen is present.
- 
+Chris, do you mean goring 2016?
 \end_layout
 
 \end_inset
 
+.
+ Note that 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "dawson2016quantifying"
 
+\end_inset
+
+ also found it difficult to predict high levels of non-oak tree species
+ in the Big Woods area because of limited representation of typical Big
+ Woods taxa in the pollen samples.
+ Sites with bimodal likelihoods tend to have a large amount of oak pollen,
+ small amounts of prairie pollen, and at some sites moderate amounts of
+ beech pollen, indicating the model has a hard time predicting biomass in
+ savanna-like conditions, particularly when late-successional arboreal pollen
+ is present.
 \end_layout
 
 \begin_layout Standard
@@ -3379,13 +2990,10 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Maps with points colored by the standard deviation of maximum likelihood
- estimates for 50 beta draws.
- In the calibration data set, sites that were consistently under predicted
- are outlined by green triangles while sites with bimodal likelihoods are
- outlined by blue squares.
- In the prediction dataset, sites that showed bimodality are outlined with
- green triangles.
+Maps of average biomass for the settlement time period (left) and 8000 years
+ before present (right).
+ Sites are highlighted if they were under predicted during calibration (green
+ triangles) or they have bimodal likelihoods (blue squares).
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -3486,11 +3094,18 @@ reference "fig:No-analog-figure"
 ).
  Standard paleo-ecological studies use a benchmark of 0.3 as a threshold
  for no-analog communities (
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "flower1997matching"
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-Need citation
+need to check with Jack
 \end_layout
 
 \end_inset
@@ -3504,9 +3119,16 @@ We also computed the maximum likelihood value for each of the samples and
  looked to see if these varied systematically with sample age.
  This gives us an idea if the data are less well-explained by the model
  further back in time.
- However, Figure XYZ shows no pattern in the maximum likelihood values as
- a function of age, giving additional confidence that it is reasonable to
- estimate biomass throughout our 10000 year study period.
+ However, Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:nax-liks-by-age"
+
+\end_inset
+
+ shows no pattern in the maximum likelihood values as a function of age,
+ giving additional confidence that it is reasonable to estimate biomass
+ throughout our 10000 year study period.
 \end_layout
 
 \begin_layout Standard
@@ -3587,29 +3209,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Each point represents at pollen sample in our prediction dataset.
- The maximum likelihood value is shown on the y-axis.
- The age of the pollen sample is shown on the x-axis.
- This plot indicates that our maximum likelihood values do not change in
- deep time, another indication that our prediction dataset does not contain
- no analog compositions.
+Maximum likelihood values for each sample in our prediction dataset by average
+ estimated age.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-as before, I would put the interpretation in the main text
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-best to have x-axis be sample age in years as in previous figure
-\end_layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:nax-liks-by-age"
 
 \end_inset
 
@@ -3644,77 +3249,130 @@ name "sec:Exploring-Different-Taxa"
 \begin_layout Standard
 To understand the effects of individual taxa on overall prediction we repeated
  the cross validation exercise on the calibration training data, sequentially
- removing one taxon at a time (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:iterative_taxa"
-
-\end_inset
-
-).
+ removing one taxon at a time.
  We found that removing no taxa in particular had a large effect on predictive
- power, relative to the R2 of 0.86 in the full model.
+ power, relative to the R2 of 0.549 in the full model.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/iterative.taxa.sens2019-02-09.pdf
-	scale 50
-
-\end_inset
 
 
-\end_layout
+\backslash
+begin{table}[ht] 
+\backslash
+centering 
+\backslash
+begin{tabular}{rrr}   
+\backslash
+hline  & TwoThirds & OneThird 
+\backslash
 
-\begin_layout Plain Layout
-\begin_inset Caption Standard
+\backslash
+    
+\backslash
+hline BETULA & 0.57 & 0.15 
+\backslash
 
-\begin_layout Plain Layout
-True biomass versus predicted biomass for 22 different model fits each removing
- the pollen taxa listed in the heading.
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:iterative_taxa"
+\backslash
+    CYPERACE & 0.50 & 0.22 
+\backslash
 
-\end_inset
+\backslash
+    ALNUSX & 0.58 & 0.22 
+\backslash
 
- 
-\begin_inset Note Note
-status open
+\backslash
+    TSUGAX & 0.52 & 0.24 
+\backslash
 
-\begin_layout Plain Layout
-valid_iterative_taxa.R
-\end_layout
+\backslash
+    PINUSX & 0.56 & 0.24 
+\backslash
 
-\end_inset
+\backslash
+    POPULUS & 0.55 & 0.24 
+\backslash
 
+\backslash
+    ABIES & 0.55 & 0.24 
+\backslash
 
-\end_layout
+\backslash
+    other
+\backslash
+_trees & 0.55 & 0.24 
+\backslash
 
-\end_inset
+\backslash
+    JUGLANSX & 0.54 & 0.25 
+\backslash
 
+\backslash
+    CUPRESSA & 0.58 & 0.25 
+\backslash
 
-\begin_inset Note Note
-status open
+\backslash
+    FRAXINUX & 0.55 & 0.25 
+\backslash
 
-\begin_layout Plain Layout
-Not sure we need the plots - how bout just a table with one row per taxon
- and show all 22.
- Also, I'm surprised that taking out prairie didn't have more effect.
- 
-\end_layout
+\backslash
+    PICEAX & 0.56 & 0.25 
+\backslash
 
-\end_inset
+\backslash
+    LARIXPSEU & 0.59 & 0.25 
+\backslash
 
+\backslash
+    ULMUS & 0.55 & 0.25 
+\backslash
 
+\backslash
+    ACERX & 0.54 & 0.26 
+\backslash
+
+\backslash
+    OSTRYCAR & 0.54 & 0.26 
+\backslash
+
+\backslash
+    other
+\backslash
+_herbs & 0.51 & 0.26 
+\backslash
+
+\backslash
+    prairie & 0.54 & 0.26 
+\backslash
+
+\backslash
+    TILIA & 0.57 & 0.27 
+\backslash
+
+\backslash
+    QUERCUS & 0.54 & 0.27 
+\backslash
+
+\backslash
+    CARYA & 0.57 & 0.29 
+\backslash
+
+\backslash
+    FAGUS & 0.62 & 0.32 
+\backslash
+
+\backslash
+     
+\backslash
+hline 
+\backslash
+end{tabular} 
+\backslash
+end{table}
 \end_layout
 
 \end_inset
@@ -3739,7 +3397,13 @@ status open
 \begin_layout Plain Layout
 I don't understand this - are we using mass,density,and mass area as the
  three categories or are we using PCs? If PCs, then we must have more than
- 1 if we have 3 categories, but you only mention 1
+ 1 if we have 3 categories, but you only mention 1.
+ Hey Chris, I found info on these three categories for each of our taxa.
+ Then, I calculated the pca and plotted the biplot of the first principle
+ component.
+ then i put each of our taxa into one of the three categories based on how
+ they fell out on the pca axes.
+ 
 \end_layout
 
 \end_inset
@@ -3761,135 +3425,16 @@ key "van2014fully"
  tolerance classification in each genus.
  Finally, we used hemlock and beech pollen individually and aggregated all
  other pollen types into an 'other' category.
- We tested each validation fit for three things: linear R2, best fit between
- non-linear and linear
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I don't understand what that is
-\end_layout
-
-\end_inset
-
-, and average variance for each point prediction to determine which grouping
- best reproduced settlement point estimates of above ground biomass.
- These results are reported in the main manuscript text as well as shown
- below in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:validation-scatters-new-groups"
-
-\end_inset
-
-, which shows the importance of successional status and in particular of
- hemlock and beech.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-explain that we're not overfitting with just 2/3s; Ann, I added text at
- start of paragraph that we use CV, so I think that is sufficient
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/new_groups_validation_scatters_r2.pdf
-	scale 60
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Validation model fits with different taxa groupings based on cross-validation.
- Each row shows a different grouping of taxa, with the first three columns
- showing the relationship of biomass to pollen proportion.
- The first three columns are sorted by pollen abundance as this is how our
- stick breaking model uses the pollen proportion data
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-this is a bit hard to parse - not sure it is even worth stating how we order
- the columns
-\end_layout
-
-\end_inset
-
-.
- The final column shows the cross-validated predictions against biomass
- for each grouping.
- We show the computed R2 in the bottom right of each plot.
- Dots represent the mean prediction while the vertical lines are the 95%
- quantiles surrounding each prediction.
- The species grouping in the final row shows the best linear fit and the
- best uncertainty constraint
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I don't understand this
-\end_layout
-
-\end_inset
-
-.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-deciduous and savanna are mis-spelled
-\end_layout
-
-\end_inset
-
+ We tested each validation fit for three things: linear R2, mean square
+ error, and average variance for each point prediction to determine which
+ grouping best reproduced settlement point estimates of above ground biomass.
+ To avoid overfitting, similarly to the full model validation, we fit the
+ validation plots using the training dataset and we report the values for
+ both the training and testing dataset validations.
+ These results are reported in the main manuscript text and figure 2, which
+ shows the importance of successional status and in particular of hemlock
+ and beech.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-code can be found in Workflow_Code/different_groups_validation.R
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:validation-scatters-new-groups"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -3904,7 +3449,16 @@ options "/Users/paleolab/Downloads/ecology"
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 DONE COMMENTS
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4055,7 +3609,7 @@ Ann, can you check on this based on printSamplers().
 
 \begin_layout Standard
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Note that running different MCMC chains for different biomass estimates,
@@ -4095,6 +3649,123 @@ Chris, I'm a little confused about this.
 
 \begin_layout Plain Layout
 y~binomial
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+not clear we should show the southern IL/IN sites.
+ If we do you need to make clear that we then excluded them.
+ Also I'd use somewhat smaller dots.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+temporal extent of the ponds is 20000 years
+\begin_inset Quotes erd
+\end_inset
+
+ sounds awkward to me.
+ How about 'the sampling period for the ponds in our domain extends from
+ the present to as far as 20000 years before present for some points'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Bunch of thoughts on Fig.
+ 11.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+1) where is blue for sites 3 and 4?
+\end_layout
+
+\begin_layout Plain Layout
+2) Only site 1 shows a lot of bimodality (site 3 somewhat but just distinctions
+ at higher values).
+ Is there a reason not to show a couple more with serious bimodality?
+\end_layout
+
+\begin_layout Plain Layout
+3) We can talk about it more, but I'm not sure the 2/3 vs CV distinction
+ is important and I think that will confuse the reader because overfitting
+ is not the key thing.
+ Rather, I think we want to show that (a) for a given beta vector we get
+ bimodality for some sites and (b) if we show a few beta values, we can
+ get different max lik values for different betas.
+ One idea is to show the likelihood simply using the 2/3 fit for one beta
+ and have the rug be the 50 max lik estimates .
+ Or show likelihoods for 3-4 beta values under the 2/3.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+4) I don't think the MCMC rug adds value
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Here's some initial text on I might word this.
+ Please look more carefully at the pollen compositions for these sites,
+ e.g., in the blue spline plots to make sure I have this right.
+\end_layout
+
+\begin_layout Plain Layout
+Underprediction of biomass appears to occur at sites near prairie-forest
+ ecotones, in particular the Big Woods of Minnesota that have unexpectedly
+ low proportions of non-oak arboreal pollen types that would indicate higher
+ biomass (elm, maple, basswood, and ash) relative to the PLS tree composition
+ from Paciorek et al.
+ 2016.
+ Note that Dawson et al.
+ also found it difficult to predict high levels of non-oak tree species
+ in the Big Woods area because of limited representation of typical Big
+ Woods taxa in the pollen samples.
+\end_layout
+
+\begin_layout Plain Layout
+Sites with bimodal likelihoods tend to have a large amount of oak pollen
+ [right?], small amounts of prairie pollen, and at some sites moderate amounts
+ of beech pollen, indicating the model has a hard time predicting biomass
+ in savanna-like conditions, particularly when late-successional arboreal
+ pollen is present.
+ 
 \end_layout
 
 \end_inset
