@@ -96,19 +96,6 @@ Make sure that you are refering to sites and not ponds, lakes, or cores
 status open
 
 \begin_layout Plain Layout
-should we make clear some sites are bogs? I'd ask Jason
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
 Not sure what to do about the chrono figure.
  Should it be only our prediction dataset? we don't use some sites because
  they don't cover 2000 to 10000.
@@ -1881,18 +1868,6 @@ take out 'gold validation' and call the 'twothirds' the 'training set' and
 
 \begin_layout Subsubsection
 Final model fit 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Chris, not sure if there's enough info here.
- But, also not sure what else to say.
- 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -3252,6 +3227,16 @@ To understand the effects of individual taxa on overall prediction we repeated
  removing one taxon at a time.
  We found that removing no taxa in particular had a large effect on predictive
  power, relative to the R2 of 0.549 in the full model.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+need to fix taxa names in table below
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3268,101 +3253,102 @@ centering
 \backslash
 begin{tabular}{rrr}   
 \backslash
-hline  & TwoThirds & OneThird 
+hline  & Two Thirds & One Third 
 \backslash
 
 \backslash
     
 \backslash
-hline BETULA & 0.57 & 0.15 
+hline Birch & 0.57 & 0.15 
 \backslash
 
 \backslash
-    CYPERACE & 0.50 & 0.22 
+    Sedge & 0.50 & 0.22 
 \backslash
 
 \backslash
-    ALNUSX & 0.58 & 0.22 
+    Alder & 0.58 & 0.22 
 \backslash
 
 \backslash
-    TSUGAX & 0.52 & 0.24 
+    Hemlock & 0.52 & 0.24 
 \backslash
 
 \backslash
-    PINUSX & 0.56 & 0.24 
+    Pine & 0.56 & 0.24 
 \backslash
 
 \backslash
-    POPULUS & 0.55 & 0.24 
+    Poplar & 0.55 & 0.24 
 \backslash
 
 \backslash
-    ABIES & 0.55 & 0.24 
+    Fir & 0.55 & 0.24 
 \backslash
 
 \backslash
-    other
+    Other
 \backslash
-_trees & 0.55 & 0.24 
-\backslash
-
-\backslash
-    JUGLANSX & 0.54 & 0.25 
+_arboreal & 0.55 & 0.24 
 \backslash
 
 \backslash
-    CUPRESSA & 0.58 & 0.25 
+    Walnut & 0.54 & 0.25 
 \backslash
 
 \backslash
-    FRAXINUX & 0.55 & 0.25 
+    Cypress & 0.58 & 0.25 
 \backslash
 
 \backslash
-    PICEAX & 0.56 & 0.25 
+    Ash & 0.55 & 0.25 
 \backslash
 
 \backslash
-    LARIXPSEU & 0.59 & 0.25 
+    Spruce & 0.56 & 0.25 
 \backslash
 
 \backslash
-    ULMUS & 0.55 & 0.25 
+    Tamarack & 0.59 & 0.25 
 \backslash
 
 \backslash
-    ACERX & 0.54 & 0.26 
+    Elm & 0.55 & 0.25 
 \backslash
 
 \backslash
-    OSTRYCAR & 0.54 & 0.26 
+    Maple & 0.54 & 0.26 
 \backslash
 
 \backslash
-    other
-\backslash
-_herbs & 0.51 & 0.26 
+    Ironwood & 0.54 & 0.26 
 \backslash
 
 \backslash
-    prairie & 0.54 & 0.26 
+    Other
+\backslash
+_herb.
+ & 0.51 & 0.26 
 \backslash
 
 \backslash
-    TILIA & 0.57 & 0.27 
+    Prairie & 0.54 & 0.26 
 \backslash
 
 \backslash
-    QUERCUS & 0.54 & 0.27 
+    Basswood & 0.57 & 0.27 
 \backslash
 
 \backslash
-    CARYA & 0.57 & 0.29 
+    Oak & 0.54 & 0.27 
 \backslash
 
 \backslash
-    FAGUS & 0.62 & 0.32 
+    Hickory & 0.57 & 0.29 
+\backslash
+
+\backslash
+    Beech & 0.62 & 0.32 
 \backslash
 
 \backslash
