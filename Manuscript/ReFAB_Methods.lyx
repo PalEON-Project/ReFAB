@@ -258,7 +258,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/all_pollen_cores_map2019-02-27.pdf
+	filename /Users/paleolab/ReFAB/Figures/[1]all_pollen_cores_map2019-02-27.pdf
 	scale 50
 
 \end_inset
@@ -345,7 +345,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/chrono_ 2019-02-27 .pdf
+	filename /Users/paleolab/ReFAB/Figures/[2]chrono_ 2019-02-27.pdf
 	scale 60
 
 \end_inset
@@ -904,7 +904,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/only_calibration_map.pdf
+	filename /Users/paleolab/ReFAB/Figures/[3]only_calibration_map.pdf
 	scale 50
 
 \end_inset
@@ -964,14 +964,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/2019-02-27settlement.biomass.tiles.pdf
+	filename /Users/paleolab/ReFAB/Figures/[4-A]2019-02-27settlement.biomass.tiles.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/settlement.pollen.tiles.pdf
+	filename /Users/paleolab/ReFAB/Figures/[4-B]settlement.pollen.tiles.pdf
 	scale 50
 
 \end_inset
@@ -1543,7 +1543,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/new_10.fold.R22019-03-07.pdf
+	filename /Users/paleolab/ReFAB/Figures/[5]new_10.fold.R22019-03-19.pdf
 	scale 50
 
 \end_inset
@@ -1602,14 +1602,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/10.fold.R2.nograss2019-03-08.pdf
+	filename /Users/paleolab/ReFAB/Figures/[6-A]10.fold.R2.nograss2019-03-19.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/10.fold.R2.7knots2019-03-08.pdf
+	filename /Users/paleolab/ReFAB/Figures/[6-B]10.fold.R2.7knots2019-03-19.pdf
 	scale 50
 
 \end_inset
@@ -1697,7 +1697,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/splines.10CV.pdf
+	filename /Users/paleolab/ReFAB/Figures/[7]splines.10CV.pdf
 	scale 50
 
 \end_inset
@@ -1809,7 +1809,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/new_gold.r2.validation.pdf
+	filename /Users/paleolab/ReFAB/Figures/[8]new_gold.r2.validation.pdf
 	scale 50
 
 \end_inset
@@ -1907,7 +1907,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/new_3_3rds_validation.pdf
+	filename /Users/paleolab/ReFAB/Figures/[9]new_3_3rds_validation.pdf
 	scale 50
 
 \end_inset
@@ -2676,7 +2676,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/beta.trace.plots.pdf
+	filename /Users/paleolab/ReFAB/Figures/[10]beta.trace.plots.pdf
 	scale 50
 
 \end_inset
@@ -2808,7 +2808,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/unstable_liks_calib_FULL.pdf
+	filename /Users/paleolab/ReFAB/Figures/[11]unstable_liks_calib_FULL.pdf
 	scale 45
 
 \end_inset
@@ -2855,14 +2855,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_calib_smooth.pdf
+	filename /Users/paleolab/ReFAB/Figures/[12-A]compvbiom_calib_smooth.pdf
 	scale 30
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/compvbiom_pred_smooth.pdf
+	filename /Users/paleolab/ReFAB/Figures/[12-B]compvbiom_pred_smooth.pdf
 	scale 30
 
 \end_inset
@@ -2949,14 +2949,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/map_unstable_calibration.pdf
+	filename /Users/paleolab/ReFAB/Figures/[13-A]map_unstable_calibration.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/map_prediction_unstable.pdf
+	filename /Users/paleolab/ReFAB/Figures/[13-B]map_prediction_unstable.pdf
 	scale 50
 
 \end_inset
@@ -3115,7 +3115,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/no_analog_assessment.pdf
+	filename /Users/paleolab/ReFAB/Figures/[14]no_analog_assessment.pdf
 	scale 60
 
 \end_inset
@@ -3175,7 +3175,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/max_lik_by_age.pdf
+	filename /Users/paleolab/ReFAB/Figures/[15]max_lik_by_age.pdf
 	scale 50
 
 \end_inset
