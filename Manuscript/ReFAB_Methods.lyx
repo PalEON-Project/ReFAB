@@ -2472,28 +2472,10 @@ Implementation
 \begin_layout Standard
 All model results were calculated in the R 3.5.1 computing environment using
  Markov chain Monte Carlo (MCMC) methods.
- The calibration and prediction models were fit using the NIMBLE (version
- 0.6-12)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/16/19: please cite de Valpine et al 2017 - see 'citation(
-\begin_inset Quotes eld
-\end_inset
-
-nimble
-\begin_inset Quotes erd
-\end_inset
-
-)' in R
-\end_layout
-
-\end_inset
-
-, which allows for significantly increased computational efficiency (via
- a customized MCMC sampling algorithm) and model specification flexibility
- 
+ The calibration and prediction models were fit using the NIMBLE modeling
+ platform (R package version 0.6-12), which allows for significantly increased
+ computational efficiency (via a customized MCMC sampling algorithm) and
+ model specification flexibility 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "de2017programming"
@@ -2543,9 +2525,24 @@ However, achieving good MCMC performance for the prediction model required
  additional work.
  We initially attempted to fit the prediction model above using the default
  MCMC sampling strategy in NIMBLE as well as the default HMC sampler in
- Stan.
- In the former case, we found that strong (and complicated) posterior correlatio
-n between biomass values at nearby points in time caused very poor mixing.
+ Stan
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: please cite: Carpenter, B., Gelman, A., Hoffman, M.D., Lee, D., Goodrich,
+ B., Betancourt, M., Brubaker, M., Guo, J., Li, P.
+ and Riddell, A., 2017.
+ Stan: A probabilistic programming language.
+ Journal of Statistical Software, 76(1).
+\end_layout
+
+\end_inset
+
+.
+ In the former case, we found that the strong (and complicated structure
+ of the) posterior correlation between biomass values at nearby points in
+ time caused very poor mixing.
  In contrast, in Stan, the biomass values appeared to mix well, but chains
  started at different starting points revealed that the sampler was getting
  stuck in local modes.
@@ -2561,10 +2558,10 @@ To address the mixing issues, we used NIMBLE's flexibility in adding custom
  for large enough moves in the space of the biomass process.
  This is not readily done with the form of the generalized Pareto given
  above because of the complicated and strong dependence structure of the
- biomass values given the higher-order temporal structure and generalized
+ biomass values caused by the higher-order temporal structure and generalized
  Pareto distribution.
  However one can use a data augmentation scheme to write the generalized
- Pareto in terms of normal distributions for the biomass contrasts.
+ Pareto distribution in terms of normal distributions for the biomass contrasts.
  We then also developed a normal approximation to the likelihood.
  Combined these two pieces allow us to propose (using the conditional distributi
 on of biomass given the approximate likelihood) biomass process values consisten
@@ -2587,7 +2584,7 @@ reference "eq:pred likelihood"
 \end_inset
 
 ) we can numerically maximize over 
-\begin_inset Formula $b_{i}$
+\begin_inset Formula $b_{t[i]}$
 \end_inset
 
  given 
@@ -2599,14 +2596,14 @@ reference "eq:pred likelihood"
 \end_inset
 
  and a standard error estimate, 
-\begin_inset Formula $\hat{se}_{t[i]}$
+\begin_inset Formula $\hat{se}(b_{t[i]})$
 \end_inset
 
 , based on the second derivative of the likelihood.
  This defines a normal approximation to the likelihood
 \begin_inset Formula 
 \[
-\hat{b}_{t[i]}\sim N(b_{t[i]},\hat{se}_{t[i]}^{2}).
+\hat{b}_{t[i]}\sim N(b_{t[i]},\hat{se}(b_{t[i]})^{2}).
 \]
 
 \end_inset
@@ -2687,7 +2684,7 @@ and
 
  are strongly negatively correlated.
  Given these facts we developed the following joint proposal for 
-\begin_inset Formula $\omega_{t},\lambda_{t},\{\boldsymbol{b}_{t,l}\}$
+\begin_inset Formula $\{\omega_{t},\lambda_{t},\boldsymbol{b}_{t,l}\}$
 \end_inset
 
  where 
@@ -2725,7 +2722,7 @@ Given
 \end_inset
 
  are the biomass values outside the time window and 
-\begin_inset Formula $\hat{\boldsymbol{y}}=\{\hat{b}_{1},\hat{b}_{2},\ldots,\hat{b}_{n_{j}},\hat{se}_{1},\hat{se}_{2},\ldots,\hat{se}_{n_{j}}\}$
+\begin_inset Formula $\hat{\boldsymbol{y}}=\{\hat{b}_{1},\hat{b}_{2},\ldots,\hat{b}_{n_{j}},\hat{se}(b_{1}),\hat{se}(b_{2}),\ldots,\hat{se}(b_{n_{j}})\}$
 \end_inset
 
  represents the full set of pseudo-observations and pseudo-standard errors
@@ -2735,7 +2732,7 @@ Given
 \end_inset
 
  given the likelihood approximation, which can be derived in closed form
- using standard Bayesian and multivariate normal calculations.
+ using standard Bayesian multivariate normal calculations.
  
 \end_layout
 
@@ -2797,20 +2794,38 @@ We propagated uncertainty from the biomass data product at time of settlement
  into the calibration model and the ages of the pollen samples and the beta
  coefficients estimated in the calibration model into the prediction model.
  Uncertainty from the biomass at time of settlement was propagated through
- by fitting the calibration model 50 times with 50 draws from the posteriors
- of the biomass at time of settlement data product at our 151 calibration
- sites.
+ by fitting the calibration model 50 times, each with a draw from the posterior
+ samples of the biomass data product.
  The final MCMC iteration from each of the 50 calibration model fits was
- used in the prediction model.
- Then, each prediction site was fit 50 times using 50 draws from the bacon
- age depth model estimates.
+ used in a separate MCMC for the prediction model, where each MCMC also
+ used a separate draw from the Bacon age depth model MCMC samples
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: I did some rewording here - Ann please check
+\end_layout
+
+\end_inset
+
+.
  This allowed us to propagate uncertainty from the biomass estimate at time
  of settlement, the ages of the pollen samples, and the estimated beta coefficie
 nts into our final estimates of biomass at each prediction site.
  Fitting the prediction model multiple times for different biomass estimates,
  dating estimates, and beta spline coefficients has the added benefit of
  allowing us to average over multiple modes that are the result of bimodality
- issues in the prediction model posterior distributions.
+ issues in the prediction model posterior distributions
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: refer ahead to section where we discuss this
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -2821,17 +2836,7 @@ We assess MCMC performance of the calibration model based on trace plots
 
  coefficients.
  These trace plots were created by concatenating the last 100 MCMC iterations
- from 50 fits of the calibration model.
- Each fit uses a different draw from the settlement biomass data product
- to incorporate settlement biomass uncertainty.
- For more information on uncertainty propagation see section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "subsec:Uncertainty-propagation"
-
-\end_inset
-
-.
+ from the 50 fits of the calibration model.
  All final trace plots were scrutinized visually; we did not employ common
  MCMC diagnostics such as the Gelman-Rubin diagnostic because the use of
  50 chains allows us to visually assess convergence, albeit in light of
@@ -2867,7 +2872,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-These are trace plots for a random subset of the 220 estimated 
+MCMC trace plots for a random subset of the 220 estimated 
 \begin_inset Formula $\beta$
 \end_inset
 
@@ -2953,8 +2958,8 @@ reference "fig:2/3 liks"
 
 \begin_layout Standard
 To assess the degree to whether differences in predicted biomass can occur
- with little change in pollen composition, we looked that the difference
- in maximum likelihood estimates of biomass versus the difference in pollen
+ with little change in pollen composition, we looked at the difference in
+ maximum likelihood estimates of biomass versus the difference in pollen
  compositions (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2973,12 +2978,14 @@ reference "eq:chord dist"
 \end_inset
 
 ) for all samples in the calibration and prediction datasets.
- As the difference in composition increases, the difference in the maximum
- likelihood of biomass also increases in general in both the calibration
- and prediction datasets.
- But, when viewing this relationship at individual sites, we see that some
- sites are more prone to small changes in composition leading to large changes
- in maximum likelihood biomass values.
+ As the difference in composition increases, the difference in the estimated
+ biomass also increases in general in both the calibration and prediction
+ datasets, but one can also see that for a given (often small) difference
+ in composition there can be both large and small differences in estimated
+ biomass.
+ When viewing this relationship at individual sites (not shown), we see
+ that some sites are more prone to instability, with small changes in compositio
+n leading to large changes in predicted biomass.
 \end_layout
 
 \begin_layout Standard
@@ -3000,9 +3007,9 @@ status open
 
 \begin_layout Plain Layout
 Likelihood plots for eighteen different calibration sites with various amounts
- of bimodality for one set of beta estimates from the calibration model.
- The vertical lines show the true mean biomass estimate from the settlement
- biomass product (blue) and rug red shows the maximum likelihood estimates
+ of bimodality using one set of beta estimates from the calibration model.
+ The vertical lines show the biomass point estimate from the settlement
+ biomass product (blue) and rug (red) shows the maximum likelihood estimates
  from the other 49 beta estimates.
  
 \begin_inset CommandInset label
@@ -3068,6 +3075,16 @@ name "fig:hexplots"
 \end_inset
 
 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: need to clean up axis labels on these plots and remove the titles
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3088,18 +3105,36 @@ name "fig:hexplots"
 While bimodality can lead to unstable biomass predictions, there are also
  sites where changes in composition lead to large changes in biomass that
  are not from limitations in the model's ability to predict biomass given
- a pollen sample but from from changes in composition.
+ a pollen sample but from changes in composition
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: not clear that this paragraph or the figures illustrate this sentence;
+ rather they illustrate that there are some places we don't predict well
+ fundamentally; more generally try to sharpen the introduction here to indicate
+ what point we are making with this paragraph and with Fig.
+ 13.
+\end_layout
+
+\end_inset
+
+.
  Underprediction of biomass appears to occur at sites near prairie-forest
  ecotones, in particular the Big Woods of Minnesota that have unexpectedly
  low proportions of non-oak arboreal pollen types that would indicate higher
- biomass (elm, maple, basswood, and ash) relative to the PLS tree composition
- from Paciorek et al.
- 2016
+ biomass (elm, maple, basswood, and ash) relative to the tree composition
+ at settlement (Paciorek et al.
+ 2016)
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
 Chris, do you mean goring 2016?
+\end_layout
+
+\begin_layout Plain Layout
+4/17/19: no I mean the Paciorek et al PLOS One paper.
 \end_layout
 
 \end_inset
@@ -3149,12 +3184,43 @@ status open
 \begin_layout Plain Layout
 Maps of average biomass for the settlement time period (left) and 8000 years
  before present (right).
- Sites are highlighted if they were under predicted during calibration (green
+ Sites are highlighted if they were under-predicted during calibration (green
  triangles) or they have bimodal likelihoods (blue squares).
  
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:maps-calib-pred-bimodal"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: you'll need to say somewhere (here or in the text) how we picked
+ the triangle and square sites; also legend shows green squares not blue
+ squares in left plot
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: need to remove titles from these plots; also in legend for right
+ plot, I think I would say 
+\begin_inset Quotes eld
+\end_inset
+
+predicted biomass
+\begin_inset Quotes erd
+\end_inset
+
+ and omit 'median'
+\end_layout
 
 \end_inset
 
@@ -3184,18 +3250,42 @@ name "subsec:No-analog-assessment"
 
 \begin_layout Standard
 First, we check all pollen count samples used in the prediction model for
- no analog communities.
+ no analog communities
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+This is probably not the sentence you want as the first sentence as you
+ launch right into checking for no analog without saying what no analog
+ is and why it is an issue.
+ Also why 'First'.
+ I don't see a 'Second' anywhere
+\end_layout
+
+\end_inset
+
+.
  No analog communities are communities of vegetation that do not exist on
  the modern landscape.
  We need to be particularly careful of them because they are not represented
- in our calibration model and therefore cannot be estimated correctly in
- our prediction model.
+ in our calibration model and therefore it is difficult to make good biomass
+ predictions for such samples.
  
 \end_layout
 
 \begin_layout Standard
-We look for no analog communities by measuring the chord distance between
- samples.
+We look for no analog communities by measuring the chord distance
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: earlier you call it square chord distance - best to be consistent
+ one way or the other
+\end_layout
+
+\end_inset
+
+ between samples.
  The chord distance between samples 
 \begin_inset Formula $j$
 \end_inset
@@ -3211,7 +3301,7 @@ We look for no analog communities by measuring the chord distance between
 , is defined as
 \begin_inset Formula 
 \begin{equation}
-d_{jk}=\sqrt{\sum_{k=1}^{m}\left(x_{ij}^{0.5}-x_{ik}^{0.5}\right)^{2}}\label{eq:chord dist}
+d_{jk}=\sqrt{\sum_{k=1}^{K}\left(x_{ij}^{0.5}-x_{ik}^{0.5}\right)^{2}}\label{eq:chord dist}
 \end{equation}
 
 \end_inset
@@ -3239,7 +3329,18 @@ key "simpson2013analogue"
 .
  Furthermore, we use these distances to assess our differences between predictio
 ns to show that small changes in pollen composition generally correspond
- to small changes in biomass.
+ to small changes in biomass
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: isn't this what you talked about in previous section? Is there
+ a reason it is repeated here?
+\end_layout
+
+\end_inset
+
+.
  The vast majority of our prediction dataset samples had distance values
  of less than 0.2 relative to the calibration dataset (Figure 
 \begin_inset CommandInset ref
@@ -3272,8 +3373,9 @@ need to check with Jack
 \end_layout
 
 \begin_layout Standard
-We also computed the maximum likelihood value for each of the samples and
- looked to see if these varied systematically with sample age.
+We also computed the likelihood value evaluated at the maximum likelihood
+ estimate of biomass for each of the samples and looked to see if these
+ varied systematically with sample age.
  This gives us an idea if the data are less well-explained by the model
  further back in time.
  However, Figure 
@@ -3334,6 +3436,23 @@ as with figure on sample density over time, y-axis should probably be site
  And it probably makes sense to have red be high (bad).
 \end_layout
 
+\begin_layout Plain Layout
+4/17/19: Ann, please note this comment from before, in particular way too
+ much overplotting
+\end_layout
+
+\begin_layout Plain Layout
+4/17/19: what is 
+\begin_inset Quotes eld
+\end_inset
+
+minDC
+\begin_inset Quotes erd
+\end_inset
+
+? Also remove title from plot
+\end_layout
+
 \end_inset
 
 
@@ -3381,6 +3500,19 @@ name "fig:nax-liks-by-age"
 \end_inset
 
 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: x-axis here is inconsistent with previous figure(both axis title,
+ and order of years, and why have 9100,8100,etc.
+ and not 9000,8000,etc.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -3408,7 +3540,35 @@ To understand the effects of individual taxa on overall prediction we repeated
  the cross validation exercise on the calibration training data, sequentially
  removing one taxon at a time.
  We found that removing no taxa in particular had a large effect on predictive
- power, relative to the R2 of 0.549 in the full model.
+ power, relative to the R2 of 0.549
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: Isn't the right comparison to the R2 in the C-V (i.e., Figure 5,
+ R2=0.376)? And if so, I don't understand why we have 2/3 and 1/3 in the
+ table here.
+ I guess by 
+\begin_inset Quotes eld
+\end_inset
+
+cross-validation exercise
+\begin_inset Quotes erd
+\end_inset
+
+ you don't mean the 10-fold CV?
+\end_layout
+
+\begin_layout Plain Layout
+If we do report the 2/3,1/3 results, then say here what the R2 is in the
+ 1/3.
+ Actually, probably best to have a line in the table that reports the full
+ model result and not just have that in text here.
+\end_layout
+
+\end_inset
+
+ in the full model.
 \begin_inset Note Note
 status open
 
@@ -3549,6 +3709,33 @@ end{table}
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: it's awkward here that R2 can go up when we remove a taxon.
+ Let's discuss what we should say about that.
+ It will probably need to be something like 
+\begin_inset Quotes eld
+\end_inset
+
+no one taxon
+\begin_inset Quotes erd
+\end_inset
+
+ strongly affects performance, presumably because of redundant information
+ with this many taxa used and there appears to be noisiness in the results
+ that can lead to increased R2 when a taxon is removed and then lead into
+ the next paragraph of trying groupings to better understand what information
+ in the pollen is most important.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 We computed the effects of different groupings of pollen by using cross-validati
 on to assess predictive performance when grouping the pollen taxa into a
  variety of groups.
@@ -3557,8 +3744,8 @@ on to assess predictive performance when grouping the pollen taxa into a
  First, we grouped our pollen taxa into the original leaf physiology-based
  plant functional type groups: grass (or prairie here), deciduous, and conifer.
  Second, we categorized pollen taxa into three trait categories based on
- the first principal component between seed mass, wood density, and leaf
- mass area
+ the first principal component of seed mass, wood density, and leaf mass
+ area
 \begin_inset Note Note
 status open
 
@@ -3593,12 +3780,23 @@ key "van2014fully"
  tolerance classification in each genus.
  Finally, we used hemlock and beech pollen individually and aggregated all
  other pollen types into an 'other' category.
- We tested each validation fit for three things: linear R2, mean square
+ We tested each validation fit for three things: linear R2, mean squared
  error, and average variance for each point prediction to determine which
  grouping best reproduced settlement point estimates of above ground biomass.
  To avoid overfitting, similarly to the full model validation, we fit the
  validation plots using the training dataset and we report the values for
- both the training and testing dataset validations.
+ both the training and testing dataset validations
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+4/17/19: same comment as above that we should discuss whether this should
+ be based on 10-fold CV in the training set or on the 2/3,1/3
+\end_layout
+
+\end_inset
+
+.
  These results are reported in the main manuscript text and figure 2, which
  shows the importance of successional status and in particular of hemlock
  and beech.
