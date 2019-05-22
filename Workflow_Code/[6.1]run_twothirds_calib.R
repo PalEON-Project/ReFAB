@@ -27,7 +27,7 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
 Y.keep <- Y
 
 #### For running with only arborel pollen
-arboreal = TRUE
+arboreal = FALSE
 if(arboreal == TRUE){
   Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
   Niters <- 10000
@@ -38,7 +38,8 @@ if(arboreal == TRUE){
 FULL = FALSE
 #### Adds biomass data product uncertainty
 if(FULL==TRUE){
-  load('biomass_draws.Rdata')
+  load('biomass_draws_v3.0.Rdata') #should match calibration data. stem biomass has no version number.
+  #not adding biomass draws at the moment because this is not the final product
   biomass.keep <- unlist(lapply(biomass_draws,function(x) x[runnum]))
   load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
   load('~/ReFAB/sites_rm.Rdata') # old 1/3
@@ -54,6 +55,9 @@ if(FULL==TRUE){
   biomass1_3 <- c(b3,newb3)
   biomass2_3 <- c(btt,newbtt)
   biomass <- biomass2_3
+  
+  print(paste('number of biomass measurements is ', length(biomass), 'Is this correct?'))
+  
 }
 
 if(is.na(group_rm) | group_rm > 10){ #if true does full 2/3 fit
