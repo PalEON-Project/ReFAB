@@ -36,7 +36,7 @@ dat.index <- data.frame(group_rm = sort(rep(1:10,1)),
 beta_row <- dat.index[runnum, 'beta_row']
 
 ## loading twothirds calibration dataset
-load("twothirds_v2.0.Rdata")
+load("twothirds_v3.0.Rdata")
 
 #### Setting up 10 fold cross validation
 Y.keep <- Y
