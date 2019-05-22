@@ -22,10 +22,11 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
 #### only need to load betas from the left out groups don't need to estimate betas 200 times
 #load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #original
 
-#load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
 arboreal = FALSE
 if(arboreal==TRUE){
   load(file = paste0(length(u),"beta.est.group.in", group_rm, "nograss.Rdata")) #running with no grass
+}else{
+  load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata")) #running with 7 knots
 }
 
 #### way to pick the the same betas across groups because the estimates are correlated so can't be random
