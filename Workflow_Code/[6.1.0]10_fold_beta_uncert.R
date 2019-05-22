@@ -42,7 +42,7 @@ load("twothirds_v3.0.Rdata")
 Y.keep <- Y
 biomass.keep <- biomass
 
-
+arboreal = FALSE
 if(arboreal == TRUE){
   Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
   Niters <- 10000
