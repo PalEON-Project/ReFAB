@@ -30,9 +30,9 @@ if(arboreal==TRUE){
 }
 
 #### way to pick the the same betas across groups because the estimates are correlated so can't be random
-dat.index <- data.frame(group_rm = sort(rep(1:10,1)),
-                        beta_row = nrow(samples.mixed),#rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10), #picking betas past burnin
-                        counter = rep(1:10,1))
+dat.index <- data.frame(group_rm = sort(rep(1:20,1)),
+                        beta_row = rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10),#rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10), #picking betas past burnin
+                        counter = rep(1:20,1))
 
 beta_row <- dat.index[runnum, 'beta_row']
 

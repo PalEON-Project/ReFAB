@@ -35,7 +35,7 @@ if(arboreal == TRUE){
 
 #biomass.keep <- biomass
 
-FULL = FALSE
+FULL = TRUE
 #### Adds biomass data product uncertainty
 if(FULL==TRUE){
   load('biomass_draws_v3.0.Rdata') #should match calibration data. stem biomass has no version number.
