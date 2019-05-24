@@ -16,7 +16,7 @@ library(maps)
 library(methods)
 
 
-load("threethirds_v2.0.Rdata")
+load("threethirds_v3.0.Rdata")
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises and full runs
 
 if(is.na(runnum)) stop()
@@ -40,7 +40,7 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-if(FALSE){
+if(TRUE){
 source(file.path('Workflow_Code','models','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
