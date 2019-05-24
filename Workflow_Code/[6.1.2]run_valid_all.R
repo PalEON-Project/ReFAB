@@ -21,7 +21,7 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
 
 if(is.na(runnum)) stop()
 
-load('biomass_draws.Rdata')
+load('biomass_draws_v3.0.Rdata')
 biomass <- unlist(lapply(biomass_draws,function(x) x[runnum]))
 group_rm <- paste0(runnum,'FULL')
 
