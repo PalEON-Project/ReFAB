@@ -14,7 +14,7 @@ if (is.na(arg[1])) {
 } else {
   runnum <- as.numeric(arg[1])
 }
-group_rm <- sort(rep(1:10,1))[runnum]
+group_rm <- sort(rep(1:10,20))[runnum]
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 #source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
