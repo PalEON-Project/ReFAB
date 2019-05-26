@@ -40,14 +40,14 @@ for(i in 1:length(biomass.calib)){
 
 Z.knots <- Z.test
 
-if(TRUE){
+if(FALSE){
 source(file.path('Workflow_Code','models','calibration.model.R'))
 samples.mixed <- calibration_model(Y = Y.calib, biomass = biomass.calib,
                                      Z.knots = Z.knots, u = u, Niters = Niters,
                                      group_rm = group_rm)
 }
 
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
@@ -65,8 +65,6 @@ outLik <- getLik(Z = Z.new, u = u, beta = colMeans(samples.mixed[burnin:nrow(sam
                  bMax = bMax, Y = Y.pred, knots=length(u)+2)
 
 save(outLik, file = paste0('outLik',group_rm,'.Rdata'))
-
-stop()
 
 source(file.path('Workflow_Code','models','validation.R'))
 samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots, 
