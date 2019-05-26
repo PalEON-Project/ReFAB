@@ -11,7 +11,7 @@ library(maps)
 library(methods)
 
 ## loading threethirds calibration dataset and constants
-load("threethirds_v2.0.Rdata")
+load("threethirds_v3.0.Rdata")
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
 group_rm <- 11
@@ -31,7 +31,7 @@ for(i in 1:length(biomass.calib)){
 Z.knots <- Z.test
 
 ##loading 2/3s calibration fit
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata"))
 
 burnin <- round(.2 * nrow(samples.mixed))
 new.biomass <- 1:bMax
