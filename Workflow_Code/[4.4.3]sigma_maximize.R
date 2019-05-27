@@ -2,8 +2,10 @@
 dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 
 ####
-#### Only for running job.array.sh ####
+#### This script runs all sites all groups all sigmas to maximize over the log likelihood of the sigma values
+#### Only for running job.array.sigma.sh ####
 ####
+
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
   runnum <- NA
@@ -11,7 +13,7 @@ if (is.na(arg[1])) {
   runnum <- as.numeric(arg[1])
 }
 
-dataID <- read.csv(file.path('Cross_Validation','dataID_fine.csv')) #for 10K
+dataID <- read.csv(file.path('Cross_Validation','dataID.csv')) #for 10K #dataID_fine
 
 ####
 #### Master Setup
@@ -30,16 +32,18 @@ ciEnvelope <- function(x,ylo,yhi,...){
 
 control.pts<-read.csv(file.path('Data','control.pts.csv'))
 
-load('prediction.data_v4.Rdata')
+load('prediction.data_v5.Rdata')
 group_rm <- dataID[dataID$ID==runnum, 'group']
-load(file = paste0("beta.est.group.in", group_rm, ".Rdata"))
+
+source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+load(file = paste0(length(u),"beta.est.group.in", group_rm, ".Rdata"))
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
 burnin <- .2*nrow(samples.mixed)
 
-source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
-source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
+source(file.path('Workflow_Code','models','model_dgp_auxil.R')) # BUGS code for model
+source(file.path('Workflow_Code','run_prediction.R')) # contains fit_fix_sigma() function
 
 ####
 #### Start One Site Model Run ####
@@ -89,8 +93,6 @@ if(!is.na(runnum)){
   group <- NULL
 }
   
-source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
-
   new.biomass <- 1:bMax
   Z = matrix(0,nrow=length(new.biomass),ncol=5)
   source(file.path('Workflow_Code','utils','bs_nimble.R'))
@@ -115,7 +117,7 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
   }
   
   
-smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
+smp <- run_prediction(locn = locn, pred_code_fix_sigma = pred_code_fix_sigma,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
                      u = u, x.meta = x.meta,
                      ten_count_use = ten_count_use, beta1 =  beta1.est.real,

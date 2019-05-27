@@ -1,4 +1,4 @@
-fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b, 
+prediction_model <- function(locn, pred_code_fix_sigma, pred_code_fix_b, 
                           order = 3, Z, u, x.meta, ten_count_use, beta1, beta2,
                           minAge = 0, maxAge = 10000, sigmaInit = 1, nIts = 10000, 
                           nItsSave = 1000, ageInterval = 100, seed = 1, bMax = 150, 
@@ -81,7 +81,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
   
   # get normal approx to likelihood for all samples for the location
 
-  source(file.path('genPareto','calc_lik_approx.R'))
+  source(file.path('Workflow_Code','utils','calc_lik_approx.R'))
   if(!file.exists(workFile)){
     calc_lik_approx(model = model_pred, bName = 'b', dataName = 'Y',
                     age_index, J, I, bMin = 5, bMax =  bMax-5,
@@ -129,7 +129,7 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       
       Cmodel_pred$setInits(inits_pred)
       
-      source(file.path('genPareto','sampler_local.R'))
+      source(file.path('Workflow_Code','samplers','sampler_local.R'))
       mcmcConf_pred <- configureMCMC(model_pred, thin = nIts/nItsSave, nodes = 'b')
       
       for(i in 1:TT) {  # eventually should be order+1 once sort out issue with omitted lambda/omega values
@@ -150,12 +150,12 @@ fit_fix_sigma <- function(locn, pred_code_fix_sigma, pred_code_fix_b,
       mcmcConf_pred$addMonitors(c("b", "omega", "lambda")) 
       Rmcmc_pred <- buildMCMC(mcmcConf_pred)
       
+      mcmcConf_pred$printSamplers()
       model_pred$setInits(inits_pred)
       
       Cmcmc_pred <- compileNimble(Rmcmc_pred, project = model_pred,resetFunctions = T)
       
       Cmcmc_pred$run(nIts)
-      
       samplesListout = as.matrix(Cmcmc_pred$mvSamples)
       
       if(number.save > nrow(samplesListout)) number.save = nrow(samplesListout)
