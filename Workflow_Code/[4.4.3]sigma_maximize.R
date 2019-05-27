@@ -43,7 +43,7 @@ i.beta2 <- grep("beta2",colnames(samples.mixed))
 burnin <- .2*nrow(samples.mixed)
 
 source(file.path('Workflow_Code','models','model_dgp_auxil.R')) # BUGS code for model
-source(file.path('Workflow_Code','run_prediction.R')) # contains fit_fix_sigma() function
+source(file.path('Workflow_Code','models','run_prediction.R')) # contains run_prediction() function
 
 ####
 #### Start One Site Model Run ####
