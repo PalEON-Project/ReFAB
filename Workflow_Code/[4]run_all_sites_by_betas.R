@@ -55,7 +55,7 @@ for(i in 1:length(new.biomass)){
 
 
 beta <- dataID[dataID$ID==runnum,'beta']
-load(file = paste0("beta.est.group.in",seq(100,150,1)[beta],"FULL.Rdata")) #load via ssh
+load(file = paste0(length(u),"beta.est.group.in",seq(100,150,1)[beta],"FULL.Rdata")) #load via ssh
 
 i.beta1 <- grep("beta1",colnames(samples.mixed))
 i.beta2 <- grep("beta2",colnames(samples.mixed))
@@ -65,8 +65,8 @@ beta1.est.real = matrix(samples.mixed[last_get,i.beta1],ncol(Z),ncol(ten.count))
 beta2.est.real = matrix(samples.mixed[last_get,i.beta2],ncol(Z),ncol(ten.count))
 
 
-source(file.path('genPareto','model_dgp_auxil.R')) # BUGS code for model
-source(file.path('Cross_Validation','fit_fix_sigma.R')) # contains fit_fix_sigma() function
+source(file.path('Workflow_Code','models','model_dgp_auxil.R')) # BUGS code for model
+source(file.path('Workflow_Code','models','run_prediction.R')) # contains fit_fix_sigma() function
 
 ####
 #### Start One Site Model Run ####
@@ -121,7 +121,7 @@ if(!is.na(runnum)){
   group.mat <- NULL
 }
 
-smp <- fit_fix_sigma(locn = locn, pred_code_fix_sigma = pred_code,
+smp <- run_prediction(locn = locn, pred_code_fix_sigma = pred_code,
                      pred_code_fix_b = pred_code_fix_b, order = 3, Z = Z,
                      u = u, x.meta = x.meta,
                      ten_count_use = ten_count_use,
