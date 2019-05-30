@@ -33,8 +33,12 @@ if(arboreal==TRUE){
 dat.index <- data.frame(group_rm = sort(rep(1:20,1)),
                         beta_row = rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10),#rep(round(seq(nrow(samples.mixed)*.2,nrow(samples.mixed),length.out = 20)),10), #picking betas past burnin
                         counter = rep(1:20,1))
+if(arboreal == TRUE | length(u) > 3){
+  beta_row <- 10000
+}else{
+  beta_row <- dat.index[runnum, 'beta_row']
+}
 
-beta_row <- dat.index[runnum, 'beta_row']
 
 ## loading twothirds calibration dataset
 load("twothirds_v3.0.Rdata")
