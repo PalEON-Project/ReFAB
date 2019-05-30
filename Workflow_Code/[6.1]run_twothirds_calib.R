@@ -27,7 +27,7 @@ source(file.path('Workflow_Code','utils','validation_args.R')) #file with consta
 Y.keep <- Y
 
 #### For running with only arborel pollen
-arboreal = FALSE
+arboreal = TRUE
 if(arboreal == TRUE){
   Y <- Y.keep[,-which(colnames(Y)%in%c('prairie','other_herbs','CYPERACE'))]
   Niters <- 10000
@@ -35,7 +35,7 @@ if(arboreal == TRUE){
 
 #biomass.keep <- biomass
 
-FULL = TRUE
+FULL = FALSE
 #### Adds biomass data product uncertainty
 if(FULL==TRUE){
   load('biomass_draws_v3.0.Rdata') #should match calibration data. stem biomass has no version number.
