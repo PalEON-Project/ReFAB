@@ -2,8 +2,8 @@
 #### These are important constants used in all calibrations and predictions
 
 Niters <- 10000
-bMax <- 228
-u <- c(0,22,25,81,bMax)
+bMax <- 294#228
+u <- c(0,31,54,100,bMax)#c(0,22,25,81,bMax)
 
 ### For 10 fold cross validation only
 seed <- 5

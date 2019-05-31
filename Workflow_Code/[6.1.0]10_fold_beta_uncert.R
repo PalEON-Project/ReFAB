@@ -16,13 +16,13 @@ if (is.na(arg[1])) {
 }
 group_rm <- sort(rep(1:10,1))[runnum] #change 1 to 20 for final runs
 
-source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
-#source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
+#source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+source(file.path('Workflow_Code','utils','7knot_args.R')) #file with constants that should be constant between validation exercises
 
 #### only need to load betas from the left out groups don't need to estimate betas 200 times
 #load(file = paste0("beta.est.group.in", group_rm, ".Rdata")) #original
 
-arboreal = TRUE
+arboreal = FALSE
 if(arboreal==TRUE){
   load(file = paste0(length(u),"beta.est.group.in", group_rm, "nograss.Rdata")) #running with no grass
 }else{
