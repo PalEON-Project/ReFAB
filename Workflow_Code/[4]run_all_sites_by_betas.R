@@ -21,7 +21,7 @@ dataDir <- c(getwd()) #or wherever allPredData.Rda is located
 #### These files come from [2]create_prediction_datasets.R
 
 dataID <- read.csv('dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
-load('prediction.data_v5.Rdata') #load('prediction.data_new_v1.Rdata') #
+load('prediction.data_v6.Rdata') #load('prediction.data_new_v1.Rdata') #
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
 
