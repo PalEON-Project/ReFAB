@@ -4,13 +4,13 @@ library(maps)
 library(analogue)
 library(fields)
 
-load("threethirds_v2.0.Rdata")
+load("threethirds_v3.0.Rdata")
 
 training = prop.table(as.matrix(Y),1)
 rownames(training)<-1:nrow(Y)
 
-load('prediction.data_v4.Rdata')
-dataID <- read.csv('dataID_bacon_v4.csv')
+load('prediction.data_v6.Rdata')
+dataID <- read.csv('dataID_v5.csv')
 
 ten.count.used <- ten.count[x.meta$site.name%in%unique(dataID$name),]
 x.meta.used <- x.meta[x.meta$site.name%in%unique(dataID$name),]
@@ -23,15 +23,10 @@ testing <- testing.save
 
 analog1 <- analog(x=training, y=testing,'SQchord')
 sum.analog1 <- summary(analog1)
-sum.analog1
 
 plot(dissim(analog1))
 
 plot(minDC(analog1),depth=as.numeric(rownames(testing)),type="p")
-
-cma.analog1<-cma(analog1,cutoff=.3)
-plot(cma.analog1)
-
 
 age.vec <- seq(1000,10000,100)
 plot.leg <- rep(c(FALSE,FALSE,TRUE),length.out=length(age.vec))
@@ -56,8 +51,8 @@ for(i in rev(2:length(age.vec))) {
                       breaks,
                       include.lowest = FALSE,
                       labels = FALSE)
-  points(plot.pts[, 'long.x'],
-         plot.pts[, 'lat.x'],
+  points(plot.pts[, 'long'],
+         plot.pts[, 'lat'],
          pch = 19,
          cex = 1,
          col = colors[data_binned])
@@ -88,42 +83,44 @@ if(FALSE){
   analog1_bw <- analog(x=training_bw, y=testing_bw,'SQchord')
   mins_bw <- minDC(analog1_bw)$minDC
   breaks_bw <-  c(0, .05, 1)
-  colors_bw <- c(adjustcolor('darkgray',alpha.f = .4))#adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
   data_binned_bw <-  cut(mins_bw,
                          breaks_bw,
                          include.lowest = FALSE,
                          labels = FALSE)
 }
 
+colors_bw <- c(adjustcolor('darkgray',alpha.f = .4))#adjustcolor(rev(tim.colors(length(breaks_bw))),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
 
 dissim.values <- minDC(analog1)$minDC
 breaks <-  seq(0, 1, .1)
-colors <- adjustcolor(rev(tim.colors(length(breaks)-1)),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
+red_func <- colorRampPalette(c('white','yellow','red','darkred'))#adjustcolor((tim.colors(length(breaks)-1)),alpha.f = .75)#rainbow(length(breaks), start = 0, end = .75)
+colors <- red_func(length(breaks)-1)
 data_binned <-  cut(dissim.values,
                     breaks,
                     include.lowest = FALSE,
                     labels = FALSE)
-pdf('no_analog_assessment.pdf')
-par(mfrow=c(1,1))
+pdf('[14]no_analog_assessment.pdf',width = 10,height = 6)
+layout(matrix(c(1,1,2),1,3))
 plot(
   x.meta.used$age_bacon,
-  x.meta.used$lat.x,
+  as.factor(x.meta.used[order(x.meta.used$lat),'site.id']),
   bg = colors[data_binned],
   pch = 21,
   col = c(adjustcolor('darkgray',alpha.f = .4)),
-  cex = 2,
+  cex = .75,
   xlab = 'Sample Age (years before present)',
   ylab = 'Latitude',
-  main = 'Pollen Dissimilarity'
+  main = NA
 )
 abline(v=10000,lwd=2)
-legend("bottomright",
+plot.new()
+legend("center",
        legend = c(cuts),
        pt.bg = c(colors),
-       col = c(rep(colors_bw[2],length(breaks)-1)),
+       col = c(rep(colors_bw[1],length(breaks)-1)),
        pch = 21,
        cex = 1,
-       title = 'minDC value')
+       title = 'minimum dissimilarity')
 dev.off()
 
 

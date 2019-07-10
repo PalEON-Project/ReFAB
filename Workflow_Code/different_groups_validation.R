@@ -1,4 +1,6 @@
 
+source(file.path('Workflow_Code','utils','give_me_R2.R'))
+
 ##### This script was created to run the validation exercise with different groups of
 ##### plant taxa based off of different ways plants are represented in ecosystem models
 ##### It is meant to be run as a script not a job array
@@ -97,9 +99,18 @@ wood_density_group <- trees_look[-which((trees_look)%in%names(c(seed_mass_group,
 ####### Calibration / Validation for 5 different groupings
 #######
 
+load('threethirds_v3.0.Rdata')
 
-load('two.thirds.cast.x.Rdata')
-load('twothirds_v2.0.Rdata')
+Y.pred.all <- Y
+biomass.pred.all <- biomass
+
+load('2019-05-22two.thirds.cast.x.Rdata')
+load('cast.x.Rdata')
+load('one.third.idx.Rdata')
+
+cast.x.one.third <- cast.x[one.third.idx,]
+
+load('twothirds_v3.0.Rdata')
 load('nimble_pull2018-10-31.Rdata')
 trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
            "FAGUS","TSUGAX","QUERCUS","BETULA",
@@ -116,6 +127,12 @@ Y.pft <- taxa_selection(trees = trees, other.trees = other.trees,
                     prairie.include = F, bigwoods.include=F, other.herbs.include = F,
                     other.trees.include = F, drop.taxa = drop.taxa,
                     PFT.do = T)
+Y.pft.pred <- taxa_selection(trees = trees, other.trees = other.trees,
+                        cast.x = cast.x, sites_rm = 0,
+                        all.pollen.taxa.names = all.pollen.taxa.names,
+                        prairie.include = F, bigwoods.include=F, other.herbs.include = F,
+                        other.trees.include = F, drop.taxa = drop.taxa,
+                        PFT.do = T)
 
 Y.biome <- taxa_selection(trees = trees, other.trees = other.trees,
                         cast.x = ag.two.thirds.cast.x, sites_rm = 0,
@@ -123,6 +140,12 @@ Y.biome <- taxa_selection(trees = trees, other.trees = other.trees,
                         prairie.include = F,bigwoods.include=F, other.herbs.include = F,
                         other.trees.include = F, drop.taxa = drop.taxa,
                         biome.do = T)
+Y.biome.pred <- taxa_selection(trees = trees, other.trees = other.trees,
+                          cast.x = cast.x, sites_rm = 0,
+                          all.pollen.taxa.names = all.pollen.taxa.names,
+                          prairie.include = F,bigwoods.include=F, other.herbs.include = F,
+                          other.trees.include = F, drop.taxa = drop.taxa,
+                          biome.do = T)
 
 Y.PFT.NEW <- taxa_selection(trees = trees, other.trees = other.trees,
                        cast.x = ag.two.thirds.cast.x, sites_rm = 0,
@@ -130,6 +153,12 @@ Y.PFT.NEW <- taxa_selection(trees = trees, other.trees = other.trees,
                        prairie.include = F,bigwoods.include=F, other.herbs.include = F,
                        other.trees.include = F, drop.taxa = drop.taxa,
                        PFT.NEW.do = T)
+Y.PFT.NEW.pred <- taxa_selection(trees = trees, other.trees = other.trees,
+                            cast.x = cast.x, sites_rm = 0,
+                            all.pollen.taxa.names = all.pollen.taxa.names,
+                            prairie.include = F,bigwoods.include=F, other.herbs.include = F,
+                            other.trees.include = F, drop.taxa = drop.taxa,
+                            PFT.NEW.do = T)
 
 Y.succ <- taxa_selection(trees = trees, other.trees = other.trees,
                         cast.x = ag.two.thirds.cast.x, sites_rm = 0,
@@ -137,9 +166,21 @@ Y.succ <- taxa_selection(trees = trees, other.trees = other.trees,
                         prairie.include = F,bigwoods.include=F, other.herbs.include = F,
                         other.trees.include = F, drop.taxa = drop.taxa,
                         succession.do = T)
+Y.succ.pred <- taxa_selection(trees = trees, other.trees = other.trees,
+                         cast.x = cast.x, sites_rm = 0,
+                         all.pollen.taxa.names = all.pollen.taxa.names,
+                         prairie.include = F,bigwoods.include=F, other.herbs.include = F,
+                         other.trees.include = F, drop.taxa = drop.taxa,
+                         succession.do = T)
 
 Y.spp <- taxa_selection(trees = trees, other.trees = other.trees,
                         cast.x = ag.two.thirds.cast.x, sites_rm = 0,
+                        all.pollen.taxa.names = all.pollen.taxa.names,
+                        prairie.include = F,bigwoods.include=F, other.herbs.include = F,
+                        other.trees.include = F, drop.taxa = drop.taxa,
+                        spp.do = T)
+Y.spp.pred <- taxa_selection(trees = trees, other.trees = other.trees,
+                        cast.x = cast.x, sites_rm = 0,
                         all.pollen.taxa.names = all.pollen.taxa.names,
                         prairie.include = F,bigwoods.include=F, other.herbs.include = F,
                         other.trees.include = F, drop.taxa = drop.taxa,
@@ -155,7 +196,7 @@ plot_prop <- function(Y,biomass){
   
 }
 
-pdf('new_groups_validation_scatters.pdf')
+pdf('new_groups_validation_scatters_agb.pdf')
 par(mfrow=c(5,3),mai=c(.2,.2,.2,.2))
 
 plot_prop(biomass=biomass,Y=Y.pft)
@@ -221,74 +262,108 @@ run_calib_valid <- function(Niters, u_middle, bMax, group_rm, Y.calib,
   
 }
 
-plot_calilb_valid <- function(biomass,samples.pred,bMax,TITLE){
+mse_func <- function(preds,actual) {
+  mean((preds - actual)^2)
+}
+  
+plot_calilb_valid <- function(biomass.use,samples.pred.use,bMax,TITLE = NA,one.third.idx){
   #par(mfrow=c(1,1))
-  plot(biomass, colMeans(samples.pred, na.rm = T),
+  median.pts <- apply(samples.pred.use,2,quantile,.5)
+  plot(biomass.use[-one.third.idx], median.pts[-one.third.idx],
        xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
-       xlab="True Biomass", ylab="Predicted Mean Biomass")
+       xlab="True Biomass (Mg/ha)", ylab="Predicted Biomass (Mg/ha)")
+  points(biomass.use[one.third.idx], median.pts[one.third.idx],
+         pch=19,col='red')
+  
   abline(a=0,b=1)
-  lm.mod <- lm(biomass~colMeans(samples.pred)+0)
+  lm.mod <- lm(median.pts[-one.third.idx]~biomass.use[-one.third.idx]+0)
+  lm.mod.one.third <- lm(median.pts[one.third.idx]~biomass.use[one.third.idx]+0)
   abline(lm.mod,lty=2)
+  abline(lm.mod.one.third,lty=2,col='red')
   
-  #points(biomass[sites_rm],colMeans(samples.pred[,sites_rm], na.rm = T),
+  R2_23 <- give_me_R2(preds = median.pts[-one.third.idx],
+                   actual = biomass.use[-one.third.idx])
+  mse <- mse_func(preds = median.pts[-one.third.idx],
+                  actual = biomass.use[-one.third.idx])
+  mv <- mean(apply(samples.pred.use,2,var))
+  
+  R2_13 <- give_me_R2(preds = median.pts[one.third.idx],
+                   actual = biomass.use[one.third.idx])
+  mse.one.third <- mse_func(preds = median.pts[one.third.idx],
+                            actual = biomass.use[one.third.idx])
+  mv.one.third <- mean(apply(samples.pred.use,2,var)[one.third.idx])
+  
+  #points(biomass.use[sites_rm],colMeans(samples.pred.use[,sites_rm], na.rm = T),
   #       col='red',pch=19)
-  title(main=TITLE)
-  legend('bottomright',paste("R2 =",signif(summary(lm.mod)$r.squared,digits = 3)))
+  mtext(text=TITLE,side = 3,cex = 1.4,line=1)
   
-  arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
-         x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
-         code = 0, lwd=.1)
-  points(biomass, colMeans(samples.pred, na.rm = T),pch=21,col='gray')
+  legend('bottomright',
+         c(paste("R2 =", signif(R2_23, digits = 3)),
+           paste('MSE =', signif(mse, digits = 3)),
+           paste('MV = ',signif(mv, digits = 3)),
+           paste("R2 =", signif(R2_13, digits = 3)),
+           paste('MSE =',signif(mse.one.third, digits = 3)),
+           paste('MV = ',signif(mv.one.third, digits = 3))),
+         cex = 1, ncol = 2, text.col = c(rep('black',3),rep('red',3)))
+  
+  arrows(x0 = biomass.use, y0 = apply(samples.pred.use,2,FUN = quantile,.05),
+         x1 = biomass.use, y1 = apply(samples.pred.use,2,FUN = quantile,.975),
+         code = 0, lwd=.25, col = 'darkgray')
+  points(biomass.use[-one.third.idx], median.pts[-one.third.idx],pch=21,col='gray',bg='black',cex=1.25)
+  points(biomass.use[one.third.idx], median.pts[one.third.idx],pch=21,col='gray',bg='red',cex=1.25)
   #library(calibrate)
   #textxy(biomass,colMeans(samples.pred),1:length(biomass))
 }
 
 ### Setup
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
+u_middle <- u[2]
+
+Niters <- 10000
 
 ### PFT OLD
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'pft_old',
-                Y.calib = Y.pft, Y.pred = Y.pft, biomass.calib = biomass,
-                biomass.pred = biomass)
+                Y.calib = Y.pft, Y.pred = Y.pft.pred, biomass.calib = biomass,
+                biomass.pred = biomass.pred.all)
 load("~/ReFAB/samples.pred.grouppft_oldbetaNA.Rdata")
 samples.pred_old.pft <- samples.pred
-plot_calilb_valid(biomass,samples.pred=samples.pred_old.pft,
+plot_calilb_valid(biomass.use = biomass.pred.all,samples.pred.use=samples.pred_old.pft,
                   bMax=bMax)
 
 ### PFT NEW
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'pft_new',
-                Y.calib = Y.PFT.NEW, Y.pred = Y.PFT.NEW, biomass.calib = biomass,
-                biomass.pred = biomass)
+                Y.calib = Y.PFT.NEW, Y.pred = Y.PFT.NEW.pred, biomass.calib = biomass,
+                biomass.pred = biomass.pred.all)
 load("~/ReFAB/samples.pred.grouppft_newbetaNA.Rdata")
 samples.pred_new.pft <- samples.pred
-plot_calilb_valid(biomass,samples.pred=samples.pred_new.pft,
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_new.pft,
                   bMax=bMax)
 
 ### Biome
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'biome',
-                Y.calib = Y.biome, Y.pred = Y.biome, biomass.calib = biomass,
-                biomass.pred = biomass)
+                Y.calib = Y.biome, Y.pred = Y.biome.pred, biomass.calib = biomass,
+                biomass.pred = biomass.pred.all)
 load("~/ReFAB/samples.pred.groupbiomebetaNA.Rdata")
 samples.pred_biome <- samples.pred
-plot_calilb_valid(biomass,samples.pred=samples.pred_biome,
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_biome,
                   bMax=bMax)
 
 ### SUCC
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'succ',
-                Y.calib = Y.succ, Y.pred = Y.succ, biomass.calib = biomass,
-                biomass.pred = biomass)
+                Y.calib = Y.succ, Y.pred = Y.succ.pred, biomass.calib = biomass,
+                biomass.pred = biomass.pred.all)
 load("~/ReFAB/samples.pred.groupsuccbetaNA.Rdata")
 samples.pred_succ<- samples.pred
-plot_calilb_valid(biomass,samples.pred=samples.pred_succ,
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_succ,
                   bMax=bMax)
 
 ### SPP
 run_calib_valid(Niters = Niters, u_middle = u_middle, bMax = bMax, group_rm = 'spp',
-                Y.calib = Y.spp, Y.pred = Y.spp, biomass.calib = biomass,
-                biomass.pred = biomass)
+                Y.calib = Y.spp, Y.pred = Y.spp.pred, biomass.calib = biomass,
+                biomass.pred = biomass.pred.all)
 load("~/ReFAB/samples.pred.groupsppbetaNA.Rdata")
 samples.pred_spp<- samples.pred
-plot_calilb_valid(biomass,samples.pred=samples.pred_spp,
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_spp,
                   bMax=bMax)
 
 
@@ -297,7 +372,7 @@ par(mfrow=c(5,4),mar=c(2,2,1,1), oma = c(1.5, 1.5, 1.5, 0))
 
 plot_prop(biomass=biomass,Y=Y.pft)
 plot_calilb_valid(biomass,samples.pred=samples.pred_old.pft,
-                  bMax=bMax,TITLE = 'Old PFTs')
+                  bMax=bMax,TITLE = 'Old PFTs',one.third.idx = one.third.idx)
 
 plot_prop(biomass=biomass,Y=Y.PFT.NEW)
 plot_calilb_valid(biomass,samples.pred=samples.pred_new.pft,
@@ -313,9 +388,41 @@ plot_calilb_valid(biomass,samples.pred=samples.pred_succ,
 
 plot_prop(biomass=biomass,Y=Y.spp)
 plot_calilb_valid(biomass,samples.pred=samples.pred_spp,
-                  bMax=bMax,TITLE = 'Species')
+                  bMax=bMax,TITLE = 'Species',one.third.idx = one.third.idx)
 
 mtext(side = 2, text = 'Pollen Proportion', outer = T, line = 0)
 mtext(side = 1, text = 'Settlement Biomass (Mg/ha)', outer = T, line = .5,at=.4)
 dev.off()
 
+load('~/Downloads/samples.pred.group11betaNA.Rdata')
+load("threethirds_v3.0.Rdata") 
+
+load('split_calib_dat.Rdata')
+
+#layout(mat = matrix(c(1,1,2,2,3,3,0,4,4,5,5,0),2,6,byrow=T))
+pdf('new_diff_groups_valids_agb.pdf',height=8,width=11)
+par(mfrow=c(2,3),pty="s",mar=c(3,5,2,1),cex.lab=2)
+plot_calilb_valid(biomass.use = c(biomass1_3,biomass2_3),samples.pred.use=cbind(samps1_3,samps2_3),
+                  bMax=bMax,TITLE = 'All 22 Taxa',one.third.idx = 1:length(biomass1_3))
+text(x = 10, y = 220,'A',cex=3)
+
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_old.pft,
+                  bMax=bMax,TITLE = 'PFTs',one.third.idx)
+text(x = 10, y = 220,'B',cex=3)
+
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_new.pft,
+                  bMax=bMax,TITLE = 'Traits',one.third.idx)
+text(x = 10, y = 220,'C',cex=3)
+
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_biome,
+                  bMax=bMax,TITLE = 'Biome Types',one.third.idx)
+text(x = 10, y = 220,'D',cex=3)
+
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_succ,
+                  bMax=bMax,TITLE = 'Successional Status',one.third.idx)
+text(x = 10, y = 220,'E',cex=3)
+
+plot_calilb_valid(biomass.pred.all,samples.pred=samples.pred_spp,
+                  bMax=bMax,TITLE = 'Beech & Hemlock',one.third.idx)
+text(x = 10, y = 220,'F',cex=3)
+dev.off()

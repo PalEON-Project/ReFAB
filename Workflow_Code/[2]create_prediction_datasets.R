@@ -242,14 +242,38 @@ write.csv(dataID, file='dataID_bacon_new_v1.csv')
 ##### Look at plots for full prediction dataset
 #####
 
+load('prediction.data_v5.Rdata')
+
+x.meta.order <- x.meta[order(x.meta$lat),]
+
+x.meta.list <- list()
+for(i in 1:length(unique(x.meta$site.id))){
+  x.meta.list[[i]] <- x.meta[x.meta$site.id==unique(x.meta$site.id)[i],]
+}
+
+sort_stop <- lapply(x.meta.list,nrow)
+
+plot_dat <- t(sapply(x.meta.list,FUN = function(x) c(x[1,c('lat')],x[1,c('long')],range(x[,'age_bacon']))))
+
+plot_use <- plot_dat[rev(order(unlist(sort_stop))),]
+
 pdf(file.path(fig.dir,paste('chrono_',Sys.Date(),'.pdf')))
-par(mfrow=c(1,1),mar=c(4,4,4,10),xpd=FALSE,pty="s")
-plot(new.pollen$age_bacon,new.pollen$lat.x,xlim=c(0,10000),
-     col='black',ylab='Latitude',xlab='Median Bacon Age')
-points(x$age_bacon,x$lat.x,col='black',cex=1,pch=21,bg='red')
+par(mfrow=c(1,1),mar=c(4,4,4,4),pty="s")
+plot(1,2,xlim=c(0,16000),ylim=c(0,200),typ='l',
+     col='black',ylab='Site Index Ordered by Latitude',
+     xlab='Median Bacon Age (YB1950)')
+segments(x0 = plot_use[,3], y0 = seq(1,nrow(plot_use),1),
+         x1 = plot_use[,4], y1 = seq(1,nrow(plot_use),1),
+         lwd = .5,col='darkgray')
+for(i in 1:nrow(plot_dat)){
+  x_use <- x.meta.list[[rev(order(unlist(sort_stop)))[i]]]
+  points(x_use[,'age_bacon'],rep(i,nrow(x_use)),pch=4,cex=.25)
+}
+
+#points(x$age_bacon,x$lat.x,col='black',cex=1,pch=21,bg='red')
 #points(pol_no$age_bacon,pol_no$lat.x,col='blue',cex=.5,pch=19)
-legend(11000,46,xpd=TRUE,c('All Pollen \n Samples','Prediction\n Dataset'),
-       pch=c(1,19),col=c('black','red'),y.intersp=2)
+#legend(11000,46,xpd=TRUE,c('All Pollen \n Samples','Prediction\n Dataset'),
+#       pch=c(1,19),col=c('black','red'),y.intersp=2)
 dev.off()
 
 ### making the meta data table
@@ -355,3 +379,37 @@ n.betas <- 50
 dataID <- data.frame(name = sort(rep(site.data$site.name,n.betas)), ID = 1:n.sites,
                      sigma = rep(0.03,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
 write.csv(dataID, file='dataID_v5.csv')
+
+##with new sites
+
+load(file='prediction.data_new_v1.Rdata')
+
+n.sites <- length(unique(x.meta$site.name))
+
+dataID_new <- data.frame(name = sort(rep(unique(x.meta$site.name),n.betas)), ID = 1:(n.sites*n.betas),
+                     sigma = rep(0.03,n.sites*n.betas), beta = rep(1:n.betas,n.sites))
+
+dataID <- rbind(dataID,dataID_new)
+write.csv(dataID, file='dataID_v5.csv')
+
+load('prediction.data_v4.Rdata')
+
+x.meta.s <- x.meta
+x.bacon.s <- x.bacon
+ten.count.s <- ten.count
+
+load('prediction.data_new_v1.Rdata')
+
+colnames(x.meta.s) <- colnames(x.meta)
+
+x.meta <- rbind(x.meta,x.meta.s)
+x.bacon <- rbind(x.bacon,x.bacon.s[,1:50])
+ten.count <- rbind(ten.count,ten.count.s)
+
+plot(x.meta$age_bacon,x.meta$lat)
+
+dim(x.meta)
+dim(x.bacon)
+dim(ten.count)
+
+#save(x.meta,x.bacon,ten.count,file='prediction.data_v5.Rdata')

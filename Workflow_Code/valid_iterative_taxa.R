@@ -1,4 +1,7 @@
 
+
+######## run on geo with job.array.taxa.sh
+
 arg <- commandArgs(trailingOnly = TRUE)
 if (is.na(arg[1])) {
   runnum <- NA
@@ -16,7 +19,7 @@ ciEnvelope <- function(x,ylo,yhi,...){
                                       ylo[1])), border = NA,...) 
 }
 
-#load("twothirds_v2.0.Rdata") #for calibration
+load("twothirds_v2.0.Rdata") #for calibration
 load('threethirds_v2.0.Rdata') #for validation
 
 source(file.path('Workflow_Code','utils','validation_args.R')) #file with constants that should be constant between validation exercises
@@ -66,36 +69,62 @@ samples.pred <- validation_model(Y = Y.pred, Z.knots = Z.knots,
                                  outLik = outLik)
 
 if(FALSE){ ### To plot use the following after running on the server
-  samps.mat <- array(NA, dim = c(5000,154,22))
-  r.saved <- numeric(22)
+  samps.mat <- array(NA, dim = c(5000,232,22))
+  r.saved <- r.saved.23 <- numeric(22)
   
-  load('samps2_3.Rdata')
+  load('threethirds_v2.0.Rdata') #for validation
+  
+  load('one.third.idx.Rdata')
+  
+  for(i in 1:22){
+    load(paste0('~/Downloads/iter.samps/samples.pred.group',i,'betaNA.Rdata'))
+    samps.mat[,,i] <- samples.pred
+  }
   
   pdf(paste0('iterative.taxa.sens',Sys.Date(),'.pdf'))
-  par(mfrow=c(3,3))
+  par(mfrow=c(2,2))
   for(i in order(r.saved)){ #order(r.saved)
-    load(paste0('~/Downloads/iter.taxa.samps/samples.pred.group',i,'betaNA.Rdata'))
-    samps.mat[,,i] <- samples.pred
     
-    bio.median <- apply(samples.pred,2,FUN = quantile,.5)
-    plot(biomass,colMeans(samps2_3),
+    bio.median <- apply(samps.mat[,,i],2,FUN = quantile,.5)
+    plot(biomass,bio.median,
          xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
          xlab="True Biomass", ylab="Predicted Mean Biomass",
-         main=colnames(Y)[i],col='red',cex = .5)
-    points(biomass, bio.median,pch=19,col='black',cex = .5)
+         main=colnames(Y)[i],col='black',cex = .5)
+    points(biomass[one.third.idx], bio.median[one.third.idx],pch=19,col='red',cex = .5)
     abline(a=0,b=1)
-    lm.mod <- lm(biomass ~ bio.median+0)
+    
+    lm.mod <- lm(bio.median[-one.third.idx] ~ biomass[-one.third.idx] +0)
+    lm.mod.13 <- lm(bio.median[one.third.idx] ~ biomass[one.third.idx] +0)
+    
     abline(lm.mod,lty=2)
-    mtext(paste("r-squared",signif(summary(lm.mod)$r.squared,digits = 4)))
+    abline(lm.mod.13,lty=2,col='red')
     
-    r.saved[i] <- summary(lm.mod)$r.squared
+    r.saved.23[i] <- give_me_R2(preds = bio.median[-one.third.idx],
+                        actual = biomass[-one.third.idx])#signif(summary(lm.mod)$r.squared,digits = 3)
+    r.saved[i] <- give_me_R2(preds = bio.median[one.third.idx],
+                        actual = biomass[one.third.idx])#signif(summary(lm.mod.13)$r.squared,digits = 3)
     
-    arrows(x0 = biomass, y0 = apply(samples.pred,2,FUN = quantile,.05),
-           x1 = biomass, y1 = apply(samples.pred,2,FUN = quantile,.975),
+    r2_23 <- signif(r.saved.23[i],digits = 3)
+    r2_13 <- signif(r.saved[i],digits = 3)
+    
+    arrows(x0 = biomass, y0 = apply(samps.mat[,,i],2,FUN = quantile,.05),
+           x1 = biomass, y1 = apply(samps.mat[,,i],2,FUN = quantile,.975),
            code = 0, lwd=.5)
+    arrows(x0 = biomass[one.third.idx], y0 = apply(samps.mat[,,i],2,FUN = quantile,.05)[one.third.idx],
+           x1 = biomass[one.third.idx], y1 = apply(samps.mat[,,i],2,FUN = quantile,.975)[one.third.idx],
+           code = 0, lwd=.5,col='red')
+    
+    legend('bottomright',c(paste('R2 =',r2_23),paste('R2 =',r2_13)),text.col = c('black','red'))
     
   }
   dev.off()  
+  
+  
+  out.table <- data.frame(TwoThirds=r.saved.23,OneThird=r.saved)
+  rownames(out.table) <- colnames(Y)
+  out.table <- out.table[order(out.table[,2]),]
+  xtable(out.table)
+  
 }
 
 

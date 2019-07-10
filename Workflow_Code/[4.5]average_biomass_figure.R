@@ -1,17 +1,24 @@
 
-load('prediction.data_v4.Rdata')
+
+###### This script creates average biomass figure from the main text.
+###### Also, makes all site diagnostic pdfs
+
+
+dataID <- read.csv('dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
+load('prediction.data_v5.Rdata') #load('prediction.data_new_v1.Rdata') #
 source(file.path('Workflow_Code', 'utils', 'validation_args.R'))
 control.pts <- read.csv(file.path('Data', 'control.pts.csv'))
-dataID <- read.csv('dataID_bacon_v4.csv')
 
-path_to_samps <- c('~/samps_longer/')
-path_to_Info <- c('~/outs/')
+n.sites <- length(unique(dataID$name))
+
+path_to_samps <- c('~/ReFAB/samps_final/')
+path_to_Info <- c('~/ReFAB/workInfo_final/')
 
 blue       <- col2rgb("blue")
 alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
 
 biomassCI <- diff.median <-  list()
-prob.of.inc <- matrix(NA, 62, 99)
+prob.of.inc <- matrix(NA, n.sites, 99)
 all.samps <- numeric(100)
 nItsSave <- 250
 minAge <- 0
@@ -65,7 +72,7 @@ for(i in 1:length(unique(dataID$name))){
     
     samples.keep <- numeric(300)
     
-    for(b in 1:20){
+    for(b in 1:50){
       ID <- dataID[dataID$name==as.character(locn),'ID'][b]
       file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
       if(!file.exists(file_name)) next()
@@ -76,17 +83,22 @@ for(i in 1:length(unique(dataID$name))){
     samplesList <- samples.keep
     
     if(file.exists(file_name)){
-      b <- 1
-      ID <- dataID[dataID$name==as.character(locn),'ID'][b]
-      file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
-
-      if(file.exists(file_name1)){
-        load(file = file_name1)
-        out.list[[i]] <- out
-      } else{
-        out.list[[i]] <- NA
-        print(paste('missing',locn))
+      out.list[[i]] <- list()
+      
+      for(b in 1:20){
+        ID <- dataID[dataID$name==as.character(locn),'ID'][b]
+        file_name1 <- paste0(path_to_Info,'workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
+        
+        if(file.exists(file_name1)){
+          load(file = file_name1)
+          
+          out.list[[i]][[b]] <- out
+        } else{
+          out.list[[i]] <- NA
+          print(paste('missing',locn))
+        }
       }
+      
       
       
       #Takes out modern data estimates where data stop# i.e. 'cut' approach
@@ -101,8 +113,8 @@ for(i in 1:length(unique(dataID$name))){
 
       diff.median[[i]] <- apply(diff(t(samplesList[not_burn,1:100])),1,quantile,c(0.5),na.rm=TRUE)
       test <- diff(t(samplesList[not_burn,1:100]))
-      lat[[i]] <- x.meta[x.meta$site.name == locn,'lat.x'][1]
-      long[[i]] <- x.meta[x.meta$site.name == locn,'long.x'][1]
+      lat[[i]] <- x.meta[x.meta$site.name == locn,'lat'][1]
+      long[[i]] <- x.meta[x.meta$site.name == locn,'long'][1]
       name.keep[[i]] <- locn
       
       sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
@@ -131,13 +143,13 @@ diff.mat.all<- t(diff(t(all.samps[,100:1])))
 
 ## Find cutoff for time series by last data point
 stop.spot <- start.spot <- list()
-for(i in 1:62){
+for(i in 1:n.sites){
   stop.spot[[i]] <- min(age.keep[[i]],na.rm = TRUE)
   start.spot[[i]] <- max(age.keep[[i]],na.rm = TRUE)
 }
 
 ## Looking for where to cut all.samps matrix -- changes with number of sites
-site_count <- 59-1 #number of sites minus 1
+site_count <- 78-1 #number of sites minus 1
 
 ## calculation for proportion sites increasing -- barplot
 how.much <- matrix(NA,length(not_burn),99)
@@ -226,13 +238,15 @@ abline(h=bMax)
 ciEnvelope(x = seq(100,10000,100),ylo = save.median.bucket[1,],yhi =save.median.bucket[3,],col=alphablue)
 points(seq(100,10000,100),save.median.bucket[2,],
        col=colors[data_binned],pch=19)
+text(x = 9900,y = 175,'B',cex=2)
+
 #points(seq(100,10000,100),bio.quant[1,], pch = 19)
 #points(seq(100,10000,100),bio.quant[3,], pch=19)
 par(mar=c(0,4,1,1))
 barplot(height=save.how.much[2,], ylim=c(.2, .8), 
         space=0,xlim=c(0,100),ylab = 'Proportion Increasing',
-        cex.lab=.6, cex.axis = .5, col='white', border = 'white')
-
+        cex.lab=.75, cex.axis = .6, col='white', border = 'white')
+text(x = 1,y = .7,'A',cex=2)
 segments(seq(.5,98.5,1),save.how.much[1,],seq(.5,98.5,1),save.how.much[3,],col='darkgrey',lwd=1)
 points(seq(.5,98.5,1),save.how.much[2,],pch=19,cex=.5)
 
@@ -241,129 +255,15 @@ dev.off()
 
 
 #################################### END FIGURE 
+source(file.path('Workflow_Code','utils','site_diag.R'))
 
-
-### Sensitivity of biomass prediction to pollen proportion
-
-Y.all <- do.call(rbind,Y.keep)
-prop.all <- prop.table(as.matrix(Y.all),margin = 1)
-
-pdf('pollen.prediction.sensitivity.pdf')
-par(mfrow=c(2,2))
-for(t in 1:22){
-  Y.use <- prop.table(as.matrix(Y.keep[[1]][,3:24]),margin = 1)
-  plot(biomassCI[[1]][2,Y.keep[[1]][,1]],Y.use[,t],
-       ylim=c(0,(max(prop.all[,t+2])+.1*max(prop.all[,t+2]))),xlim=c(0,150),pch=19,cex=.5,
-       ylab='Pollen Prop',xlab='Biomass Prediction (Mg/ha)')
-  title(colnames(Y.use)[t])
-  for(i in 1:62){
-    if(!is.null(biomassCI[[i]])){
-      Y.use <- prop.table(as.matrix(Y.keep[[i]][,3:24]),margin = 1)
-      points(biomassCI[[i]][2,Y.keep[[i]][,1]],Y.use[,t],pch=19,cex=.5)
-    }else{
-      print(paste('not doing',i))
-    }
-  }
+#### Site Diagnostic for original 62 prediction sites
+for(i in 1:length(unique(dataID$name))){
+  locn <- as.character(unique(dataID$name)[i])
+  if(locn == 'Lily Lake' | locn == 'Mud Lake' | locn == 'Seidel') next()
+  site_diag(bMax = bMax, locn = locn, x.meta = x.meta,
+            minAge = 0, maxAge = 10000, 
+            ageInterval = 100, path_to_samps = path_to_samps,
+            path_to_Info = path_to_Info, control.pts = control.pts,
+            ten.count = ten.count, dataID = dataID, out.dir = '~/ReFAB/sites_diag_final/')
 }
-dev.off()
-
-### For Paleon MIP
-biomass.mean.df <- data.frame(lat=unlist(lat)[-c(35,39)],lon=unlist(long)[-c(35,39)],biomassMean = unlist(lapply(biomassCI,function(x){mean(x[2,1:11])}))[-c(2,35)])
-write.csv(biomass.mean.df,file='biomass.means.csv')
-
-
-biomass.settle <- last.index <-numeric(62)
-for(i in 1:62){
-  if(!is.null(name.keep[[i]])&i!=35){
-    biomass.settle[i] <- x.meta[x.meta$site.name==name.keep[[i]],'SettleBiomassMean'][1]
-    if(!is.na(biomass.settle[i])){
-      last.index[i] <- biomassCI[[i]][2,1]
-    }else{
-      last.index[i] <- NA
-    }
-  }
-}
-
-
-### Creating correlation plot between settlement PLS estimates and settlement ReFAB estiamtes
-last.index <- last.index[-c(which(is.na(last.index)),which(last.index==0))]
-biomass.settle <- biomass.settle[-c(which(is.na(biomass.settle)),which(biomass.settle==0))]
-
-pdf('settle.biomass.corr.pdf')
-par(mfrow=c(1,1))
-plot(biomass.settle,last.index,pch=19,xlab='Settlement Biomass Mean',ylab='Last Prediction Biomass Mean',xlim=c(0,155),ylim=c(0,155))
-abline(a=0,b=1)
-legend('topleft',paste('cor =', cor(x=biomass.settle,y=last.index)),pch=NA)
-dev.off()
-
-### Mapping sites by the last data point to make sure there is no spatial correlation in end of data
-pdf('last_age_in_samp_map.pdf')
-map('state', xlim=c(-98,-81), ylim=c(41.5,50))
-points(unlist(long),unlist(lat), pch=19,
-       cex=1.1,lwd=.2,col=rainbow(20,start = 0,end = .8)[unlist(stop.spot)])
-legend('topright',as.character(1:20*100),col=rainbow(20,start = 0,end = .8),pch=rep(19,20))
-title('Map Colored by Last Sample Years BP')
-dev.off()
-
-
-
-
-
-### Old code for showing RW and genpareto outputs together
-blue       <- col2rgb("blue")
-alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
-orange       <- col2rgb("orange")
-alphaorange  <- rgb(orange[1], orange[2], orange[3], 85, max = 255)
-
-pdf('compare.RW.v.genPareto.Sigma0.12.pdf')
-par(mfrow=c(2,2))
-plot.new()
-legend('center',c('GenPareto Sigma = .12','RW'),pch=c(19,19),col=c('darkorange','blue'))
-for(i in 1:62){
-  locn <- names(how.many)[i]
-  site_number = unique(x.meta[x.meta$site.name == locn,1])
-  keep.dataset.id <- unique(x.meta[x.meta$site.id==site_number,4])
-  
-  ten_count_use = ten.count[which(x.meta$site.id == site_number), ]
-  
-  Y = as.matrix(ten_count_use)
-  
-  sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
-  age_bins <- seq(minAge, maxAge, ageInterval)
-  age_index <- as.matrix(as.numeric(
-    cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
-  ))
-  
-  tmp <- data.frame(cbind(age_index, Y))
-  names(tmp)[1] <- 'age_index'
-  
-  Y2 <- aggregate(tmp, by = list(tmp$age_index), FUN = sum)
-  
-  if(!is.null(group) | FALSE){
-    Y2 <- Y2[-group.mat[group,],]
-  }
-  
-  Y <- as.matrix(Y2[ , -c(1,2)])
-  age_index <- Y2[,1]
-  
-  plot(biomassCI[[i]][2,],col='blue',typ='l',xlim=c(100,0),
-       ylim=c(0,150),lwd=2,main=names(how.many)[i])
-  ciEnvelope(x = 1:100, yhi = biomassCI[[i]][3,],ylo=biomassCI[[i]][1,],col=alphablue)
-  lines(biomassCI.save[[i]][2,],col='darkorange',lwd=2)
-  ciEnvelope(x = 1:100, yhi = biomassCI.save[[i]][3,],ylo=biomassCI.save[[i]][1,],col=alphaorange)
-  rug(x.meta[x.meta[,1]==site_number,]$age_bacon/100,lwd=2)
-  
-  if(length(out.list[[i]])!=0){
-    points(age_index,seq(5, 145, by = 2)[apply(out.list[[i]],2,which.max)])
-  }
-  
-  mean.keep <- x.meta[x.meta$site.name == locn,'SettleBiomassMean'][1]
-  sd.keep <- x.meta[x.meta$site.name == locn,'SettleBiomassSD'][1]
-  points(0,mean.keep,col='blue',cex=1.5,pch=19)
-  segments(x0=0,y0=mean.keep-sd.keep,x1 = 0,y1=mean.keep+sd.keep)
-  #rug(control.pts[which(control.pts[,2]%in%keep.dataset.id),]$geo_age/100,lwd=3,col="red")
-}
-dev.off()
-
-
-

@@ -44,9 +44,9 @@ load("~/ReFAB/nimble_pull2018-07-13.Rdata")
 load('~/ReFAB/nimble_pull2018-10-31.Rdata')
 
 if(DRAW==TRUE) pdf(file.path(fig.dir,paste0('all_pollen_cores_map',Sys.Date(),'.pdf')))
-map('state', ylim=range(pol_cal_count$lat)+c(-2, 2), xlim=range(pol_cal_count$long)+c(-1, 1),main=NA)
-points(pol_cal_count$long, pol_cal_count$lat, pch=19, cex=.8,col="black")
-title(paste0('N = ',length(unique(pol_cal_count$dataset))))
+map('state', ylim=range(pol_cal_count$lat)+c(4, 2), xlim=range(pol_cal_count$long)+c(-1, 1),main=NA)
+points(pol_cal_count$long, pol_cal_count$lat, pch=19, cex=.4,col="black")
+#title(paste0('N = ',length(unique(pol_cal_count$dataset))))
 if(DRAW== TRUE) dev.off()
 
 #####
@@ -113,6 +113,7 @@ melt.x <- melt(x, id.vars=c('.id','age','lat','long','site.name'),
                measure.vars = all.pollen.taxa.names)
 cast.x <- cast(melt.x, lat + long + .id + site.name ~ variable, sum) #summing over pollen taxa for years around settlement
 cast.x <- cast.x.full <- as.data.frame(cast.x)
+save(cast.x,file='cast.x.Rdata')
 
 #####
 ##### Remove sites and take subset of points
@@ -136,8 +137,14 @@ if(DRAW == TRUE) dev.off()
 #####
 
 ###old ###biomass_dat_est <- read.csv('Data/biomass_prediction_v0.9-10_bam.csv')
-nc <- nc_open(file.path(data.dir,'PLS_biomass_western_point_v0.999.nc'))
-nc_draws <- nc_open(file.path(data.dir,'PLS_biomass_western_v0.999.nc'))
+###stem
+#nc <- nc_open(file.path(data.dir,'PLS_biomass_western_point_v0.999.nc'))
+#nc_draws <- nc_open(file.path(data.dir,'PLS_biomass_western_v0.999.nc'))
+
+###AGB
+nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
+nc_draws <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_v1.0rc1.nc'))
+
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals
@@ -154,6 +161,7 @@ r1 <- raster(list(x=x,y=y,z=data))
 #plot(r1)
 
 biomass_dat_est <- as.data.frame(rasterToPoints(r1))
+save(biomass_dat_est,file='biomass_dat_est_agb.Rdata')
 colnames(biomass_dat_est) <- c('x','y','Total')
 
 ##### Changing pollen coordinates so that we can find the right rows when we find the biomass for each pond.
@@ -199,7 +207,7 @@ for(i in 1:length(idx_cores)){
 }
 
 #only need to save for full calibration so no need to take to bottom of script
-save(biomass_draws,file='biomass_draws.Rdata')
+save(biomass_draws,file='biomass_draws_v3.0.Rdata')
 
 breaks <-  c(seq(0,50,10),seq(75,250,25),435)
 colors <- (tim.colors(length(breaks)-1))
@@ -227,13 +235,13 @@ cast.x <- cbind(cast.x,unlist(biomass))
 
 biomass <- unlist(biomass)
 
-breaks <-  c(seq(0,50,10),seq(75,250,25))
+breaks <-  c(seq(0,40,10),seq(50,300,50))
 colors <- rev(terrain.colors(length(breaks)-1))
 data_binned <-  cut(cast.x[,ncol(cast.x)], c(breaks), include.lowest = FALSE, labels = FALSE)
 
 if(DRAW==TRUE) pdf(paste0(fig.dir,paste0("biomass.pts.settlement",Sys.Date(),".pdf")))
 
-pdf('only_calibration_map.pdf')
+pdf('[3]only_calibration_map_agb.pdf')
 par(mfrow=c(1,1))
 map('state', xlim=c(-100,-80), ylim=c(39.5,49.5))
 points(cast.x$long,cast.x$lat, pch=21,
@@ -343,6 +351,7 @@ for(i in 1:length(biomass)){
 
 #### Plot basis functions ####
 if(DRAW==TRUE) pdf(file.path(fig.dir,'basis_function_check.pdf'))
+par(mfrow=c(1,1))
 plot(Z.knots.check[,1],xlim=c(0,u[length(u)]),pch=19,ylim=c(0,1),xlab="Biomass")
 for(i in 2:ncol(Z.knots.check)){
   points(Z.knots.check[,i],col=i,pch=19)
@@ -409,14 +418,21 @@ new_albers <- albers.save[-TF,]
 new_two_thirds_albers <- new_albers[-sites_rm_new,]
 ag_two_thirds_albers <- rbind(old_two_thirds_albers,new_two_thirds_albers)
 
-cast.x.save <- cast.x
+cast.x.save <- cbind(cast.x,1:232)
 old.cast.x <- cast.x[TF,]
 old.two.thirds.cast.x <- old.cast.x[-sites_rm,]
+old.one.third.cast.x <- old.cast.x[sites_rm,]
 new.cast.x <- cast.x[-TF,]
 new.two.thirds.cast.x <- new.cast.x[-sites_rm_new,]
+new.one.third.cast.x <- new.cast.x[sites_rm_new,]
 ag.two.thirds.cast.x <- rbind(old.two.thirds.cast.x,new.two.thirds.cast.x)
+ag.one.thirds.cast.x <- rbind(old.one.third.cast.x,new.one.third.cast.x)
 
-save(ag.two.thirds.cast.x,file='two.thirds.cast.x.Rdata')
+one.third.idx <- ag.one.thirds.cast.x[,ncol(ag.one.thirds.cast.x)]
+
+save(one.third.idx,file=paste0(Sys.Date(),'one.third.idx.Rdata'))
+
+save(ag.two.thirds.cast.x,file=paste0(Sys.Date(),'two.thirds.cast.x.Rdata'))
 
 #Y = Y[-sites_rm,] #remove sites "sites_rm" defined above
 #biomass = biomass[-sites_rm]

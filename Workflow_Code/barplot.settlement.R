@@ -1,5 +1,13 @@
 
-nc <- nc_open(file.path('Data','PLS_biomass_western_point_v0.999.nc'))
+
+#### This script is for plotting figure 4 A and B in the supplements
+
+library(ncdf4)
+library(raster)
+library(reshape)
+library(ggplot2)
+
+nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals
@@ -17,6 +25,7 @@ b = biomass_mat#biomass_dat_est
 tot_b = b[,'Total']
 
 #### biomass_dat_get from get_data.R
+load('biomass_dat_est_agb.Rdata')
 
 breaks <-  c(seq(0, 100, 25), seq(150, 450, 50))
 data_binned <-
@@ -41,35 +50,80 @@ c1 <- prop.table(c, 1)
 c2 <- c1[, order(colMeans(c1))]
 c1.melt <- melt(c2)
 
-
 c2.melt <-
   within(c1.melt, X2 <-
            factor(X2, names(sort(
              colMeans(c1, na.rm = T), decreasing = FALSE
-           ))))
+           )))) #has to be reshape not reshape2
 
-pdf(paste0(Sys.Date(), 'settlement.biomass.tiles.pdf'))
+pdf('[4-A]settlement.biomass.tiles.pdf')
  ppp <- ggplot() + geom_tile(data = c2.melt,
                      aes(x = X1, y = X2, fill = value),
                      colour = 'grey') +
   
-  scale_fill_gradient(name = 'Total Bio. Prop.', low = "white", high = "black") +
+  scale_fill_gradient(name = 'Proportion of \n Total Biomass', low = "white", high = "black") +
   ylab('Tree Taxa') +
   xlab('Biomass Categories (Mg/ha)') +
   scale_x_continuous(breaks = seq(.5, (max(data_binned, na.rm = T) + .5), 1), 
                      labels = breaks[1:(max(data_binned, na.rm = T) + 1)])
- ppp <- ppp + theme(legend.text=element_text(size=25),
-             legend.title=element_text(size=20),
-             title = element_text(size=25),
-             axis.text = element_text(size = 17))
+ ppp <- ppp + theme(legend.text=element_text(size=12),
+             legend.title=element_text(size=10),
+             title = element_text(size=16),
+             axis.text = element_text(size = 10))
  ppp
 dev.off()
 
 
 
+load('threethirds_v3.0.Rdata')
+breaks <-  c(seq(0, 100, 25), seq(150, 450, 50))
+data_binned <-  cut(biomass, c(breaks), include.lowest = FALSE, labels = FALSE)
+Y.prop <- prop.table(as.matrix(Y),1)
+colnames(Y.prop) <- c('Pine','Prairie','Oak','Birch','Other Herb.','Sedge',
+                      'Alder','Ironwood','Elm','Hemlock',
+                      'Spruce','Maple',
+                      'Ash','Poplar','Cypress','Other Arboreal',
+                      'Tamarack','Beech','Hickory','Fir','Basswood',
+                      'Walnut')
+b<-as.data.frame(cbind(Y.prop,data_binned))
+
+c <- matrix(NA,max(data_binned,na.rm = T),(ncol(b)-1))
+
+for(i in 1:max(data_binned,na.rm = T)){
+  c[i,] <- colSums(b[b$data_binned==i,1:(ncol(b)-1)],na.rm=T)
+}
+
+colnames(c) <- colnames(b[,1:(ncol(b)-1)])
+
+c1 <- prop.table(c,1)
+
+#c <- c[-which(rowSums(c)==0),]
+c1[is.na(c1)] <- 0
+c2 <- c1[,order(colMeans(c1))]
+c1.melt<-melt(c2)
+
+c2.melt <- within(c1.melt, X2 <- factor(X2,names(sort(colMeans(c1),decreasing = FALSE))))
+
+pdf('[4-B]settlement.pollen.tiles.pdf')
+ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
+  scale_fill_gradient(name = 'Pollen \n Proportion',low="white",high="black") +
+  ylab('Tree Taxa') +
+  xlab('Biomass Categories Mg/ha') +
+  scale_x_continuous(breaks=seq(.5,( max(data_binned,na.rm = T) +.5), 1), labels = breaks[1:(max(data_binned,na.rm = T)+1)])+ 
+  theme(legend.text=element_text(size=12),
+        legend.title=element_text(size=10),
+        title = element_text(size=16),
+        axis.text = element_text(size = 10))
+dev.off()
+
+
+
+################################ End figures begin exploration notes
+
+
 #biomass_dat_est <- read.csv(paste0('~/Downloads/',"biomass_prediction_v0.9-10_bam.csv"))
 
-nc <- nc_open(file.path('Data','PLS_biomass_western_point_v0.999.nc'))
+nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals
@@ -153,38 +207,6 @@ for(i in plot.which[2:length(plot.which)]){
        ylab='spp biomass prop',xlab='total biomass')
 }
 #legend('right',as.character(plot.which),col=rainbow(length(plot.which)),pch=rep(19,22),cex=1)
-dev.off()
-
-
-load('add.bacon2.Rdata')
-breaks <- seq(0,max(biomass),30)
-data_binned <-  cut(biomass, c(breaks), include.lowest = FALSE, labels = FALSE)
-Y.prop <- prop.table(as.matrix(Y),1)
-b<-as.data.frame(cbind(Y.prop,data_binned))
-
-c <- matrix(NA,max(data_binned,na.rm = T),(ncol(Y)-1))
-
-for(i in 1:max(data_binned,na.rm = T)){
-  c[i,] <- colSums(b[b$data_binned==i,1:(ncol(Y)-1)],na.rm=T)
-}
-
-colnames(c) <- colnames(b[,1:(ncol(Y)-1)])
-
-c1 <- prop.table(c,1)
-#c <- c[-which(rowSums(c)==0),]
-c1[is.na(c1)] <- 0
-c2 <- c1[,order(colMeans(c1))]
-c1.melt<-melt(c2)
-
-
-c2.melt <- within(c1.melt, X2 <- factor(X2,names(sort(colMeans(c1),decreasing = FALSE))))
-
-pdf('settlement.pollen.tiles.pdf')
-ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
-  scale_fill_gradient(name = 'Count Prop.',low="white",high="black") +
-  ylab('Tree Taxa') +
-  xlab('Biomass Categories Mg/ha') +
-  scale_x_continuous(breaks=seq(.5,( max(data_binned,na.rm = T) +.5), 1), labels = breaks[1:(max(data_binned,na.rm = T)+1)])
 dev.off()
 
 

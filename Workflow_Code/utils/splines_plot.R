@@ -2,10 +2,10 @@
 
 source(file.path("Workflow_Code","utils","bs_nimble.R"))
 source(file.path("Workflow_Code","utils",'linexp.R'))
-splines_plot <- function(samples.mixed,Y,biomass,bMax){
+splines_plot <- function(samples.mixed,Y,biomass,bMax,bimodal_sites = NULL,order_plot=NULL){
   
   new.biomass <- 1:bMax
-  Z.new = matrix(0,nrow=length(new.biomass),ncol=5)
+  Z.new = matrix(0,nrow=length(new.biomass),ncol=length(u)+2)
   for(i in 1:length(new.biomass)){
     u_given <- new.biomass[i]
     Z.new[i,] = bs_nimble(u_given, u=u, N0 = rep(0, (length(u)-1)),
@@ -43,8 +43,11 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax){
   #pdf(paste0('outlier.splines.group.',group_rm,'.pdf'))
   #pdf('splines.together.pdf')
   #pdf('splines.new_data.pdf')
-  par(mfrow=c(2,2))
-  for(i in 1:ncol(Y)){
+  par(mfrow=c(2,3))
+  
+  if(is.null(order_plot)) order_plot <- 1:ncol(Y)
+  
+  for(i in order_plot){
     if(FALSE){#i %in% seq(1,22,3)
       plot.new()
       legend('center',c('PLS Biomass','ReFAB Biomass','PLS Biomass, non outlier'),pch=c(19,19,1),
@@ -56,19 +59,22 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax){
                       props[,i])),
          main = colnames(Y)[i],pch=19,
          ylab = 'Pollen Proporation',
-         xlab = 'Biomass (Mg/ha)')
-    abline(v=u)
+         xlab = 'Biomass (Mg/ha)',
+         typ = 'l',
+         lwd = 2)
+    abline(v=u,col='lightgray')
     # points(1:bMax, mean.betas.ex[,i],col='red')
     ciEnvelope(x = 1:bMax, yhi = mean.betas.ex[,i] + sd.betas.ex[,i]*2,
                ylo = mean.betas.ex[,i] - sd.betas.ex[,i]*2,col = adjustcolor('blue',alpha=.5))
     
     #ciEnvelope(x = 1:bMax, yhi = mean.betas.ex[,i] + sd.betas.ex[,i]*2,
     #           ylo = mean.betas.ex[,i] - sd.betas.ex[,i]*2,col = alphaorange)
-    points(biomass,props[,i])
-    #points(biomass[bimodal_sites],props[,i][bimodal_sites],pch=19,col='blue')
+    
+    points(biomass,props[,i],cex=.5,pch=19)
+    if(!is.null(bimodal_sites)) points(biomass[bimodal_sites],props[,i][bimodal_sites],pch=19,col='green')
     #points(colMeans(samples.pred)[bimodal_sites],props[,i][bimodal_sites],pch=19,col='red')
     
-    calibrate::textxy(biomass,props[,i],1:length(biomass),offset = 0)
+    #calibrate::textxy(biomass,props[,i],1:length(biomass),offset = 0,cex=.25)
     #textxy(colMeans(samples.pred)[bimodal_sites],props[,i][bimodal_sites],bimodal_sites,offset = 0)
     
     #points(biomass.pred,props.pred[,i],col='red',pch=19)
@@ -78,10 +84,17 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax){
   #dev.off()
 }
 
-
-
 if(FALSE){
-  pdf('splines.154.sites.pdf')
+  pdf(paste0('splines.prev',Sys.Date(),'.pdf'),width = 8,height = 5)
   splines_plot(samples.mixed,Y,biomass,bMax)
+  dev.off()
+  
+  
+  load('~/Downloads/3beta.est.group.in11.Rdata')
+  
+  load('~/Downloads/beta.est.group.in101FULL.Rdata')
+  load('twothirds_v2.0.Rdata')
+  pdf('splines_calib_bimodal.pdf')
+  splines_plot(samples.mixed,Y,biomass,bMax=228,bimodal_sites = calibration_bimodal)
   dev.off()
 }
