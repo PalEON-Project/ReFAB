@@ -820,7 +820,14 @@ key "goring2015changes"
  This rich dataset allows us to estimate (stem) biomass at all 232 pollen
  calibration sites at time of settlement.
  Because we do not have a time series of biomass data before settlement,
- we substitute space for time in our model calibration.
+ we substitute space for time in our model calibration (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pls-point-biomass"
+
+\end_inset
+
+).
  
 \begin_inset Note Note
 status open
@@ -859,10 +866,83 @@ status open
 
 \begin_layout Plain Layout
 Estimated biomass (Mg/ha) at calibration sites at the time of settlement.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pls-point-biomass"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We use biomass from time of settlement instead of biomass from the modern
+ landscape because settlement biomass is more representative of the types
+ of forests that existed during the Holocene.
+ We explored climate and environmental space of both the settlement and
+ modern biomass data products from Paciorek in prep and found that settlement
+ and modern biomasses have very different relationships to climate and the
+ environment (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pls_v_fia"
+
+\end_inset
+
+).
+ We compare biomass from settlement and modern time points to mean annual
+ temperature and precipitation.
+ We also show the first principle component of an analysis of climate and
+ the environment done by Heilman et al in prep.
+ Both climate covariates and the first principle component relationship
+ to biomass is very different between settlement and modern biomass data
+ products.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/pls_v_fia_plot.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pls_v_fia"
+
+\end_inset
+
+Environmental variables related to biomass (Mg/ha) on both the settlement
+ (black) and modern (red) landscapes.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -924,7 +1004,7 @@ status open
 (left) The shading in each box represents the proportion of total biomass
  that each species contributes in each biomass category from the PLS biomass
  estimates.
- (right) The shading in each box represents the proportion of pollenfrom
+ (right) The shading in each box represents the proportion of pollen from
  each tree species averaged over the sites falling in each biomass category
  (as determined from the PLS estimates).
  This illustrates that biomass is associated with the the relative composition
@@ -3046,249 +3126,6 @@ name "sec:Exploring-Different-Taxa"
 \end_layout
 
 \begin_layout Standard
-To understand the effects of individual taxa on overall prediction we repeated
- the cross validation exercise on the calibration training data, sequentially
- removing one taxon at a time.
- We found that removing no taxa in particular had a large effect on predictive
- power, relative to the R2 of 0.549
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/17/19: Isn't the right comparison to the R2 in the C-V (i.e., Figure 5,
- R2=0.376)? And if so, I don't understand why we have 2/3 and 1/3 in the
- table here.
- I guess by 
-\begin_inset Quotes eld
-\end_inset
-
-cross-validation exercise
-\begin_inset Quotes erd
-\end_inset
-
- you don't mean the 10-fold CV?
-\end_layout
-
-\begin_layout Plain Layout
-If we do report the 2/3,1/3 results, then say here what the R2 is in the
- 1/3.
- Actually, probably best to have a line in the table that reports the full
- model result and not just have that in text here.
-\end_layout
-
-\end_inset
-
- in the full model.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-need to fix taxa names in table below
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-formal defn of cross validation? don't use cv unless you're doing the 10
- fold.
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{table}[ht] 
-\backslash
-centering 
-\backslash
-begin{tabular}{rrr}   
-\backslash
-hline  & Two Thirds & One Third 
-\backslash
-
-\backslash
-    
-\backslash
-hline Birch & 0.57 & 0.15 
-\backslash
-
-\backslash
-    Sedge & 0.50 & 0.22 
-\backslash
-
-\backslash
-    Alder & 0.58 & 0.22 
-\backslash
-
-\backslash
-    Hemlock & 0.52 & 0.24 
-\backslash
-
-\backslash
-    Pine & 0.56 & 0.24 
-\backslash
-
-\backslash
-    Poplar & 0.55 & 0.24 
-\backslash
-
-\backslash
-    Fir & 0.55 & 0.24 
-\backslash
-
-\backslash
-    Other
-\backslash
-_arboreal & 0.55 & 0.24 
-\backslash
-
-\backslash
-    Walnut & 0.54 & 0.25 
-\backslash
-
-\backslash
-    Cypress & 0.58 & 0.25 
-\backslash
-
-\backslash
-    Ash & 0.55 & 0.25 
-\backslash
-
-\backslash
-    Spruce & 0.56 & 0.25 
-\backslash
-
-\backslash
-    Tamarack & 0.59 & 0.25 
-\backslash
-
-\backslash
-    Elm & 0.55 & 0.25 
-\backslash
-
-\backslash
-    Maple & 0.54 & 0.26 
-\backslash
-
-\backslash
-    Ironwood & 0.54 & 0.26 
-\backslash
-
-\backslash
-    Other
-\backslash
-_herb.
- & 0.51 & 0.26 
-\backslash
-
-\backslash
-    Prairie & 0.54 & 0.26 
-\backslash
-
-\backslash
-    Basswood & 0.57 & 0.27 
-\backslash
-
-\backslash
-    Oak & 0.54 & 0.27 
-\backslash
-
-\backslash
-    Hickory & 0.57 & 0.29 
-\backslash
-
-\backslash
-    Beech & 0.62 & 0.32 
-\backslash
-
-\backslash
-     
-\backslash
-hline 
-\backslash
-end{tabular} 
-\backslash
-end{table}
-\end_layout
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/17/19: it's awkward here that R2 can go up when we remove a taxon.
- Let's discuss what we should say about that.
- It will probably need to be something like 
-\begin_inset Quotes eld
-\end_inset
-
-no one taxon
-\begin_inset Quotes erd
-\end_inset
-
- strongly affects performance, presumably because of redundant information
- with this many taxa used and there appears to be noisiness in the results
- that can lead to increased R2 when a taxon is removed and then lead into
- the next paragraph of trying groupings to better understand what information
- in the pollen is most important.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 We computed the effects of different groupings of pollen by using the training
  and testing calibration datasets to assess predictive performance when
  grouping the pollen taxa into a variety of groups.
@@ -3338,18 +3175,7 @@ key "van2014fully"
  grouping best reproduced settlement point estimates of above ground biomass.
  To avoid overfitting, similarly to the full model validation, we fit the
  validation plots using the training dataset and we report the values for
- both the training and testing dataset validations
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/17/19: same comment as above that we should discuss whether this should
- be based on 10-fold CV in the training set or on the 2/3,1/3
-\end_layout
-
-\end_inset
-
-.
+ both the training and testing dataset validations.
  These results are reported in the main manuscript text and figure 2, which
  shows the importance of successional status and in particular of hemlock
  and beech.
