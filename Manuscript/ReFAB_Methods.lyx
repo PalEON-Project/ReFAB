@@ -83,19 +83,6 @@
 status open
 
 \begin_layout Plain Layout
-Make sure that you are refering to sites and not ponds, lakes, or cores
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
 Not sure what to do about the chrono figure.
  Should it be only our prediction dataset? we don't use some sites because
  they don't cover 2000 to 10000.
@@ -302,7 +289,7 @@ key "blaauw2011flexible,goring2012deposition"
 \end_inset
 
 .
- The sampling period for the ponds in our domain extends from the present
+ The sampling period for the sites in our domain extends from the present
  to as far as 20000 years before present for some cores (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -354,7 +341,7 @@ name "fig:Sampling-points-for"
 
 \end_inset
 
-Sampling points for all ponds across the latitude of our domain.
+Sampling points for all sites across the latitude of our domain.
 \begin_inset Note Note
 status open
 
@@ -769,19 +756,6 @@ name "tab:Taxa-table"
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/16/19: Some of the names in the table seem to be truncated - Chemoam,
- Liquidam,...
- 7/2/19: Chris, I think I found them all but let me know if anymore seem
- off
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1027,7 +1001,8 @@ Legend label is confusing.
  species to total biomass.
  Now, I've inserted the pollen contribution plot.
  Let me know if you think we should have both or just one or the other.
- 
+ 8/3/19: Ann, I think it makes sense as is if you and JMac are happy with
+ it.
 \end_layout
 
 \end_inset
@@ -1040,6 +1015,11 @@ status open
 4/16/19: The x-axes on 4A and 4B are inconsistent.
  7/2/19: Chris,We don't have biomass values for the larger pollen groups
  because we don't have pollen sites in the largest biomass sites.
+ 8/3/19: Ann, ok fair enough.
+ There are fairly few biomass sites up around 400, right? You might truncate
+ the x-axis of 5-A and or lump everything bigger than 250 for 5-A.
+ Particularly since beech really sticks out but I think that is just the
+ influence of a few sites.
 \end_layout
 
 \end_inset
@@ -1103,7 +1083,7 @@ Our two step approach also allows us to have greater flexibility in model
  development and assessment.
  Alternatively, we could have fit the calibration and prediction models
  in a comprehensive framework, but we separate them to be able to develop
- alternative calibration models and fit prediction models one pond at a
+ alternative calibration models and fit prediction models one site at a
  time.
  Neither model includes spatial uncertainty, which preserves model simplicity
  and computational efficiency, leaving spatial-temporal modeling of all
@@ -1131,8 +1111,8 @@ Notation
 
 \begin_layout Standard
 Notation will be different between calibration and prediction models because
- the calibration model uses only one pollen count vector per pond while
- the prediction model has multiple count vectors per pond.
+ the calibration model uses only one pollen count vector per site while
+ the prediction model has multiple count vectors per site.
  In the calibration model, let 
 \begin_inset Formula $j=1,...,J$
 \end_inset
@@ -1340,19 +1320,9 @@ Note that the nested series of binomial likelihoods can be equivalently
 
 \begin_layout Standard
 Based on exploratory fitting discussed below, we chose to use three knots
- for the spline basis matrix
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-is it 5 df or 5 knots? df I think 3 knots.
- changed to state knots 3knots = 4 coefficients + an itercept using bs()
-\end_layout
-
-\end_inset
-
-, with the knots chosen based on quantiles of the biomass point estimates,
- giving five elements for each of the two coefficient vectors for each taxon.
+ for the spline basis matrix, with the knots chosen based on quantiles of
+ the biomass point estimates, giving five basis function coefficients for
+ each of the two coefficient vectors for each taxon.
  Each coefficient is given an uniformative normal prior with mean zero and
  precision of 0.0025.
  This broad prior allows our splines to flexibly fit the data.
@@ -1382,19 +1352,8 @@ To decide upon the taxa to use and the final model structure, we used a
 \begin_layout Standard
 The initial model fitting to determine the taxonomic groupings was done
  using earlier versions of the calibration model and earlier, smaller version
- of two thirds of the calibration dataset.
- The full decision making is not presented here
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/16/19: probably worth saying it was done with the 2/3 training set - but
- is that true? or was it a subset of the 2/3? 7/2/19: Chris, does that work?
-\end_layout
-
-\end_inset
-
-.
+ of two-thirds of the calibration dataset.
+ The full decision making is not presented here.
  Having chosen the taxonomic groupings, we can assess the predictive performance
  using the 10-fold cross-validation (Figure 
 \begin_inset CommandInset ref
@@ -1423,7 +1382,10 @@ reference "fig:10foldCV-5v7knots"
 \end_inset
 
 ).
- We choose to include the prairie pollen group because it improves the R2
+ We choose to include the prairie pollen group because it improves the 
+\begin_inset Formula $R^{2}$
+\end_inset
+
  and the MSE of the validation plot.
  
 \end_layout
@@ -1442,42 +1404,10 @@ all validation plots are made in -> validation_plot.R
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann, I took this sentence out as it didn't seem to fit, but it may be that
- we want to say this somewhere given the main paper discusses this.
- 
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-We assessed various pollen taxa groupings based on the vegetation abundance
- observed on the pre-settlement landscape by comparing predicted biomass
- to observed biomass from the settlement biomass calibration dataset.
-\begin_inset Quotes erd
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -1514,10 +1444,10 @@ name "fig:10-fold-final"
 
 \begin_layout Standard
 Once the pollen taxa were optimally grouped, we assessed the number of spline
- basis matrix coefficients using the same cross-validation methodology.
- The basis matrix can be more flexible with the addition of more knots,
- thereby allowing more fluctuations in the nonlinear relationship between
- biomass and pollen proportion for each taxon.
+ basis terms using the same cross-validation methodology.
+ The basis matrix provides more flexibility with the addition of more knots,
+ allowing more fluctuations in the nonlinear relationship between biomass
+ and pollen proportion for each taxon.
  As seen in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1526,18 +1456,20 @@ reference "fig:10foldCV-5v7knots"
 \end_inset
 
 , use of five knots results in increased predictive performance compared
- to three knots but the model with five knots is overfit 
+ to three knots, but we judged the the pollen-biomass relationships to be
+ insufficiently smooth based on expert judgment and chose to use three knots
+ to avoid the possibility of overfitting.
+ 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-7/2/19: Chris, not sure what else to say here
+8/3/19: Ann, see email comments about 5 knot results
 \end_layout
 
 \end_inset
 
-.
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -1643,7 +1575,11 @@ status open
 in what sense is this 10CV - it should just be based on fitting the full
  2/3, no? Chris, I created these with all of the samples from the 10CV exercise.
  I can go back and make another for just the 2/3s fit but i thought we wanted
- to see all the uncertainty that might come from different beta draws?
+ to see all the uncertainty that might come from different beta draws? 8/3/19:
+ Ann, ok that's fine.
+ In the legend I made explicit the use of the CV.
+ So make sure the text I added is right.
+ 
 \end_layout
 
 \end_inset
@@ -1656,7 +1592,8 @@ Estimated relationships between pollen proportions and biomass for key selected
  data, with calibration training data shown as black points.
  The light blue shading shows the 95% credible intervals for the pollen
  proportion as a function of biomass based on the spline coefficient posterior
- samples, with the blue line the posterior mean.
+ samples (averaged over the 10-fold cross-validation fits), with the blue
+ line the posterior mean.
 \begin_inset Note Note
 status open
 
@@ -1696,44 +1633,78 @@ reference "fig:The-gold-standard-fit"
 \end_inset
 
 ).
- The performance of the model in-sample on the training data (R2 = 0.447)
- is higher than the held-out test data (R2 = 0.161).
- This indicates that our model is not overfit.
- Comparing the held-out testing data to the 10-fold cross-validation, the
- R2 for the held-out testing data is smaller than the R2 for the ten-fold
- cross-validation (R2 = 0.306), but the MSE for the 10-fold cross-validation
- (MSE = 2320) is larger than held-out testing data (MSE = 2080).
- Based on the MSE, the model fit performance to the held-out testing data
- is comparable to the 10-fold cross-validation.
- The R2 values vary between the training and testing model fits because
- the testing dataset contains a few higher biomass sites which results in
- a lower R2.
- 
+ The performance of the model in-sample on the training data (
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ = 0.447) is higher than the held-out test data (
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ = 0.161).
+ This indicates that our model is not overfit
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-4/16/19: looks like you haven't updated this text in light of new R2 values.
- It's not true that performance is the same if one compares test and train
- MSE, but you should (1) make clear that based on MSE, the testing performacne
- is as good (actually a bit better) than the 10-fold CV indicating that
- we are not overfitting and (2) that the R2 varies quite a bit because the
- biomass values in the test and train sets are somewhat different, with
- few higher biomass sites in the test set, resulting in lower R2.
- 
+8/3/19: Ann, don't say it this way! The direct R2 comparison makes it seem
+ that the model IS seriously overfit!
 \end_layout
 
+\end_inset
+
+.
+ Comparing the held-out testing data to the 10-fold cross-validation, the
+ 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ for the held-out testing data is smaller than the 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ for the ten-fold cross-validation (
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ = 0.306), but the MSE for the 10-fold cross-validation (MSE = 2320) is larger
+ than held-out testing data (MSE = 2080).
+ Based on the MSE, the model fit performance to the held-out testing data
+ is comparable to the 10-fold cross-validation.
+ The 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ values vary between the training and testing model fits because the testing
+ dataset contains a few higher biomass sites which results in a lower 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+.
+\begin_inset Note Note
+status open
+
 \begin_layout Plain Layout
-7/2/19: Hey Chris, took a stab at this but I know we probably want to be
- careful with language here so let me know if we need to say more or provide
- any information about the biomass distribution between the testing and
- the training datasets.
+8/3/19: Ann, these numbers all differ from the plots.
+ I don't know which are the right ones.
+ I guess this is because of rerunning the PLS biomass model? Please edit
+ text (I presume figures are correct) to reflect the figures.
+ Basically you'll need to say something like: 
+\begin_inset Quotes eld
+\end_inset
+
+It is a bit difficult to compare the prediction results between the in-sample
+ training data, the 10-fold cross-validation, and the held-out test set
+ because the PLS-based biomass estimates vary some between the sets, causing
+ instability in the R2 and MSE values, but the MSE values for the held-out
+ set are somewhat smaller than for the 10-fold cross-validation (and somewhat
+ larger than for the in-sample set), giving no indication of overfitting.
  
 \end_layout
 
 \end_inset
 
-
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1940,6 +1911,19 @@ Ann, you need b(t) here.
 
 Also I think we should change from 'j' to 'i' with 'i' indexing samples.
  7/2/19: Chris, let me know if that is right.
+ 8/3/19: Ann, there is no 
+\begin_inset Quotes eld
+\end_inset
+
+i
+\begin_inset Quotes erd
+\end_inset
+
+ in the b_i,t (eqn 9) - b(t) is simply a function of time.
+ And then when we have an observation we grab the b we need for that observation
+ using t[i].
+ I fixed that.
+ All else looks fine.
 \end_layout
 
 \end_inset
@@ -1953,7 +1937,7 @@ Also I think we should change from 'j' to 'i' with 'i' indexing samples.
 y_{i,1} & \sim & \text{binomial}(p_{i,1}^{abs},N_{i})\label{eq:pred likelihood}\\
 y_{i,k} & \sim & \textrm{binomial}(p_{i,k}^{rel},N_{i}-\sum_{i=1}^{k-1}y_{i,k}),\,k=2,\ldots,K-1\\
 p_{i,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{1,k}),\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
-b_{i,t} & \sim & \mathrm{GP}\left(3b_{i,t-1}-3b_{i,t-2}+b_{i,t-3},\sigma^{2}\right)\\
+b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\\
 p_{i,1}^{abs} & = & p_{i,1}^{rel}\\
 p_{i,k}^{abs} & = & p_{i,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{i,k}^{abs}\right),k=2,\ldots,K-1.
 \end{eqnarray}
@@ -2136,18 +2120,6 @@ We computed two metrics to assess overall, region-wide biomass change across
  by calculating the difference between biomass estimates for each MCMC iteration
  at each site and each time step.
  From this difference matrix, we calculate the 95% quantiles.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I don't understand this sentence.
- 7/2/19: Chris, is this better.
- This is a description of the boxplot in figure 3 in the main text.
-\end_layout
-
-\end_inset
-
  We chose to include estimates at sites from before and after the first
  and last samples available for the site in order to maintain consistency
  throughout our time series estimates, thus estimating 10,000 years of biomass
@@ -2174,33 +2146,7 @@ key "de2017programming"
 \end_inset
 
 .
- We propagated uncertainty from the biomass data product into the calibration
- model parameters by fitting the calibration model 50 times with 50 draws
- from the biomass data product posterior estimates of biomass at the time
- of settlement (Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Vegetation-data"
-
-\end_inset
-
-).
- We then propagate the uncertainty from then calibration parameter estimates
- and the BACON age-depth model estimates through to the biomass predictions
- by fitting the prediction model 50 times; each using a different draw of
- the coefficients from the calibration model and draws of sample age values
- from the BACON model.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-7/2/19: Chris, we restate this in an upcoming section so i'm not sure if
- it's needed here?
-\end_layout
-
-\end_inset
-
-
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -2315,11 +2261,11 @@ key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
 
 \begin_layout Standard
 \begin_inset Formula 
-\begin{eqnarray*}
-b_{t} & \sim & N(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t})\\
-\omega_{t} & \sim & \mathrm{Expon}\left(\lambda_{t}\left(\frac{\lambda_{t}}{2}\right)\right)\\
-\lambda_{t} & \sim & \mathrm{gamma}(1,\sigma)
-\end{eqnarray*}
+\begin{eqnarray}
+b_{t} & \sim & N(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t})\label{eq:expanded1}\\
+\omega_{t} & \sim & \mathrm{Expon}\left(\lambda_{t}\left(\frac{\lambda_{t}}{2}\right)\right)\label{eq:expanded2}\\
+\lambda_{t} & \sim & \mathrm{gamma}(1,\sigma)\label{eq:expanded3}
+\end{eqnarray}
 
 \end_inset
 
@@ -2336,18 +2282,6 @@ reference "eq:GP"
 \end_inset
 
 ).
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-CJP to see if we should cite Faulkner and Minin BA 2018#1 on trend filtering;
- they discuss mixing difficulties, but were able to get hierarchical model
- form with horseshoe to mix with different starting values 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -2471,6 +2405,44 @@ Our MCMC sampling scheme consists of the sampler above applied at all time
 
  for all time points.
  
+\end_layout
+
+\begin_layout Standard
+Note that in work we found after implementing our approach, [cite FaulknerMirin2
+018] 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+8/3/19: Ann, please format/add this cite
+\end_layout
+
+\end_inset
+
+ report that using HMC in Stan on the expanded model (Eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:expanded1"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:expanded3"
+
+\end_inset
+
+) as opposed to the marginalized model (Eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:GP"
+
+\end_inset
+
+) worked well.
 \end_layout
 
 \begin_layout Subsection
@@ -2795,6 +2767,9 @@ status open
 7/2/2019: Chris, I wanted the axes to be the same between plots but now
  they look a little bad.
  let me know what you think.
+ 8/3/19: Ann, ok if they look bad when trying to make consistent just use
+ what looks good and make sure ot point out in the caption that the axis
+ label and color legend limits are different between the plots.
 \end_layout
 
 \end_inset
@@ -3135,25 +3110,7 @@ We computed the effects of different groupings of pollen by using the training
  plant functional type groups: grass (or prairie here), deciduous, and conifer.
  Second, we categorized pollen taxa into three trait categories based on
  a principal component analysis of seed mass, wood density, and leaf mass
- area between taxa
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I don't understand this - are we using mass,density,and mass area as the
- three categories or are we using PCs? If PCs, then we must have more than
- 1 if we have 3 categories, but you only mention 1.
- Hey Chris, I found info on these three categories for each of our taxa.
- Then, I calculated the pca and plotted the biplot of the first principle
- component.
- then i put each of our taxa into one of the three categories based on how
- they fell out on the pca axes.
- 
-\end_layout
-
-\end_inset
-
-.
+ area between taxa.
  These are the dominant plant traits found to explain global vegetation
  distribution in 
 \begin_inset CommandInset citation
@@ -3170,9 +3127,13 @@ key "van2014fully"
  tolerance classification in each genus.
  Finally, we used hemlock and beech pollen individually and aggregated all
  other pollen types into an 'other' category.
- We tested each validation fit for three things: linear R2, mean squared
- error, and average variance for each point prediction to determine which
- grouping best reproduced settlement point estimates of above ground biomass.
+ We tested each validation fit for three things: linear 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+, mean squared error, and average variance for each point prediction to
+ determine which grouping best reproduced settlement point estimates of
+ above ground biomass.
  To avoid overfitting, similarly to the full model validation, we fit the
  validation plots using the training dataset and we report the values for
  both the training and testing dataset validations.
