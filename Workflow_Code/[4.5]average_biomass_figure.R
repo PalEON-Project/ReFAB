@@ -5,14 +5,14 @@
 
 
 dataID <- read.csv('dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
-load('prediction.data_v5.Rdata') #load('prediction.data_new_v1.Rdata') #
+load('prediction.data_v6.Rdata') #load('prediction.data_new_v1.Rdata') #
 source(file.path('Workflow_Code', 'utils', 'validation_args.R'))
 control.pts <- read.csv(file.path('Data', 'control.pts.csv'))
 
 n.sites <- length(unique(dataID$name))
 
-path_to_samps <- c('~/ReFAB/samps_final/')
-path_to_Info <- c('~/ReFAB/workInfo_final/')
+path_to_samps <- c('~/Downloads/samps_again_FULL/')#c('~/ReFAB/samps_final/')
+path_to_Info <- c('~/Downloads/outs_again_FULL/')#c('~/ReFAB/workInfo_final/')
 
 blue       <- col2rgb("blue")
 alphablue  <- rgb(blue[1], blue[2], blue[3], 75, max = 255)
@@ -133,6 +133,8 @@ for(i in 1:length(unique(dataID$name))){
   
   
 }
+
+save(all.samps.list,lat,long,file = 'refab_for_stability_v3.Rdata')
 
 #####
 ##### Calculate derived quantities for plotting #####
@@ -265,5 +267,5 @@ for(i in 1:length(unique(dataID$name))){
             minAge = 0, maxAge = 10000, 
             ageInterval = 100, path_to_samps = path_to_samps,
             path_to_Info = path_to_Info, control.pts = control.pts,
-            ten.count = ten.count, dataID = dataID, out.dir = '~/ReFAB/sites_diag_final/')
+            ten.count = ten.count, dataID = dataID, out.dir = '~/ReFAB/sites_diag_again_final/')
 }
