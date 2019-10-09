@@ -1,7 +1,7 @@
 
 
 
-biomass.mat <- matrix(NA, 62, 102)
+biomass.mat <- matrix(NA, 80, 102)
 nItsSave = 10000
 for(i in 1:62){
   locn <- names(how.many)[i]
@@ -19,6 +19,14 @@ for(i in 1:62){
   }
 }
 
+biomass_meds <- lapply(biomassCI,FUN=function(x) c(x[2,],lat))
+
+for(i in 1:80){
+  biomass.mat[i,] <- c(biomass_meds[[i]],lat[[i]],long[[i]])
+}
+
+do.call(rbind,biomass_meds)
+
 breaks <-  c(seq(0,50,10),seq(75,200,25))
 colors <- rev(terrain.colors(length(breaks)))
 
@@ -32,7 +40,7 @@ breaks <- c(-100,-30,-10,-2.5,2.5,10,30,100)
 colors <- colorRampPalette(c('red',"white",'blue'))(length(breaks)-1)
 
 #quartz()
-#pdf(paste0('difference.maps.',Sys.Date(),'.pdf'))
+pdf(paste0('difference.maps.',Sys.Date(),'.pdf'))
 par(mfrow=c(3,4), oma = rep(.1,4))
 b <- 10
 for(r in rev(seq(10,100,b))){ #just thousand year time bins
@@ -40,7 +48,7 @@ for(r in rev(seq(10,100,b))){ #just thousand year time bins
     x <- biomass.mat[,r] - biomass.mat[,(r-b)]
     data_binned <-  cut(x, c(breaks), include.lowest = FALSE, labels = FALSE)
       map('state', xlim=c(-97,-83), ylim=c(41.75,49),mar=rep(0,4))
-      points(biomass.mat[,102],biomass.mat[,101],pch=21,bg=colors[data_binned],col='lightgray')
+      points(biomass.mat[,102],biomass.mat[,101],pch=21,bg=colors[data_binned],col='lightgray',cex=1.25)
       title(paste(r*100, '-', (r-b)*100))
 }
 plot.new()
