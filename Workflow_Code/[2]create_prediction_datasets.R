@@ -242,19 +242,20 @@ write.csv(dataID, file='dataID_bacon_new_v1.csv')
 ##### Look at plots for full prediction dataset
 #####
 
-load('prediction.data_v5.Rdata')
+load('prediction.data_v6.Rdata')
+dataID <- read.csv('dataID_v5.csv')
 
-x.meta.order <- x.meta[order(x.meta$lat),]
+ten.count.used <- ten.count[x.meta$site.name%in%unique(dataID$name),]
+x.meta.used <- x.meta[x.meta$site.name%in%unique(dataID$name),]
 
-x.meta.list <- list()
+x.meta.list <- x.meta.used.list <- list()
 for(i in 1:length(unique(x.meta$site.id))){
   x.meta.list[[i]] <- x.meta[x.meta$site.id==unique(x.meta$site.id)[i],]
+  x.meta.used.list[[i]] <- x.meta.used[x.meta.used$site.id==unique(x.meta.used$site.id)[i],]
 }
 
 sort_stop <- lapply(x.meta.list,nrow)
-
 plot_dat <- t(sapply(x.meta.list,FUN = function(x) c(x[1,c('lat')],x[1,c('long')],range(x[,'age_bacon']))))
-
 plot_use <- plot_dat[rev(order(unlist(sort_stop))),]
 
 pdf(file.path(fig.dir,paste('chrono_',Sys.Date(),'.pdf')))
@@ -267,9 +268,16 @@ segments(x0 = plot_use[,3], y0 = seq(1,nrow(plot_use),1),
          lwd = .5,col='darkgray')
 for(i in 1:nrow(plot_dat)){
   x_use <- x.meta.list[[rev(order(unlist(sort_stop)))[i]]]
-  points(x_use[,'age_bacon'],rep(i,nrow(x_use)),pch=4,cex=.25)
+  if(unique(x_use$site.name)%in%x.meta.used$site.name&max(x_use[,'age_bacon'])>=8000){
+    color_use <- 'black'
+    counter <- counter+1
+  }else{
+    color_use <- 'red'
+  }
+  points(x_use[,'age_bacon'],rep(i,nrow(x_use)),pch=4,cex=.25,col=color_use)
 }
 
+legend('topright',c('Used for Prediction','Not Used'),col=c('black','red'),pch=4)
 #points(x$age_bacon,x$lat.x,col='black',cex=1,pch=21,bg='red')
 #points(pol_no$age_bacon,pol_no$lat.x,col='blue',cex=.5,pch=19)
 #legend(11000,46,xpd=TRUE,c('All Pollen \n Samples','Prediction\n Dataset'),
@@ -281,7 +289,7 @@ x.meta = x[,c('id','lat.x',"long.x","dataset","site.name","age_bacon")]
 colnames(x.meta) <- c('site.id','lat','long','dataset','site.name','age_bacon')
 
 ### mapping to look at how many points we have (blue) compared to everything in neotoma (gray)
-map('state', ylim=range(new.pollen$lat.x)+c(-2, 2), xlim=range(new.pollen$long.x)+c(-2, 2),main=NA)
+maps::map('state', ylim=range(new.pollen$lat.x)+c(-2, 2), xlim=range(new.pollen$long.x)+c(-2, 2),main=NA)
 points(new.pollen$long.x, new.pollen$lat.x, pch=19, cex=1,col="gray")
 points(x.meta$long, x.meta$lat, pch=19, cex=1,col="blue")
 legend('topright',c('All Sites','Prediction Sites'),pch=19,col=c('gray','blue'))
@@ -314,7 +322,7 @@ load("threethirds_v2.0.Rdata")
 ten.count <- ten.count[,colnames(Y)] #would it be better to sort originally based off of the prediction datasets?
 
 ### Save MAKE SURE TO CHANGE VERSION NUMBER IF YOU CHANGE ANYTHING
-save(x.meta,x.bacon,ten.count,file='prediction.data_v4.Rdata')
+save(x.meta,x.bacon,ten.count,file='prediction.data_v6.Rdata')
 
 ######
 ###### Writing Job Array Script
