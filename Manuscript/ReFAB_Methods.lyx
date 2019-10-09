@@ -83,33 +83,17 @@
 status open
 
 \begin_layout Plain Layout
-Not sure what to do about the chrono figure.
- Should it be only our prediction dataset? we don't use some sites because
- they don't cover 2000 to 10000.
+- put the unique ids from neotoma of the calibrtion, training and testing
+ in repo 10/9/2019: Added a csv called calib.meta.csv.
+ Do you think I need to have another column for which ones are not in neotoma?
+ We got some of the hotchkiss sites from Andria.
  
 \end_layout
 
 \begin_layout Plain Layout
-4/16/19: I'd suggest showing all but showing those we use for prediction
- in one color and those we don't in another.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-- put the unique ids from neotoma of the calibrtion, training and testing
- in repo
-\end_layout
-
-\begin_layout Plain Layout
-- need to make sure it's clear that they are from the stem allometries
+- need to make sure it's clear that they are from the stem allometries 10/9/2019
+: what do you mean from the stem allometries? I thought that they were from
+ the AGB now?
 \end_layout
 
 \end_inset
@@ -235,7 +219,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/[1]all-sites.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[1]all-sites.pdf
 	scale 50
 
 \end_inset
@@ -322,7 +306,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/Figures/[2]chrono_ 2019-02-27.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[2]chrono_ 2019-10-09 .pdf
 	scale 60
 
 \end_inset
@@ -809,6 +793,9 @@ status open
 \begin_layout Plain Layout
 We'll need to cite the forthcoming Paciorek et al.
  PLS methods paper.
+ 10/9/2019: Chris, do you want to create a citation for that or should I
+ just make one that's Paciorek in prep? Do you know what the title would
+ be?
 \end_layout
 
 \end_inset
@@ -826,7 +813,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[3]only_calibration_map_agb.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[3]only_calibration_map_agb.pdf
 	scale 50
 
 \end_inset
@@ -892,7 +879,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[4]pls_v_fia_plot.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[4]pls_v_fia_plot.pdf
 	scale 50
 
 \end_inset
@@ -959,14 +946,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[5-A]settlement.biomass.tiles.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[5-A]settlement.biomass.tiles.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[5-B]settlement.pollen.tiles.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[5-B]settlement.pollen.tiles.pdf
 	scale 50
 
 \end_inset
@@ -987,40 +974,6 @@ status open
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:tiles"
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Legend label is confusing.
- Also why are non-arboreal categories not included? 7/2/19: Chris, originally
- I was just showing the biomass data product and the contribution of each
- species to total biomass.
- Now, I've inserted the pollen contribution plot.
- Let me know if you think we should have both or just one or the other.
- 8/3/19: Ann, I think it makes sense as is if you and JMac are happy with
- it.
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-4/16/19: The x-axes on 4A and 4B are inconsistent.
- 7/2/19: Chris,We don't have biomass values for the larger pollen groups
- because we don't have pollen sites in the largest biomass sites.
- 8/3/19: Ann, ok fair enough.
- There are fairly few biomass sites up around 400, right? You might truncate
- the x-axis of 5-A and or lump everything bigger than 250 for 5-A.
- Particularly since beech really sticks out but I think that is just the
- influence of a few sites.
-\end_layout
 
 \end_inset
 
@@ -1412,7 +1365,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[6]new_10.fold.R2_AGB.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[6]new_10.fold.R2_AGB.pdf
 	scale 50
 
 \end_inset
@@ -1464,7 +1417,10 @@ reference "fig:10foldCV-5v7knots"
 status open
 
 \begin_layout Plain Layout
-8/3/19: Ann, see email comments about 5 knot results
+8/3/19: Ann, see email comments about 5 knot results.
+ 10/9/2019: Chris, I have R2 = .306 for figure 6 (3 knots) and R2 = .354 for
+ figure 7-B (5 knots).
+ 
 \end_layout
 
 \end_inset
@@ -1568,23 +1524,6 @@ status open
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-in what sense is this 10CV - it should just be based on fitting the full
- 2/3, no? Chris, I created these with all of the samples from the 10CV exercise.
- I can go back and make another for just the 2/3s fit but i thought we wanted
- to see all the uncertainty that might come from different beta draws? 8/3/19:
- Ann, ok that's fine.
- In the legend I made explicit the use of the CV.
- So make sure the text I added is right.
- 
-\end_layout
-
-\end_inset
-
-
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -1642,18 +1581,6 @@ reference "fig:The-gold-standard-fit"
 \end_inset
 
  = 0.161).
- This indicates that our model is not overfit
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-8/3/19: Ann, don't say it this way! The direct R2 comparison makes it seem
- that the model IS seriously overfit!
-\end_layout
-
-\end_inset
-
-.
  Comparing the held-out testing data to the 10-fold cross-validation, the
  
 \begin_inset Formula $R^{2}$
@@ -1669,18 +1596,16 @@ status open
 
  = 0.306), but the MSE for the 10-fold cross-validation (MSE = 2320) is larger
  than held-out testing data (MSE = 2080).
+ It is somewhat difficult to compare the prediction results between the
+ in-sample training data, the 10-fold cross-validation, and the held-out
+ test set because the PLS-based biomass estimates vary between the sets,
+ with some sets containing multiple high biomass sites, causing instability
+ in the R2 and MSE values.
+ But, the MSE values for the held-out set (MSE = 2080) are somewhat smaller
+ than for the 10-fold cross-validation (MSE = 2320) and somewhat larger
+ than for the in-sample set (MSE = 1820), giving no indication of overfitting.
  Based on the MSE, the model fit performance to the held-out testing data
  is comparable to the 10-fold cross-validation.
- The 
-\begin_inset Formula $R^{2}$
-\end_inset
-
- values vary between the training and testing model fits because the testing
- dataset contains a few higher biomass sites which results in a lower 
-\begin_inset Formula $R^{2}$
-\end_inset
-
-.
 \begin_inset Note Note
 status open
 
@@ -1699,6 +1624,8 @@ It is a bit difficult to compare the prediction results between the in-sample
  instability in the R2 and MSE values, but the MSE values for the held-out
  set are somewhat smaller than for the 10-fold cross-validation (and somewhat
  larger than for the in-sample set), giving no indication of overfitting.
+ 10/9/2019: Chris, let me know what you think of the new wording now that
+ we got the figures settled.
  
 \end_layout
 
@@ -1924,6 +1851,9 @@ i
  using t[i].
  I fixed that.
  All else looks fine.
+ 10/9/2019: I think we're good here but leaving comment as reference for
+ later.
+ 
 \end_layout
 
 \end_inset
@@ -2408,14 +2338,10 @@ Our MCMC sampling scheme consists of the sampler above applied at all time
 \end_layout
 
 \begin_layout Standard
-Note that in work we found after implementing our approach, [cite FaulknerMirin2
-018] 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-8/3/19: Ann, please format/add this cite
-\end_layout
+Note that in work we found after implementing our approach, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FaulknerMirin2018"
 
 \end_inset
 
@@ -2770,6 +2696,9 @@ status open
  8/3/19: Ann, ok if they look bad when trying to make consistent just use
  what looks good and make sure ot point out in the caption that the axis
  label and color legend limits are different between the plots.
+ 10/9/2019: I guess I'm just going to leave it for now and see what Jason
+ thinks.
+ 
 \end_layout
 
 \end_inset
