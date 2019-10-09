@@ -15,7 +15,6 @@ dataID <- read.csv('dataID_v5.csv')
 ten.count.used <- ten.count[x.meta$site.name%in%unique(dataID$name),]
 x.meta.used <- x.meta[x.meta$site.name%in%unique(dataID$name),]
 
-
 testing.save = prop.table(as.matrix(ten.count.used),1)
 rownames(testing.save)<-x.meta.used$age_bacon
 testing.meta <- x.meta.used
@@ -110,7 +109,8 @@ plot(
   cex = .75,
   xlab = 'Sample Age (years before present)',
   ylab = 'Latitude',
-  main = NA
+  main = NA,
+  xlim = c(16000,0)
 )
 abline(v=10000,lwd=2)
 plot.new()
