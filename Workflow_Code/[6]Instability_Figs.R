@@ -40,7 +40,7 @@ par(mfrow=c(1,1))
 plot(distA$age_index,distA$max,pch=19,
      cex=.5,ylab='Maximum Likelihood Value',
      xlab = 'Age of Sample (YBP1950)',xaxt='n', xlim = c(100,0))
-axis(side = 1, at = seq(1,100,10), labels = seq(100,10000,1000))
+axis(side = 1, at = seq(0,100,10), labels = seq(0,10000,1000))
 dev.off()
 
 comp_mat <- b_mat <- matrix(NA,nrow(distA),length( distance(distA[i,5:ncol(distA)],distA[,5:ncol(distA)],method='SQchord') ))
