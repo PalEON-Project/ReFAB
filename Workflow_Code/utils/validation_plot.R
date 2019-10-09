@@ -27,7 +27,7 @@ for(i in 1:10){
   samples.pred.mat[,sets10[,dat.index[i,'group_rm']]] <- samples.pred[,grep('b',colnames(samples.pred))]
 }
 
-pdf(paste0('10.fold.R2.5knots',Sys.Date(),'.pdf'))
+pdf(paste0('[6-B]10.fold.R2.5knots',Sys.Date(),'.pdf'))
 par(mfrow=c(1,1))
 biomass.keep <- biomass[1:max(sets10)]
 plot(biomass.keep, apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
@@ -139,18 +139,24 @@ dev.off()
 
 ##### Blue Splines Plot for 10 FOLD CV
 source(file.path('Workflow_Code','utils','splines_plot.R'))
-samples.mixed.all <- rep(0,220)
+samples.mixed.all <- rep(0,308)#rep(0,220)#
 for(i in 1:10){
-  load(paste0('~/Downloads/betas_10cv/3beta.est.group.in',i,'.Rdata'))
+  #load(paste0('~/Downloads/betas_10cv/3beta.est.group.in',i,'.Rdata'))
+  load(paste0('~/Downloads/5knot_betas/5beta.est.group.in',i,'.Rdata'))
   ppp <- nrow(samples.mixed)
   samples.mixed.all <- rbind(samples.mixed.all,
                            samples.mixed[seq(ppp*.2,ppp,length.out = 250),]) 
   print(i)
 }
 
-pdf('[7]splines.10CV.pdf',height = 5,width = 8)
+source('~/ReFAB/Workflow_Code/utils/validation_args.R', echo=TRUE)
+source('~/ReFAB/Workflow_Code/utils/7knot_args.R', echo=TRUE)
+
+load('twothirds_v3.0.Rdata')
+
+pdf('5knot_splines.10CV.pdf',height = 5,width = 8)
 splines_plot(samples.mixed = samples.mixed.all,Y = Y,biomass = biomass,
-             bMax = bMax,order_plot = c(1:3,10,12,18))
+             bMax = bMax,order_plot = 1:22)#c(1:3,10,12,18)
 dev.off()
 
 
@@ -300,10 +306,10 @@ abline(lm.mod,lty=2)
 
 #mtext(paste("r-squared",signif(summary(lm.mod)$r.squared,digits=3)))
 
-R2 <- give_me_R2(preds = apply(samps2_3,2,FUN = quantile,.5),
-                 actual =  biomass2_3)
-MSE <- mse_func(preds = apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
-                actual =  biomass.keep)
+R2 <- give_me_R2(preds = apply(samples.pred.keep,2,FUN = quantile,.5),
+                 actual =  biomass)
+MSE <- mse_func(preds = apply(samples.pred.keep,2,FUN = quantile,.5,na.rm=T),
+                actual =  biomass)
 legend('bottomright',c(paste("R2 = ",signif(R2,digits = 3)),
                        paste('MSE =', signif(MSE,digits = 3))))
 
