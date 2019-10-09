@@ -32,9 +32,8 @@ cols = gg_color_hue(n)
 
 #biomass_dat_est <- read.csv(paste0("~/Downloads/","biomass_prediction_v0.9-10_bam.csv"))
 
-nc <-
-  nc_open(file.path('Data', 'PLS_biomass_western_point_v0.999.nc'))
-nc_fia <- nc_open('~/Downloads/FIA_biomass_point_v0.999.nc')
+nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
+#nc_fia <- nc_open('~/Downloads/FIA_biomass_point_v0.999.nc')
 
 
 x <- nc$dim$x$vals
@@ -131,7 +130,7 @@ tot.biom.df = as.data.frame(full.mat)
 ### Density
 
 nc_d <- nc_open('~/Downloads/PLS_density_western_point_v0.999.nc')
-nc_d <- nc_open('~/Downloads/FIA_density_point_v0.999.nc')
+#nc_d <- nc_open('~/Downloads/FIA_density_point_v0.999.nc')
 
 
 x <- nc_d$dim$x$vals
@@ -355,7 +354,7 @@ d <-
 #quartz()
 print(d)
 
-ggsave(d, filename = paste0(Sys.Date(), 'fia_biomass_map.pdf'))
+ggsave(d, filename = paste0(Sys.Date(), 'biomass_map.pdf'))
 
 temp <-
   read.csv('~/Downloads/reclimatedata/tmean_yr_Prism_1900_full.csv')
