@@ -795,7 +795,7 @@ We'll need to cite the forthcoming Paciorek et al.
  PLS methods paper.
  10/9/2019: Chris, do you want to create a citation for that or should I
  just make one that's Paciorek in prep? Do you know what the title would
- be?
+ be? 10/14/2019: Ann, please check back on this.
 \end_layout
 
 \end_inset
@@ -1420,7 +1420,7 @@ status open
 8/3/19: Ann, see email comments about 5 knot results.
  10/9/2019: Chris, I have R2 = .306 for figure 6 (3 knots) and R2 = .354 for
  figure 7-B (5 knots).
- 
+ 10/14/19: Ann, OK then that is consistent with the text.
 \end_layout
 
 \end_inset
@@ -1595,17 +1595,16 @@ reference "fig:The-gold-standard-fit"
 \end_inset
 
  = 0.306), but the MSE for the 10-fold cross-validation (MSE = 2320) is larger
- than held-out testing data (MSE = 2080).
+ than for the held-out testing data (MSE = 2080).
  It is somewhat difficult to compare the prediction results between the
  in-sample training data, the 10-fold cross-validation, and the held-out
  test set because the PLS-based biomass estimates vary between the sets,
  with some sets containing multiple high biomass sites, causing instability
  in the R2 and MSE values.
- But, the MSE values for the held-out set (MSE = 2080) are somewhat smaller
- than for the 10-fold cross-validation (MSE = 2320) and somewhat larger
- than for the in-sample set (MSE = 1820), giving no indication of overfitting.
- Based on the MSE, the model fit performance to the held-out testing data
- is comparable to the 10-fold cross-validation.
+ Given that the MSE for the held-out testing is not larger than for the
+ 10-fold cross-validation and only moderately larger than the MSE for the
+ in-sample set (MSE = 1820), we don't see any clear indication of overfitting.
+ 
 \begin_inset Note Note
 status open
 
@@ -1626,7 +1625,7 @@ It is a bit difficult to compare the prediction results between the in-sample
  larger than for the in-sample set), giving no indication of overfitting.
  10/9/2019: Chris, let me know what you think of the new wording now that
  we got the figures settled.
- 
+ 10/14/19: Ann, I made some edits to the wording.
 \end_layout
 
 \end_inset
