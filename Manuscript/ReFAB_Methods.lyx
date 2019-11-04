@@ -1437,14 +1437,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[7-A]10.fold.R2.nograss2019-07-02.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[7-A]10.fold.R2.nograss2019-07-02.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[7-B]10.fold.R2.5knots2019-06-03.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[7-B]10.fold.R2.5knots2019-06-03.pdf
 	scale 50
 
 \end_inset
@@ -1518,7 +1518,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[8]splines.10CV.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[8]splines.10CV.pdf
 	scale 50
 
 \end_inset
@@ -1643,7 +1643,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[9]new_gold.r2.validation.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[9]new_gold.r2.validation.pdf
 	scale 50
 
 \end_inset
@@ -1728,7 +1728,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[10]new_3_3rds_validation.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[10]new_3_3rds_validation.pdf
 	scale 50
 
 \end_inset
@@ -2452,7 +2452,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[11]beta_trace_plots.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[11]beta_trace_plots.pdf
 	scale 50
 
 \end_inset
@@ -2608,7 +2608,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[12]unstable_liks_calib_FULL.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[12]unstable_liks_calib_FULL.pdf
 	scale 45
 
 \end_inset
@@ -2655,14 +2655,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[13-A]compvbiom_calib_smooth.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[13-A]compvbiom_calib_smooth.pdf
 	scale 45
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[13-B]compvbiom_pred_smooth.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[13-B]compvbiom_pred_smooth.pdf
 	scale 45
 
 \end_inset
@@ -2785,14 +2785,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[14-A]map_unstable_calibration.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[14-A]map_unstable_calibration.pdf
 	scale 48
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[14-B]map_prediction_unstable.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[14-B]map_prediction_unstable.pdf
 	scale 48
 
 \end_inset
@@ -2935,7 +2935,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[15]no_analog_assessment.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[15]no_analog_assessment.pdf
 	scale 60
 
 \end_inset
@@ -2983,7 +2983,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/agb_figures/[16]max_lik_by_age.pdf
+	filename /Users/paleolab/ReFAB/final_figures/[16]max_lik_by_age.pdf
 	scale 50
 
 \end_inset
