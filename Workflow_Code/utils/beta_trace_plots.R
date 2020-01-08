@@ -5,7 +5,6 @@ samples.mixed.keep <- list()
 
 for(i in 1:50){
   load(paste0(path_to_betas,list.files(path_to_betas)[i]))
-  
   samples.mixed.keep[[i]] <- samples.mixed[49900:50000,]
   
 }

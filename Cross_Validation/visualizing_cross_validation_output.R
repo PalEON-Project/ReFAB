@@ -1,5 +1,88 @@
 sigma.vals <- c(.01,.03,.09,.27,.81)
 
+dataID <- read.csv(file.path('Cross_Validation','dataID_fine.csv'))
+
+head(dataID)
+
+out.list <- list()
+for(i in 1:3100){
+  file_dir <- paste0('~/Downloads/log.probs.agb/log.prob.liks_',i,'.Rdata')
+  if(file.exists(file_dir)) {
+    load(file_dir)
+    out.list[[i]] <- log.prob.list$log.prob.all#/-sum(log.prob.list$log.prob.data))
+    print(i)
+  }else{
+   out.list[[i]] <- NA 
+  }
+}
+
+
+
+length(which(is.na(sapply(out.list,sum))))/3100
+
+check <- data.frame(dataID[1:3100,],logProb =sapply(out.list,sum))#,logProb_old = unlist(log.save)
+
+check[which(unlist(out.list)< -1000),'logProb'] <- NA
+
+plot(check$sigma,check$logProb)
+boxplot(check$logProb~check$sigma)
+
+
+sig.sums <-  sig.sums_old <- numeric(length(sigma.vals))
+for(i in 1:length(sig.sums)){
+  sig.sums[i] <- sum(check[check$sigma==sigma.vals[i],'logProb'],
+                     na.rm = T)
+  sig.sums_old[i] <- sum(check[check$sigma==sigma.vals[i],'logProb_old'],
+                     na.rm = T)
+}
+
+sig.sums.save <- sig.sums
+
+sig.sums <- c(sig.sums[1], sig.sums.save[2],sig.sums[2:5])
+
+pdf('sigma_fine.pdf')
+par(mfrow=c(1,1),pty='s')
+plot(sigma.vals,sig.sums,typ='b',ylab='Log Likelihood Sum Across Sites',main='NewFiner')
+dev.off()
+
+pdf('sigma_compared.pdf')
+par(mfrow=c(1,2),pty='s')
+plot(sigma.vals,sig.sums,typ='b',ylab='Log Likelihood Sum Across Sites',main='New')
+plot(sigma.vals,sig.sums_old,typ='b',ylab='Log Likelihood Sum Across Sites',main='Old')
+dev.off()
+
+winter <- check[which(dataID[1:3100,]$name=='Wintergreen Lake'),]
+sig.sums <- numeric(length(sigma.vals))
+for(i in 1:length(sig.sums)){
+  sig.sums[i] <- sum(winter[winter$sigma==sigma.vals[i],'logProb'],
+                     na.rm = T)
+}
+plot(sigma.vals,sig.sums,typ='b')
+
+log.save <- list()
+for(i in 1:3100){
+  locnClean <- gsub(' ', '-', dataID[i,'name'])
+  sigma <- dataID[i,'sigma']
+  group <- dataID[i,'group']
+  if(file.exists(file.path('~/Downloads/log.prob',paste0('log.prob.',locnClean, 'Sigma',
+                                                         sigma, 'Group', group,'.Rdata')))){
+    load(file.path('~/Downloads/log.prob',paste0('log.prob.',locnClean, 'Sigma',
+                                                 sigma, 'Group', group,'.Rdata')))
+    print(i)
+    #site.rm.mat[g,] <- log.prob.list$samples.rm
+    log.save[[i]] <- log.prob.list$log.prob.all
+    
+  }else{
+    log.save[[i]] <- NA
+  }
+}
+
+  
+hist(unlist(log.save))
+hist(unlist(out.list))
+
+
+#################### Older Code
 # load in data for all sites, per Ann's original code
 if(!file.exists('allPredData.Rda'))
   source('prep_data.R') 

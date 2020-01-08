@@ -30,8 +30,14 @@ stop()
 
 sigma.vals <- c(.01,.03,.09,.27,.81)
 
-dataID <- data.frame(name = sort(rep(names(how.many),50)), ID = 1:3100,
-                     sigma = rep(sigma.vals,620), group = rep(sort(rep(1:10,5)),62))
+load('prediction.data_v4.Rdata')
+dataID <- data.frame(name = sort(rep(unique(x.meta$site.name),50)),
+                     ID = 1:3100,
+                     sigma = rep(sigma.vals,620),
+                     group = rep(sort(rep(1:10,5)),62))
+
+
+
 
 new.runs <- c('Tower Lake','Penegor Lake','Cub Lake','Wintergreen Lake','Kirchner Marsh','Gass Lake')
 dataID.new <- data.frame(name = sort(rep(new.runs,5)), ID = 3101:3130,

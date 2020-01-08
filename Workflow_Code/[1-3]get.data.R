@@ -1,4 +1,4 @@
-library(neotoma)
+library(neotoma) #version 1.7.2
 library(dplyr)
 library(maptools)#
 library(ggplot2)
@@ -144,7 +144,6 @@ if(DRAW == TRUE) dev.off()
 ###AGB
 nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
 nc_draws <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_v1.0rc1.nc'))
-
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals

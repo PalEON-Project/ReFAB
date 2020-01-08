@@ -134,7 +134,13 @@ for(i in 1:length(unique(dataID$name))){
   
 }
 
-save(all.samps.list,lat,long,file = 'refab_for_stability_v3.Rdata')
+#save(all.samps.list,lat,long,file = 'refab_for_stability_v3.Rdata')
+
+#####
+##### Write out netcdf for biomass reconstructions #####
+#####
+
+
 
 #####
 ##### Calculate derived quantities for plotting #####

@@ -27,7 +27,7 @@ tot_b = b[,'Total']
 #### biomass_dat_get from get_data.R
 load('biomass_dat_est_agb.Rdata')
 
-breaks <-  c(seq(0, 100, 25), seq(150, 450, 50))
+breaks <-  c(seq(0, 100, 25), seq(150, 250, 50))
 data_binned <-
   cut(biomass_dat_est$layer,
       c(breaks),
@@ -56,7 +56,7 @@ c2.melt <-
              colMeans(c1, na.rm = T), decreasing = FALSE
            )))) #has to be reshape not reshape2
 
-pdf('[4-A]settlement.biomass.tiles.pdf')
+pdf('[5-A]settlement.biomass.tiles.pdf')
  ppp <- ggplot() + geom_tile(data = c2.melt,
                      aes(x = X1, y = X2, fill = value),
                      colour = 'grey') +
@@ -104,7 +104,7 @@ c1.melt<-melt(c2)
 
 c2.melt <- within(c1.melt, X2 <- factor(X2,names(sort(colMeans(c1),decreasing = FALSE))))
 
-pdf('[4-B]settlement.pollen.tiles.pdf')
+pdf('[5-B]settlement.pollen.tiles.pdf')
 ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
   scale_fill_gradient(name = 'Pollen \n Proportion',low="white",high="black") +
   ylab('Tree Taxa') +
