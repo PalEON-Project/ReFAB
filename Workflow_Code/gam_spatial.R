@@ -67,7 +67,7 @@ vis.gam(b)
 ##### Get prediction coordiantes from PLS map
 #### 
 
-nc_pls <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
+nc_pls <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc2.nc'))
 
 x <- nc_pls$dim$x$vals
 y <- nc_pls$dim$y$vals
