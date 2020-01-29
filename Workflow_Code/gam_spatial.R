@@ -10,6 +10,7 @@ library(mgcv)
 library(ggplot2)
 library(maptools)
 library(reshape2)
+library(raster)
 
 #### 
 #### Load reconstruction
@@ -39,13 +40,35 @@ all.preds1 <- cbind(rep(lat,100),rep(lon,100),sort(rep(YBP,77)),c(agwb_time_slic
 head(all.preds1)
 colnames(all.preds1) <- c('lat','lon','age','agwb')
 
+
 #### 
-#### Fit GAM
+#### Load Smaller ReFAB Output
 #### 
 
+refab <- read.csv('median_biomass_plus_meta.csv')
+
+library(reshape2)
+
+refab_melt <- melt(refab,id.vars = c('lat','lon','name','site_index','X','cluster'))
+
+head(refab_melt)
+levels(refab_melt$variable) <- 1:100
+refab_melt$variable<-as.numeric(refab_melt$variable)
+
+#### 
+#### Fit GAM - with same data just different input files
+#### 
+
+#long data format
+if(FALSE)
 b <- gam(log(agwb) ~ te(lon, lat, age, d = c(2,1),
                         bs = c("tp","cr"), k=50),
          data = as.data.frame(all.preds1))
+
+#short data format
+b <- gam(log(value) ~ te(lon, lat, variable, d = c(2,1),
+                        bs = c("tp","cr"), k=30),
+         data = as.data.frame(refab_melt))
 
 summary(b)
 vis.gam(b)  
@@ -103,8 +126,8 @@ pdf('gam_maps_firstpass.pdf',compress = T)
 par(mfrow=c(2,2))
 for(age_slice in rev(seq(1000,10000,1000))){
 
-  pred_data = cbind(coors_dat,rep(age_slice,nrow(coors_dat)))
-  colnames(pred_data)<- c("lon","lat","age")
+  pred_data = cbind(coors_dat,rep(1000,nrow(coors_dat)))
+  colnames(pred_data)<- c("lon","lat","variable")#c("lon","lat","age")
   pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
   
   full.mat <- cbind(coors_dat,as.vector(pred_biomass_gam))
