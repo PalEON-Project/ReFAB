@@ -66,9 +66,12 @@ b <- gam(log(agwb) ~ te(lon, lat, age, d = c(2,1),
          data = as.data.frame(all.preds1))
 
 #short data format
-b <- gam(log(value) ~ te(lon, lat, variable, d = c(2,1),
-                        bs = c("tp","cr"), k=77),
-         data = as.data.frame(refab_melt))
+tictoc::tic()
+b <- gam(value ~ te(lon, lat, variable, d = c(2,1),
+                        bs = c("tp","cr"), k=70), #can choose k up to 77
+         data = as.data.frame(refab_melt),
+         control = gam.control(nthreads = 4))
+tictoc::toc()
 
 summary(b)
 vis.gam(b)  
@@ -95,10 +98,20 @@ x <- foo[,1]
 y <- foo[,2]
 
 #### 
+#### Crop Illinois and Indiana
+#### 
+foo <- foo[which(foo[,2]>463528),]
+#foo <- foo[-which(foo[,1]<664541.9&foo[,2]<690790.5),]
+
+x <- foo[,1]
+y <- foo[,2]
+
+plot(x,y)
+
+#### 
 #### Change from Albers to lat / lon
 #### 
 
-library(raster)
 albers.df = as.data.frame(cbind(x,y))
 colnames(albers.df) = c('x', 'y')
 
@@ -108,52 +121,89 @@ proj4string(albers.df) <- CRS('+init=epsg:3175')
 lat.lon <- spTransform(albers.df, CRS('+proj=longlat +ellps=WGS84'))
 coors_dat <- as.matrix(data.frame(lat.lon))
 
-usShp <- readShapeLines(file.path('Data', '/us_alb.shp'), proj4string=CRS('+init=epsg:3175'))
-usShp@data$id <- rownames(usShp@data)
-usFortified <- fortify(usShp, region='id')
-
-load('prediction.data_v6.Rdata')
-dataID <- read.csv('dataID_v5.csv')
-
-dataID_use <- dataID[-which(dataID$name%in%c('Lily Lake','Mud Lake','Chatsworth Bog')),]
-
 #### 
 #### Plotting function for differnt time slices
 #### 
 plot_count <- 0
 
-pdf('gam_maps_firstpass.pdf',compress = T)
-par(mfrow=c(2,2))
-for(age_slice in rev(seq(1000,10000,1000))){
+library(spatstat)
 
-  pred_data = cbind(coors_dat,rep(1000,nrow(coors_dat)))
+ch <- convexhull.xy(x= refab$lon,y=refab$lat)
+
+
+pdf('gam_maps_thirdpass.pdf',compress = T,height=15,width = 20)
+
+#layout(matrix(c(1,2,9,10,3,4,11,12,5,6,13,14,7,8,15,16,17,18,19,20),4,5))
+
+layout(matrix(c(1,2,3,10,4,5,6,10,7,8,9,11),3,4,byrow=T))
+
+par(oma=c(2,2,0,0),mar=c(0,0,4,0))
+
+for(age_slice in rev(seq(10,80,10))){
+print(age_slice)
+  pred_data = cbind(coors_dat,rep(age_slice,nrow(coors_dat)))
   colnames(pred_data)<- c("lon","lat","variable")#c("lon","lat","age")
-  pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
+  pred_biomass_gam = (predict(b,newdata = as.data.frame(pred_data),type='response',se.fit=TRUE))
   
-  full.mat <- cbind(coors_dat,as.vector(pred_biomass_gam))
+  full.mat <- cbind(coors_dat,as.vector(pred_biomass_gam$fit))
   colnames(full.mat) <- c("x","y","pred_biomass")
 
-  breaks <-  c(seq(0,200,25), seq(300,600,100))
+  breaks <-  c(seq(0,50,10),seq(75,250,25),435)
   colors <- rev(terrain.colors(length(breaks)-1))
-  legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP")
-
-  data_binned <-  cut(pred_biomass_gam, breaks, include.lowest = TRUE, labels = FALSE)
+  data_binned <-  cut(pred_biomass_gam$fit, breaks, include.lowest = TRUE, labels = FALSE)
   
+  legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
   breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
-
-  plot(full.mat[,1],full.mat[,2],col=colors[data_binned],pch=19)
+  
+  
+  plot(full.mat[,1],full.mat[,2],
+       col=adjustcolor(colors[data_binned],
+                       alpha.f = .25),
+       pch=19,
+       xaxt='n',
+       yaxt='n')
   maps::map('state',add=T)
-  title(age_slice)
+  plot(ch,add=T)
+  title(paste('Biomass',age_slice*100,'YBP'),cex=3)
   
-  points_get <- x.meta[x.meta$age_bacon<(age_slice+100)&x.meta$age_bacon>(age_slice-100)&x.meta$site.name%in%dataID_use$name,c('lat','long')]
-  points(points_get[,2],points_get[,1],pch=19,col='black',cex=.5)
+  #legend('topright',breaklabels,pch=19,col=colors)
+ 
+#### REFAB POINTS 
+  #points_get <- x.meta[x.meta$age_bacon<(age_slice+100)&x.meta$age_bacon>(age_slice-100)&x.meta$site.name%in%dataID_use$name,c('lat','long')]
+  pt_data <- refab_melt[refab_melt$variable==age_slice,]
+  data_binned_pts <- cut(pt_data[,'value'],breaks=breaks,labels=F)
+  points(pt_data[,2],pt_data[,1],pch=21,col='black',bg=colors[data_binned_pts],cex=3)
   
-  plot_count <- plot_count + 1
-  if(plot_count == 3){
-    plot.new()
-    legend('center',breaklabels,pch=19,col=colors)
-    plot_count <- 0
-  }
+  
+
+  
 }
+
+
+#### VARIANCE PLOTS  
+breaks_se <-  c(seq(0,10,1))
+white_red <- colorRampPalette(c('white','bisque','red','darkorchid4'))
+colors_se <- (white_red(length(breaks_se)))
+data_binned_se <-  cut(pred_biomass_gam$se, breaks_se, include.lowest = TRUE, labels = FALSE)
+breaklabels_se <- apply(cbind(breaks_se[1:(length(breaks_se)-1)], breaks_se[2:length(breaks_se)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
+
+plot(full.mat[, 1], full.mat[, 2],
+     col = colors_se[data_binned_se],
+     pch = 19,
+     xaxt='n',
+     yaxt='n')
+maps::map('state',add=T)
+plot(ch,add=T)
+title(paste('GAM Standard Error'))
+
+points(pt_data[,2],pt_data[,1],pch=21,bg='black',cex=1)
+
+
+plot.new()
+legend('center',breaklabels,pch=19,col=colors,cex=2,title = 'Biomass (Mg/ha)')
+
+plot.new()
+legend('center',legend=breaklabels_se,col=colors_se,pch=19,cex=2,title = 'SE')
+
 dev.off()
 ### how much to cut off?
