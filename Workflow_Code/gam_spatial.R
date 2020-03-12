@@ -85,7 +85,7 @@ gam.check(b)
 
 #short data format
 b <- gam(log(value) ~ te(lon, lat, variable, d = c(2,1),
-                        bs = c("tp","cr"), k=30),
+                        bs = c("tp","cr"), k=77),
          data = as.data.frame(refab_melt))
 
 summary(b)
