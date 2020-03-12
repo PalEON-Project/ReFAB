@@ -60,7 +60,7 @@ refab_melt$variable<-as.numeric(refab_melt$variable)
 #### 
 
 #long data format
-if(FALSE)
+if(FALSE){
 b <- gam(log(agwb) ~ te(lon, lat, age, d = c(2,1),
                         bs = c("tp","cr"), k=50),
          data = as.data.frame(all.preds1))
@@ -72,7 +72,7 @@ b <- gam(value ~ te(lon, lat, variable, d = c(2,1),
          data = as.data.frame(refab_melt),
          control = gam.control(nthreads = 4))
 tictoc::toc()
-
+}
 summary(b)
 vis.gam(b)  
 
@@ -130,10 +130,13 @@ library(spatstat)
 
 ch <- convexhull.xy(x= refab$lon,y=refab$lat)
 
+load('clusters.Rdata')
 
 pdf('gam_maps_thirdpass.pdf',compress = T,height=15,width = 20)
 
 #layout(matrix(c(1,2,9,10,3,4,11,12,5,6,13,14,7,8,15,16,17,18,19,20),4,5))
+
+library(wesanderson)
 
 layout(matrix(c(1,2,3,10,4,5,6,10,7,8,9,11),3,4,byrow=T))
 
@@ -155,9 +158,13 @@ print(age_slice)
   legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
   breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
   
+  coords <- data.frame(x=refab$lon[chull(x= refab$lon,y=refab$lat)],y=refab$lat[chull(x= refab$lon,y=refab$lat)]) #convex hull coordinates
+  pts_in <- which(point.in.polygon(point.x = full.mat[,1],point.y = full.mat[,2],pol.x = coords$x,pol.y = coords$y)==1)
   
-  plot(full.mat[,1],full.mat[,2],
-       col=adjustcolor(colors[data_binned],
+  biomass_sum <- round(sum(full.mat[pts_in,3]))
+  
+  plot(full.mat[pts_in,1],full.mat[pts_in,2],
+       col=adjustcolor(colors[data_binned[pts_in]],
                        alpha.f = .25),
        pch=19,
        xaxt='n',
@@ -166,17 +173,55 @@ print(age_slice)
   plot(ch,add=T)
   title(paste('Biomass',age_slice*100,'YBP'),cex=3)
   
-  #legend('topright',breaklabels,pch=19,col=colors)
- 
-#### REFAB POINTS 
+  
+  #Calculating total AGB in the convex hull of each cluster
+  #Might not be the best because they are all different sizes
+  chull1 <- chull(x=refab[which(clusters@cluster[pt_data$name]==1),c('lon')],y=refab[which(clusters@cluster[pt_data$name]==1),c('lat')])
+  chull2 <- chull(x=refab[which(clusters@cluster[pt_data$name]==2),c('lon')],y=refab[which(clusters@cluster[pt_data$name]==2),c('lat')])
+  chull3 <- chull(x=refab[which(clusters@cluster[pt_data$name]==3),c('lon')],y=refab[which(clusters@cluster[pt_data$name]==3),c('lat')])
+  
+  c1 <- refab[which(clusters@cluster[pt_data$name]==1),c('lon','lat')][chull1,]
+  c2 <- refab[which(clusters@cluster[pt_data$name]==2),c('lon','lat')][chull2,]
+  c3 <- refab[which(clusters@cluster[pt_data$name]==3),c('lon','lat')][chull3,]
+  
+  pts_in1 <- which(point.in.polygon(point.x = full.mat[,1],point.y = full.mat[,2],pol.x = c1[,1],pol.y = c1[,2])==1)
+  pts_in2 <- which(point.in.polygon(point.x = full.mat[,1],point.y = full.mat[,2],pol.x = c2[,1],pol.y = c2[,2])==1)
+  pts_in3 <- which(point.in.polygon(point.x = full.mat[,1],point.y = full.mat[,2],pol.x = c3[,1],pol.y = c3[,2])==1)
+  
+  biomass_sum1 <- round(sum(full.mat[pts_in1,3]))
+  biomass_sum2 <- round(sum(full.mat[pts_in2,3]))
+  biomass_sum3 <- round(sum(full.mat[pts_in3,3]))
+  
+  #sum(biomass_sum1,biomass_sum2,biomass_sum3) #doesn't add up because convex hulls are overlapping for clusters
+  if(FALSE){
+  legend('topright',c(paste('Total AGB =',signif(biomass_sum,digits = 3),'Mg'),
+                          paste('Cluster 1 AGB =',signif(biomass_sum1,digits = 3),'Mg'),
+                                paste('Cluster 2 AGB =',signif(biomass_sum2,digits = 3),'Mg'),
+                                      paste('Cluster 3 AGB =',signif(biomass_sum3,digits = 3),'Mg')))
+  }
+  
+  
+  #### REFAB POINTS 
   #points_get <- x.meta[x.meta$age_bacon<(age_slice+100)&x.meta$age_bacon>(age_slice-100)&x.meta$site.name%in%dataID_use$name,c('lat','long')]
   pt_data <- refab_melt[refab_melt$variable==age_slice,]
   data_binned_pts <- cut(pt_data[,'value'],breaks=breaks,labels=F)
-  points(pt_data[,2],pt_data[,1],pch=21,col='black',bg=colors[data_binned_pts],cex=3)
+  points(pt_data[,2],pt_data[,1],pch=21,col=viridis::magma(3)[clusters@cluster[pt_data$name]],bg=colors[data_binned_pts],cex=3)
   
+  #Calculates mean and var by refab estimate points. But this doesn't tell the whole landscape story...
+  m1 <- mean(pt_data[which(clusters@cluster[pt_data$name]==1),c('value')])
+  m2 <- mean(pt_data[which(clusters@cluster[pt_data$name]==2),c('value')])
+  m3 <- mean(pt_data[which(clusters@cluster[pt_data$name]==3),c('value')])
   
-
+  v1 <- sd(pt_data[which(clusters@cluster[pt_data$name]==1),c('value')])
+  v2 <- sd(pt_data[which(clusters@cluster[pt_data$name]==2),c('value')])
+  v3 <- sd(pt_data[which(clusters@cluster[pt_data$name]==3),c('value')])
   
+  legend('topright',c(paste('Total AGB =',signif(biomass_sum,digits = 3),'Mg'),
+                      paste('Cluster 1 AGB Mean =',signif(m1,digits = 3),'Mg/ha,','SD =',signif(v1,digits = 3),'Mg/ha,'),
+                      paste('Cluster 2 AGB Mean =',signif(m2,digits = 3),'Mg/ha,','SD =',signif(v2,digits = 3),'Mg/ha,'),
+                      paste('Cluster 3 AGB Mean =',signif(m3,digits = 3),'Mg/ha,','SD =',signif(v3,digits = 3),'Mg/ha,')))
+  
+ 
 }
 
 
