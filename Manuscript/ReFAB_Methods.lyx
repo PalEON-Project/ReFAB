@@ -2194,9 +2194,9 @@ key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray}
-b_{t} & \sim & N(3b_{t-1}-3b_{t-2}+3b_{t-3},\omega_{t})\label{eq:expanded1}\\
-\omega_{t} & \sim & \mathrm{Expon}\left(\lambda_{t}\left(\frac{\lambda_{t}}{2}\right)\right)\label{eq:expanded2}\\
-\lambda_{t} & \sim & \mathrm{gamma}(1,\sigma)\label{eq:expanded3}
+b_{t} & \sim & N(3b_{t-1}-3b_{t-2}+3b_{t-3},\text{variance}=\omega_{t})\label{eq:expanded1}\\
+\omega_{t} & \sim & \mathrm{Expon}\left(\text{rate=}\frac{\lambda_{t}^{2}}{2}\right)\label{eq:expanded2}\\
+\lambda_{t} & \sim & \mathrm{gamma}(1,\text{scale}=\sigma)\label{eq:expanded3}
 \end{eqnarray}
 
 \end_inset
