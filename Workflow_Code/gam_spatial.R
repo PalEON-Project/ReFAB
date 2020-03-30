@@ -74,7 +74,7 @@ b <- gam(value ~ te(lon, lat, variable, d = c(2,1),
 tictoc::toc()
 
 summary(b)
-vis.gam(b)  
+vis.gam(b)
 
 #### 
 ##### Get prediction coordiantes from PLS map
