@@ -7,7 +7,49 @@
 \textclass article
 \begin_preamble
 
+%\documentclass[12pt]{article}
+
+% Users of the {thebibliography} environment or BibTeX should use the
+% scicite.sty package, downloadable from *Science* at
+% http://www.sciencemag.org/authors/preparing-manuscripts-using-latex 
+% This package should properly format in-text
+% reference calls and reference-list numbers.
+
+%\usepackage{scicite}
+\usepackage{times}
+%\usepackage[utf8]{inputenc}
+%\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[nomarkers,figuresonly,nofiglist]{endfloat}
+
+\usepackage{titlesec}
+\usepackage{lipsum}
+
+%\titleformat{\part}
+%  {\normalfont\bfseries}{\thesection}{1em}{}
+
+\usepackage{sectsty}
+\partfont{\normalfont\large\itshape\bfseries}
+\sectionfont{\normalfont\normalsize\itshape\underline}
+\subsectionfont{\normalfont\normalsize\itshape\underline}
+\subsubsectionfont{\normalfont\small\itshape\underline}
+
+% The preamble here sets up a lot of new/revised commands and
+% environments.  It's annoying, but please do *not* try to strip these
+% out into a separate .sty file (which could lead to the loss of some
+% information when we convert the file to other formats).  Instead, keep
+% them in the preamble of your main LaTeX source file.
+
+
+% The following parameters seem to provide a reasonable page setup.
+
+\topmargin 0.0cm
+\oddsidemargin 0.2cm
+\textwidth 16cm 
+\textheight 21cm
+\footskip 1.0cm
 \end_preamble
+\options latin1
 \use_default_options true
 \maintain_unincluded_children false
 \language english
@@ -45,7 +87,7 @@
 \use_package stmaryrd 1
 \use_package undertilde 1
 \cite_engine natbib
-\cite_engine_type authoryear
+\cite_engine_type numerical
 \biblio_style plain
 \use_bibtopic false
 \use_indices false
@@ -101,62 +143,216 @@ status open
 
 \end_layout
 
-\begin_layout Section
-Study area
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename sci_logo.png
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-We chose our study area based on the extensive amount of paleoecological
- data that is available.
- Our study area includes the Upper Midwest states: Minnesota, Wisconsin,
- and Michigan, in addition to small parts of northern Illinois and Indiana.
- The sedimentation and lake basins in these states were formed after the
- draining of glacial Lake Agassiz.
- The geography is characterized by flat terrain in the west and more topography
- in the east.
- There are also sand deposits in the north near the south side of Lake Superior.
- Temperature in the Upper Midwest decreased slightly over the Holocene due
- to decreasing solar insolation 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "mann2008proxy"
-
+\begin_inset VSpace medskip
 \end_inset
 
- while precipitation is believed to have increased 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "williams2010rapid,miao200710"
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
 \end_inset
 
-.
- Decreasing temperature and increasing precipitation during the Holocene
- were accompanied by increasing CO2 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "indermuhle1999holocene,bereiter2015revision"
 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size huge
+Species migrations created a 5,000 year regional carbon sink 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
 \end_inset
 
-.
- The vegetation distribution is highly varied across this region with prairie
- in the southwest and closed forests in the northeast.
- Oak savanna existed between the prairie and closed forest ecosystems.
- The tree species composition has mostly remained the same during the Holocene
- except for the introduction around 6000 years BP of high biomass species
- Hemlock and Beech 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "davis1981quaternary,williams2004late"
 
+\end_layout
+
+\begin_layout Standard
+\align center
+Ann Raiho, Chris Paciorek, Jason McLachlan
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
 \end_inset
 
-.
+
+\end_layout
+
+\begin_layout Standard
+\align center
+Correspondence to: araiho@nd.edu
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+This PDF file includes: 
+\end_layout
+
+\begin_layout Itemize
+Materials and Methods 
+\end_layout
+
+\begin_layout Itemize
+Tables S1
+\end_layout
+
+\begin_layout Itemize
+Figs.
+ S1 to S16 
+\end_layout
+
+\begin_layout Paragraph*
+Other Supplementary Materials for this manuscript include the following:
+ 
+\end_layout
+
+\begin_layout Itemize
+Data S1 to S4 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+Materials and Methods
 \end_layout
 
 \begin_layout Section
-Pollen data
+Vegetation data
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Vegetation-data"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our estimates of the aboveground woody biomass (AGWB), taxonomic composition,
+ and stem density of Midwestern vegetation from the period immediately preceding
+ 19th century land clearance (hereafter "settlement-era") are posterior
+ estimates from gridded statistical models fit to land-survey data from
+ the extensive Public Land Survey (PLS) conducted at that time in the Midwest
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "schulte2001original"
+
+\end_inset
+
+.
+ Details of model structure and fit are found in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "paciorek2016statistically"
+
+\end_inset
+
+.
+ Here we briefly note a root mean square error of .0739 following a assessing
+ the fit of the model on a held-out dataset and showing the reliability
+ of our pre-settlement estimates.
+ We use settlement-era biomass estimates rather than estimates from the
+ modern landscape because settlement-era vegetation was more representative
+ of the vegetation that existed throughout the pre-industrial Holocene than
+ modern vegetation, which has been substantially disrupted in both composition
+ and structure by human activity 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "goring2016novel"
+
+\end_inset
+
+.
+ Evidence that settlement-era vegetation captures the breadth of PIH vegetation
+ composition is below under "No Analog Assessment."
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We'll need to cite the forthcoming Paciorek et al.
+ PLS methods paper.
+ 10/9/2019: Chris, do you want to create a citation for that or should I
+ just make one that's Paciorek in prep? Do you know what the title would
+ be? 10/14/2019: Ann, please check back on this.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/paleolab/ReFAB/final_figures/[3]only_calibration_map_agb.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Estimated biomass (Mg/ha) at calibration sites at the time of settlement.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pls-point-biomass"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Pollen data & sediment dating
 \begin_inset Note Note
 status open
 
@@ -170,28 +366,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-Fossil pollen gives us a window into past vegetation composition and distributio
-n.
- Each year pollen from trees, shrubs, and grasses collects at the surface
- of lakes and ponds.
- Then, these pollen grains sink to the bottom of the lakes, ponds, or bogs
- where they are stored in the sediment layers over millennia.
- These records are obtained by retrieving soil cores from the bottom of
- lakes.
- Soil cores have been collected by numerous research groups in lakes and
- ponds around the world.
- There are 253 sediment core sites in our study area (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Map-of-pollen"
-
-\end_inset
-
-).
- Henceforth, when will refer to lake, ponds, or bogs where the cores were
- collected as pollen core sites.
- These data are archived in the publicly available paleoecological database
- Neotoma (
+We down-loaded the 253 sediment core sites in our study area from the paleoecolo
+gical database Neotoma (
 \begin_inset CommandInset href
 LatexCommand href
 name "https://neotomadb.org"
@@ -201,17 +377,67 @@ target "https://neotomadb.org"
 
 , 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "goring2015neotoma"
 
 \end_inset
 
+) on October 31, 2018 (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Map-of-pollen"
+
+\end_inset
+
 ).
+ Henceforth, when we refer to lake, ponds, or bogs where the cores were
+ collected as pollen core sites.
+ Sediment samples with pollen count data are dated primarily using radiocarbon
+ dating.
+ We estimated the true age of these samples as the median posterior estimates
+ from the BACON age depth model v2.2 in the R computing environment v3.5.1
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "blaauw2011flexible,goring2012deposition"
+
+\end_inset
+
+.
+ We used existing estimates from a previous study 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "dawson2016quantifying"
+
+\end_inset
+
+ and added 15 additional sites using the bulk-baconizing package in the
+ R computing environment 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Goring2019"
+
+\end_inset
+
+ (Bacon output available in our data repository).
+ Median estimates of sample ages are shown in Figure S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sampling-points-for"
+
+\end_inset
+
+.
+ We excluded samples with a median age earlier than 10,000 years before
+ present to preserve the Holocene focus of our project, and because samples
+ from earlier sediments are more likely to contain pollen assemblages without
+ analogs in samples from our calibration data from the settlement-era.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement H
+placement p
 wide false
 sideways false
 status open
@@ -263,42 +489,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-Samples are dated using radiocarbon dating.
- We use posterior estimates of sample dates from the BACON age depth model
- v2.2 in the R computing environment v3.5.1 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "blaauw2011flexible,goring2012deposition"
-
-\end_inset
-
-.
- The sampling period for the sites in our domain extends from the present
- to as far as 20000 years before present for some cores (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Sampling-points-for"
-
-\end_inset
-
-).
- For our purposes, we only use samples younger than 10,000 years before
- present for reconstruction because this minimizes the presence of no-analog
- communities and avoids high sample dating uncertainty.
- Our assessment of no analog communities is described in more detail in
- section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "subsec:No-analog-assessment"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
-placement H
+placement p
 wide false
 sideways false
 status open
@@ -306,7 +498,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[2]chrono_ 2019-10-09 .pdf
+	filename /Users/paleolab/ReFAB/final_figures/[2]chrono_ 2019-10-09.pdf
 	scale 60
 
 \end_inset
@@ -363,76 +555,65 @@ status open
 \end_layout
 
 \begin_layout Standard
-We calibrate our estimate of biomass at the time of settlement because we
- have more robust estimates of forest biomass at this time than at modern
- time, forests at this time were much less affected by massive human land
- use change, and these forests are more representative of forests in the
- deep past than modern forests 
+We selected pollen samples to calibrate against AGWB estimates from survey
+ data using an approach similar to that of Dawson et al (2016) 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "goring2015changes"
-
-\end_inset
-
-.
- This is similar to the approach used by 
-\begin_inset CommandInset citation
-LatexCommand citet
 key "dawson2016quantifying"
 
 \end_inset
 
 .
- We used the calibration dataset from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
- with additional calibration points from cores added to Neotoma since 2016,
- giving us a total of 232 calibration points across the Upper Midwest.
- The choice of which pollen sample at each site would be part of the calibration
- dataset was determined using expert elicitation.
- We chose pollen samples to be used for calibration from just before the
- time of settlement using expert elicitation to determine the settlement
- horizon in each pollen core record.
- These methods are covered more extensively in Dawson 2016.
- Basically, each pollen core diagram was sent to expert paleo-ecologists
- who were surveyed about when settlement began to occur on the landscape
- according to the pollen diagram.
- Paleo-ecologists determine the settlement horizon by looking at pollen
- abundances and typically select a settlement horizon when more grass type
- pollen enters the pollen diagram, indicative of land use change that is
- a symptom of settlement.
- Palynologist experts (Jackson and Williams
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Jason has not yet completed the EE
-\end_layout
-
-\end_inset
-
-) selected the depth in each core immediately preceding an increase herbaceous
- species, which indicates an increase in agricultural activities representing
- the settlement horizon.
- Each site's samples were organized by sample age.
- Sites were excluded if any expert could not select a settlement horizon
- sample or if experts disagreed about the location of the settlement horizon
- sample within plus or minus two samples.
+ Calibration pollen data were all samples determined by expert elicitation
+ to be contemporaneous with the settlement-era survey data.
+ A panel of experts in Midwestern paleoecology were presented with unlabeled
+ depth series of taxonomic percentages from every site with sufficient data
+ spanning the settlement-era and were asked to identify the depth of the
+ "settlement horizon" using their own criteria and to report their certainty
+ in that decision.
+ Sites were excluded from the calibration dataset if any expert could not
+ select a settlement horizon sample or if experts disagreed about the location
+ of the settlement horizon sample within plus or minus two samples.
  
 \end_layout
 
 \begin_layout Standard
-Before doing the exploratory analyses and initial model fitting to choose
- the taxa to use in the modeling and the model structure, we removed one-third
- of the sites as a held-out test set on which to evaluate the final model,
- discussed further in following sections.
+This process resulted in a set of 232 sites, comprising the sites identified
+ in Dawson et al (2016) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "dawson2016quantifying"
+
+\end_inset
+
+ and additional sites from cores added to the Neotoma database since 2016
+ (Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sampling-points-for"
+
+\end_inset
+
+).
+ These sites are distributed evenly across geographic space, climate, and
+ AGWB at the settlement era (Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pls-point-biomass"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Before conducting exploratory analyses and initial model fitting, we removed
+ a random selection of one-third of the sites as a held-out test set on
+ which to evaluate the final model, discussed further in following sections.
  The remaining two-thirds of the sites were considered to be our calibration
  training dataset.
- 
 \end_layout
 
 \begin_layout Subsubsection*
@@ -457,45 +638,27 @@ name "subsec:Prediction-Dataset"
 \end_layout
 
 \begin_layout Standard
-Our prediction dataset includes 77 sediment cores.
+Our prediction dataset comprises 77 sediment cores with at least 10 samples
+ dating between 8000 and 2000 years before present (Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sampling-points-for"
+
+\end_inset
+
+).
+ Sixty-two of such sites are found in a previous publication 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "dawson2016quantifying"
+
+\end_inset
+
+.
  We excluded southern Illinois and Indiana because the climate and vegetation
  composition are not similar to the rest of our calibration dataset.
- We used the Bacon age-depth model (
-\begin_inset CommandInset citation
-LatexCommand citealt
-key "blaauw2011flexible"
-
-\end_inset
-
-) to estimate the ages of samples at each site, relying on existing Bacon
- estimates from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
- and running Bacon ourselves using the bulk-baconizing package in the R
- computing environment (
-\begin_inset CommandInset citation
-LatexCommand citealt
-key "Goring2019"
-
-\end_inset
-
-) for 15 additional sites that met our prediction site criteria (Bacon output
- available in our data repository).
- We use a subset of 62 sites from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "dawson2016quantifying"
-
-\end_inset
-
- that met our prediction dataset criterion.
- Based on the posterior mean sample ages from Bacon, we selected sites with
- at least 10 samples between 8000 and 2000 years before present, giving
- a total of 77 sites in the prediction dataset.
+ 
 \end_layout
 
 \begin_layout Subsubsection*
@@ -503,39 +666,39 @@ Pollen taxa
 \end_layout
 
 \begin_layout Standard
-Taxa and groupings used were determined with a combination of expert opinion
- and assessment of model performance using various taxa and groupings using
- an early version of the model discussed below.
- We began with all arboreal pollen taxa individually and a group of taxa
- we call 'prairie.' The prairie group was selected using 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "mclauchlan2013tallgrass"
-
-\end_inset
-
- identification of what pollen groups are indicative of prairie presence.
- Then we selected arboreal taxa known to be important contributors to abovegroun
-d biomass to be stand-alone taxa while grouping the rest of the arboreal
- taxa into an 'other arboreal' category.
- We used Cyperaceae pollen taxa as its own group because there was high
- abundance in our samples.
- The remaining herbaceous taxa were grouped into an 'other herbaceous' category.
- The 'other' categories allow us to use all pollen counts while reducing
- dimensionality somewhat.
- The final groups of taxa can be found in Table 
+We used a combination of expert opinion and assessment of model performance
+ to determine how to group pollen taxa to best estimate AGWB (Table S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Taxa-table"
 
 \end_inset
 
+).
+ We included most arboreal taxa separately, but created an "other arboreal"
+ group of six taxa rarely found in our sediments.
+ Herbaceous taxa were mainly grouped in the "other herbaceous" category,
+ but we included 
+\shape italic
+Cyperaceae
+\shape default
+ pollen, which are occasionally in high abundance, as an separate type,
+ and we grouped the six taxa identified as indicative of "prairie" vegetation
+ in previous literature 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "mclauchlan2013tallgrass"
+
+\end_inset
+
 .
+ The alternative taxonomic groupings we used in the analysis shown in Figure
+ 2 in the manuscript are described below.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float table
-placement H
+placement p
 wide false
 sideways false
 status open
@@ -748,171 +911,6 @@ name "tab:Taxa-table"
 \end_layout
 
 \begin_layout Section
-Vegetation data
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Vegetation-data"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Forest biomass at time of settlement is derived from historical surveys,
- which were collected over decades.
- Settlement vegetation across the Upper Midwest was diverse, ranging from
- open prairie to closed forest.
- These public land survey data were used to estimate ecosystem metrics including
- stem density and forest biomass 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "goring2015changes"
-
-\end_inset
-
-.
- Here we use the posterior estimate of forest biomass for our model calibration.
- Note that biomass is based on allometric relationships of DBH to stem biomass
- and therefore does not represent the full amount of aboveground biomass.
- This rich dataset allows us to estimate (stem) biomass at all 232 pollen
- calibration sites at time of settlement.
- Because we do not have a time series of biomass data before settlement,
- we substitute space for time in our model calibration (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pls-point-biomass"
-
-\end_inset
-
-).
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-We'll need to cite the forthcoming Paciorek et al.
- PLS methods paper.
- 10/9/2019: Chris, do you want to create a citation for that or should I
- just make one that's Paciorek in prep? Do you know what the title would
- be? 10/14/2019: Ann, please check back on this.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[3]only_calibration_map_agb.pdf
-	scale 50
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Estimated biomass (Mg/ha) at calibration sites at the time of settlement.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:pls-point-biomass"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We use biomass from time of settlement instead of biomass from the modern
- landscape because settlement biomass is more representative of the types
- of forests that existed during the Holocene.
- We explored climate and environmental space of both the settlement and
- modern biomass data products from Paciorek in prep and found that settlement
- and modern biomasses have very different relationships to climate and the
- environment (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pls_v_fia"
-
-\end_inset
-
-).
- We compare biomass from settlement and modern time points to mean annual
- temperature and precipitation.
- We also show the first principle component of an analysis of climate and
- the environment done by Heilman et al in prep.
- Both climate covariates and the first principle component relationship
- to biomass is very different between settlement and modern biomass data
- products.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[4]pls_v_fia_plot.pdf
-	scale 50
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:pls_v_fia"
-
-\end_inset
-
-Environmental variables related to biomass (Mg/ha) on both the settlement
- (black) and modern (red) landscapes.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 Model description
 \end_layout
 
@@ -939,6 +937,7 @@ reference "fig:tiles"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -968,7 +967,7 @@ status open
  (right) The shading in each box represents the proportion of pollen from
  each tree species averaged over the sites falling in each biomass category
  (as determined from the PLS estimates).
- This illustrates that biomass is associated with the the relative composition
+ This illustrates that biomass is associated with the relative composition
  of pollen of the various taxa.
  
 \begin_inset CommandInset label
@@ -1043,14 +1042,14 @@ Our two step approach also allows us to have greater flexibility in model
  the sites jointly for future work.
  See 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "dawson2016quantifying"
 
 \end_inset
 
  and 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "paciorek2009mapping"
 
 \end_inset
@@ -1131,7 +1130,7 @@ In the calibration phase, we model the nonlinear multivariate relationship
 More specifically, we use beta distributions combined using a stickbreaking
  structure (i.e., a generalized Dirichlet distribution 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "LingwallJeffW.2008DbBm,ConnorRobertJ.1969CoIf"
 
 \end_inset
@@ -1139,7 +1138,7 @@ key "LingwallJeffW.2008DbBm,ConnorRobertJ.1969CoIf"
 , which is also a special case of the Dirichlet tree structure discussed
  in 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "wang2017dirichlet"
 
 \end_inset
@@ -1358,9 +1357,10 @@ all validation plots are made in -> validation_plot.R
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1430,6 +1430,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -1510,7 +1511,7 @@ reference "fig:blue-splines"
 
 \begin_layout Standard
 \begin_inset Float figure
-placement H
+placement p
 wide false
 sideways false
 status open
@@ -1635,6 +1636,7 @@ It is a bit difficult to compare the prediction results between the in-sample
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -1720,6 +1722,7 @@ reference "subsec:Uncertainty-propagation"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -1896,22 +1899,22 @@ Biomass evolution in forest stands is a long-term, generally smooth process,
  (GP) distribution to provide nonstationary temporal structure.
  A GP distribution has a spike at zero (like a Laplace distribution or spike-and
 -slab model) combined with a heavy tail that allows for outlying values.
- Such distributions have been used for model selection (
+ Such distributions have been used for model selection 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "taddy2013multinomial,armagan2013generalized"
 
 \end_inset
 
-) as well as representing random processes, which is know as trend filtering
- (
+ as well as representing random processes, which is know as trend filtering
+ 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "tansey2017multiscale,ramdas2016fast,roualdes2015bayesian"
 
 \end_inset
 
-).
+.
  Here we embed the GP distribution in a third-order random walk process
  model to induce smoothness as well as nonstationarity: 
 \end_layout
@@ -2102,14 +2105,14 @@ However, achieving good MCMC performance for the prediction model required
  additional work.
  We initially attempted to fit the prediction model above using the default
  MCMC sampling strategy in NIMBLE as well as the default HMC sampler in
- Stan (
+ Stan 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "CarpenterBob2017S:AP"
 
 \end_inset
 
-).
+.
  In the former case, we found that the strong (and complicated structure
  of the) posterior correlation between biomass values at nearby points in
  time caused very poor mixing.
@@ -2178,14 +2181,14 @@ reference "eq:pred likelihood"
 
 \end_inset
 
-Next note that following [
+Next note that following 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
 
 \end_inset
 
-] the generalized Pareto can be written as:
+]the generalized Pareto can be written as:
 \end_layout
 
 \begin_layout Standard
@@ -2339,7 +2342,7 @@ Our MCMC sampling scheme consists of the sampler above applied at all time
 \begin_layout Standard
 Note that in work we found after implementing our approach, 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "FaulknerMirin2018"
 
 \end_inset
@@ -2444,6 +2447,7 @@ reference "fig:beta-trace-liks"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -2600,6 +2604,7 @@ reference "fig:maps-calib-pred-bimodal"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -2647,6 +2652,7 @@ name "fig:2/3 liks"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -2736,17 +2742,17 @@ A.
  ecotones, in particular the Big Woods of Minnesota that have unexpectedly
  low proportions of non-oak arboreal pollen types that would indicate higher
  biomass (elm, maple, basswood, and ash) relative to the tree composition
- at settlement (
+ at settlement 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "paciorek2016statistically"
 
 \end_inset
 
-).
+.
  Note that 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 key "dawson2016quantifying"
 
 \end_inset
@@ -2777,6 +2783,7 @@ reference "fig:3/3 fit"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -2836,19 +2843,12 @@ name "subsec:No-analog-assessment"
 \end_layout
 
 \begin_layout Standard
-No analog pollen compositions, a well known phenomena in paleo-ecology,
- are pollen compositions that have no modern analog.
- We need to be particularly careful of them because they are not represented
- in our calibration model and therefore it is difficult to make good biomass
- predictions for such samples.
- We assess all pollen count samples used in the prediction model for no
- analog communities.
- 
-\end_layout
-
-\begin_layout Standard
-We look for no analog communities by measuring the square chord distance
- between samples.
+Our prediction model depends on calibration during the settlement-era so
+ predictions of AGWB based on pollen assemblages without good analogs in
+ our calibration dataset run the risks associated with statistical extrapolation.
+ We looked for no-analog pollen assemblages in our prediction dataset by
+ measuring the squared chord distance between samples.
+ The chord distance between samples.
  The chord distance between samples 
 \begin_inset Formula $j$
 \end_inset
@@ -2900,14 +2900,14 @@ reference "fig:No-analog-figure"
 
 ).
  Standard paleo-ecological studies use a benchmark of 0.3 as a threshold
- for no-analog communities (
+ for no-analog communities 
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
 key "flower1997matching"
 
 \end_inset
 
-).
+.
  Furthermore, we computed the likelihood value evaluated at the maximum
  likelihood estimate of biomass for each of the samples and looked to see
  if these varied systematically with sample age.
@@ -2927,6 +2927,7 @@ reference "fig:nax-liks-by-age"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -2971,6 +2972,7 @@ name "fig:No-analog-figure"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement p
 wide false
 sideways false
 status open
@@ -3029,53 +3031,61 @@ name "sec:Exploring-Different-Taxa"
 \end_layout
 
 \begin_layout Standard
-We computed the effects of different groupings of pollen by using the training
- and testing calibration datasets to assess predictive performance when
- grouping the pollen taxa into a variety of groups.
- These different groups were composed to explore ideas related to what plant
- traits can explain variations in biomass.
- First, we grouped our pollen taxa into the original leaf physiology-based
- plant functional type groups: grass (or prairie here), deciduous, and conifer.
- Second, we categorized pollen taxa into three trait categories based on
- a principal component analysis of seed mass, wood density, and leaf mass
- area between taxa.
- These are the dominant plant traits found to explain global vegetation
- distribution in 
+In the analysis illustrated in Figure 2 of the main text, we created five
+ alternative groupings of pollen types, each consistent with a hypothesis
+ about how plant traits are associated with biomass.
+ To level the playing field, each alternative grouping was constrained so
+ that each pollen type was classified as a member of one of three groups.
+ In grouping 1 (PFT), we sorted pollen types into the plant functional types
+ herbaceous, broad-leaf deciduous, and coniferous, as seen in 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
+key "foley1996integrated,friend2000evaluation"
+
+\end_inset
+
+.
+ In grouping 2 (Traits), we categorized pollen types into trait categories
+ based on a principal components analysis of seed mass, wood density, and
+ leaf mass area, a set of traits found to explain the global distribution
+ of vegetation 
+\begin_inset CommandInset citation
+LatexCommand citep
 key "van2014fully"
 
 \end_inset
 
 .
- Third, we organized pollen taxa into dominant biome types: forest, savanna,
- and prairie.
- Fourth, we divided pollen taxa into shade tolerance categories.
- We decided shade tolerance categories based on the dominant species shade
- tolerance classification in each genus.
- Finally, we used hemlock and beech pollen individually and aggregated all
- other pollen types into an 'other' category.
- We tested each validation fit for three things: linear 
-\begin_inset Formula $R^{2}$
-\end_inset
-
-, mean squared error, and average variance for each point prediction to
- determine which grouping best reproduced settlement point estimates of
- above ground biomass.
- To avoid overfitting, similarly to the full model validation, we fit the
- validation plots using the training dataset and we report the values for
- both the training and testing dataset validations.
- These results are reported in the main manuscript text and figure 2, which
- shows the importance of successional status and in particular of hemlock
- and beech.
+ In our third grouping (Biome), we sorted pollen types into the three major
+ biomes in our region, prairie, savanna, and forest.
+ In grouping four (Successional Status), we divided pollen types into shade
+ tolerance categories based on the regionally dominant species in each pollen
+ type.
+ Our grouping 5 is a test of the hypothesis proposed in this paper, that
+ the abundance of two species, eastern hemlock and American beech, explains
+ much of the distribution of settlement-era biomass.
+ Here, the relative abundance of hemlock and beech comprise the first two
+ group, and all other taxa are combined in the third group.
  
+\end_layout
+
+\begin_layout Standard
+We used three goodness of fit measures to validate the fit of each alternate
+ grouping against the true AGWB, as estimated from the PLS survey data:
+ linear R2 , mean squared error, and the average variance for each point
+ prediction.
+ To assess overfitting, we fit the validation plots using the training dataset
+ (2/3 of sites, see Calibration), and we report the values for both the
+ training dataset (calibration dataset of 2/3 of all sites) and the testing
+ dataset (the remaining 1/3 of sites held out of calibration).
+ See Figure 2 in the main text.
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "ReFAB_refs"
-options "/Users/paleolab/Downloads/ecology"
+options "science"
 
 \end_inset
 
