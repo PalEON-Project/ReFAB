@@ -25,7 +25,7 @@ minAge <- 0
 maxAge <- 10000
 ageInterval <- 100
 hem.is <- out.list <- LS.is <- Y.keep <- list()
-lat <- long <- all.samps.list <- name.keep <- age.keep <- list()
+lat <- long <- all.samps.list <- info <- name.keep <- age.keep <- site_num_keep <- list()
 do.samps = TRUE
 #####
 ##### Load Data #####
@@ -34,8 +34,8 @@ do.samps = TRUE
 for(i in 1:length(unique(dataID$name))){
   locn <- as.character(unique(dataID$name)[i])
   locnClean <- gsub(' ', '-', unique(dataID$name)[i])
-  site_number = unique(x.meta[x.meta$site.name == locn,1])
-  if(locn == 'Lily Lake' | locn == 'Mud Lake') next()
+  site_number <- site_num_keep[[i]]<- unique(x.meta[x.meta$site.name == locn,1])
+  if(locn == 'Lily Lake' | locn == 'Mud Lake' | locn == 'Seidel') next()
   
   x.meta.use <- x.meta[x.meta$site.name == locn,]
   
@@ -93,13 +93,14 @@ for(i in 1:length(unique(dataID$name))){
           load(file = file_name1)
           
           out.list[[i]][[b]] <- out
+          
+          
         } else{
           out.list[[i]] <- NA
           print(paste('missing',locn))
         }
       }
-      
-      
+
       
       #Takes out modern data estimates where data stop# i.e. 'cut' approach
       #samplesList[,1:min(age_index)] <- NA
@@ -117,11 +118,24 @@ for(i in 1:length(unique(dataID$name))){
       long[[i]] <- x.meta[x.meta$site.name == locn,'long'][1]
       name.keep[[i]] <- locn
       
+      #consider taking more max_ests from other beta draws
+      info[[i]] <-
+        data.frame(
+          prop.table(Y, 1),
+          max_est = colMeans(do.call(rbind,lapply(out.list[[i]],FUN=function(x)seq(5, bMax - 5, by = 2)[apply(x,2,which.max)]))),
+          age = age_index,
+          site = rep(locn[1], nrow(Y)),
+          lat = rep(lat[[i]][1],nrow(Y)),
+          lon = rep(long[[i]][1],nrow(Y))
+        )
+      
       sample_ages <- x.meta[x.meta[,1] == site_number, ]$age_bacon
       age_bins <- seq(minAge, maxAge, ageInterval)
       age_index <- as.matrix(as.numeric(
         cut(sample_ages, breaks = age_bins, labels=seq(1:(length(age_bins)-1)))
       ))
+      
+      
       
       age.keep[[i]] <- age_index
       for(t in 1:99){
@@ -134,6 +148,7 @@ for(i in 1:length(unique(dataID$name))){
   
 }
 
+save(info,file='info.Rdata')
 #save(all.samps.list,lat,long,file = 'refab_for_stability_v3.Rdata')
 
 #####

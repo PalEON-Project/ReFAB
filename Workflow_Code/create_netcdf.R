@@ -35,10 +35,11 @@ iterdim <- ncdim_def("MCMC iterations",units = '',
 fillvalue <- 1e32
 dlname <- "aboveground woody biomass"
 tmp_def <- ncvar_def("AGWB","Mg/ha",list(londim,latdim,iterdim,timedim),fillvalue,dlname,prec="double")
+tmp_def_name <- ncvar_def("sitename","",list(londim),fillvalue,'site name',prec="double")
 
 # create netCDF file and put arrays
 ncfname <- "ReFAB_site_reconstruction_v1.0.nc"
-ncout <- nc_create(ncfname,list(tmp_def))
+ncout <- nc_create(ncfname,list(tmp_def,tmp_def_name))
 
 all_data <- array(NA,dim=c(80,80,250,100))
 for(ii in 1:80){
@@ -50,6 +51,7 @@ all_data_1 <- all_data[-c(22,27,73),-c(22,27,73),,]
 
 # put variables
 ncvar_put(ncout,tmp_def,all_data_1)
+ncvar_put(ncout,tmp_def_name,name.keep[-c(22,27,73)])
 
 # put additional attributes into dimension and data variables
 ncatt_put(ncout,"lon","axis","X") #,verbose=FALSE) #,definemode=FALSE)

@@ -10,7 +10,9 @@ meta_look <- get_dataset(datasettype='pollen', gpid=c("Wisconsin",
                                                  "Minnesota",
                                                  "Illinois",
                                                  "Indiana"), ageyoung=0)
-meta_dl <- get_download(test)
-
 
 test <- get_site('Gass Lake')
+meta_dl <- get_download(test)
+
+meta_dl$`860`$dataset
+

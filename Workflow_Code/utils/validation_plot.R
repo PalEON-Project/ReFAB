@@ -14,7 +14,7 @@ WANT.NUMS = FALSE
 ##### Plot 10 Fold CV R2 Validation - 5 Knots
 #####
 
-dir_to_samples_pred <- c('~/Downloads/samps_5knots_agb/')
+dir_to_samples_pred <- c('~/Dropbox/ReFAB_outputs/samps_5knots_agb/')
 samples.pred.mat <- array(NA,dim=c(1000,max(sets10)))
 dat.index <- data.frame(group_rm = sort(rep(1:10,1)),
                         beta_row = 10000, #picking betas past burnin
@@ -98,7 +98,7 @@ dev.off()
 ##### Plot 10 Fold CV R2 Validation
 #####
 
-dir_to_samples_pred <- c('~/Downloads/samps_10cv/')#c('~/10samps/')
+dir_to_samples_pred <- c('~/Dropbox/ReFAB_outputs/samps_10cv/')#c('~/10samps/')
 samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
                         beta_row =rep(round(seq(Niters*.2,Niters,length.out = 20)),10), #picking betas past burnin
@@ -193,6 +193,8 @@ biomass2_3 <- c(btt,newbtt)
 
 save(biomass1_3,biomass2_3,samps1_3,samps2_3,file='split_calib_dat_v3.0.Rdata')
 
+load('~/Dropbox/ReFAB_outputs/split_calib_dat_v3.0.Rdata')
+
 pdf('new_training_set_2_3rds_validation_agb.pdf')
 par(mfrow=c(1,1))
 plot(biomass2_3,colMeans(samps2_3),
@@ -220,7 +222,7 @@ dev.off()
 ##### 2/3s to 1/3s fit R2
 #####
 
-pdf(paste0('[8]new_gold.r2.validation.pdf'))
+pdf(paste0(Sys.Date(),'[8]new_gold.r2.validation.pdf'))
 par(mfrow=c(1,1))
 plot(biomass2_3, apply(samps2_3,2,FUN = quantile,.5),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
@@ -255,11 +257,11 @@ arrows(x0 = biomass2_3, y0 = apply(samps2_3,2,FUN = quantile,.05),
 arrows(x0 = biomass1_3, y0 = apply(samps1_3,2,FUN = quantile,.05),
        x1 = biomass1_3, y1 = apply(samps1_3,2,FUN = quantile,.975),
        code = 0, lwd=2, col = 'red')
-legend(
-  'bottomright',
-  c(paste0('Training (R2 = ', R2training,', MSE = ',mse_train,')'),
-    paste0('Testing (R2 = ', R2testing,', MSE = ',mse_test,')')),
-  pch=19,col=c('black','red'))
+# legend(
+#   'bottomright',
+#   c(paste0('Training (R2 = ', R2training,', MSE = ',mse_train,')'),
+#     paste0('Testing (R2 = ', R2testing,', MSE = ',mse_test,')')),
+#   pch=19,col=c('black','red'))
 
 dev.off()
 

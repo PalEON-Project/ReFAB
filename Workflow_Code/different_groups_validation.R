@@ -112,10 +112,10 @@ cast.x.one.third <- cast.x[one.third.idx,]
 
 load('twothirds_v3.0.Rdata')
 load('nimble_pull2018-10-31.Rdata')
-trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
-           "FAGUS","TSUGAX","QUERCUS","BETULA",
-           'PINUSX',"ACERX","ALNUSX","PICEAX","ABIES","POPULUS",
-           "LARIXPSEU","CUPRESSA") #
+trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS",
+           "TILIA","CARYA","FAGUS","TSUGAX","QUERCUS",
+           "BETULA",'PINUSX',"ACERX","ALNUSX","PICEAX",
+           "ABIES","POPULUS","LARIXPSEU","CUPRESSA")
 other.trees <- c("CASTANEA","PLATANUS","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
 drop.taxa <- NA#c('other_herbs')
 all.pollen.taxa.names <- colnames(pol_cal_count)[11:length(colnames(pol_cal_count))]

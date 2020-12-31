@@ -9,3 +9,8 @@ give_me_R2 <- function(preds,actual){
 
 
 # 1-(sum(true) - predict^2)/(sum(true)-mean(true)^2)
+
+give_me_R2(1:10,1:10)
+give_me_R2(c(rep(0,10),1,2),c(rep(0,10),1,2.5))
+
+
