@@ -10,12 +10,8 @@ library(mgcv)
 library(ggplot2)
 library(maptools)
 library(reshape2)
-<<<<<<< HEAD
 library(maps)
-=======
 library(raster)
->>>>>>> d76c2fe... little update
-
 #### 
 #### Load reconstruction
 #### 
@@ -45,7 +41,6 @@ all.preds1 <- cbind(rep(lat,100),rep(lon,100),sort(rep(YBP,77)),c(agwb_time_slic
 head(all.preds1)
 colnames(all.preds1) <- c('lat','lon','age','agwb')
 
-<<<<<<< HEAD
 par(mfrow=c(1,2))
 plot(all.preds1[,2],all.preds1[,1])
 map('state',add=T)
@@ -54,8 +49,6 @@ cut_preds <- all.preds1[-which(all.preds1[,1]< 42.6 | all.preds1[,2]> -84.67906)
 cut_preds1 <- cut_preds[-which(cut_preds[,1]< 46 & cut_preds[,2]> -86),]
 plot(cut_preds1[,2],cut_preds1[,1])
 map('state',add=T)
-=======
->>>>>>> d76c2fe... little update
 
 #### 
 #### Load Smaller ReFAB Output
@@ -78,29 +71,27 @@ refab_melt$variable<-as.numeric(refab_melt$variable)
 #long data format
 if(FALSE){
 b <- gam(log(agwb) ~ te(lon, lat, age, d = c(2,1),
+<<<<<<< HEAD
                         bs = c("tp","cr"), k = 50),
          data = as.data.frame(cut_preds1))
 
 gam.check(b)
 
 #short data format
-<<<<<<< HEAD
 b <- gam(log(value) ~ te(lon, lat, variable, d = c(2,1),
-                        bs = c("tp","cr"), k=77),
+                        bs = c("tp","cr"), k=40),
          data = as.data.frame(refab_melt))
-=======
+
+#short data format
 tictoc::tic()
 b <- gam(value ~ te(lon, lat, variable, d = c(2,1),
                         bs = c("tp","cr"), k=70), #can choose k up to 77
          data = as.data.frame(refab_melt),
          control = gam.control(nthreads = 4))
 tictoc::toc()
-<<<<<<< HEAD
->>>>>>> daaa8bc... fixing the graphics to make something nice for publication
 
-=======
 }
->>>>>>> d6f02b0... making better plots
+
 summary(b)
 vis.gam(b)  
 
@@ -147,6 +138,7 @@ coordinates(albers.df) <- ~ x + y
 proj4string(albers.df) <- CRS('+init=epsg:3175')
 
 lat.lon <- spTransform(albers.df, CRS('+proj=longlat +ellps=WGS84'))
+<<<<<<< HEAD
 
 r2 <- raster(lat.lon)
 e2 <- extent(-86.86787, -82.49863, 41.71928, 45.78518)
@@ -195,28 +187,16 @@ states_yay <- latlong2state(data.frame(x = coors_dat_minus_smi_1[,1], y = coors_
 coors_dat_keep <- coors_dat_minus_smi_1[states_yay%in%c('minnesota','wisconsin','michigan'),]
 plot(coors_dat)
 points(coors_dat_keep,col='red')
+coors_dat <- as.matrix(data.frame(lat.lon))
 
 #### 
 #### Plotting function for differnt time slices
 #### 
 plot_count <- 0
 
-<<<<<<< HEAD
 pdf('gam_maps_secondpass.pdf',height=12,width = 12,compress = T)
-par(mfrow=c(2,2))
-for(age_slice in rev(seq(1000,10000,1000))){
 
-<<<<<<< HEAD
-  pred_data = cbind(coors_dat_keep,rep(age_slice,nrow(coors_dat_keep)))
-  colnames(pred_data)<- c("lon","lat","age")
-=======
-  pred_data = cbind(coors_dat,rep(1000,nrow(coors_dat)))
-  colnames(pred_data)<- c("lon","lat","variable")#c("lon","lat","age")
->>>>>>> d76c2fe... little update
-  pred_biomass_gam = exp(predict(b,newdata = as.data.frame(pred_data)))
-  
-  full.mat <- cbind(coors_dat_keep,as.vector(pred_biomass_gam))
-=======
+full.mat <- cbind(coors_dat_keep,as.vector(pred_biomass_gam))
 library(spatstat)
 
 ch <- convexhull.xy(x= refab$lon,y=refab$lat)
@@ -252,15 +232,11 @@ par(oma=c(2,2,0,0),mar=c(0,0,4,0))
 
 for(age_slice in c(80,50,10)){ #rev(seq(10,80,10))
 print(age_slice)
-  
-<<<<<<< HEAD
-  full.mat <- cbind(coors_dat,as.vector(pred_biomass_gam$fit))
->>>>>>> daaa8bc... fixing the graphics to make something nice for publication
-=======
+
   pred_biomass_gam <- pred_biomass_gam_list[[age_slice]]
   
   full.mat <- save_mat[[age_slice]] <- cbind(coors_dat,as.vector(pred_biomass_gam$fit))
->>>>>>> 917342b... messing with colors
+  
   colnames(full.mat) <- c("x","y","pred_biomass")
 
   breaks <-  c(seq(0,50,10),seq(75,250,25),435)
@@ -319,8 +295,6 @@ print(age_slice)
   data_binned_pts <- cut(pt_data[,'value'],breaks=breaks,labels=F)
   points(pt_data[,2],pt_data[,1],pch=21,col=cluster_colors[clusters@cluster[pt_data$name]],bg=colors[data_binned_pts],cex=pt_cex)
   
-<<<<<<< HEAD
-<<<<<<< HEAD
   points_get <- x.meta[x.meta$age_bacon<(age_slice+100)&x.meta$age_bacon>(age_slice-100)&x.meta$site.name%in%dataID_use$name&x.meta$lat%in%cut_preds1[,1],c('lat','long')]
   points(points_get[,2],points_get[,1],pch=8,col='blue',cex=1.5)
   
@@ -334,14 +308,11 @@ print(age_slice)
          pch = c(8,21),
          col = c('blue','black'),
          pt.bg = c(NA,colors[5]))
-=======
->>>>>>> daaa8bc... fixing the graphics to make something nice for publication
-=======
+
   #Calculates mean and var by refab estimate points. But this doesn't tell the whole landscape story...
   m1 <- mean(pt_data[which(clusters@cluster[pt_data$name]==1),c('value')])
   m2 <- mean(pt_data[which(clusters@cluster[pt_data$name]==2),c('value')])
   m3 <- mean(pt_data[which(clusters@cluster[pt_data$name]==3),c('value')])
->>>>>>> d6f02b0... making better plots
   
   v1 <- sd(pt_data[which(clusters@cluster[pt_data$name]==1),c('value')])
   v2 <- sd(pt_data[which(clusters@cluster[pt_data$name]==2),c('value')])
