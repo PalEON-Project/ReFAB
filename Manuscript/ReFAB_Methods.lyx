@@ -1,5 +1,5 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -24,6 +24,8 @@
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -53,6 +55,7 @@
 \suppress_date false
 \justification true
 \use_refstyle 1
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -65,7 +68,10 @@
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -120,6 +126,7 @@ We chose our study area based on the extensive amount of paleoecological
 \begin_inset CommandInset citation
 LatexCommand citep
 key "mann2008proxy"
+literal "true"
 
 \end_inset
 
@@ -127,6 +134,7 @@ key "mann2008proxy"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "williams2010rapid,miao200710"
+literal "true"
 
 \end_inset
 
@@ -136,6 +144,7 @@ key "williams2010rapid,miao200710"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "indermuhle1999holocene,bereiter2015revision"
+literal "true"
 
 \end_inset
 
@@ -149,6 +158,7 @@ key "indermuhle1999holocene,bereiter2015revision"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "davis1981quaternary,williams2004late"
+literal "true"
 
 \end_inset
 
@@ -196,6 +206,7 @@ reference "fig:Map-of-pollen"
 LatexCommand href
 name "https://neotomadb.org"
 target "https://neotomadb.org"
+literal "false"
 
 \end_inset
 
@@ -203,6 +214,7 @@ target "https://neotomadb.org"
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "goring2015neotoma"
+literal "true"
 
 \end_inset
 
@@ -219,7 +231,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[1]all-sites.pdf
+	filename /Users/araiho/ReFAB/final_figures/[1]all-sites.pdf
 	scale 50
 
 \end_inset
@@ -269,6 +281,7 @@ Samples are dated using radiocarbon dating.
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blaauw2011flexible,goring2012deposition"
+literal "true"
 
 \end_inset
 
@@ -306,7 +319,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[2]chrono_ 2019-10-09 .pdf
+	filename /Users/araiho/ReFAB/final_figures/[2]chrono_ 2019-10-09 .pdf
 	scale 60
 
 \end_inset
@@ -371,6 +384,7 @@ We calibrate our estimate of biomass at the time of settlement because we
 \begin_inset CommandInset citation
 LatexCommand citep
 key "goring2015changes"
+literal "true"
 
 \end_inset
 
@@ -379,6 +393,7 @@ key "goring2015changes"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -387,6 +402,7 @@ key "dawson2016quantifying"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -464,6 +480,7 @@ Our prediction dataset includes 77 sediment cores.
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "blaauw2011flexible"
+literal "true"
 
 \end_inset
 
@@ -472,6 +489,7 @@ key "blaauw2011flexible"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -480,6 +498,7 @@ key "dawson2016quantifying"
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "Goring2019"
+literal "true"
 
 \end_inset
 
@@ -489,6 +508,7 @@ key "Goring2019"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -511,6 +531,7 @@ Taxa and groupings used were determined with a combination of expert opinion
 \begin_inset CommandInset citation
 LatexCommand citep
 key "mclauchlan2013tallgrass"
+literal "true"
 
 \end_inset
 
@@ -768,6 +789,7 @@ Forest biomass at time of settlement is derived from historical surveys,
 \begin_inset CommandInset citation
 LatexCommand citep
 key "goring2015changes"
+literal "true"
 
 \end_inset
 
@@ -813,7 +835,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[3]only_calibration_map_agb.pdf
+	filename /Users/araiho/ReFAB/final_figures/[3]only_calibration_map_agb.pdf
 	scale 50
 
 \end_inset
@@ -879,7 +901,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[4]pls_v_fia_plot.pdf
+	filename /Users/araiho/ReFAB/final_figures/[4]pls_v_fia_plot.pdf
 	scale 50
 
 \end_inset
@@ -946,14 +968,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[5-A]settlement.biomass.tiles.pdf
+	filename /Users/araiho/ReFAB/final_figures/[5-A]settlement.biomass.tiles.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[5-B]settlement.pollen.tiles.pdf
+	filename /Users/araiho/ReFAB/final_figures/[5-B]settlement.pollen.tiles.pdf
 	scale 50
 
 \end_inset
@@ -1009,6 +1031,7 @@ Note that we use an inverse modeling approach that models pollen counts
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
+literal "true"
 
 \end_inset
 
@@ -1045,6 +1068,7 @@ Our two step approach also allows us to have greater flexibility in model
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -1052,6 +1076,7 @@ key "dawson2016quantifying"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "paciorek2009mapping"
+literal "true"
 
 \end_inset
 
@@ -1133,6 +1158,7 @@ More specifically, we use beta distributions combined using a stickbreaking
 \begin_inset CommandInset citation
 LatexCommand citet
 key "LingwallJeffW.2008DbBm,ConnorRobertJ.1969CoIf"
+literal "true"
 
 \end_inset
 
@@ -1141,6 +1167,7 @@ key "LingwallJeffW.2008DbBm,ConnorRobertJ.1969CoIf"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "wang2017dirichlet"
+literal "true"
 
 \end_inset
 
@@ -1365,7 +1392,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[6]new_10.fold.R2_AGB.pdf
+	filename /Users/araiho/ReFAB/final_figures/[6]new_10.fold.R2_AGB.pdf
 	scale 50
 
 \end_inset
@@ -1437,14 +1464,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[7-A]10.fold.R2.nograss2019-07-02.pdf
+	filename /Users/araiho/ReFAB/final_figures/[7-A]10.fold.R2.nograss2019-07-02.pdf
 	scale 50
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[7-B]10.fold.R2.5knots2019-06-03.pdf
+	filename /Users/araiho/ReFAB/final_figures/[7-B]10.fold.R2.5knots2019-06-03.pdf
 	scale 50
 
 \end_inset
@@ -1518,7 +1545,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[8]splines.10CV.pdf
+	filename /Users/araiho/ReFAB/final_figures/[8]splines.10CV.pdf
 	scale 50
 
 \end_inset
@@ -1642,7 +1669,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[9]new_gold.r2.validation.pdf
+	filename /Users/araiho/ReFAB/final_figures/[9]new_gold.r2.validation.pdf
 	scale 50
 
 \end_inset
@@ -1727,7 +1754,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[10]new_3_3rds_validation.pdf
+	filename /Users/araiho/ReFAB/final_figures/[10]new_3_3rds_validation.pdf
 	scale 50
 
 \end_inset
@@ -1900,6 +1927,7 @@ Biomass evolution in forest stands is a long-term, generally smooth process,
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "taddy2013multinomial,armagan2013generalized"
+literal "true"
 
 \end_inset
 
@@ -1908,6 +1936,7 @@ key "taddy2013multinomial,armagan2013generalized"
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "tansey2017multiscale,ramdas2016fast,roualdes2015bayesian"
+literal "true"
 
 \end_inset
 
@@ -2057,6 +2086,99 @@ We computed two metrics to assess overall, region-wide biomass change across
  the uncertainty grows with distance from the nearest data point.
 \end_layout
 
+\begin_layout Subsection
+Posthoc Spatial Smoothing 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+gam_spatial.R
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We used a generalized additive model (GAM) with a tensor product smooth
+ to estimate centennial AGWB within the convex hull of the site spatial
+ distribution.
+ The tensor product smooth used a thin plate regression spline for the spatial
+ dimension and a cubic regression spline for the temporal dimension.
+ We chose 40 knots to avoid overfitting across our 77 sites.
+ We implemented the spatial smoothing using the 'mcgv' package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "wood2001mgcv"
+literal "false"
+
+\end_inset
+
+.
+ All statistics reported in the main text (i.e.
+ total regional biomass) were calculated from within the convex hull (Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convexhull"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/araiho/ReFAB/convexhull.pdf
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Map of 77 reconstruction sites (points) with convex hull (lines).
+ Posthoc spatial analysis was performed within the convex hull.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:convexhull"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Implementation
 \end_layout
@@ -2071,6 +2193,7 @@ All model results were calculated in the R 3.5.1 computing environment using
 \begin_inset CommandInset citation
 LatexCommand citep
 key "de2017programming"
+literal "true"
 
 \end_inset
 
@@ -2106,6 +2229,7 @@ However, achieving good MCMC performance for the prediction model required
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "CarpenterBob2017S:AP"
+literal "true"
 
 \end_inset
 
@@ -2182,6 +2306,7 @@ Next note that following [
 \begin_inset CommandInset citation
 LatexCommand citet
 key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
+literal "true"
 
 \end_inset
 
@@ -2341,6 +2466,7 @@ Note that in work we found after implementing our approach,
 \begin_inset CommandInset citation
 LatexCommand citet
 key "FaulknerMirin2018"
+literal "true"
 
 \end_inset
 
@@ -2451,7 +2577,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[11]beta_trace_plots.pdf
+	filename /Users/araiho/ReFAB/final_figures/[11]beta_trace_plots.pdf
 	scale 50
 
 \end_inset
@@ -2607,7 +2733,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[12]unstable_liks_calib_FULL.pdf
+	filename /Users/araiho/ReFAB/final_figures/[12]unstable_liks_calib_FULL.pdf
 	scale 45
 
 \end_inset
@@ -2654,14 +2780,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[13-A]compvbiom_calib_smooth.pdf
+	filename /Users/araiho/ReFAB/final_figures/[13-A]compvbiom_calib_smooth.pdf
 	scale 45
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[13-B]compvbiom_pred_smooth.pdf
+	filename /Users/araiho/ReFAB/final_figures/[13-B]compvbiom_pred_smooth.pdf
 	scale 45
 
 \end_inset
@@ -2740,6 +2866,7 @@ A.
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "paciorek2016statistically"
+literal "true"
 
 \end_inset
 
@@ -2748,6 +2875,7 @@ key "paciorek2016statistically"
 \begin_inset CommandInset citation
 LatexCommand citet
 key "dawson2016quantifying"
+literal "true"
 
 \end_inset
 
@@ -2784,14 +2912,14 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[14-A]map_unstable_calibration.pdf
+	filename /Users/araiho/ReFAB/final_figures/[14-A]map_unstable_calibration.pdf
 	scale 48
 
 \end_inset
 
 
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[14-B]map_prediction_unstable.pdf
+	filename /Users/araiho/ReFAB/final_figures/[14-B]map_prediction_unstable.pdf
 	scale 48
 
 \end_inset
@@ -2836,8 +2964,8 @@ name "subsec:No-analog-assessment"
 \end_layout
 
 \begin_layout Standard
-No analog pollen compositions, a well known phenomena in paleo-ecology,
- are pollen compositions that have no modern analog.
+No analog pollen compositions, a well known phenomena in paleoecology, are
+ pollen compositions that have no modern analog.
  We need to be particularly careful of them because they are not represented
  in our calibration model and therefore it is difficult to make good biomass
  predictions for such samples.
@@ -2886,6 +3014,7 @@ where
 \begin_inset CommandInset citation
 LatexCommand citep
 key "simpson2013analogue"
+literal "true"
 
 \end_inset
 
@@ -2904,6 +3033,7 @@ reference "fig:No-analog-figure"
 \begin_inset CommandInset citation
 LatexCommand citealt
 key "flower1997matching"
+literal "true"
 
 \end_inset
 
@@ -2934,7 +3064,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[15]no_analog_assessment.pdf
+	filename /Users/araiho/ReFAB/final_figures/[15]no_analog_assessment.pdf
 	scale 60
 
 \end_inset
@@ -2976,13 +3106,9 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/paleolab/ReFAB/final_figures/[16]max_lik_by_age.pdf
+	filename /Users/araiho/ReFAB/final_figures/[16]max_lik_by_age.pdf
 	scale 50
 
 \end_inset
@@ -3018,10 +3144,13 @@ name "fig:nax-liks-by-age"
 \end_layout
 
 \begin_layout Section
-Exploring Different Taxon Groupings and Taxon-specific Predictive Power
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Exploring-Different-Taxa"
+Time Series Clustering 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+clustering.R
+\end_layout
 
 \end_inset
 
@@ -3029,46 +3158,126 @@ name "sec:Exploring-Different-Taxa"
 \end_layout
 
 \begin_layout Standard
-We computed the effects of different groupings of pollen by using the training
- and testing calibration datasets to assess predictive performance when
- grouping the pollen taxa into a variety of groups.
- These different groups were composed to explore ideas related to what plant
- traits can explain variations in biomass.
- First, we grouped our pollen taxa into the original leaf physiology-based
- plant functional type groups: grass (or prairie here), deciduous, and conifer.
- Second, we categorized pollen taxa into three trait categories based on
- a principal component analysis of seed mass, wood density, and leaf mass
- area between taxa.
- These are the dominant plant traits found to explain global vegetation
- distribution in 
+We sought to quantify the similarity between the reconstruction time series.
+ To do this, we clustered AGWB time series reconstructions into three groups
+ using time series clustering from the 'dtwclust' package 
 \begin_inset CommandInset citation
-LatexCommand citet
-key "van2014fully"
+LatexCommand citep
+key "sarda2017comparing"
+literal "false"
 
 \end_inset
 
 .
- Third, we organized pollen taxa into dominant biome types: forest, savanna,
- and prairie.
- Fourth, we divided pollen taxa into shade tolerance categories.
- We decided shade tolerance categories based on the dominant species shade
- tolerance classification in each genus.
- Finally, we used hemlock and beech pollen individually and aggregated all
- other pollen types into an 'other' category.
- We tested each validation fit for three things: linear 
-\begin_inset Formula $R^{2}$
+ We used the hierarchical clustering method, which uses the dissimilarities
+ between time series to distinguish between clusters starting with each
+ time series as its own cluster.
+ These three clusters appeared to spatially grouped when mapped.
+ We used the convex hull from each of the clusters to compute the biomass
+ change over time in main text Figure 4B.
+\end_layout
+
+\begin_layout Subsection
+Sensitivity Analysis
+\end_layout
+
+\begin_layout Standard
+We conducted a sensitivity analysis to understand the relationship between
+ changing pollen proportion and changing biomass.
+ The results of this analysis are shown in Figure 3D in the main text.
+ We did this in two steps.
+ First, we paired pollen proportions and estimated centennial AGWBs by age
+ at each of the 77 reconstruction sites.
+ Each pollen sample was paired with the closest biomass estimate by median
+ estimated age of the pollen sample.
+ For example, a pollen sample with a median estimate age of 5678 YBP would
+ be paired with a biomass reconstruction from 5700 YBP.
+ Using these pairs, we calculated all differences between pollen proportions
+ and biomasses for each taxa at each site.
+ This resulted in large taxon specific matrices of pollen proportion differences
+ and corresponding biomass differences.
+ We aggregated these difference pairs across the three site clusters discussed
+ in the previous section.
+ Then, we estimated a slope coefficient using a robust regression from the
+ 'MASS' package 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ripley2013package"
+literal "false"
+
 \end_inset
 
-, mean squared error, and average variance for each point prediction to
- determine which grouping best reproduced settlement point estimates of
- above ground biomass.
- To avoid overfitting, similarly to the full model validation, we fit the
- validation plots using the training dataset and we report the values for
- both the training and testing dataset validations.
- These results are reported in the main manuscript text and figure 2, which
- shows the importance of successional status and in particular of hemlock
- and beech.
+.
+ This coefficient represented the relationship between changing pollen proportio
+n to changing biomass (i.e.
+ sensitivity) for each taxa across the three clusters.
+ For many pollen taxa, there were small differences in pollen proportion
+ corresponding to larger differences in biomass.
+ This occurred because a particular pollen taxa may be changing and therefore
+ influencing biomass when another pollen taxa is not changing.
+ This phenomena resulted in a large mass of paired differences where x equaled
+ zero which initially affected our estimates of biomass sensitivity to pollen
+ proportion change.
+ To reduce the influence of these points, we removed all points where the
+ pollen proportion difference was between -0.03 and 0.03.
+ We also removed pollen proportion points that were beyond five stand deviations
+ away from the pollen proportion differences by cluster and taxon to remove
+ the effects of strong outliers.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/araiho/ReFAB/pol_biom_diff_scatters_limited.pdf
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Examples of sensitivity analyses for each cluster (color and row) and pollen
+ grouping (columns).
+ The blue line represents the estimated relationship between pollen proportion
+ difference and biomass difference and illustrates how robust regression
+ coefficients were calculated.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Examples-of-sensitivity"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Hemlock Decline Assessment
 \end_layout
 
 \begin_layout Standard
