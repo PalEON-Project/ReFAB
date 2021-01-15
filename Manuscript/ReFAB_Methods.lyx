@@ -226,7 +226,7 @@ Tables S1
 
 \begin_layout Itemize
 Figs.
- S1 to S17 
+ S1 to S18
 \end_layout
 
 \begin_layout Paragraph*
@@ -261,12 +261,19 @@ name "sec:Vegetation-data"
 \end_layout
 
 \begin_layout Standard
-Our estimates of the aboveground woody biomass (AGWB), taxonomic composition,
- and stem density of Midwestern vegetation from the period immediately preceding
- 19th century land clearance (hereafter "settlement-era") are posterior
- estimates from gridded statistical models fit to land-survey data from
- the extensive Public Land Survey (PLS) conducted at that time in the Midwest
- 
+Our estimates of the aboveground woody biomass (AGWB, hereafter 
+\begin_inset Quotes eld
+\end_inset
+
+biomass
+\begin_inset Quotes erd
+\end_inset
+
+), taxonomic composition, and stem density of Midwestern vegetation from
+ the period immediately preceding 19th century land clearance (hereafter
+ "settlement-era") are posterior estimates from gridded statistical models
+ fit to land-survey data from the extensive Public Land Survey (PLS) conducted
+ at that time in the Midwest 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "schulte2001original"
@@ -303,7 +310,7 @@ literal "true"
 
 .
  Evidence that settlement-era vegetation captures the breadth of PIH vegetation
- composition is below under "No Analog Assessment."
+ composition is provided below under "No Analog Assessment."
 \begin_inset Note Note
 status open
 
@@ -378,8 +385,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-We down-loaded the 253 sediment core sites in our study area from the paleoecolo
-gical database Neotoma (
+We obtained data from 253 sediment core sites in our study area from the
+ paleoecological database Neotoma (
 \begin_inset CommandInset href
 LatexCommand href
 name "https://neotomadb.org"
@@ -405,8 +412,8 @@ reference "fig:Map-of-pollen"
 \end_inset
 
 ).
- Henceforth, when we refer to lake, ponds, or bogs where the cores were
- collected as pollen core sites.
+ Henceforth, we refer to lake, ponds, or bogs where the cores were collected
+ as pollen core sites.
  Sediment samples with pollen count data are dated primarily using radiocarbon
  dating.
  We estimated the true age of these samples as the median posterior estimates
@@ -447,10 +454,18 @@ reference "fig:Sampling-points-for"
 \end_inset
 
 .
- We excluded samples with a median age earlier than 10,000 years before
- present to preserve the Holocene focus of our project, and because samples
- from earlier sediments are more likely to contain pollen assemblages without
- analogs in samples from our calibration data from the settlement-era.
+ We excluded samples with median age exceeding 10,000 years before present
+ to preserve the Holocene focus of our project and because samples from
+ pre-Holocene sediments are more likely to contain pollen assemblages without
+ analogs in samples from our calibration data from the settlement-era 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "williams2007novel"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -482,8 +497,11 @@ name "fig:Map-of-pollen"
 
 \end_inset
 
-Map of 253 total pollen sites in Minnesota, Wisconsin, Michigan, Northern
- Indiana, and Northern Illinois in the Neotoma Database.
+Map of 253 total pollen sites in Minnesota, Wisconsin, Michigan, northern
+ Indiana, and northern Illinois in the Neotoma Database.
+ There are a few sites in northern Wisconsin that were not available in
+ Neotoma on 10-31-2018 and were obtained directly.
+ 
 \begin_inset Note Note
 status open
 
@@ -573,7 +591,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-We selected pollen samples to calibrate against AGWB estimates from survey
+We selected pollen samples to calibrate against biomass estimates from survey
  data using an approach similar to that of Dawson et al (2016) 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -590,8 +608,8 @@ literal "true"
  spanning the settlement-era and were asked to identify the depth of the
  "settlement horizon" using their own criteria and to report their certainty
  in that decision.
- Sites were excluded from the calibration dataset if any expert could not
- select a settlement horizon sample or if experts disagreed about the location
+ Sites were excluded from the calibration dataset if no expert could identify
+ a settlement horizon sample or if experts disagreed about the location
  of the settlement horizon sample within plus or minus two samples.
  
 \end_layout
@@ -617,7 +635,7 @@ reference "fig:Sampling-points-for"
 
 ).
  These sites are distributed evenly across geographic space, climate, and
- AGWB at the settlement era (Fig.
+ biomass at the settlement era (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -658,7 +676,9 @@ name "subsec:Prediction-Dataset"
 \end_layout
 
 \begin_layout Standard
-Our prediction dataset comprises 77 sediment cores with at least 10 samples
+In contrast to the snapshot calibration dataset, the prediction dataset
+ contains time series data over the Holocene.
+ Our prediction dataset comprises 77 sediment cores with at least 10 samples
  dating between 8000 and 2000 years before present (Fig.
  S
 \begin_inset CommandInset ref
@@ -668,7 +688,17 @@ reference "fig:Sampling-points-for"
 \end_inset
 
 ).
- Sixty-two of such sites are found in a previous publication 
+ Red points in Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sampling-points-for"
+
+\end_inset
+
+ either do not contain 10 samples between 8000 and 2000 years before present
+ or do not span the appropriate time period, including 62 sites used in
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
@@ -677,7 +707,7 @@ literal "true"
 \end_inset
 
 .
- We excluded southern Illinois and Indiana because the climate and vegetation
+ We excluded southern Illinois and Indiana because climate and vegetation
  composition are not similar to the rest of our calibration dataset.
  
 \end_layout
@@ -688,7 +718,7 @@ Pollen taxa
 
 \begin_layout Standard
 We used a combination of expert opinion and assessment of model performance
- to determine how to group pollen taxa to best estimate AGWB (Table S
+ to determine how to best group pollen taxa to estimate biomass (Table S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Taxa-table"
@@ -697,15 +727,24 @@ reference "tab:Taxa-table"
 
 ).
  We included most arboreal taxa separately, but created an "other arboreal"
- group of six taxa rarely found in our sediments.
+ group of six taxa (
+\shape italic
+Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar)
+\shape default
+ rarely found in our sediments.
  Herbaceous taxa were mainly grouped in the "other herbaceous" category,
  but we included 
 \shape italic
 Cyperaceae
 \shape default
  pollen, which are occasionally in high abundance, as an separate type,
- and we grouped the six taxa identified as indicative of "prairie" vegetation
- in previous literature 
+ and we grouped the six taxa (
+\shape italic
+Artemisia, Asteraceae, Poaceae, Ambrosia, Chenopodiaceae / Amaranthaceae,
+ and Corylus)
+\shape default
+ identified in previous literature as indicative of "prairie" vegetation
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "mclauchlan2013tallgrass"
@@ -874,7 +913,7 @@ Artemisia, Asteraceae, Poaceae, Ambrosia, Chenopodiaceae / Amaranthaceae,
 \begin_layout Plain Layout
 
 \shape italic
-Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar.
+Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar
 \end_layout
 
 \end_inset
@@ -1012,9 +1051,9 @@ name "fig:tiles"
 \end_inset
 
 The calibration model estimates coefficients of spline basis functions that
- nonlinearly relate pollen taxa vectors to biomass point estimates.
+ nonlinearly relate pollen-taxa vectors to biomass point estimates.
  Once calibrated, we fit a prediction model that uses the coefficients estimated
- in the calibration model, pollen count data available at multiple times,
+ in the calibration model, pollen-count data available at multiple times,
  and a model structure that ensures that biomass varies smoothly over time
  to make biomass point predictions at individual sites.
  These predictions are made every 100 years from the time of settlement
@@ -1023,9 +1062,9 @@ The calibration model estimates coefficients of spline basis functions that
 \end_layout
 
 \begin_layout Standard
-Note that we use an inverse modeling approach that models pollen counts
- as a function of biomass rather than a regression modeling approach that
- models biomass as a function of pollen counts (see 
+We used an inverse modeling approach that models pollen counts as a function
+ of biomass rather than a regression modeling approach that models biomass
+ as a function of pollen counts (see 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
@@ -1040,7 +1079,7 @@ literal "true"
  process.
  This allows us to combine information from the pollen data while enforcing
  realistic changes over time.
- In contrast a regression modeling approach would not be able to enforce
+ In contrast, a regression modeling approach would not be able to enforce
  smoothness over time; jumps in pollen composition would translate directly
  into (unrealistic) jumps in biomass.
  Also note that we do not explicitly model pollen dispersal, which allows
@@ -1053,7 +1092,7 @@ literal "true"
 \end_layout
 
 \begin_layout Standard
-Our two step approach also allows us to have greater flexibility in model
+Our two-step approach also allows us to have greater flexibility in model
  development and assessment.
  Alternatively, we could have fit the calibration and prediction models
  in a comprehensive framework, but we separate them to be able to develop
@@ -1093,7 +1132,7 @@ Notation will be different between calibration and prediction models because
 \begin_inset Formula $j=1,...,J$
 \end_inset
 
- index the sites in our domain at the time of settlement for calibration.
+ index the sites in our domain at the time of settlement for calibration
  and the number of samples for a single site for prediction.
  Let 
 \begin_inset Formula $k=1,...,K$
@@ -1127,7 +1166,7 @@ Notation will be different between calibration and prediction models because
 
  is 10,000 years before present.
  Following traditional paleoecological practice, we define present as the
- year 1950.
+ year 1950 C.E.
  The age of each sample determines which time interval the sample will inform.
  We denote this with 
 \begin_inset Formula $t\left[i\right]$
@@ -1203,11 +1242,21 @@ In particular the relative proportion for taxon
 \end_layout
 
 \begin_layout Standard
-The model structure is as follows, where the likelihood (Eq.
+The model structure is as follows: the likelihood (Eq.
  
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:calib likelihood"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:calib likelihood 2"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1231,7 +1280,15 @@ reference "eq:calib likelihood"
 \begin_inset Formula $\boldsymbol{p}_{j}^{rel}$
 \end_inset
 
- are vectors of underlying pollen proportions, and 
+ are vectors of underlying pollen proportions with 
+\begin_inset Formula $abs$
+\end_inset
+
+ representing the absolute pollen proportion which the relative (
+\begin_inset Formula $rel$
+\end_inset
+
+) pollen proportions are in reference to, and 
 \begin_inset Formula $\boldsymbol{\beta}_{1,k}$
 \end_inset
 
@@ -1249,7 +1306,7 @@ and
 \begin_inset Formula 
 \begin{eqnarray}
 y_{j,1} & \sim & \text{binomial}(p_{j,1}^{abs},N_{j})\label{eq:calib likelihood}\\
-y_{j,k} & \sim & \textrm{binomial}(p_{j,k}^{rel},N_{j}-\sum_{i=1}^{k-1}y_{j,i}),\,k=2,\ldots,K-1\\
+y_{j,k} & \sim & \textrm{binomial}(p_{j,k}^{rel},N_{j}-\sum_{i=1}^{k-1}y_{j,i}),\,k=2,\ldots,K-1\label{eq:calib likelihood 2}\\
 p_{j,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta}_{1,k}),\mbox{linexp}({\bf Z}(b_{j})\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
 p_{j,1}^{abs} & = & p_{j,1}^{rel}\\
 p_{j,k}^{abs} & = & p_{j,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{j,i}^{abs}\right),\,k=2,\ldots,K-1
@@ -1342,17 +1399,8 @@ reference "fig:10-fold-final"
 \end_inset
 
 ).
- We further explore the effects of each taxa on biomass prediction in section
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Exploring-Different-Taxa"
-
-\end_inset
-
-.
- However, we illustrate the 10-fold cross-validation exercise by considering
- whether prairie pollen percentage should be included in the model (Fig.
+ We illustrate the 10-fold cross-validation exercise by considering whether
+ prairie pollen percentage should be included in the model (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1365,7 +1413,9 @@ reference "fig:10foldCV-5v7knots"
 \begin_inset Formula $R^{2}$
 \end_inset
 
- and the MSE of the validation plot.
+ and the MSE of the validation plot and because it is a dominant taxa in
+ our predictions that is commonly used to understand forest change over
+ time at the prairie forest ecotone.
  
 \end_layout
 
@@ -1821,8 +1871,8 @@ The prediction model has a similar structure to the calibration model but
  We work in discrete time (100-year time bins specifically) for several
  reasons: (1) our scientific interest lies in long-term forest change, (2)
  the mixing of pollen in sediment and radio-carbon dating uncertainty prevents
- us from resolving yearly-decadal scale variability, and (3) computational
- efficiency.
+ us from resolving yearly-decadal scale variability, and (3) it improves
+ computational efficiency.
  
 \end_layout
 
@@ -1941,7 +1991,7 @@ literal "true"
 
 \end_inset
 
- as well as representing random processes, which is know as trend filtering
+ as well as representing random processes, which is known as trend filtering
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1982,7 +2032,7 @@ We also considered first-order
  vary smoothly in time, particularly over short time periods in which fire
  does not occur (which is most of the time).
  We also found that a simple random walk model did not fit well to sites
- with where the likelihood was bimodal.
+ where the likelihood was bimodal.
  Second-order models were more smooth but still showed evidence of overfitting
  and insufficient smoothness.
  
@@ -2089,7 +2139,7 @@ gam_spatial.R
 
 \begin_layout Standard
 We used a generalized additive model (GAM) with a tensor product smooth
- to estimate centennial AGWB within the convex hull of the site spatial
+ to estimate centennial biomass within the convex hull of the site spatial
  distribution.
  The tensor product smooth used a thin plate regression spline for the spatial
  dimension and a cubic regression spline for the temporal dimension.
@@ -2529,7 +2579,8 @@ We assess MCMC performance of the calibration model based on trace plots
 
  coefficients.
  These trace plots were created by concatenating the last 100 MCMC iterations
- from the 50 fits of the calibration model.
+ (post thinning with thin = 5 from 1,000,000 total MCMC iterations) from
+ the 50 fits of the calibration model.
  All final trace plots were scrutinized visually; we did not employ common
  MCMC diagnostics such as the Gelman-Rubin diagnostic because the use of
  50 chains allows us to visually assess convergence, albeit in light of
@@ -2648,8 +2699,8 @@ reference "fig:2/3 liks"
 
 \end_inset
 
-, we show the likelihood plots for settlement biomass estimated using two
- different sets of 
+, we show the likelihood plots for settlement biomass estimated using one
+ set of 
 \begin_inset Formula $\beta$
 \end_inset
 
@@ -2657,7 +2708,9 @@ reference "fig:2/3 liks"
  This bimodality can lead to instability in our biomass predictions.
  We investigate what causes both instability in the likelihoods and under
  prediction during 10-fold cross-validation here.
- 
+ In doing this investigation, we make use of the fact that for a given pollen
+ sample and a given set of beta coefficients, we can maximize the likelihood
+ as a function of biomass to get the maximum likelihood estimate of biomass.
 \end_layout
 
 \begin_layout Standard
@@ -2954,11 +3007,11 @@ name "subsec:No-analog-assessment"
 
 \begin_layout Standard
 Our prediction model depends on calibration during the settlement-era so
- predictions of AGWB based on pollen assemblages without good analogs in
- our calibration dataset run the risks associated with statistical extrapolation.
+ predictions of biomass based on pollen assemblages without good analogs
+ in our calibration dataset run the risks associated with statistical extrapolat
+ion.
  We looked for no-analog pollen assemblages in our prediction dataset by
  measuring the squared chord distance between samples.
- The chord distance between samples.
  The chord distance between samples 
 \begin_inset Formula $j$
 \end_inset
@@ -3021,6 +3074,9 @@ literal "true"
 \end_inset
 
 .
+ We determined our years before present threshold of 10,000 by assessing
+ the squared chord distance values and calculating how many samples had
+ distance values of less than 0.3.
  Furthermore, we computed the likelihood value evaluated at the maximum
  likelihood estimate of biomass for each of the samples and looked to see
  if these varied systematically with sample age.
@@ -3149,8 +3205,8 @@ clustering.R
 
 \begin_layout Standard
 We sought to quantify the similarity between the reconstruction time series.
- To do this, we clustered AGWB time series reconstructions into three groups
- using time series clustering from the 'dtwclust' package 
+ To do this, we clustered biomass time series reconstructions into three
+ groups using time series clustering from the 'dtwclust' package 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "sarda2017comparing"
@@ -3183,9 +3239,10 @@ We conducted a sensitivity analysis to understand the relationship between
  3D in the main text.
  We did this in two steps.
  First, we paired pollen proportion samples with maximum likelihood estimated
- AGWB at each of the 77 reconstruction sites.
+ biomass at each of the 77 reconstruction sites.
  Using these pairs, we calculated all differences between pollen proportions
- and biomasses for each taxa at each site.
+ and biomasses for each taxa or taxa grouping (important taxa grouped together)
+ at each site.
  This resulted in large taxon specific matrices of pollen proportion differences
  and corresponding biomass differences.
  We aggregated these difference pairs across the three site clusters discussed
@@ -3251,8 +3308,9 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Examples of sensitivity analyses for each cluster (color and row) and pollen
- grouping (columns).
+Examples of sensitivity analyses for each cluster (black, red, and green
+ colors corresponding to clusters W, C, and E in main text) and pollen grouping
+ (columns).
  The blue line represents the estimated relationship between pollen proportion
  difference and biomass difference from the robust regression analysis.
  
