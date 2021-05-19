@@ -178,7 +178,8 @@ status open
 \align center
 
 \size huge
-Slow changes in terrestrial biomass are driven by multiple ecological scales
+Doubling of Holocene forest AGWB was driven by changes at population and
+ biome-scales
 \end_layout
 
 \begin_layout Standard
@@ -190,7 +191,13 @@ Slow changes in terrestrial biomass are driven by multiple ecological scales
 
 \begin_layout Standard
 \align center
-Ann Raiho, Chris Paciorek, Jack Williams,..., Jason McLachlan
+Ann M.
+ Raiho, Christopher J.
+ Paciorek, Andria Dawson, Stephen T.
+ Jackson, David J.
+ Mladenoff, Jody Peters, John W.
+ Williams, & Jason S.
+ McLachlan
 \end_layout
 
 \begin_layout Standard
@@ -235,7 +242,7 @@ Other Supplementary Materials for this manuscript include the following:
 \end_layout
 
 \begin_layout Itemize
-Data S1 to S4 
+Data S1 to S4
 \end_layout
 
 \begin_layout Standard
@@ -261,11 +268,11 @@ name "sec:Vegetation-data"
 \end_layout
 
 \begin_layout Standard
-Our estimates of the aboveground woody biomass (AGWB, hereafter 
+Our estimates of the aboveground woody AGWB (AGWB, hereafter 
 \begin_inset Quotes eld
 \end_inset
 
-biomass
+AGWB
 \begin_inset Quotes erd
 \end_inset
 
@@ -284,21 +291,38 @@ literal "true"
 .
  Details of model structure and fit are found in Paciorek et.
  al.
- 2016 
+ 2021 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "paciorek2016statistically"
+key "paciorek2021forests"
 literal "true"
 
 \end_inset
 
 .
- Here we briefly note a root mean square error of .0739 following a assessing
- the fit of the model on a held-out dataset and showing the reliability
- of our pre-settlement estimates.
- We use settlement-era biomass estimates rather than estimates from the
- modern landscape because settlement-era vegetation was more representative
- of the vegetation that existed throughout the pre-industrial Holocene than
+ Here, we note a 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+root mean square error of .0739 Mg/ha
+\end_layout
+
+\end_inset
+
+ following an assessment of the fit of the model on a held-out dataset and
+ showing the reliability of our pre-settlement estimates 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "paciorek2021forests"
+literal "true"
+
+\end_inset
+
+.
+ We use settlement-era AGWB estimates rather than estimates from the modern
+ landscape because settlement-era vegetation was more representative of
+ the vegetation that existed throughout the pre-industrial Holocene than
  modern vegetation, which has been substantially disrupted in both composition
  and structure by human activity 
 \begin_inset CommandInset citation
@@ -310,21 +334,23 @@ literal "true"
 
 .
  Evidence that settlement-era vegetation captures the breadth of PIH vegetation
- composition is provided below under "No Analog Assessment."
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-We'll need to cite the forthcoming Paciorek et al.
- PLS methods paper.
- 10/9/2019: Chris, do you want to create a citation for that or should I
- just make one that's Paciorek in prep? Do you know what the title would
- be? 10/14/2019: Ann, please check back on this.
-\end_layout
+ composition is provided below under "No Analog Assessment." Furthermore,
+ we use point estimates (median posterior estimates from Paciorek et.
+ al.
+ 2021 shown in Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pls-point-biomass"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-
+) for model development then propagate the uncertainty in those estimates
+ by taking draws from the posteriors in the final model fits.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -350,7 +376,13 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Estimated biomass (Mg/ha) at calibration sites at the time of settlement.
+Posterior median AGWB (Mg/ha) estimates at calibration sites at the time
+ of settlement from Paciorek et.
+ al.
+ 2021.
+ These point estimates were used for model development.
+ Final model fits leveraged the full posterior distributions.
+ 
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:pls-point-biomass"
@@ -385,8 +417,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-We obtained data from 253 sediment core sites in our study area from the
- paleoecological database Neotoma (
+We obtained data from 253 sediment core sites in our study area from Neotoma
+ Paleoecology Database (
 \begin_inset CommandInset href
 LatexCommand href
 name "https://neotomadb.org"
@@ -427,7 +459,7 @@ literal "true"
 \end_inset
 
 .
- We used existing estimates from a previous study 
+ We used existing age estimates from a previous study 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
@@ -455,9 +487,10 @@ reference "fig:Sampling-points-for"
 
 .
  We excluded samples with median age exceeding 10,000 years before present
- to preserve the Holocene focus of our project and because samples from
- pre-Holocene sediments are more likely to contain pollen assemblages without
- analogs in samples from our calibration data from the settlement-era 
+ to preserve the Holocene focus of our project.
+ Furthermore, samples from the late Pleistocene and earliest sediments are
+ more likely to contain pollen assemblages without analogs in samples from
+ our calibration data from the settlement-era 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "williams2007novel"
@@ -591,8 +624,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-We selected pollen samples to calibrate against biomass estimates from survey
- data using an approach similar to that of Dawson et al (2016) 
+We selected pollen samples to calibrate against AGWB estimates from forest
+ survey data using an approach similar to that of Dawson et al (2016) 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
@@ -601,13 +634,22 @@ literal "true"
 \end_inset
 
 .
- Calibration pollen data were all samples determined by expert elicitation
- to be contemporaneous with the settlement-era survey data.
- A panel of experts in Midwestern paleoecology were presented with unlabeled
- depth series of taxonomic percentages from every site with sufficient data
- spanning the settlement-era and were asked to identify the depth of the
- "settlement horizon" using their own criteria and to report their certainty
- in that decision.
+ Calibration samples from the settlement era pollen data were all determined
+ by expert elicitation to be contemporaneous with the settlement-era based
+ on historical forest survey data.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+A panel of experts in Midwestern paleoecology
+\end_layout
+
+\end_inset
+
+ were presented with unlabeled depth series of taxonomic percentages from
+ every site with sufficient data spanning the settlement-era and were asked
+ to identify the depth of the "settlement horizon" using their own criteria
+ and to report their certainty in that decision.
  Sites were excluded from the calibration dataset if no expert could identify
  a settlement horizon sample or if experts disagreed about the location
  of the settlement horizon sample within plus or minus two samples.
@@ -635,7 +677,7 @@ reference "fig:Sampling-points-for"
 
 ).
  These sites are distributed evenly across geographic space, climate, and
- biomass at the settlement era (Fig.
+ AGWB at the settlement era (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -648,10 +690,28 @@ reference "fig:pls-point-biomass"
 
 \begin_layout Standard
 Before conducting exploratory analyses and initial model fitting, we removed
- a random selection of one-third of the sites as a held-out test set on
- which to evaluate the final model, discussed further in following sections.
+ a random selection of one-third of the sites (n
+\begin_inset Formula $_{1/3}$
+\end_inset
+
+= 78) as a held-out test set on which to evaluate the final model, discussed
+ further in following sections.
  The remaining two-thirds of the sites were considered to be our calibration
  training dataset.
+ We did this to prevent overfitting and to thoroughly test our model using
+ blinded data.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann: Chris, we probably want to say more but I'm not sure how to say it
+ formally.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
@@ -678,8 +738,8 @@ name "subsec:Prediction-Dataset"
 \begin_layout Standard
 In contrast to the snapshot calibration dataset, the prediction dataset
  contains time series data over the Holocene.
- Our prediction dataset comprises 77 sediment cores with at least 10 samples
- dating between 8000 and 2000 years before present (Fig.
+ Our prediction dataset comprises 77 sediment cores, all of which have at
+ least 10 samples dating between 8000 and 2000 years before present (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -708,7 +768,15 @@ literal "true"
 
 .
  We excluded southern Illinois and Indiana because climate and vegetation
- composition are not similar to the rest of our calibration dataset.
+ composition are not outside the domain of our calibration dataset 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "goring2016novel"
+literal "false"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -718,7 +786,7 @@ Pollen taxa
 
 \begin_layout Standard
 We used a combination of expert opinion and assessment of model performance
- to determine how to best group pollen taxa to estimate biomass (Table S
+ to determine how to best group pollen taxa to estimate AGWB (Table S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Taxa-table"
@@ -726,19 +794,19 @@ reference "tab:Taxa-table"
 \end_inset
 
 ).
- We included most arboreal taxa separately, but created an "other arboreal"
- group of six taxa (
+ We included most arboreal taxa as individual genera, but created an "other
+ arboreal" group of six taxa (
 \shape italic
 Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar)
 \shape default
- rarely found in our sediments.
+ rarely found in the sediments.
  Herbaceous taxa were mainly grouped in the "other herbaceous" category,
  but we included 
 \shape italic
 Cyperaceae
 \shape default
- pollen, which are occasionally in high abundance, as an separate type,
- and we grouped the six taxa (
+ pollen, which are occasionally in high abundance, as a separate type, and
+ we grouped the six taxa (
 \shape italic
 Artemisia, Asteraceae, Poaceae, Ambrosia, Chenopodiaceae / Amaranthaceae,
  and Corylus)
@@ -978,13 +1046,13 @@ Overview
 \end_layout
 
 \begin_layout Standard
-There are two distinct parts in our modeling framework.
+Our modeling framework contains two distinct parts.
  We begin with a calibration model to estimate the nonlinear multivariate
- relationship between pollen proportions and biomass.
+ relationship between pollen proportions and AGWB.
  The basic assumption of this model is that species composition (and therefore
- pollen composition) is related to biomass.
- We assert this by plotting the species biomass composition for different
- total biomass bins on the settlement landscape (Fig.
+ pollen composition) is related to AGWB.
+ We assess this by plotting the species AGWB composition for different total
+ AGWB bins on the settlement landscape (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1021,14 +1089,17 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-(left) The shading in each box represents the proportion of total biomass
- that each species contributes in each biomass category from the PLS biomass
- estimates.
+(left) The shading in each box represents the proportion of total AGWB that
+ each species contributes in each AGWB category from the PLS AGWB estimates.
  (right) The shading in each box represents the proportion of pollen from
- each tree species averaged over the sites falling in each biomass category
+ each tree species averaged over the sites falling in each AGWB category
  (as determined from the PLS estimates).
- This illustrates that biomass is associated with the relative composition
+ This illustrates that AGWB is associated with the relative composition
  of pollen of the various taxa.
+ However, the taxon-level relationships to biomass will vary between the
+ PLS and pollen data, because of intertaxonomic differences in pollen productivi
+ty and dispersal that will cause different degrees of over- and underrepresentat
+ion among plant taxa in the pollen record.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -1051,20 +1122,21 @@ name "fig:tiles"
 \end_inset
 
 The calibration model estimates coefficients of spline basis functions that
- nonlinearly relate pollen-taxa vectors to biomass point estimates.
+ nonlinearly relate pollen-taxa vectors to AGWB point estimates.
  Once calibrated, we fit a prediction model that uses the coefficients estimated
  in the calibration model, pollen-count data available at multiple times,
- and a model structure that ensures that biomass varies smoothly over time
- to make biomass point predictions at individual sites.
- These predictions are made every 100 years from the time of settlement
+ and a model structure that ensures that AGWB varies smoothly over time,
+ to make AGWB point predictions at individual sites.
+ This prediction model is used every 100 years from the time of settlement
  (100 years before present) to 10,000 years before present.
  
 \end_layout
 
 \begin_layout Standard
-We used an inverse modeling approach that models pollen counts as a function
- of biomass rather than a regression modeling approach that models biomass
- as a function of pollen counts (see 
+We used a modern statistical technique known as an inverse modeling approach
+ that models pollen counts as a function of AGWB rather than a regression
+ modeling approach that models AGWB as a function of pollen counts (see
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
@@ -1074,20 +1146,32 @@ literal "true"
 
  for examples of the regression approach).
  The inverse modeling approach allows us to build a statistical model for
- changes in biomass over time that enforces smoothness in the biomass process
- through a prior distribution on biomass as a latent (i.e., unobserved) temporal
+ changes in AGWB over time that enforces smoothness in the AGWB process
+ through a prior distribution on AGWB as a latent (i.e., unobserved) temporal
  process.
  This allows us to combine information from the pollen data while enforcing
  realistic changes over time.
  In contrast, a regression modeling approach would not be able to enforce
  smoothness over time; jumps in pollen composition would translate directly
- into (unrealistic) jumps in biomass.
+ into (unrealistic) jumps in AGWB.
+ A full mathematical description of the smoothing function is described
+ in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Biomass-temporal-process"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  Also note that we do not explicitly model pollen dispersal, which allows
  us to avoid having to specify a statistical model for the unknown species
  composition across the landscape.
  These choices allow us to keep the model relatively simple and relate directly
- the univariate variable of interest (total biomass) to the multivariate
- dependent variable (pollen composition).
+ the univariate variable of interest (total AGWB) to the multivariate dependent
+ variable (pollen composition).
  
 \end_layout
 
@@ -1099,8 +1183,8 @@ Our two-step approach also allows us to have greater flexibility in model
  alternative calibration models and fit prediction models one site at a
  time.
  Neither model includes spatial uncertainty, which preserves model simplicity
- and computational efficiency, leaving spatial-temporal modeling of all
- the sites jointly for future work.
+ and computational efficiency, leaving spatio-temporal modeling of all the
+ sites jointly for future work.
  See 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -1165,8 +1249,8 @@ Notation will be different between calibration and prediction models because
 \end_inset
 
  is 10,000 years before present.
- Following traditional paleoecological practice, we define present as the
- year 1950 C.E.
+ Following radiocarbon dating conventions, we define present as the year
+ 1950 C.E.
  The age of each sample determines which time interval the sample will inform.
  We denote this with 
 \begin_inset Formula $t\left[i\right]$
@@ -1177,16 +1261,23 @@ Notation will be different between calibration and prediction models because
 
 \begin_layout Subsection
 Calibration model
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Calibration-model"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 In the calibration phase, we model the nonlinear multivariate relationship
- between pollen proportions and biomass estimates at time of settlement.
- At a high-level the model regresses pollen on biomass using regression
- spline basis functions to account for nonlinearity.
+ between pollen proportions and AGWB estimates at time of settlement.
+ At a high-level, the model regresses pollen on AGWB using regression spline
+ basis functions to account for nonlinearity.
  In the calibration phase we estimate the coefficients of the basis functions;
- in prediction, these coefficients are used to infer the unknown biomass
- given pollen proportions from the sediment cores.
+ in prediction, these coefficients are used to infer the unknown AGWB given
+ pollen proportions from the sediment cores.
 \end_layout
 
 \begin_layout Standard
@@ -1208,9 +1299,11 @@ literal "true"
 
 \end_inset
 
-) to relate pollen proportions to nonlinear spline functions of biomass,
- with one function per taxon, represented using a regression spline basis
- matrix 
+).
+ These beta distributions relate pollen proportions to nonlinear spline
+ functions of AGWB.
+ There is one spline function per taxon.
+ We represent these functions using a regression spline basis matrix 
 \shape italic
 
 \begin_inset Formula $\left(\boldsymbol{Z}\right)$
@@ -1228,16 +1321,16 @@ In particular the relative proportion for taxon
 \end_inset
 
 , is modeled as a beta distribution whose two shape parameters are spline
- functions of biomass.
+ functions of AGWB.
  By having two spline functions per taxon, we allow both the mean and variance
- of the beta distribution to vary with biomass separately for each taxon.
+ of the beta distribution to vary with AGWB separately for each taxon.
  In contrast, our initial efforts used a Dirichlet distribution where the
- parameters of the Dirichlet were spline functions of biomass.
+ parameters of the Dirichlet were spline functions of AGWB.
  This structure allowed the mean for each taxon and a single (non-taxon-specific
-) variance to vary with biomass, but we found this was not flexible enough
- to capture the empirical relationships between pollen proportions and biomass,
+) variance to vary with AGWB, but we found this was not flexible enough
+ to capture the empirical relationships between pollen proportions and AGWB,
  in particular the fact that different taxa had very different variances
- in pollen proportion for a given biomass value.
+ in pollen proportion for a given AGWB value.
  
 \end_layout
 
@@ -1288,7 +1381,7 @@ noprefix "false"
 \begin_inset Formula $rel$
 \end_inset
 
-) pollen proportions are in reference to, and 
+) pollen proportions reference, and 
 \begin_inset Formula $\boldsymbol{\beta}_{1,k}$
 \end_inset
 
@@ -1296,8 +1389,8 @@ and
 \begin_inset Formula $\boldsymbol{\beta}_{2,k}$
 \end_inset
 
- are vectors of coefficients that relates the biomass basis matrix (a function
- of biomass 
+ are vectors of coefficients that relates the AGWB basis matrix (a function
+ of AGWB 
 \begin_inset Formula $b$
 \end_inset
 
@@ -1338,8 +1431,7 @@ linearizes the exponential function for
 \begin_inset Formula ${\bf Z}(b)\boldsymbol{\beta}$
 \end_inset
 
- occurring when there are few sites with biomasses near a given biomass
- value.
+ occurring when there are few sites with AGWBes near a given AGWB value.
 \end_layout
 
 \begin_layout Standard
@@ -1356,8 +1448,8 @@ Note that the nested series of binomial likelihoods can be equivalently
 \begin_layout Standard
 Based on exploratory fitting discussed below, we chose to use three knots
  for the spline basis matrix, with the knots chosen based on quantiles of
- the biomass point estimates, giving five basis function coefficients for
- each of the two coefficient vectors for each taxon.
+ the AGWB point estimates, giving five basis function coefficients for each
+ of the two coefficient vectors for each taxon.
  Each coefficient is given an uniformative normal prior with mean zero and
  precision of 0.0025.
  This broad prior allows our splines to flexibly fit the data.
@@ -1375,48 +1467,96 @@ e) over the
 
 \begin_layout Subsubsection
 Calibration model selection 
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Calibration-model-selection"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-To decide upon the taxa to use and the final model structure, we used a
- combination of expert judgment, exploratory model fitting with 10-fold
- cross-validation of the calibration training dataset, and model diagnostics.
+We used a combination of prior work 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "dawson2016quantifying"
+literal "false"
+
+\end_inset
+
+, expert judgment, exploratory model fitting with 10-fold cross-validation
+ of the two-thirds calibration training dataset, and model diagnostics to
+ determine which taxa to include and the final model structure.
+ 10-fold cross validation is a common model testing procedure often referred
+ to as k-fold cross validation where k=10 is an accepted selection 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stone1974cross"
+literal "false"
+
+\end_inset
+
+.
+ Specifically, we used the two-thirds calibration dataset split into ten
+ even sets where we trained the model on nine tenths of the calibration
+ dataset and predicted the remaining tenth.
+ We then calculated average model diagnostics across the ten training sets.
+ The model diagnostics we selected were 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ and the MSE.
  
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ was used to test the strength of the relationship between observed versus
+ predicted and MSE was used to diagnose predictive variability.
 \end_layout
 
 \begin_layout Standard
 The initial model fitting to determine the taxonomic groupings was done
  using earlier versions of the calibration model and earlier, smaller version
- of two-thirds of the calibration dataset.
- The full decision making is not presented here.
- Having chosen the taxonomic groupings, we can assess the predictive performance
- using the 10-fold cross-validation (Fig.
- S
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:10-fold-final"
-
-\end_inset
-
-).
- We illustrate the 10-fold cross-validation exercise by considering whether
- prairie pollen percentage should be included in the model (Fig.
- S
+ of two-thirds of the calibration dataset and is not fully presented here.
+ However, we illustrate the 10-fold cross-validation exercise with an example
+ in Figure S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:10foldCV-5v7knots"
 
 \end_inset
 
-).
- We choose to include the prairie pollen group because it improves the 
-\begin_inset Formula $R^{2}$
+ left.
+ Here, we considered whether prairie pollen percentage should be included
+ in the model by fitting our model to arboreal pollen taxa only and comparing
+ to the all taxa groupings (Fig.
+ S 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:10-fold-final"
+plural "false"
+caps "false"
+noprefix "false"
+
 \end_inset
 
- and the MSE of the validation plot and because it is a dominant taxa in
- our predictions that is commonly used to understand forest change over
- time at the prairie forest ecotone.
- 
+).
+ We choose to include the prairie pollen in the final model configuration
+ because it is a dominant taxa in our predictions that is commonly used
+ by paleoecologists to understand forest change over time at the prairie
+ forest ecotone 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "williams2010rapid,mclauchlan2013tallgrass"
+literal "false"
+
+\end_inset
+
+ and because excluding prairie reduced R2 and increased MSE compared to
+ the full taxonomic groupings (R2 = 0.301, 0.306 and MSE = 2330, 2320 for
+ arboreal only and full groupings, respectively).
+ We repeated this analysis for every taxa included in the analysis.
 \end_layout
 
 \begin_layout Standard
@@ -1451,7 +1591,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Validation plot for 10 fold cross validation for the calibration training
+Validation plot for 10-fold cross validation for the calibration training
  set.
 \begin_inset CommandInset label
 LatexCommand label
@@ -1473,11 +1613,11 @@ name "fig:10-fold-final"
 \end_layout
 
 \begin_layout Standard
-Once the pollen taxa were optimally grouped, we assessed the number of spline
- basis terms using the same cross-validation methodology.
+Once the pollen taxa were carefully grouped, we assessed the number of spline
+ basis terms using the same 10-fold cross-validation methodology.
  The basis matrix provides more flexibility with the addition of more knots,
- allowing more fluctuations in the nonlinear relationship between biomass
- and pollen proportion for each taxon.
+ allowing more fluctuations in the nonlinear relationship between AGWB and
+ pollen proportion for each taxon.
  As seen in Fig.
  S
 \begin_inset CommandInset ref
@@ -1487,24 +1627,9 @@ reference "fig:10foldCV-5v7knots"
 \end_inset
 
 , use of five knots results in increased predictive performance compared
- to three knots, but we judged the the pollen-biomass relationships to be
- insufficiently smooth based on expert judgment and chose to use three knots
- to avoid the possibility of overfitting.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-8/3/19: Ann, see email comments about 5 knot results.
- 10/9/2019: Chris, I have R2 = .306 for Fig.
- 6 (3 knots) and R2 = .354 for Fig.
- 7-B (5 knots).
- 10/14/19: Ann, OK then that is consistent with the text.
-\end_layout
-
-\end_inset
-
-
+ to three knots, but we judged the the pollen-AGWB relationships to be insuffici
+ently smooth based on expert judgment and chose to use three knots to avoid
+ the possibility of overfitting.
 \end_layout
 
 \begin_layout Standard
@@ -1572,10 +1697,12 @@ name "fig:10foldCV-5v7knots"
 \begin_layout Standard
 One of the benefits of the calibration model structure is the ability of
  the splines in the beta distribution to incorporate variability in the
- pollen proportions as a function of biomass and across taxa.
+ pollen proportions as a function of AGWB and across taxa.
+ The ability to represent heteroskedasticity improves uncertainty representation
+ at high AGWB values where we have fewer data points (AGWB > 200 Mg/ha).
  As a further assessment of the model, we use the posteriors of the spline
  coefficients to illustrate the inferred relationship between pollen proportion
- and biomass with associated estimated uncertainty (Fig.
+ and AGWB with associated estimated uncertainty (Fig.
  S 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1585,7 +1712,8 @@ reference "fig:blue-splines"
 
 ).
  Based on visual inspection, the splines effectively captured the relationship,
- including the high variability, between biomass and pollen proportion.
+ including the high variability for some taxa, between AGWB and pollen proportio
+n.
  
 \end_layout
 
@@ -1599,7 +1727,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/araiho/ReFAB/final_figures/[8]splines.10CV.pdf
+	filename /Users/araiho/ReFAB/splines_calib.pdf
 	scale 75
 
 \end_inset
@@ -1608,12 +1736,13 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Estimated relationships between pollen proportions and biomass for key selected
- data, with calibration training data shown as black points.
+Example of estimated relationships between pollen proportions and total
+ AGWB for selected individual taxa, with calibration training data shown
+ as black points.
  The light blue shading shows the 95% credible intervals for the pollen
- proportion as a function of biomass based on the spline coefficient posterior
- samples (averaged over the 10-fold cross-validation fits), with the blue
- line the posterior mean.
+ proportion as a function of AGWB based on the spline coefficient posterior
+ samples from one of 25 coefficient fits as an example, with the blue line
+ the posterior mean.
 \begin_inset Note Note
 status open
 
@@ -1644,7 +1773,8 @@ name "fig:blue-splines"
 \end_layout
 
 \begin_layout Standard
-Finally, we validated our final model using the held-out test dataset (Fig.
+Finally, we validated our final model using the held-out test dataset, which
+ we had not included in any analysis up until this point (Fig.
  S 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1662,8 +1792,8 @@ reference "fig:The-gold-standard-fit"
 \end_inset
 
  = 0.161).
- Comparing the held-out testing data to the 10-fold cross-validation, the
- 
+ Comparing the held-out testing data to the 10-fold cross-validation of
+ the training dataset, the 
 \begin_inset Formula $R^{2}$
 \end_inset
 
@@ -1675,42 +1805,54 @@ reference "fig:The-gold-standard-fit"
 \begin_inset Formula $R^{2}$
 \end_inset
 
- = 0.306), but the MSE for the 10-fold cross-validation (MSE = 2320) is larger
- than for the held-out testing data (MSE = 2080).
+ = 0.306, Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:10-fold-final"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), but the MSE for the 10-fold cross-validation (MSE = 2320, Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:10-fold-final"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) is larger than for the held-out testing data (MSE = 2080, Fig.
+ S 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-gold-standard-fit"
+
+\end_inset
+
+).
  It is somewhat difficult to compare the prediction results between the
  in-sample training data, the 10-fold cross-validation, and the held-out
- test set because the PLS-based biomass estimates vary between the sets,
- with some sets containing multiple high biomass sites, causing instability
- in the R2 and MSE values.
+ test set because the set of site with PLS-based AGWB estimates vary between
+ the sets, with some sets containing multiple high AGWB sites, causing instabili
+ty in the R2 and MSE values.
  Given that the MSE for the held-out testing is not larger than for the
  10-fold cross-validation and only moderately larger than the MSE for the
- in-sample set (MSE = 1820), we don't see any clear indication of overfitting.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-8/3/19: Ann, these numbers all differ from the plots.
- I don't know which are the right ones.
- I guess this is because of rerunning the PLS biomass model? Please edit
- text (I presume Fig.s are correct) to reflect the Fig.s.
- Basically you'll need to say something like: 
-\begin_inset Quotes eld
-\end_inset
-
-It is a bit difficult to compare the prediction results between the in-sample
- training data, the 10-fold cross-validation, and the held-out test set
- because the PLS-based biomass estimates vary some between the sets, causing
- instability in the R2 and MSE values, but the MSE values for the held-out
- set are somewhat smaller than for the 10-fold cross-validation (and somewhat
- larger than for the in-sample set), giving no indication of overfitting.
- 10/9/2019: Chris, let me know what you think of the new wording now that
- we got the Fig.s settled.
- 10/14/19: Ann, I made some edits to the wording.
-\end_layout
+ in-sample set (MSE = 1820, Fig.
+ S 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-gold-standard-fit"
 
 \end_inset
 
+), there is no clear indication of overfitting.
+ We have high confidence in our model predictions.
  
 \end_layout
 
@@ -1786,9 +1928,10 @@ reference "fig:3/3 fit"
 \end_inset
 
 ).
- Note that here we show the uncertainty in the settlement biomass as provided
- by the settlement biomass data product, which we had omitted in previous
- plots for simplicity of presentation.
+ Note that here we show the uncertainty in the settlement AGWB as provided
+ by the settlement AGWB data product, which we had omitted in previous plots
+ because we used point estimates of the median of the posterior for model
+ development and full posterior draws for final model fitting.
  Full description of incorporating uncertainty can be found in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1797,11 +1940,7 @@ reference "subsec:Uncertainty-propagation"
 \end_inset
 
 .
- While in principle this could be an overly optimistic validation because
- it is in-sample, our test set validation (see previous section) gives little
- indication of overfitting, suggesting that the result from the full calibration
- dataset is robust.
- 
+ For the full dataset, the R2 is 0.461 an the MSE is 1680.
 \end_layout
 
 \begin_layout Standard
@@ -1827,9 +1966,9 @@ status open
 
 \begin_layout Plain Layout
 In-sample predictive performance on the full set of calibration sites.
- The vertical lines show the uncertainty in the biomass predictions from
- our model while the horizontal lines show the uncertainty from the settlement
- biomass data product that we used for calibration.
+ The vertical lines show the uncertainty in the AGWB predictions from our
+ model while the horizontal lines show the uncertainty from the settlement
+ AGWB data product that we used for calibration.
  
 \begin_inset Note Note
 status open
@@ -1866,18 +2005,25 @@ Prediction model
 
 \begin_layout Standard
 The prediction model has a similar structure to the calibration model but
- the unknown biomass is represented as a smooth temporal process on a discrete
+ the unknown AGWB is represented as a smooth temporal process on a discrete
  time grid.
- We work in discrete time (100-year time bins specifically) for several
- reasons: (1) our scientific interest lies in long-term forest change, (2)
- the mixing of pollen in sediment and radio-carbon dating uncertainty prevents
- us from resolving yearly-decadal scale variability, and (3) it improves
- computational efficiency.
+ We work in discrete time the sampling resolution of the most paleoecological
+ time series (100-year time bins specifically) for several reasons: (1)
+ our scientific interest lies in long-term forest change, (2) radio-carbon
+ dating uncertainty prevents us from resolving annual to decadal scale variabili
+ty, and (3) discrete time improves computational efficiency.
  
 \end_layout
 
 \begin_layout Subsubsection
 Data model
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Prediction-Data-model"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1886,7 +2032,18 @@ After fitting the calibration model to estimate the basis spline coefficients
 \begin_inset Formula $\left(\boldsymbol{\beta}\right)$
 \end_inset
 
-, we use those estimated parameter values to predict biomass.
+, we use the aforementioned (Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Calibration-model"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) estimated parameter values in our inverse modeling approach to predict
+ AGWB.
  As discussed previously we fit each site separately, and our notation here
  suppresses the indexing of sites.
  
@@ -1953,7 +2110,7 @@ i
 y_{i,1} & \sim & \text{binomial}(p_{i,1}^{abs},N_{i})\label{eq:pred likelihood}\\
 y_{i,k} & \sim & \textrm{binomial}(p_{i,k}^{rel},N_{i}-\sum_{i=1}^{k-1}y_{i,k}),\,k=2,\ldots,K-1\\
 p_{i,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{1,k}),\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
-b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\\
+b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\label{eq:smoothing}\\
 p_{i,1}^{abs} & = & p_{i,1}^{rel}\\
 p_{i,k}^{abs} & = & p_{i,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{i,k}^{abs}\right),k=2,\ldots,K-1.
 \end{eqnarray}
@@ -1964,25 +2121,97 @@ where the model for the temporal evolution of
 \begin_inset Formula $b_{t}$
 \end_inset
 
- is described next.
+ (eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:smoothing"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) is described in the next section.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann: Jack wants more info here but I'm not sure what else there is to say.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
-Biomass temporal process
+AGWB temporal process
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Biomass-temporal-process"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Biomass evolution in forest stands is a long-term, generally smooth process,
- but events such as fire, drought, and various longer-term causes of tree
- mortality and succession can cause rapid changes in biomass within days
- (fire), years (tree mortality) or decades (succession and events such as
- the hemlock decline).
- Thus we want a statistical model for the evolution of biomass that generally
+AGWB evolution is generally a smooth, long-term process at centennial scales
+ across a landscape composed of multiple forest stands (i.e., at the scale
+ sensed by most fossil pollen records collected from lakes and mires).
+ However, under some circumstances rapid changes in AGWB can occur within
+ days (e.g., catastrophic wildfire), years (e.g., drought-related tree mortality)
+ or decades (e.g., mid-Holocene hemlock decline, 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "davis1998patchy,booth2012multi"
+literal "false"
+
+\end_inset
+
+).
+ Thus we want a statistical model for the evolution of AGWB that generally
  enforces smoothness but also allows for rapid change at some times.
- Our temporal model for the evolution of biomass uses a generalized Pareto
- (GP) distribution to provide nonstationary temporal structure.
- A GP distribution has a spike at zero (like a Laplace distribution or spike-and
--slab model) combined with a heavy tail that allows for outlying values.
+ Our temporal model for the evolution of AGWB uses a generalized Pareto
+ (GP) distribution to provide nonstationary temporal structure (
+\begin_inset CommandInset citation
+LatexCommand citep
+key "armagan2013generalized"
+literal "false"
+
+\end_inset
+
+, eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:smoothing"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ A GP distribution has a spike at zero (like a Laplace distribution 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "kotz2012laplace"
+literal "false"
+
+\end_inset
+
+ or spike-and-slab model 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ishwaran2005spike"
+literal "false"
+
+\end_inset
+
+) combined with a heavy tail that allows for outlying values.
  Such distributions have been used for model selection 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2001,19 +2230,20 @@ literal "true"
 \end_inset
 
 .
- Here we embed the GP distribution in a third-order random walk process
- model to induce smoothness as well as nonstationarity: 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{eqnarray}
-b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right).\label{eq:GP}
-\end{eqnarray}
+ Here we embed the GP distribution in a third-order random-walk process
+ model to induce smoothness as well as nonstationarity (eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:smoothing"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-
+).
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2027,15 +2257,14 @@ We also considered first-order
 
  models.
  The first-order model allows for sharp jumps but does not impose smoothness.
- The biomass estimates and uncertainty are not smooth and are very sensitive
- to small changes in pollen proportions, yet we expect biomass to generally
- vary smoothly in time, particularly over short time periods in which fire
- does not occur (which is most of the time).
+ The AGWB estimates and uncertainty are not smooth and are very sensitive
+ to small changes in pollen proportions, yet we expect AGWB to generally
+ vary smoothly in time with few landscape-scale abrupt change for any given
+ century.
  We also found that a simple random walk model did not fit well to sites
  where the likelihood was bimodal.
- Second-order models were more smooth but still showed evidence of overfitting
- and insufficient smoothness.
- 
+ Second-order models were more smooth but still showed evidence of insufficient
+ smoothness.
 \end_layout
 
 \begin_layout Standard
@@ -2044,12 +2273,12 @@ We also used a prior constraint that
 \end_inset
 
 , imposed during the MCMC sampling.
- We selected the upper limit on biomass based on the maximum point estimates
- of biomass in our calibration dataset where 
+ We selected the upper limit on AGWB based on the maximum point estimates
+ of AGWB in our calibration dataset where 
 \begin_inset Formula $b_{max}=294$
 \end_inset
 
- based on the maximum biomass in the PLS in our calibration dataset.
+ based on the maximum AGWB in the PLS in our calibration dataset.
 \end_layout
 
 \begin_layout Standard
@@ -2061,7 +2290,7 @@ In the MCMC, we sample
 \begin_inset Formula $t=1,2,...,100$
 \end_inset
 
- to estimate the temporal evolution of biomass over the time period of interest.
+ to estimate the temporal evolution of AGWB over the time period of interest.
  
 \end_layout
 
@@ -2074,10 +2303,21 @@ We estimate a fixed value of
 \begin_inset Formula $\sigma$
 \end_inset
 
- common to all sites.
+ common to all sites (eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:smoothing"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
  Estimating a single value across all sites is useful because there is limited
- information to estimate this parameter on a site-specific basis and because
- we expect that the process of biomass evolution has similar behavior across
+ information to estimate this parameter on a site-specific basis, and because
+ we expect that the process of AGWB evolution has similar behavior across
  sites.
  It also avoids difficulties with achieving good MCMC performance for 
 \begin_inset Formula $\sigma$
@@ -2088,7 +2328,18 @@ We estimate a fixed value of
 \begin_inset Formula $\sigma=0.03$
 \end_inset
 
- through a cross-validation exercise.
+ through a simple cross-validation exercise similar to those described in
+ Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Calibration-model-selection"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  To choose this fixed value for 
 \begin_inset Formula $\sigma$
 \end_inset
@@ -2115,7 +2366,7 @@ We estimate a fixed value of
 status open
 
 \begin_layout Plain Layout
-master_cross_validation.R
+master_cross_validation.R, Jack wants a figure here
 \end_layout
 
 \end_inset
@@ -2138,13 +2389,48 @@ gam_spatial.R
 \end_layout
 
 \begin_layout Standard
-We used a generalized additive model (GAM) with a tensor product smooth
- to estimate centennial biomass within the convex hull of the site spatial
- distribution.
+When scaling up biomass estimates from individual sites to the entire spatiotemp
+oral domain, we used a generalized additive model (GAM) with a tensor product
+ smooth function 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "wood2013straightforward"
+literal "false"
+
+\end_inset
+
+ to estimate AGWB within the convex hull 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "melkman1987line"
+literal "false"
+
+\end_inset
+
+ of the site spatial distribution (Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convexhull"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
  The tensor product smooth used a thin plate regression spline for the spatial
  dimension and a cubic regression spline for the temporal dimension.
- We chose 40 knots to avoid overfitting across our 77 sites.
- We implemented the spatial smoothing using the 'mcgv' package 
+ We chose 40 knots to avoid overfitting across our 77 sites 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "rigby2005generalized"
+literal "false"
+
+\end_inset
+
+.
+ We implemented the spatial smoothing using the `mcgv' package 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wood2001mgcv"
@@ -2154,8 +2440,8 @@ literal "false"
 
 .
  All statistics reported in the main text (i.e.
- total regional biomass) were calculated from within the convex hull (Fig.
- S 
+ total regional AGWB) were calculated from within the convex hull (Fig.
+ S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:convexhull"
@@ -2263,10 +2549,9 @@ literal "true"
 \end_inset
 
 .
- In the former case, we found that the strong (and complicated structure
- of the) posterior correlation between biomass values at nearby points in
- time caused very poor mixing.
- In contrast, in Stan, the biomass values appeared to mix well, but chains
+ In the former case, we found that the strong posterior correlation between
+ AGWB values at nearby points in time caused very poor mixing.
+ In contrast, in Stan, the AGWB values appeared to mix well, but chains
  started at different starting points revealed that the sampler was getting
  stuck in local modes.
  
@@ -2275,20 +2560,20 @@ literal "true"
 \begin_layout Standard
 To address the mixing issues, we used NIMBLE's flexibility in adding custom
  samplers to define a specialized sampler that proposed carefully-tailored
- proposals for biomass values within small time windows.
- In particular we want to propose new biomass values that produce a full
- biomass process that is consistent with the GP structure and that allows
- for large enough moves in the space of the biomass process.
+ proposals for AGWB values within small time windows.
+ In particular we want to propose new AGWB values that produce a full AGWB
+ process that is consistent with the GP structure and that allows for large
+ enough moves in the space of the AGWB process.
  This is not readily done with the form of the generalized Pareto given
  above because of the complicated and strong dependence structure of the
- biomass values caused by the higher-order temporal structure and generalized
+ AGWB values caused by the higher-order temporal structure and generalized
  Pareto distribution.
  However one can use a data augmentation scheme to write the generalized
- Pareto distribution in terms of normal distributions for the biomass contrasts.
+ Pareto distribution in terms of normal distributions for the AGWB contrasts.
  We then also developed a normal approximation to the likelihood.
  Combined these two pieces allow us to propose (using the conditional distributi
-on of biomass given the approximate likelihood) biomass process values consisten
-t with the data and the GP prior structure.
+on of AGWB given the approximate likelihood) AGWB process values consistent
+ with the data and the GP prior structure.
  
 \end_layout
 
@@ -2360,7 +2645,10 @@ where
  
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "eq:GP"
+reference "eq:smoothing"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -2381,7 +2669,7 @@ In a default MCMC fit to the augmented model, there is high correlation
 \begin_inset Formula $t$
 \end_inset
 
-, so we can't simply use the conjugate normal structure to sample 
+, so we cannot simply use the conjugate normal structure to sample 
 \begin_inset Formula $b$
 \end_inset
 
@@ -2403,7 +2691,7 @@ and
 \begin_inset Formula $\boldsymbol{b}_{t,l}=b_{t-l},\ldots,b_{t-1},b_{t},b_{t+1},\ldots,b_{t+l}$
 \end_inset
 
- are the biomass values within a time window defined by lag 
+ are the AGWB values within a time window defined by lag 
 \begin_inset Formula $l$
 \end_inset
 
@@ -2433,7 +2721,7 @@ Given
 \begin_inset Formula $\boldsymbol{b}_{t,\backslash l}=b_{1},\ldots,b_{t-l-1},b_{t+l+1},\ldots,b_{T}$
 \end_inset
 
- are the biomass values outside the time window and 
+ are the AGWB values outside the time window and 
 \begin_inset Formula $\hat{\boldsymbol{y}}=\{\hat{b}_{1},\hat{b}_{2},\ldots,\hat{b}_{n_{j}},\hat{se}(b_{1}),\hat{se}(b_{2}),\ldots,\hat{se}(b_{n_{j}})\}$
 \end_inset
 
@@ -2464,15 +2752,15 @@ on for
 \end_layout
 
 \begin_layout Standard
-Intuitively we are proposing to shift the biomass values in a small time
- window given the new values of the variance parameters but in such a way
- that the proposed biomass values are consistent with the biomass outside
- the time window (in particular the transition from inside to outside the
- window is consistent with the GP prior structure, which can impose very
- tight constraints given the spike at zero) and with the data.
- We choose to propose biomass only within a window to avoid relying too
- heavily on the likelihood approximation and to avoid needing to have good
- proposals for the entire biomass process.
+Intuitively we are proposing to shift the AGWB values in a small time window
+ given the new values of the variance parameters but in such a way that
+ the proposed AGWB values are consistent with the AGWB outside the time
+ window (in particular the transition from inside to outside the window
+ is consistent with the GP prior structure, which can impose very tight
+ constraints given the spike at zero) and with the data.
+ We choose to propose AGWB only within a window to avoid relying too heavily
+ on the likelihood approximation and to avoid needing to have good proposals
+ for the entire AGWB process.
  
 \end_layout
 
@@ -2537,31 +2825,31 @@ name "subsec:Uncertainty-propagation"
 \end_layout
 
 \begin_layout Standard
-We propagated uncertainty from the biomass data product at time of settlement
- (section 
+We propagated uncertainty from the AGWB data product at time of European
+ settlement (section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Vegetation-data"
 
 \end_inset
 
-) into the calibration model and the ages of the pollen samples and the
- beta coefficients estimated in the calibration model into the prediction
- model.
- Uncertainty from the biomass at time of settlement was propagated through
+) into the calibration model and also propagated uncertainty from the ages
+ of the pollen samples and the beta coefficients estimated in the calibration
+ model into the prediction model.
+ Uncertainty from the AGWB at time of settlement was propagated through
  by fitting the calibration model 50 times, each with a draw from the posterior
- samples of the biomass data product.
+ samples of the AGWB data product.
  The final MCMC iteration from each of the 50 calibration model fits was
  used in a separate MCMC for the prediction model, where each MCMC also
  used a separate draw from the BACON age depth model MCMC samples.
- This allowed us to propagate uncertainty from the biomass estimate at time
+ This allowed us to propagate uncertainty from the AGWB estimate at time
  of settlement, the ages of the pollen samples, and the estimated beta coefficie
-nts into our final estimates of biomass at each prediction site.
- Fitting the prediction model multiple times for different biomass estimates,
+nts into our final estimates of AGWB at each prediction site.
+ Fitting the prediction model multiple times for different AGWB estimates,
  dating estimates, and beta spline coefficients has the added benefit of
  allowing us to average over multiple modes that are the result of bimodality
- issues in the prediction model posterior distributions which are further
- discussed in section 
+ issues in the prediction model posterior distributions and discuss model
+ performance further in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Instability-and-Outliers"
@@ -2582,10 +2870,10 @@ We assess MCMC performance of the calibration model based on trace plots
  (post thinning with thin = 5 from 1,000,000 total MCMC iterations) from
  the 50 fits of the calibration model.
  All final trace plots were scrutinized visually; we did not employ common
- MCMC diagnostics such as the Gelman-Rubin diagnostic because the use of
- 50 chains allows us to visually assess convergence, albeit in light of
- real differences in the posteriors conditional on the settlement biomass
- draws.
+ MCMC diagnostics for lower-chain analyses such as the Gelman-Rubin diagnostic
+ because the use of 50 chains allows us to visually assess convergence,
+ albeit in light of real differences in the posteriors conditional on the
+ settlement AGWB draws.
  Here we present a random subset of shape parameter trace plots that are
  representative of the full set of 220 coefficients (Fig.
  S 
@@ -2596,7 +2884,18 @@ reference "fig:beta-trace-liks"
 \end_inset
 
 ).
- 
+ While alone some chains do not appear converged, together they are a complete
+ sample of the posterior.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ann: Hey Chris, could you add more here about looking at the iterations?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2669,13 +2968,13 @@ We assessed our predictions for instability caused by bimodal likelihoods
  as well as for outliers identified in validation to identify where our
  model does not fit well.
  While assessing the calibration and prediction models we found that the
- likelihood functions (as functions of unknown biomass in the prediction
- model and held-out biomass in the calibration model) were bimodal, indicating
- the models had difficulty in distinguishing low versus high biomass based
- on some pollen samples.
- At some sites, this led to under prediction of biomass particularly during
- the 10-fold cross validation where the high biomass sites were left out
- of calibration (Fig.
+ likelihood functions (as functions of unknown AGWB in the prediction model
+ and held-out AGWB in the calibration model) were bimodal, indicating the
+ models had difficulty in distinguishing low versus high AGWB based on some
+ pollen samples.
+ At some sites, this led to under prediction of AGWB particularly during
+ the 10-fold cross validation where the high AGWB sites were left out of
+ calibration (Fig.
  S 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2690,7 +2989,7 @@ reference "fig:10-fold-final"
 \end_inset
 
  coefficient estimates led to different maximum likelihood estimates of
- biomass.
+ AGWB.
  In Fig.
  S 
 \begin_inset CommandInset ref
@@ -2699,22 +2998,22 @@ reference "fig:2/3 liks"
 
 \end_inset
 
-, we show the likelihood plots for settlement biomass estimated using one
- set of 
+, we show the likelihood plots for settlement AGWB estimated using one set
+ of 
 \begin_inset Formula $\beta$
 \end_inset
 
  estimates.
- This bimodality can lead to instability in our biomass predictions.
- We investigate what causes both instability in the likelihoods and under
- prediction during 10-fold cross-validation here.
+ This bimodality can lead to instability in our AGWB predictions.
+ We investigate what causes both instability in the likelihoods and underpredict
+ion during 10-fold cross-validation here.
  In doing this investigation, we make use of the fact that for a given pollen
  sample and a given set of beta coefficients, we can maximize the likelihood
- as a function of biomass to get the maximum likelihood estimate of biomass.
+ as a function of AGWB to get the maximum likelihood estimate of AGWB.
 \end_layout
 
 \begin_layout Standard
-We looked at the difference in maximum likelihood estimates of biomass versus
+We looked at the difference in maximum likelihood estimates of AGWB versus
  the difference in pollen compositions to assess where bimodality may occur
  (Fig.
  S 
@@ -2725,9 +3024,9 @@ reference "fig:hexplots"
 \end_inset
 
 ).
- We did this by computing the pairwise difference between the biomass maximum
+ We did this by computing the pairwise difference between the AGWB maximum
  likelihood value and the difference in pollen composition using square
- cord distance (Eqn 
+ chord distance (Eqn 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:chord dist"
@@ -2736,29 +3035,34 @@ reference "eq:chord dist"
 
 ) for all samples in the calibration and prediction datasets.
  As the difference in composition increases, the difference in the estimated
- biomass also increases in general in both the calibration and prediction
- datasets, but one can also see that for a given (often small) difference
- in composition there can be both large and small differences in estimated
- biomass.
- When viewing this relationship at individual sites (not shown), we see
- that some sites are more prone to instability, with small changes in compositio
-n leading to large changes in predicted biomass.
- We identified these sites using the individual site plots of difference
- between compositions and difference between biomass maximum likelihoods
- and show them in Fig.
- S 
+ AGWB also increases in general in both the calibration and prediction datasets,
+ but one can also see that for a given (often small) difference in composition
+ there can be both large and small differences in estimated AGWB (Fig.
+ S
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hexplots"
+
+\end_inset
+
+).
+ Some sites are more prone to instability, with small changes in composition
+ leading to large changes in predicted AGWB.
+ We identified and mapped these sites using the individual site plots of
+ difference between compositions and difference between AGWB maximum likelihoods
+ (Fig.
+ S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:maps-calib-pred-bimodal"
 
 \end_inset
 
-.
+).
  Sites with bimodal likelihoods tend to have a large amount of oak pollen,
- small amounts of prairie pollen, and at some sites moderate amounts of
- beech pollen, indicating the model has a hard time predicting biomass in
- savanna-like conditions, particularly when late-successional arboreal pollen
- is present.
+ small amounts of prairie pollen, and at some sites, moderate amounts of
+ beech pollen, indicating the model has a hard time predicting AGWB in savanna-l
+ike conditions, particularly when late-successional arboreal taxa are present.
  
 \end_layout
 
@@ -2783,9 +3087,9 @@ status open
 \begin_layout Plain Layout
 Likelihood plots for eighteen different calibration sites with various amounts
  of bimodality using one set of beta estimates from the calibration model.
- The vertical lines show the biomass point estimate from the settlement
- biomass product (blue) and rug (red) shows the maximum likelihood estimates
- from the other 49 beta estimates.
+ The vertical lines show the AGWB point estimate from the settlement AGWB
+ product (blue) and rug (red) shows the maximum likelihood estimates from
+ the other 49 beta estimates.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -2840,7 +3144,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Density plots for the difference in maximum likelihood estimates for biomass
+Density plots for the difference in maximum likelihood estimates for AGWB
  versus the difference in composition measured in square chord distance
  for the calibration dataset (left) and the prediction dataset (right).
  
@@ -2886,10 +3190,9 @@ status open
 \end_layout
 
 \begin_layout Standard
-There are some sites that we typically under predict.
+AGWB values at some sites are consistently underpredicted.
  We determined under-predicted sites by calculating the difference in the
- 10-fold cross-validation and the biomass data product.
- We indicate sites that were under-predicted by 50 Mg/ha or more in Fig.
+ 10-fold cross-validation and the AGWB data product (Fig.
  S 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2897,12 +3200,12 @@ reference "fig:maps-calib-pred-bimodal"
 
 \end_inset
 
-A.
+A).
  One set of under-predicted sites appears to occur at sites near prairie-forest
  ecotones, in particular the Big Woods of Minnesota that have unexpectedly
  low proportions of non-oak arboreal pollen types that would indicate higher
- biomass (elm, maple, basswood, and ash) relative to the tree composition
- at settlement 
+ AGWB (elm, maple, basswood, and ash) relative to the tree composition at
+ settlement 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "paciorek2016statistically"
@@ -2922,9 +3225,9 @@ literal "true"
  also found it difficult to predict high levels of non-oak tree species
  in the Big Woods area because of limited representation of typical Big
  Woods taxa in the pollen samples.
- Another set of sites are in Southern Michigan where some of the highest
- biomass sites in our calibration dataset are located.
- This under prediction is present during the 10-fold cross-validation (Fig.
+ Another set of sites are in southern Michigan where some of the highest
+ AGWB sites in our calibration dataset are located.
+ This underprediction is present during the 10-fold cross-validation (Fig.
  S 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2970,7 +3273,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Maps of average biomass for the settlement time period (left) and 8000 years
+Maps of average AGWB for the settlement time period (left) and 8000 years
  before present (right).
  Sites are highlighted if they were under-predicted by 50 Mg/ha during calibrati
 on (green triangles) or they have bimodal likelihoods (blue squares).
@@ -2995,7 +3298,7 @@ name "fig:maps-calib-pred-bimodal"
 \end_layout
 
 \begin_layout Section
-No Analog Assessment 
+No-Analog Assessment 
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:No-analog-assessment"
@@ -3006,10 +3309,9 @@ name "subsec:No-analog-assessment"
 \end_layout
 
 \begin_layout Standard
-Our prediction model depends on calibration during the settlement-era so
- predictions of biomass based on pollen assemblages without good analogs
- in our calibration dataset run the risks associated with statistical extrapolat
-ion.
+Our prediction model depends on calibration during the settlement-era, so
+ predictions of AGWB based on pollen assemblages without good analogs in
+ our calibration dataset run the risks associated with statistical extrapolation.
  We looked for no-analog pollen assemblages in our prediction dataset by
  measuring the squared chord distance between samples.
  The chord distance between samples 
@@ -3064,8 +3366,9 @@ reference "fig:No-analog-figure"
 \end_inset
 
 ).
- Standard paleo-ecological studies use a benchmark of 0.3 as a threshold
- for no-analog communities 
+ Optimal choice of no-analog threshold will depend on choice of taxa and
+ sample dataset size; for similar studies in eastern North America, a threshold
+ value of 0.3 is commonly used to identify no-analog assemblages 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "flower1997matching"
@@ -3074,14 +3377,13 @@ literal "true"
 \end_inset
 
 .
- We determined our years before present threshold of 10,000 by assessing
- the squared chord distance values and calculating how many samples had
- distance values of less than 0.3.
- Furthermore, we computed the likelihood value evaluated at the maximum
- likelihood estimate of biomass for each of the samples and looked to see
- if these varied systematically with sample age.
- This gives us an idea if the data are less well-explained by the model
- further back in time.
+ We restricted our prediction time domain to 10,000 years before present
+ by assessing the squared chord distance values and calculating how many
+ samples had distance values of less than 0.3.
+ Furthermore, we computed the maximum likelihood estimate of AGWB for each
+ of the samples and checked if these varied systematically with sample age
+ to assess whether the data are less well-explained by the model further
+ back in time.
  Fig.
  S 
 \begin_inset CommandInset ref
@@ -3091,8 +3393,8 @@ reference "fig:nax-liks-by-age"
 \end_inset
 
  shows no pattern in the maximum likelihood values as a function of age,
- giving additional confidence that it is reasonable to estimate biomass
- throughout our 10000 year study period.
+ giving additional confidence that it is reasonable to estimate AGWB throughout
+ our 10000 year study period.
 \end_layout
 
 \begin_layout Standard
@@ -3204,9 +3506,9 @@ clustering.R
 \end_layout
 
 \begin_layout Standard
-We sought to quantify the similarity between the reconstruction time series.
- To do this, we clustered biomass time series reconstructions into three
- groups using time series clustering from the 'dtwclust' package 
+To quantify the similarity between the reconstruction time series, we clustered
+ AGWB time series reconstructions into three groups using time series clustering
+ from the 'dtwclust' package 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "sarda2017comparing"
@@ -3220,11 +3522,10 @@ literal "false"
  time series as its own cluster.
  The results from this clustering exercise are shown in main text Fig.
  3.
- These three clusters appeared to spatially grouped when mapped (main text
- Fig.
+ These three clusters were spatially grouped when mapped (main text Fig.
  3B).
- We used the convex hull of each of the clusters to compute the biomass
- change over time in main text Fig.
+ We used the convex hull of each of the clusters to compute the AGWB change
+ over time in main text Fig.
  4B.
 \end_layout
 
@@ -3233,21 +3534,18 @@ Sensitivity Analysis
 \end_layout
 
 \begin_layout Standard
-We conducted a sensitivity analysis to understand the relationship between
- changing pollen proportion and changing biomass.
- The results of this analysis are shown in Fig.
- 3D in the main text.
- We did this in two steps.
+We conducted a sensitivity analysis, in two steps, to understand the relationshi
+p between changing pollen proportion and changing AGWB (Fig.
+ 3D, main text).
  First, we paired pollen proportion samples with maximum likelihood estimated
- biomass at each of the 77 reconstruction sites.
+ AGWB at each of the 77 reconstruction sites.
  Using these pairs, we calculated all differences between pollen proportions
- and biomasses for each taxa or taxa grouping (important taxa grouped together)
- at each site.
+ and AGWB for each taxa or taxa grouping at each site.
  This resulted in large taxon specific matrices of pollen proportion differences
- and corresponding biomass differences.
+ and corresponding AGWB differences.
  We aggregated these difference pairs across the three site clusters discussed
  in the previous section.
- Then, we estimated a taxon and cluster specific coefficient between these
+ Then, we estimated taxon- and cluster-specific coefficients between these
  differences using a robust regression from the 'MASS' package 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -3258,21 +3556,21 @@ literal "false"
 
 .
  These coefficients represented the relationship between changing pollen
- proportion to changing biomass (i.e.
+ proportion to changing AGWB (i.e.
  sensitivity) for each taxa across the three clusters.
  For many pollen taxa, there were small differences in pollen proportion
- corresponding to larger differences in biomass.
+ corresponding to larger differences in AGWB.
  This occurred because a particular pollen taxa may be changing and therefore
- influencing biomass when another pollen taxa is not changing.
- This phenomena resulted in a large mass of paired differences where change
+ influencing AGWB when another pollen taxa is not changing.
+ This phenomenon resulted in a large mass of paired differences where change
  in pollen proportion equaled zero.
- These points initially affected our estimates of biomass sensitivity to
- pollen proportion change.
+ These points initially affected our estimates of AGWB sensitivity to pollen
+ proportion change.
  To reduce the influence of these points, we removed all points where the
  pollen proportion difference was between -0.03 and 0.03.
- We also removed pollen proportion points that were beyond five stand deviations
- away from the pollen proportion differences by cluster and taxon to remove
- the effects of strong outliers.
+ We also removed pollen proportion points that were beyond five standard
+ deviations away from the pollen proportion differences by cluster and taxon
+ to remove the effects of strong outliers.
  We provide some examples of this analysis in Fig.
  S 
 \begin_inset CommandInset ref
@@ -3312,7 +3610,9 @@ Examples of sensitivity analyses for each cluster (black, red, and green
  colors corresponding to clusters W, C, and E in main text) and pollen grouping
  (columns).
  The blue line represents the estimated relationship between pollen proportion
- difference and biomass difference from the robust regression analysis.
+ difference and AGWB difference from the robust regression analysis.
+ Savanna taxa grouping contains prairie and oak.
+ Forest taxa grouping contains all arboreal taxa except oak.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -3338,11 +3638,11 @@ Hemlock Decline Assessment
 \end_layout
 
 \begin_layout Standard
-Hemlock pollen proportions were observed to decline across the Upper Midwest
- between 5,000 and 3,000 YBP 
+Hemlock pollen proportions, indicating hemlock tree populations, declined
+ across the Upper Midwest between 5,000 and 3,000 YBP 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "davis1998patchy"
+key "davis1998patchy,booth2012multi"
 literal "false"
 
 \end_inset
@@ -3361,17 +3661,20 @@ noprefix "false"
 \end_inset
 
  top).
- However, our regional biomass results (Fig.
- 4D main text) do not show evidence of the effect of hemlock decline on
- the regional biomass trend in the Upper Midwest.
+ However, the effects on AGWB are mixed: signals are apparent at individual
+ sites but not across the entire domain or within the individual clusters
+ (Fig.
+ 4D, main text).
  In our sensitivity analysis described in the previous section, we found
- that hemlock pollen proportion change was directly positively related to
- biomass change more than the majority of taxonomic groupings, so we expected
- to see a regional biomass signal from hemlock pollen proportion decline.
+ that hemlock population change was directly positively related to AGWB
+ change more than the majority of taxonomic groupings (Fig.
+ 3D, main text), so we expected to see a regional AGWB signal from hemlock
+ population decline.
  We performed a separate investigation to determine the effects of hemlock
- decline on biomass magnitude at the site-level.
- By looking at reconstructions at individual sites, we found evidence for
- the effects of hemlock decline on site-level biomass (Fig.
+ population decline on AGWB magnitude at the site-level.
+ By looking at reconstructions at individual sites with high proportions
+ of hemlock, we found evidence for the effects of hemlock population decline
+ on site-level AGWB (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3382,22 +3685,22 @@ noprefix "false"
 
 \end_inset
 
- bottom), where average hemlock pollen proportion and biomass magnitude
- decreased at sites with relatively higher hemlock percentages between 6,000-5,0
-00 YBP versus 4,500-3,500 YBP (mean hemlock proportion = 0.058 versus 0.024,
- mean biomass estimate = 122.88 Mg/ha versus 118.88 Mg/ha).
- We also found that these declines in biomass were not directly overlapping
+ bottom), where average hemlock pollen proportion and AGWB magnitude decreased
+ at sites with relatively higher hemlock percentages between 6,000-5,000
+ YBP versus 4,500-3,500 YBP (mean hemlock proportion = 0.058 versus 0.024,
+ mean AGWB estimate = 122.88 Mg/ha versus 118.88 Mg/ha).
+ We also found that these declines in AGWB were not directly overlapping
  in time.
- A brief linear model with log biomass estimate as the response variable
- and hemlock proportion, longitude, and hemlock and longitude interaction
- as scaled independent variables showed that the interaction between hemlock
- proportion and longitude were significantly affecting the biomass estimate
+ A brief linear model with log AGWB estimate as the response variable and
+ hemlock proportion, longitude, and hemlock and longitude interaction as
+ scaled independent variables showed that the interaction between hemlock
+ proportion and longitude were significantly affected the AGWB estimate
  (p-value = .000125, coefficient estimate = -0.06).
- Previous studies have shown that hemlock decline was caused by an abrupt
- climate shift but also showed that the effects on hemlock populations were
- not necessarily synchronous in time but varied across the region, with
- eastern sites experiencing hemlock decline first followed by western sites
- at the range limit of modern hemlock distribution 
+ Previous studies have shown that hemlock decline may have been caused by
+ an abrupt climate shift, disease, or coupled climate change and disease
+ introduction.
+ Furthermore, the effects of climate and/or disease on hemlock populations
+ were not necessarily synchronous in time and varied spatially 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "marsicek2013moisture"
@@ -3406,8 +3709,8 @@ literal "false"
 \end_inset
 
 .
- This temporally varied decline caused the biomass effects of hemlock decline
- to be smoothed over at the regional level in our estimate (main text Fig.
+ This temporally varied decline caused the AGWB effects of hemlock decline
+ to be smoothed over at the regional level (main text Fig.
  4D).
  
 \end_layout
@@ -3434,7 +3737,7 @@ status open
 
 \begin_layout Plain Layout
 Two time series showing (top) hemlock pollen proportion over time and (bottom)
- maximum likelihood estimated biomass over time for sites that have higher
+ maximum likelihood estimated AGWB over time for sites that have higher
  relative hemlock pollen proportions on average (> 0.075).
  Lines are colored by site longitude with dark red being further east and
  teal being further west.
