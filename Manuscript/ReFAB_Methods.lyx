@@ -1,5 +1,5 @@
-#LyX 2.3 created this file. For more info see http://www.lyx.org/
-\lyxformat 544
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -49,6 +49,9 @@
 \textwidth 16cm 
 \textheight 21cm
 \footskip 1.0cm
+% Added by lyx2lyx
+\renewcommand{\textendash}{--}
+\renewcommand{\textemdash}{---}
 \end_preamble
 \options latin1
 \use_default_options true
@@ -67,8 +70,6 @@
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
-\use_microtype false
-\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -98,7 +99,6 @@
 \suppress_date false
 \justification true
 \use_refstyle 1
-\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -111,10 +111,7 @@
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\is_math_indent 0
-\math_numbering_side default
-\quotes_style english
-\dynamic_quotes 0
+\quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -278,13 +275,12 @@ AGWB
 
 ), taxonomic composition, and stem density of Midwestern vegetation from
  the period immediately preceding 19th century land clearance (hereafter
- "settlement-era") are posterior estimates from gridded statistical models
+ "settlement era") are posterior estimates from gridded statistical models
  fit to land-survey data from the extensive Public Land Survey (PLS) conducted
  at that time in the Midwest 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "schulte2001original"
-literal "true"
 
 \end_inset
 
@@ -295,7 +291,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "paciorek2021forests"
-literal "true"
 
 \end_inset
 
@@ -315,7 +310,6 @@ root mean square error of .0739 Mg/ha
 \begin_inset CommandInset citation
 LatexCommand citep
 key "paciorek2021forests"
-literal "true"
 
 \end_inset
 
@@ -328,7 +322,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "goring2016novel"
-literal "true"
 
 \end_inset
 
@@ -342,9 +335,6 @@ literal "true"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:pls-point-biomass"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -423,7 +413,6 @@ We obtained data from 253 sediment core sites in our study area from Neotoma
 LatexCommand href
 name "https://neotomadb.org"
 target "https://neotomadb.org"
-literal "false"
 
 \end_inset
 
@@ -431,7 +420,6 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "goring2015neotoma"
-literal "true"
 
 \end_inset
 
@@ -454,7 +442,6 @@ reference "fig:Map-of-pollen"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blaauw2011flexible,goring2012deposition"
-literal "true"
 
 \end_inset
 
@@ -463,7 +450,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
@@ -472,7 +458,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Goring2019"
-literal "true"
 
 \end_inset
 
@@ -490,11 +475,10 @@ reference "fig:Sampling-points-for"
  to preserve the Holocene focus of our project.
  Furthermore, samples from the late Pleistocene and earliest sediments are
  more likely to contain pollen assemblages without analogs in samples from
- our calibration data from the settlement-era 
+ our calibration data from the settlement era 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "williams2007novel"
-literal "false"
 
 \end_inset
 
@@ -629,13 +613,12 @@ We selected pollen samples to calibrate against AGWB estimates from forest
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
 .
- Calibration samples from the settlement era pollen data were all determined
- by expert elicitation to be contemporaneous with the settlement-era based
+ Calibration samples from the settlement-era pollen data were all determined
+ by expert elicitation to be contemporaneous with the settlement era based
  on historical forest survey data.
 \begin_inset Note Note
 status open
@@ -647,7 +630,7 @@ A panel of experts in Midwestern paleoecology
 \end_inset
 
  were presented with unlabeled depth series of taxonomic percentages from
- every site with sufficient data spanning the settlement-era and were asked
+ every site with sufficient data spanning the settlement era and were asked
  to identify the depth of the "settlement horizon" using their own criteria
  and to report their certainty in that decision.
  Sites were excluded from the calibration dataset if no expert could identify
@@ -662,7 +645,6 @@ This process resulted in a set of 232 sites, comprising the sites identified
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
@@ -696,22 +678,11 @@ Before conducting exploratory analyses and initial model fitting, we removed
 
 = 78) as a held-out test set on which to evaluate the final model, discussed
  further in following sections.
- The remaining two-thirds of the sites were considered to be our calibration
- training dataset.
- We did this to prevent overfitting and to thoroughly test our model using
- blinded data.
+ We used the remaining two-thirds of the sites as our calibration training
+ dataset.
+ We did this in order to be able to thoroughly evaluate our model using
+ blinded data, including assessment of the potential for over-fitting..
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann: Chris, we probably want to say more but I'm not sure how to say it
- formally.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection*
@@ -762,7 +733,6 @@ reference "fig:Sampling-points-for"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
@@ -772,7 +742,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "goring2016novel"
-literal "false"
 
 \end_inset
 
@@ -794,7 +763,7 @@ reference "tab:Taxa-table"
 \end_inset
 
 ).
- We included most arboreal taxa as individual genera, but created an "other
+ We included most arboreal taxa as individual genera but created an "other
  arboreal" group of six taxa (
 \shape italic
 Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar)
@@ -806,7 +775,7 @@ Taxus, Nyssa, Castanea, Platanus, Salix, and Liquidambar)
 Cyperaceae
 \shape default
  pollen, which are occasionally in high abundance, as a separate type, and
- we grouped the six taxa (
+ we grouped six taxa (
 \shape italic
 Artemisia, Asteraceae, Poaceae, Ambrosia, Chenopodiaceae / Amaranthaceae,
  and Corylus)
@@ -816,7 +785,6 @@ Artemisia, Asteraceae, Poaceae, Ambrosia, Chenopodiaceae / Amaranthaceae,
 \begin_inset CommandInset citation
 LatexCommand citep
 key "mclauchlan2013tallgrass"
-literal "true"
 
 \end_inset
 
@@ -1098,8 +1066,8 @@ status open
  of pollen of the various taxa.
  However, the taxon-level relationships to biomass will vary between the
  PLS and pollen data, because of intertaxonomic differences in pollen productivi
-ty and dispersal that will cause different degrees of over- and underrepresentat
-ion among plant taxa in the pollen record.
+ty and dispersal that will cause different degrees of over- and under-representa
+tion among plant taxa in the pollen record.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -1127,20 +1095,19 @@ The calibration model estimates coefficients of spline basis functions that
  in the calibration model, pollen-count data available at multiple times,
  and a model structure that ensures that AGWB varies smoothly over time,
  to make AGWB point predictions at individual sites.
- This prediction model is used every 100 years from the time of settlement
- (100 years before present) to 10,000 years before present.
+ This prediction model is used to make predictions every 100 years from
+ the time of settlement (100 years before present) to 10,000 years before
+ present.
  
 \end_layout
 
 \begin_layout Standard
-We used a modern statistical technique known as an inverse modeling approach
- that models pollen counts as a function of AGWB rather than a regression
- modeling approach that models AGWB as a function of pollen counts (see
- 
+We use a modern statistical technique known as inverse modeling that models
+ pollen counts as a function of AGWB rather than a regression modeling approach
+ that models AGWB as a function of pollen counts (see 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "blarquez2015tree,seppa2009calibrated"
-literal "true"
 
 \end_inset
 
@@ -1159,9 +1126,6 @@ literal "true"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Biomass-temporal-process"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -1189,7 +1153,6 @@ Our two-step approach also allows us to have greater flexibility in model
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
@@ -1197,7 +1160,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "paciorek2009mapping"
-literal "true"
 
 \end_inset
 
@@ -1249,8 +1211,15 @@ Notation will be different between calibration and prediction models because
 \end_inset
 
  is 10,000 years before present.
- Following radiocarbon dating conventions, we define present as the year
- 1950 C.E.
+ Following radiocarbon dating conventions, we define 
+\begin_inset Quotes eld
+\end_inset
+
+present
+\begin_inset Quotes erd
+\end_inset
+
+ as the year 1950 C.E.
  The age of each sample determines which time interval the sample will inform.
  We denote this with 
 \begin_inset Formula $t\left[i\right]$
@@ -1286,7 +1255,6 @@ More specifically, we use beta distributions combined using a stickbreaking
 \begin_inset CommandInset citation
 LatexCommand citep
 key "LingwallJeffW.2008DbBm,ConnorRobertJ.1969CoIf"
-literal "true"
 
 \end_inset
 
@@ -1295,7 +1263,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wang2017dirichlet"
-literal "true"
 
 \end_inset
 
@@ -1347,9 +1314,6 @@ reference "eq:calib likelihood"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:calib likelihood 2"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -1377,7 +1341,7 @@ noprefix "false"
 \begin_inset Formula $abs$
 \end_inset
 
- representing the absolute pollen proportion which the relative (
+ representing the absolute pollen proportion that the relative (
 \begin_inset Formula $rel$
 \end_inset
 
@@ -1431,7 +1395,7 @@ linearizes the exponential function for
 \begin_inset Formula ${\bf Z}(b)\boldsymbol{\beta}$
 \end_inset
 
- occurring when there are few sites with AGWBes near a given AGWB value.
+ occurring when there are few sites with AGWB values near a given AGWB value.
 \end_layout
 
 \begin_layout Standard
@@ -1481,25 +1445,23 @@ We used a combination of prior work
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "false"
 
 \end_inset
 
 , expert judgment, exploratory model fitting with 10-fold cross-validation
  of the two-thirds calibration training dataset, and model diagnostics to
- determine which taxa to include and the final model structure.
- 10-fold cross validation is a common model testing procedure often referred
- to as k-fold cross validation where k=10 is an accepted selection 
+ determine which taxa to include as well as the final model structure.
+ 10-fold cross validation is a common model assessment procedure often referred
+ to as k-fold cross validation where k=10 is a standard choice 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "stone1974cross"
-literal "false"
 
 \end_inset
 
 .
  Specifically, we used the two-thirds calibration dataset split into ten
- even sets where we trained the model on nine tenths of the calibration
+ even sets where we trained the model on nine-tenths of the calibration
  dataset and predicted the remaining tenth.
  We then calculated average model diagnostics across the ten training sets.
  The model diagnostics we selected were 
@@ -1535,9 +1497,6 @@ reference "fig:10foldCV-5v7knots"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:10-fold-final"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -1549,13 +1508,12 @@ noprefix "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "williams2010rapid,mclauchlan2013tallgrass"
-literal "false"
 
 \end_inset
 
  and because excluding prairie reduced R2 and increased MSE compared to
  the full taxonomic groupings (R2 = 0.301, 0.306 and MSE = 2330, 2320 for
- arboreal only and full groupings, respectively).
+ arboreal-only and full groupings, respectively).
  We repeated this analysis for every taxa included in the analysis.
 \end_layout
 
@@ -1736,7 +1694,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Example of estimated relationships between pollen proportions and total
+Examples of estimated relationships between pollen proportions and total
  AGWB for selected individual taxa, with calibration training data shown
  as black points.
  The light blue shading shows the 95% credible intervals for the pollen
@@ -1801,7 +1759,7 @@ reference "fig:The-gold-standard-fit"
 \begin_inset Formula $R^{2}$
 \end_inset
 
- for the ten-fold cross-validation (
+ for the 10-fold cross-validation (
 \begin_inset Formula $R^{2}$
 \end_inset
 
@@ -1810,9 +1768,6 @@ reference "fig:The-gold-standard-fit"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:10-fold-final"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -1821,9 +1776,6 @@ noprefix "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:10-fold-final"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -1838,9 +1790,13 @@ reference "fig:The-gold-standard-fit"
 ).
  It is somewhat difficult to compare the prediction results between the
  in-sample training data, the 10-fold cross-validation, and the held-out
- test set because the set of site with PLS-based AGWB estimates vary between
- the sets, with some sets containing multiple high AGWB sites, causing instabili
-ty in the R2 and MSE values.
+ test set because the sites with PLS-based AGWB estimates vary between the
+ sets, with some sets containing multiple high AGWB sites, causing instability
+ in the 
+\begin_inset Formula $R^{2}$
+\end_inset
+
+ and MSE values.
  Given that the MSE for the held-out testing is not larger than for the
  10-fold cross-validation and only moderately larger than the MSE for the
  in-sample set (MSE = 1820, Fig.
@@ -1940,7 +1896,7 @@ reference "subsec:Uncertainty-propagation"
 \end_inset
 
 .
- For the full dataset, the R2 is 0.461 an the MSE is 1680.
+ For the full dataset, the R2 is 0.461 and the MSE is 1680.
 \end_layout
 
 \begin_layout Standard
@@ -2006,12 +1962,12 @@ Prediction model
 \begin_layout Standard
 The prediction model has a similar structure to the calibration model but
  the unknown AGWB is represented as a smooth temporal process on a discrete
- time grid.
- We work in discrete time the sampling resolution of the most paleoecological
- time series (100-year time bins specifically) for several reasons: (1)
- our scientific interest lies in long-term forest change, (2) radio-carbon
- dating uncertainty prevents us from resolving annual to decadal scale variabili
-ty, and (3) discrete time improves computational efficiency.
+ time grid with 100-year time bins.
+ We work in discrete time, the sampling resolution of the most paleoecological
+ time series for several reasons: (1) our scientific interest lies in long-term
+ forest change, (2) radio-carbon dating uncertainty prevents us from resolving
+ annual to decadal scale variability, and (3) discrete time improves computation
+al efficiency.
  
 \end_layout
 
@@ -2036,16 +1992,13 @@ After fitting the calibration model to estimate the basis spline coefficients
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Calibration-model"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
 ) estimated parameter values in our inverse modeling approach to predict
  AGWB.
- As discussed previously we fit each site separately, and our notation here
- suppresses the indexing of sites.
+ As discussed previously, we fit each site separately, and our notation
+ here suppresses the indexing of sites.
  
 \end_layout
 
@@ -2066,7 +2019,14 @@ For the vector of pollen counts,
 \begin_inset Formula $j$
 \end_inset
 
-), the statistical model is
+), the statistical model follows that of Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Calibration-model"
+
+\end_inset
+
+,
 \end_layout
 
 \begin_layout Standard
@@ -2112,12 +2072,12 @@ y_{i,k} & \sim & \textrm{binomial}(p_{i,k}^{rel},N_{i}-\sum_{i=1}^{k-1}y_{i,k}),
 p_{i,k}^{rel} & \sim & \textrm{beta}(\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{1,k}),\mbox{linexp}(Z(b_{t[i]})\boldsymbol{\beta}_{2,k})),\,k=1,\ldots,K-1\\
 b_{t} & \sim & \mathrm{GP}\left(3b_{t-1}-3b_{t-2}+b_{t-3},\sigma^{2}\right)\label{eq:smoothing}\\
 p_{i,1}^{abs} & = & p_{i,1}^{rel}\\
-p_{i,k}^{abs} & = & p_{i,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{i,k}^{abs}\right),k=2,\ldots,K-1.
+p_{i,k}^{abs} & = & p_{i,k}^{rel}\left(1-\sum_{i=1}^{k-1}p_{i,k}^{abs}\right),k=2,\ldots,K-1,
 \end{eqnarray}
 
 \end_inset
 
-where the model for the temporal evolution of 
+adding the temporal evolution of 
 \begin_inset Formula $b_{t}$
 \end_inset
 
@@ -2126,24 +2086,11 @@ where the model for the temporal evolution of
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:smoothing"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
-) is described in the next section.
+) as described in the next section.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ann: Jack wants more info here but I'm not sure what else there is to say.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -2167,7 +2114,6 @@ AGWB evolution is generally a smooth, long-term process at centennial scales
 \begin_inset CommandInset citation
 LatexCommand citep
 key "davis1998patchy,booth2012multi"
-literal "false"
 
 \end_inset
 
@@ -2179,7 +2125,6 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "armagan2013generalized"
-literal "false"
 
 \end_inset
 
@@ -2188,9 +2133,6 @@ literal "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:smoothing"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2199,7 +2141,6 @@ noprefix "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "kotz2012laplace"
-literal "false"
 
 \end_inset
 
@@ -2207,7 +2148,6 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "ishwaran2005spike"
-literal "false"
 
 \end_inset
 
@@ -2216,7 +2156,6 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "taddy2013multinomial,armagan2013generalized"
-literal "true"
 
 \end_inset
 
@@ -2225,7 +2164,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "tansey2017multiscale,ramdas2016fast,roualdes2015bayesian"
-literal "true"
 
 \end_inset
 
@@ -2236,9 +2174,6 @@ literal "true"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:smoothing"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2259,7 +2194,7 @@ We also considered first-order
  The first-order model allows for sharp jumps but does not impose smoothness.
  The AGWB estimates and uncertainty are not smooth and are very sensitive
  to small changes in pollen proportions, yet we expect AGWB to generally
- vary smoothly in time with few landscape-scale abrupt change for any given
+ vary smoothly in time with few landscape-scale abrupt changes for any given
  century.
  We also found that a simple random walk model did not fit well to sites
  where the likelihood was bimodal.
@@ -2308,9 +2243,6 @@ We estimate a fixed value of
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:smoothing"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2333,9 +2265,6 @@ noprefix "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Calibration-model-selection"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2389,13 +2318,12 @@ gam_spatial.R
 \end_layout
 
 \begin_layout Standard
-When scaling up biomass estimates from individual sites to the entire spatiotemp
-oral domain, we used a generalized additive model (GAM) with a tensor product
+When scaling up biomass estimates from individual sites to the entire spatio-tem
+poral domain, we used a generalized additive model (GAM) with a tensor product
  smooth function 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wood2013straightforward"
-literal "false"
 
 \end_inset
 
@@ -2403,18 +2331,14 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "melkman1987line"
-literal "false"
 
 \end_inset
 
- of the site spatial distribution (Fig.
+ of the spatial distribution of the sites (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:convexhull"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2425,7 +2349,6 @@ noprefix "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "rigby2005generalized"
-literal "false"
 
 \end_inset
 
@@ -2434,7 +2357,6 @@ literal "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "wood2001mgcv"
-literal "false"
 
 \end_inset
 
@@ -2445,9 +2367,6 @@ literal "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:convexhull"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2508,7 +2427,6 @@ All model results were calculated in the R 3.5.1 computing environment using
 \begin_inset CommandInset citation
 LatexCommand citep
 key "de2017programming"
-literal "true"
 
 \end_inset
 
@@ -2544,7 +2462,6 @@ However, achieving good MCMC performance for the prediction model required
 \begin_inset CommandInset citation
 LatexCommand citep
 key "CarpenterBob2017S:AP"
-literal "true"
 
 \end_inset
 
@@ -2620,7 +2537,6 @@ Next note that following
 \begin_inset CommandInset citation
 LatexCommand citep
 key "taddy2013multinomial,armagan2013generalized,tansey2017multiscale"
-literal "true"
 
 \end_inset
 
@@ -2646,9 +2562,6 @@ where
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:smoothing"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -2783,7 +2696,6 @@ Note that in work we found after implementing our approach,
 \begin_inset CommandInset citation
 LatexCommand citep
 key "FaulknerMirin2018"
-literal "true"
 
 \end_inset
 
@@ -2825,8 +2737,8 @@ name "subsec:Uncertainty-propagation"
 \end_layout
 
 \begin_layout Standard
-We propagated uncertainty from the AGWB data product at time of European
- settlement (section 
+We propagated uncertainty from the AGWB data product at time of settlement
+ (section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Vegetation-data"
@@ -2867,13 +2779,12 @@ We assess MCMC performance of the calibration model based on trace plots
 
  coefficients.
  These trace plots were created by concatenating the last 100 MCMC iterations
- (post thinning with thin = 5 from 1,000,000 total MCMC iterations) from
- the 50 fits of the calibration model.
+ (after thinning with a thinning interval of five from 1,000,000 total MCMC
+ iterations) from the 50 fits of the calibration model.
  All final trace plots were scrutinized visually; we did not employ common
- MCMC diagnostics for lower-chain analyses such as the Gelman-Rubin diagnostic
- because the use of 50 chains allows us to visually assess convergence,
- albeit in light of real differences in the posteriors conditional on the
- settlement AGWB draws.
+ MCMC diagnostics such as the Gelman-Rubin diagnostic because we expect
+ (and see) real differences in the posteriors conditional on the settlement
+ AGWB draws.
  Here we present a random subset of shape parameter trace plots that are
  representative of the full set of 220 coefficients (Fig.
  S 
@@ -3209,7 +3120,6 @@ A).
 \begin_inset CommandInset citation
 LatexCommand citep
 key "paciorek2016statistically"
-literal "true"
 
 \end_inset
 
@@ -3218,7 +3128,6 @@ literal "true"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "dawson2016quantifying"
-literal "true"
 
 \end_inset
 
@@ -3309,7 +3218,7 @@ name "subsec:No-analog-assessment"
 \end_layout
 
 \begin_layout Standard
-Our prediction model depends on calibration during the settlement-era, so
+Our prediction model depends on calibration during the settlement era, so
  predictions of AGWB based on pollen assemblages without good analogs in
  our calibration dataset run the risks associated with statistical extrapolation.
  We looked for no-analog pollen assemblages in our prediction dataset by
@@ -3351,7 +3260,6 @@ where
 \begin_inset CommandInset citation
 LatexCommand citep
 key "simpson2013analogue"
-literal "true"
 
 \end_inset
 
@@ -3372,7 +3280,6 @@ reference "fig:No-analog-figure"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "flower1997matching"
-literal "true"
 
 \end_inset
 
@@ -3508,11 +3415,10 @@ clustering.R
 \begin_layout Standard
 To quantify the similarity between the reconstruction time series, we clustered
  AGWB time series reconstructions into three groups using time series clustering
- from the 'dtwclust' package 
+ from the 'dtwclust' R package 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "sarda2017comparing"
-literal "false"
 
 \end_inset
 
@@ -3550,7 +3456,6 @@ p between changing pollen proportion and changing AGWB (Fig.
 \begin_inset CommandInset citation
 LatexCommand citep
 key "ripley2013package"
-literal "false"
 
 \end_inset
 
@@ -3576,9 +3481,6 @@ literal "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Examples-of-sensitivity"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -3643,7 +3545,6 @@ Hemlock pollen proportions, indicating hemlock tree populations, declined
 \begin_inset CommandInset citation
 LatexCommand citep
 key "davis1998patchy,booth2012multi"
-literal "false"
 
 \end_inset
 
@@ -3654,9 +3555,6 @@ literal "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:hemlock-decline"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -3679,9 +3577,6 @@ noprefix "false"
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:hemlock-decline"
-plural "false"
-caps "false"
-noprefix "false"
 
 \end_inset
 
@@ -3691,11 +3586,11 @@ noprefix "false"
  mean AGWB estimate = 122.88 Mg/ha versus 118.88 Mg/ha).
  We also found that these declines in AGWB were not directly overlapping
  in time.
- A brief linear model with log AGWB estimate as the response variable and
+ A simple linear model with log AGWB estimate as the response variable and
  hemlock proportion, longitude, and hemlock and longitude interaction as
  scaled independent variables showed that the interaction between hemlock
- proportion and longitude were significantly affected the AGWB estimate
- (p-value = .000125, coefficient estimate = -0.06).
+ proportion and longitude significantly affected the AGWB estimate (p-value
+ = .000125, coefficient estimate = -0.06).
  Previous studies have shown that hemlock decline may have been caused by
  an abrupt climate shift, disease, or coupled climate change and disease
  introduction.
@@ -3704,13 +3599,12 @@ noprefix "false"
 \begin_inset CommandInset citation
 LatexCommand citep
 key "marsicek2013moisture"
-literal "false"
 
 \end_inset
 
 .
- This temporally varied decline caused the AGWB effects of hemlock decline
- to be smoothed over at the regional level (main text Fig.
+ This temporally-varied decline likely caused the AGWB effects of hemlock
+ decline to be smoothed over at the regional level (main text Fig.
  4D).
  
 \end_layout
@@ -3741,7 +3635,7 @@ Two time series showing (top) hemlock pollen proportion over time and (bottom)
  relative hemlock pollen proportions on average (> 0.075).
  Lines are colored by site longitude with dark red being further east and
  teal being further west.
- The black line is the highlighted site - Tower Lake, which is in the eastern
+ The black line is the highlighted site, Tower Lake, which is in the eastern
  Upper Peninsula of Michigan.
  Vertical lines represent the time period where hemlock decline is present.
 \begin_inset CommandInset label
