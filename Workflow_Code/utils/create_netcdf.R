@@ -1,4 +1,56 @@
 
+## This script is used to create more widely useable data products from the ReFAB project
+
+####
+#### Calibration Dataset ####
+####
+
+load('final_datasets/cast.x.Rdata')
+load('biomass_draws_v3.0.Rdata')
+
+trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
+           "FAGUS","TSUGAX","QUERCUS","BETULA",
+           'PINUSX',"ACERX","ALNUSX",
+           "CYPERACE","PICEAX","ABIES","POPULUS",
+           "LARIXPSEU","CUPRESSA") #
+other.trees <- c("CASTANEA","PLATANUS","SALIX","LIQUIDAM","TAXUS","NYSSA")#NULL#c()
+drop.taxa <- NA#c('other_herbs')
+
+source(file.path('Workflow_Code','utils','taxa_selection.R'))
+Y <- taxa_selection(trees = trees, other.trees = other.trees,
+                    cast.x = cast.x, sites_rm = 0,
+                    all.pollen.taxa.names = colnames(cast.x)[-c(1:4)],
+                    prairie.include = T,bigwoods.include=F, other.herbs.include = T,
+                    other.trees.include = T, drop.taxa = drop.taxa,
+                    PFT.do = F)
+
+all_biom_draws <- do.call(rbind,biomass_draws)
+colnames(all_biom_draws) <- paste0('biomassdraw',1:250)
+
+calib_full <- cbind(cast.x[,1:4],Y,all_biom_draws)
+
+calib_meta <- read.csv('calib.meta.csv') 
+
+calib_tog <- dplyr::full_join(calib_meta,calib_full)
+
+#check biomass distribution
+breaks <-  c(seq(0,40,10),seq(50,300,50))
+colors <- rev(terrain.colors(length(breaks)-1))
+data_binned <-  cut(calib_tog$biomassdraw100, c(breaks), include.lowest = FALSE, labels = FALSE)
+plot(calib_tog$long,calib_tog$lat,col=colors[data_binned],pch=19)
+map('state',add=T)
+
+#check hemlock distribution
+breaks <-  seq(0,100,1)
+colors <- rev(terrain.colors(length(breaks)-1))
+data_binned <-  cut(calib_tog$TSUGAX, c(breaks), include.lowest = FALSE, labels = FALSE)
+plot(calib_tog$long,calib_tog$lat,col=colors[data_binned],pch=19)
+map('state',add=T)
+
+
+write.csv(calib_tog,file='ReFAB_calibration_data_v1.0.csv')
+
+
 #####
 ##### BETAS #####
 #####
@@ -16,8 +68,19 @@ samps.all <- do.call(rbind,samples.mixed.keep)
 
 write.csv(samps.all,'ReFAB_betas_v1.0.csv')
 
+
+####
+#### Reconstruction Dataset ####
+####
+
+load('prediction.data_v6.Rdata')
+
+pred_all <- cbind(x.meta,ten.count,x.bacon)
+
+write.csv(pred_all,'ReFAB_prediction_data_v1.0.csv')
+
 #####
-##### Biomass reconstructions - Follows from [4.5]average_biomass_figure.R #####
+##### Biomass site level reconstructions - Follows from [4.5]average_biomass_figure.R #####
 #####
 
 # create and write the netCDF file -- ncdf4 version
@@ -69,7 +132,7 @@ ncatt_put(ncout,0,"history",history)
 nc_close(ncout)
 
 #####
-##### Checking output #####
+##### Checking site level output #####
 #####
 
 library(lattice)
@@ -175,9 +238,6 @@ colnames(full_mat_se)[-c(1,2)] <- paste0('AgeYBP',seq(100,10000,100),'_SE')
 write.csv(full_mat,file = 'ReFAB_spatial_reconstruction_means_v1.0.csv')
 write.csv(full_mat_se,file = 'ReFAB_spatial_reconstruction_SEs_v1.0.csv')
 
-####
-#### Calibration Dataset ####
-####
 
 
-
+      
