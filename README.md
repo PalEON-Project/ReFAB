@@ -4,7 +4,7 @@ This repository contains code and information nessecary for reproducing analyses
 
 The main scripts can be found in the **Workflow_Code** directory. These scripts are numbered following the section numbering in **Manuscript/ReFAB_Methods.lyx**. 
 
-The data to reproduce the analyses are not fully available in this repository but will be connected to the published manuscript.
+The data to reproduce the analyses are **NOT** fully available in this repository but will be connected to the published manuscript.
 
 
 # LICENSE
