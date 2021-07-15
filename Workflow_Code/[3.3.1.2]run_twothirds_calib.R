@@ -39,7 +39,6 @@ FULL = FALSE
 #### Adds biomass data product uncertainty
 if(FULL==TRUE){
   load('biomass_draws_v3.0.Rdata') #should match calibration data. stem biomass has no version number.
-  #not adding biomass draws at the moment because this is not the final product
   biomass.keep <- unlist(lapply(biomass_draws,function(x) x[runnum]))
   load("~/ReFAB/new_sites_rm.Rdata") # new 1/3
   load('~/ReFAB/sites_rm.Rdata') # old 1/3

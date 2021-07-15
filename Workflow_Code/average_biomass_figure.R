@@ -24,7 +24,7 @@ nItsSave <- 250
 minAge <- 0
 maxAge <- 10000
 ageInterval <- 100
-hem.is <- out.list <- LS.is <- Y.keep <- list()
+big_keep <- hem.is <- out.list <- LS.is <- Y.keep <- list()
 lat <- long <- all.samps.list <- info <- name.keep <- age.keep <- site_num_keep <- list()
 do.samps = TRUE
 #####
@@ -44,6 +44,8 @@ for(i in 1:length(unique(dataID$name))){
   
   ten_count_use = ten.count[which(x.meta$site.name == locn), ]
   ten_count_use[which(is.na(ten_count_use))] <- 0
+  
+  big_keep[[i]] <- cbind(x.meta.use,ten_count_use)
   
   Y = as.matrix(ten_count_use)
   hem.is[[i]]<-max(prop.table(Y,1)[,'TSUGAX']) + max(prop.table(Y,1)[,'FAGUS'])#sum(ten_count_use[,11])
@@ -155,7 +157,9 @@ save(info,file='info.Rdata')
 ##### Write out netcdf for biomass reconstructions #####
 #####
 
+big_mat <- do.call(rbind,big_keep)
 
+write.csv(big_mat,file = paste0(Sys.Date(),'prediction_samples_ReFAB.csv'))
 
 #####
 ##### Calculate derived quantities for plotting #####

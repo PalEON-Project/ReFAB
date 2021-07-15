@@ -226,20 +226,22 @@ pdf(paste0(Sys.Date(),'[8]new_gold.r2.validation.pdf'))
 par(mfrow=c(1,1))
 plot(biomass2_3, apply(samps2_3,2,FUN = quantile,.5),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
-     xlab="True Biomass (Mg/ha)", ylab="Predicted Mean Biomass (Mg/ha)")
+     xlab="Observed Biomass (Mg/ha)", 
+     ylab="Predicted Mean Biomass (Mg/ha)",
+     col='darkblue',cex=1.2)
 abline(a=0,b=1)
 lm.mod <- lm(apply(samps2_3,2,FUN = quantile,.5)~biomass2_3+0)
-abline(lm.mod,lty=2)
+abline(lm.mod,lty=2,col='darkblue')
 
 lm.mod.out <- lm(apply(samps1_3,2,FUN = quantile,.5)~biomass1_3+0)
-abline(lm.mod.out,lty=2,col='red')
+abline(lm.mod.out,lty=2,col='magenta3',lwd=2)
 
-points(biomass1_3,colMeans(samps1_3, na.rm = T),
-       col='red',pch=19)
+points(biomass1_3,colMeans(samps1_3, na.rm = T),col='magenta3',
+       bg='magenta3',pch=25,cex=1.2)
 #mtext(paste("r2-twothirds = ",signif(summary(lm.mod)$r.squared,digits=2),'r2-onethird = ',signif(summary(lm.mod.out)$r.squared,digits = 2)))
 
-#R2training = signif(summary(lm.mod)$r.squared,digits=3)
-#R2testing = signif(summary(lm.mod.out)$r.squared,digits = 3)
+R2training = signif(summary(lm.mod)$r.squared,digits=3)
+R2testing = signif(summary(lm.mod.out)$r.squared,digits = 3)
 
 R2training <- signif(give_me_R2(preds = apply(samps2_3,2,FUN = quantile,.5),
                  actual =  biomass2_3),digits = 3)
@@ -253,15 +255,17 @@ mse_test <- signif(mse_func(preds = apply(samps1_3,2,FUN = quantile,.5),
 
 arrows(x0 = biomass2_3, y0 = apply(samps2_3,2,FUN = quantile,.05),
        x1 = biomass2_3, y1 = apply(samps2_3,2,FUN = quantile,.975),
-       code = 0, lwd=2)
+       code = 0, lwd=2,col='darkblue')
 arrows(x0 = biomass1_3, y0 = apply(samps1_3,2,FUN = quantile,.05),
        x1 = biomass1_3, y1 = apply(samps1_3,2,FUN = quantile,.975),
-       code = 0, lwd=2, col = 'red')
-# legend(
-#   'bottomright',
-#   c(paste0('Training (R2 = ', R2training,', MSE = ',mse_train,')'),
-#     paste0('Testing (R2 = ', R2testing,', MSE = ',mse_test,')')),
-#   pch=19,col=c('black','red'))
+       code = 0, lwd=2, col = 'magenta3')
+# legend('bottomright',c('Calibration','Held-out'),pch=c(19,25),col=c('darkblue','magenta3'),pt.bg = c('darkblue','magenta3'),horiz=TRUE)
+
+legend(
+  'bottomright',
+  c(paste0('Calibration (R2 = ', R2training,', MSE = ',mse_train,')'),
+    paste0('Held-out (R2 = ', R2testing,', MSE = ',mse_test,')')),
+  pch=c(19,25),col=c('darkblue','magenta3'),pt.bg = c('darkblue','magenta3'))
 
 dev.off()
 

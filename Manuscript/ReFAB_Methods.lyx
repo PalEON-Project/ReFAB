@@ -193,9 +193,11 @@ Doubling of Holocene forest AGWB was driven by changes at population and
 \align center
 Ann M.
  Raiho, Christopher J.
- Paciorek, Andria Dawson, Stephen T.
+ Paciorek, Andria G.
+ Dawson, Stephen T.
  Jackson, David J.
- Mladenoff, Jody Peters, John W.
+ Mladenoff, Jody A.
+ Peters, John W.
  Williams, & Jason S.
  McLachlan
 \end_layout
@@ -209,7 +211,7 @@ Ann M.
 
 \begin_layout Standard
 \align center
-Correspondence to: ann.raiho@gmail.com
+Correspondence to: ann.raiho@gmail.com and jmclachl@nd.edu
 \end_layout
 
 \begin_layout Standard
@@ -280,15 +282,7 @@ AGWB
  the period immediately preceding 19th century land clearance (hereafter
  "settlement era") are posterior estimates from gridded statistical models
  fit to land-survey data from the extensive Public Land Survey (PLS) conducted
- at that time in the Midwest 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "schulte2001original"
-literal "true"
-
-\end_inset
-
-.
+ at that time in the Midwest.
  Details of model structure and fit are found in Paciorek et.
  al.
  2021 
@@ -314,8 +308,9 @@ literal "true"
 
 .
  Evidence that settlement-era vegetation captures the breadth of PIH vegetation
- composition is provided below under "No Analog Assessment." Furthermore,
- we use point estimates (median posterior estimates from Paciorek et.
+ composition is provided below under "No Analog Assessment." We developed
+ the model using point estimates (median posterior estimates from Paciorek
+ et.
  al.
  2021 
 \begin_inset CommandInset citation
@@ -333,8 +328,26 @@ reference "fig:pls-point-biomass"
 
 \end_inset
 
-) for model development then propagate the uncertainty in those estimates
- by taking draws from the posteriors in the final model fits.
+), then we propagated the uncertainty in those estimates by taking draws
+ from the posteriors in the final model fits.
+ We also use modern biomass estimates in main text Figure 2B (red) from
+ the European Space Agency's GlobBiomass project 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "santoro2018globbiomass"
+literal "false"
+
+\end_inset
+
+ which has been validated for low biomass (< 300 Mg/ha) estimation
+\begin_inset CommandInset citation
+LatexCommand citep
+key "soto2020mapping"
+literal "false"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -410,8 +423,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-We obtained data from 253 sediment core sites in our study area from Neotoma
- Paleoecology Database (
+We obtained fossil pollen data from 253 sediment core sites in our study
+ area from Neotoma Paleoecology Database (
 \begin_inset CommandInset href
 LatexCommand href
 name "https://neotomadb.org"
@@ -442,7 +455,7 @@ reference "fig:Map-of-pollen"
  Sediment samples with pollen count data are dated primarily using radiocarbon
  dating.
  We estimated the true age of these samples as the median posterior estimates
- from the BACON age depth model v2.2 in the R computing environment v3.5.1
+ from the Bacon age depth model v2.2 in the R computing environment v3.5.1
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -480,10 +493,9 @@ reference "fig:Sampling-points-for"
 
 .
  We excluded samples with median age exceeding 10,000 years before present
- to preserve the Holocene focus of our project.
- Furthermore, samples from the late Pleistocene are more likely to contain
- pollen assemblages without analogs in samples from our calibration data
- from the settlement era 
+ because earlier sediments are more likely to contain pollen assemblages
+ without analogs in samples from our calibration data from the settlement
+ era 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "williams2007novel"
@@ -491,7 +503,17 @@ literal "true"
 
 \end_inset
 
-.
+, See Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:No-analog-assessment"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ below.
 \end_layout
 
 \begin_layout Standard
@@ -682,9 +704,10 @@ Before conducting exploratory analyses and initial model fitting, we removed
  further in following sections.
  We used the remaining two-thirds of the sites as our calibration training
  dataset.
- We did this in order to be able to thoroughly evaluate our model using
- blinded data, including assessment of the potential for over-fitting..
- 
+ We completed the entire model fitting process blinded to these 78 sites
+ so that this held-out data would serve as a robust validation dataset allowing
+ us to assess overfitting, which is a concern with high dimensional nonlinear
+ models like ReFAB.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -1023,10 +1046,12 @@ Overview
 Our modeling framework contains two distinct parts.
  We begin with a calibration model to estimate the nonlinear multivariate
  relationship between pollen proportions and AGWB.
- The basic assumption of this model is that species composition (and therefore
- pollen composition) is related to AGWB.
- We assess this by plotting the species AGWB composition for different total
- AGWB bins on the settlement landscape (Fig.
+ The basic assumption of this model is that the taxonomic composition and
+ pollen productivity of vegetation are related to AGWB and that this is
+ reflected in pollen composition.
+ This relationship is apparent in plots of the biomass of tree species on
+ the presettlement landscape compared to the contemporary raw pollen percentages
+ (Fig.
  S
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1047,15 +1072,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/araiho/ReFAB/final_figures/[5-A]settlement.biomass.tiles.pdf
-	width 50text%
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename /Users/araiho/ReFAB/final_figures/[5-B]settlement.pollen.tiles.pdf
-	width 50text%
+	filename /Users/araiho/ReFAB/[5-AB]settlement.tiles.pdf
+	width 100line%
 
 \end_inset
 
@@ -1102,18 +1120,18 @@ The calibration model estimates coefficients of spline basis functions that
  and a model structure that ensures that AGWB varies smoothly over time,
  to make AGWB point predictions at individual sites.
  This prediction model is used to make predictions every 100 years from
- the time of settlement (100 years before present) to 10,000 years before
- present.
+ 10,000 years before present to the time of settlement (100 years before
+ present).
  
 \end_layout
 
 \begin_layout Standard
-We use a modern statistical technique known as inverse modeling that models
- pollen counts as a function of AGWB rather than a regression modeling approach
- that models AGWB as a function of pollen counts (see 
+We use an inverse modeling approach that models pollen counts as a function
+ of AGWB rather than a regression modeling approach that models AGWB as
+ a function of pollen counts (see 
 \begin_inset CommandInset citation
 LatexCommand citep
-key "blarquez2015tree,seppa2009calibrated"
+key "seppa2009calibrated,blarquez2016tree"
 literal "true"
 
 \end_inset
@@ -1138,8 +1156,8 @@ reference "subsec:Biomass-temporal-process"
 
 .
  Also note that we do not explicitly model pollen dispersal, which allows
- us to avoid having to specify a statistical model for the unknown species
- composition across the landscape.
+ us to avoid having to specify a statistical model for the unknown geographic
+ distribution of species composition across the landscape.
  These choices allow us to keep the model relatively simple and relate directly
  the univariate variable of interest (total AGWB) to the multivariate dependent
  variable (pollen composition).
@@ -1707,7 +1725,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename /Users/araiho/ReFAB/splines_calib.pdf
-	scale 75
+	width 100line%
 
 \end_inset
 
@@ -2790,7 +2808,7 @@ reference "sec:Vegetation-data"
  samples of the AGWB data product.
  The final MCMC iteration from each of the 50 calibration model fits was
  used in a separate MCMC for the prediction model, where each MCMC also
- used a separate draw from the BACON age depth model MCMC samples.
+ used a separate draw from the Bacon age depth model MCMC samples.
  This allowed us to propagate uncertainty from the AGWB estimate at time
  of settlement, the ages of the pollen samples, and the estimated beta coefficie
 nts into our final estimates of AGWB at each prediction site.
@@ -3072,14 +3090,14 @@ status open
 \align center
 \begin_inset Graphics
 	filename /Users/araiho/ReFAB/final_figures/[13-A]compvbiom_calib_smooth.pdf
-	scale 45
+	width 50line%
 
 \end_inset
 
 
 \begin_inset Graphics
 	filename /Users/araiho/ReFAB/final_figures/[13-B]compvbiom_pred_smooth.pdf
-	scale 45
+	width 50line%
 
 \end_inset
 
@@ -3453,9 +3471,9 @@ clustering.R
 \end_layout
 
 \begin_layout Standard
-To quantify the similarity between the reconstruction time series, we clustered
- AGWB time series reconstructions into three groups using time series clustering
- from the 'dtwclust' R package 
+To quantify the similarity among the trajectories of the reconstruction
+ time series, we clustered AGWB time series reconstructions into three groups
+ using time series clustering from the 'dtwclust' R package 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "sarda2017comparing"
@@ -3538,7 +3556,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/araiho/ReFAB/pol_biom_diff_scatters_limited1.pdf
+	filename /Users/araiho/ReFAB/pol_biom_diff_scatters_limited.pdf
 	width 100text%
 
 \end_inset
@@ -3550,7 +3568,7 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Examples of sensitivity analyses for each cluster (black, red, and green
+Examples of sensitivity analyses for each cluster (green, blue, and purple
  colors corresponding to clusters W, C, and E in main text) and pollen grouping
  (columns).
  The blue line represents the estimated relationship between pollen proportion
@@ -3601,14 +3619,14 @@ reference "fig:hemlock-decline"
 
 \end_inset
 
- top).
+).
  However, the effects on AGWB are mixed: signals are apparent at individual
  sites but not across the entire domain or within the individual clusters
  (Fig.
  4D, main text).
  In our sensitivity analysis described in the previous section, we found
- that hemlock population change was directly positively related to AGWB
- change more than the majority of taxonomic groupings (Fig.
+ that AGWB was particularly sensitive to hemlock particularly in cluster
+ C (Fig.
  3D, main text), so we expected to see a regional AGWB signal from hemlock
  population decline.
  We performed a separate investigation to determine the effects of hemlock
@@ -3634,11 +3652,8 @@ reference "fig:hemlock-decline"
  scaled independent variables showed that the interaction between hemlock
  proportion and longitude significantly affected the AGWB estimate (p-value
  = .000125, coefficient estimate = -0.06).
- Previous studies have shown that hemlock decline may have been caused by
- an abrupt climate shift, disease, or coupled climate change and disease
- introduction.
- Furthermore, the effects of climate and/or disease on hemlock populations
- were not necessarily synchronous in time and varied spatially 
+ Other researchers have found that declines in the hemlock abundance were
+ not necessarily synchronous in time and varied spatially 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "marsicek2013moisture"
@@ -3657,12 +3672,12 @@ literal "true"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/araiho/ReFAB/hemlock_ts_towerhigh.pdf
+	filename /Users/araiho/ReFAB/hemlock_ts_nohighlight.pdf
 	scale 50
 
 \end_inset
@@ -3708,6 +3723,7 @@ name "fig:hemlock-decline"
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
+btprint "btPrintCited"
 bibfiles "ReFAB_refs"
 options "science"
 

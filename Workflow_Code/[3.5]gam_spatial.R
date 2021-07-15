@@ -12,6 +12,9 @@ library(maptools)
 library(reshape2)
 library(maps)
 library(raster)
+library(spatstat)
+library(plotrix)
+
 #### 
 #### Load reconstruction
 #### 
@@ -477,7 +480,8 @@ load('clusters.Rdata')
 alpha_all <- .5
 title_cex <- 3
 pt_cex <- 3
-cluster_colors <- colors_tri <- c('navy','royalblue','magenta3')
+cluster_colors <- colors_tri <- viridis::viridis(3,begin = .75,end = 0,alpha = 1)#c('navy','royalblue','magenta3')
+
 
 coords <- data.frame(x=refab$lon[chull(x= refab$lon,y=refab$lat)],y=refab$lat[chull(x= refab$lon,y=refab$lat)]) #convex hull coordinates
 pts_in <- which(point.in.polygon(point.x = coors_dat[,1],point.y = coors_dat[,2],pol.x = coords$x,pol.y = coords$y)==1)
@@ -500,6 +504,10 @@ for (age_slice in seq(1, 100, 1)) {
 pred_biomass_gam <- pred_biomass_gam_list[[age_slice]]
 full_mat <- cbind(coors_dat,
                   do.call(cbind,lapply(pred_biomass_gam_list, FUN=function(x) x$fit)))
+#### Save spatial predictions
+colnames(full_mat)[-c(1,2)] <- paste0('AgeYBP',seq(100,10000,100))
+save(full_mat,file='full_mat.Rdata')
+
 #regional mean
 space_mat <- do.call(rbind,lapply(pred_biomass_gam_list, FUN=function(x) quantile(x$fit,c(.25,.5,.75))))
 space_mat_2 <- do.call(rbind,lapply(pred_biomass_gam_list, FUN=function(x) quantile(x$fit,c(.375,.625))))
@@ -545,7 +553,7 @@ legend('center',c('Total SE','Total Median'),
        lwd=3,cex=2)
 
 matplot(t(refab[, 2:101]), typ = 'l',lty=1,lwd=1.5,
-        col = adjustcolor(cluster_colors[clusters@cluster[refab$name]],alpha.f = .5),
+        col = cluster_colors[clusters@cluster[refab$name]],
         xlim = c(100,0),
         ylim=c(0,250),
         las = 2,
@@ -653,13 +661,15 @@ pdf(paste0(Sys.Date(),'gam_maps_with_ts.pdf'),compress = T,height=7,width = 12)
 layout(matrix(c(1,1,2,2,3,3,4,4,5,
                 1,1,2,2,3,3,4,4,5,
                 rep(6,9),
-                rep(7,9)),4,9,byrow=T))
+                rep(6,9),
+                rep(7,9),
+                rep(7,9)),6,9,byrow=T))
 
-par(oma=c(6,10,2,6))
+par(oma=c(6,10,2,6),mar=rep(0,4))
 
 for(age_slice in c(100,80,50,10)){ #rev(seq(10,80,10))
 print(age_slice)
-  par(mar=c(0,0,4,0))
+  par(mar=c(0,0,0,0))
   pred_biomass_gam <- pred_biomass_gam_list[[age_slice]]
   
   full.mat <- save_mat[[age_slice]] <- cbind(coors_dat,as.vector(pred_biomass_gam$fit))
@@ -698,7 +708,7 @@ print(age_slice)
   #points_get <- x.meta[x.meta$age_bacon<(age_slice+100)&x.meta$age_bacon>(age_slice-100)&x.meta$site.name%in%dataID_use$name,c('lat','long')]
   pt_data <- refab_melt[refab_melt$variable==age_slice,]
   data_binned_pts <- cut(pt_data[,'value'],breaks=breaks,labels=F)
-  points(pt_data[,2],pt_data[,1],pch=(21:23)[clusters@cluster[pt_data$name]],col=cluster_colors[clusters@cluster[pt_data$name]],bg=colors[data_binned_pts])
+  points(pt_data[,2],pt_data[,1],pch=(21:23)[clusters@cluster[pt_data$name]],bg=cluster_colors[clusters@cluster[pt_data$name]],col=NA,cex=1)#,bg=colors[data_binned_pts]
   
   #### legend
   if(age_slice==10) {
@@ -706,10 +716,12 @@ print(age_slice)
     legend(
       'center',
       c(as.character(breaklabels)[c(1,3,5,7,9)],'>300'),
-      pch = 19,
-      col = colors[c(1,3,5,7,9,11)],
-      cex = 1,
-      title = 'Biomass (Mg/ha)'
+      pch = 22,
+      pt.bg = colors[c(1,3,5,7,9,11)],
+      cex = 1.5,
+      pt.cex = 3.5,
+      col=NA,
+      title = 'Biomass \n (Mg/ha)',box.col = 'white'
     )
   }
   
@@ -767,39 +779,6 @@ print(age_slice)
   #        bg='white',cex=.5)
 }
 
-par(mar=c(0,0,0,0))
-plot(99:1, diff(rev(m_1)),pch=21,col=cluster_colors[1],ylim=c(-15000,8000),xlim=c(100,0),
-     ylab = NA,
-     xlab = NA,
-     xaxt= 'n',
-     yaxt= 'n',
-     las=2)
-axis(2,at=c(-8000,-4000,0,4000,8000),las=2)
-
-points(99:1,diff(rev(m_2)),pch=22,col=cluster_colors[2])
-points(99:1,diff(rev(m_3)),pch=23,col=cluster_colors[3])
-#abline(h=c(-2000,2000),lty=1,col='gray')
-abline(h=c(0),lty=1)
-abline(v=(c(100,80,50,10)),lty=1,col='lightgray')
-mtext('100 Year AGB \n Differences (Mg)', side=2, outer = F,line = 5)
-
-axis.break(2,-9000,style="slash") 
-
-par(new=T)
-
-plot(-1,set_mod_diff1,xlim=c(100,0),ylim=c(-150000,100000),xaxt='n',yaxt='n',ylab=NA,xlab=NA)
-axis.break(4,-75000,style="slash") 
-
-#rect(xleft = .5,ybottom = -18000000,xright = -5,ytop = 18000000,col=adjustcolor('gray',alpha.f = .5))
-axis(side=4,at =seq(-140000,-70000,30000),las=2)
-points(-1,set_mod_diff1,pch=16,col=cluster_colors[1],cex=2)
-points(-1,set_mod_diff2,pch=15,col=cluster_colors[2],cex=2)
-points(-1,set_mod_diff3,pch=23,bg=cluster_colors[3],col=cluster_colors[3],cex=2)
-#abline(h=c(set_mod_diff1,set_mod_diff2,set_mod_diff3),col=cluster_colors,lty=1)
-
-# axis(side=1,at = seq(0,100,5),labels = rev(seq(0,10000,500)),las=2)
-# axis(side=4,at = seq(-7000,7000,1000),labels = seq(-7000,7000,1000),las=2)
-
 pls_hull <- do.call(cbind,lapply(ras,FUN=function(x) x[,3]))
 
 pls_mean <- mean(colSums(pls_hull[pts_in,]))
@@ -811,11 +790,13 @@ plot(tot_mat[,1],
      ylim=c(2e5,7e5),
      ylab = NA,
      xlab = NA,
-     xaxt= 'n',typ='l',lty=1,lwd=2,las=2)
+     xaxt= 'n',yaxt='n',typ='l',lty=1,lwd=2,las=2)
 abline(v=c(100,80,50,10),lty=1,col='lightgray')
 abline(h=seq(2e5,7e5,1e5)[-c(1,6)],lty=1,col='lightgray')
 
-ciEnvelope(x = 1:100,ylo = tot_mat[,1]-tot_mat[,2],yhi = tot_mat[,1]+tot_mat[,2],col=adjustcolor('gray',alpha.f = .5))
+axis(side=2,at=seq(200000,700000,100000),labels=prettyNum(seq(200000,700000,100000),big.mark = ','),las=2)
+
+ciEnvelope(x = 1:100,ylo = tot_mat[,1]-tot_mat[,2],yhi = tot_mat[,1]+tot_mat[,2],col=adjustcolor('#3b4c41',alpha.f = .5))
 points(1:100,tot_mat[,1]-tot_mat[,2],typ='l',lty=2,lwd=2)
 points(1:100,tot_mat[,1]+tot_mat[,2],typ='l',lty=2,lwd=2)
 #rect(xleft = .5,ybottom = -18000000,xright = -5,ytop = 18000000,col=adjustcolor('gray',alpha.f = .5))
@@ -830,6 +811,78 @@ text(-2.25,fia_mean,'2000s')
 
 options(scipen=999) #gets rid of scientific notation
 mtext('Total Regional\n Biomass (Mg)', side=2, outer = F,line = 5)
+
+
+
+par(mar=c(0,0,0,0))
+plot(99:1, diff(rev(m_1)),pch=21,bg=cluster_colors[1],ylim=c(-15000,8000),xlim=c(100,0),
+     ylab = NA,
+     xlab = NA,
+     xaxt= 'n',
+     yaxt= 'n',
+     las=2,cex=1.5,col=NA)
+axis(2,at=c(-8000,-4000,0,4000,8000),labels = prettyNum(c(-8000,-4000,0,4000,8000),big.mark = ','),las=2)
+
+points(99:1,diff(rev(m_2)),pch=22,bg=cluster_colors[2],cex=1.5,col=NA)
+points(99:1,diff(rev(m_3)),pch=23,bg=cluster_colors[3],cex=1.5,col=NA)
+#abline(h=c(-2000,2000),lty=1,col='gray')
+abline(h=c(0),lty=1)
+abline(v=(c(100,80,50,10)),lty=1,col='lightgray')
+mtext('100 Year AGB \n Differences (Mg)', side=2, outer = F,line = 5)
+
+axis.break(2,-9000,style="slash") 
+
+
+par(new=T)
+
+plot(-1,set_mod_diff1,xlim=c(100,0),ylim=c(-150000,100000),xaxt='n',yaxt='n',ylab=NA,xlab=NA,col='white')
+axis.break(4,-75000,style="slash") 
+
+#rect(xleft = .5,ybottom = -18000000,xright = -5,ytop = 18000000,col=adjustcolor('gray',alpha.f = .5))
+axis(side=4,at =seq(-140000,-70000,30000),labels = prettyNum(seq(-140000,-70000,30000),big.mark = ','),las=2)
+points(-1,set_mod_diff1,pch=21,bg=cluster_colors[1],cex=2.5,col=NA)
+points(-1,set_mod_diff2,pch=22,bg=cluster_colors[2],cex=2.5,col=NA)
+points(-1,set_mod_diff3,pch=23,bg=cluster_colors[3],cex=2.5,col=NA)
+#abline(h=c(set_mod_diff1,set_mod_diff2,set_mod_diff3),col=cluster_colors,lty=1)
+
+legend('bottomleft',c('West','Central','East'),pch=21:23,pt.bg = (cluster_colors),col = NA,ncol = 3,cex=1.5,pt.cex = 1.75,bg='white')
+
+# axis(side=1,at = seq(0,100,5),labels = rev(seq(0,10000,500)),las=2)
+# axis(side=4,at = seq(-7000,7000,1000),labels = seq(-7000,7000,1000),las=2)
+
+levs <- c('forest','PINUSX','QUERCUS','TSUGAX','conifer','FAGUS')
+levs_cols <- RColorBrewer::brewer.pal(n=length(levs),'Paired')
+
+# for(i in 1:3){
+#   linesmat <- cast(cm4[cm4$clusters==i,],variable~bins)
+#   
+#   matplot(seq(1,9,1),apply(
+#     linesmat[, 11:2],
+#     1,
+#     FUN = function(x)
+#       diff(x / max(x))
+#   ),
+#   lty=1,
+#   typ = 'b',
+#   lwd=2,
+#   col = levs_cols[which(levs%in%linesmat[,1])],pch=19,
+#   ylab = NA,xaxt='n',las=2,ylim=c(-.45,.45),xlim=c(0,10))
+#   
+#   abline(h = 0)
+# 
+#   box(which = 'plot',col=cluster_colors[i],lwd=4)
+#   
+#   if(i == 1){
+#     legend('topleft',legend=
+#              levs,col=levs_cols,pch=19,ncol = 2)
+#   }
+#   if(i == 2){
+#     mtext(text = 'Millenial Normalized Pollen Proportion Change',side = 2,line = 5,outer = F)
+#   }
+# }
+
+
+
 axis(side=1,at = seq(0,100,10),labels = seq(0,10,length.out=11),las=1)
 # axis(side=4,at = seq(300000,900000,100000),labels = seq(300000,900000,100000),las=2)
 
@@ -838,9 +891,10 @@ axis(side=1,at = seq(0,100,10),labels = seq(0,10,length.out=11),las=1)
 #        lty=c(2,1,1),
 #        lwd=3)
 
-mtext('Age (cal ka BP)', side=1, outer = F,line = 4)
+mtext('Age (cal ka BP)', side=1, outer = F,line = 3)
 
 dev.off()
+
 
 
 #####
@@ -887,7 +941,7 @@ full.mat <- save_mat[[age_slice]] <- cbind(coors_dat,as.vector(pred_biomass_gam$
 colnames(full.mat) <- c("x","y","pred_biomass")
 
 breaks <-  c(seq(0,50,10),seq(75,250,25),435)
-colors <- rev(terrain.colors(length(breaks)-1))
+colors <- rev(viridis(length(breaks)-1))
 data_binned <-  cut(pred_biomass_gam$fit, breaks, include.lowest = TRUE, labels = FALSE)
 
 legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
@@ -914,7 +968,7 @@ pts_in1 <- which(point.in.polygon(point.x = coors_dat1[,1],point.y = coors_dat1[
 pls_hull <- do.call(cbind,lapply(ras,FUN=function(x) x[pts_in1,3]))
 
 cutspls <- cut(rowMeans(pls_hull),breaks=c(seq(0,50,10),seq(75,250,25),435))
-colors <- rev(terrain.colors(length(breaks)-1))
+colors <- rev(viridis(length(breaks)-1))
 
 plot(coors_dat1[pts_in1,1],coors_dat1[pts_in1,2],col=colors[cutspls])
 

@@ -131,8 +131,15 @@ plot(
   xlab = NA,
   ylab = NA,ylim=c(41.5,49.5)
 )
-maps::map('state',add=T)
-points(input_points$lon,input_points$lat,col = c('purple','red')[input_points[,3]+1],pch=19,cex=.5)
+maps::map('state', add = T)
+points(
+  input_points$lon,
+  input_points$lat,
+  col = c('magenta3', 'darkblue')[input_points[, 3] + 1],
+  bg = c('magenta3', 'darkblue')[input_points[, 3] + 1],
+  pch = c(25,19)[input_points[, 3] + 1],
+  cex = 1
+)
 dev.off()
 
 # 

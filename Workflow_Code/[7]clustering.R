@@ -30,8 +30,8 @@ clusters@cluster
 
 dend <- as.dendrogram(clusters)
 
-dend <- color_labels(dend,k=3, col = colors_tri[c(3,1,2)])
-dend1 <- color_branches(dend,k=3,groupLabels = c('E','W','C'), col = colors_tri[c(3,1,2)])
+dend <- color_labels(dend,k=3, col = cluster_colors[c(3,1,2)])
+dend1 <- color_branches(dend,k=3,groupLabels = c('E','W','C'), col = cluster_colors[c(3,1,2)])
 
 plot(dend1)
 
@@ -96,7 +96,7 @@ now_all_df <- data.frame(now_all_all,clusters = clusters_assign)
 now_all_df$site <- as.numeric(as.factor(now_all_df$site))
 
 #gut checks
-plot(now_all_df[now_all_df$clusters==3,'lon'],now_all_df[now_all_df$clusters==3,'lat'])
+plot(now_all_df[now_all_df$clusters==2,'lon'],now_all_df[now_all_df$clusters==2,'lat'])
 maps::map('state',add=T)
 plot(now_all_df[now_all_df$clusters==1,'age'],now_all_df[now_all_df$clusters==1,'max_est'],xlim=c(100,0))
 plot(now_all_df[now_all_df$site==1,'age'],now_all_df[now_all_df$site==1,'max_est'],xlim=c(100,0))
@@ -142,6 +142,7 @@ for(ii in 1:77){
 }
 time_names <- c('early','mid','late')
 colors <- colors_tri#c('black','darkred','darkgreen')
+colors_tri <- cluster_colors
 
 rlm_coeff <- matrix(NA,27,3)
 
@@ -152,7 +153,7 @@ pdf('pol_biom_diff_scatters_limited.pdf',height = 20,width=20)
 #maps::map('state',add=T)
 par(mfrow=c(3,3),mar = c(3,3,2,0),oma = rep(4,4))
 layout(matrix(1:9,3,3))
-  for(ss in 1:27){
+  for(ss in 3:5){
     all_pollen <- unlist(do.call(c, lapply(
       pollen_save,
       FUN = function(x) {
@@ -189,7 +190,7 @@ layout(matrix(1:9,3,3))
                     #ylim = c(-250,250),
                     #xlim = c(-.5,.5),
                     xlab = 'Pollen Proportion Difference',
-                    ylab = 'Biomass Difference',col = cc)
+                    ylab = 'Biomass Difference',col = colors_tri[cc])
       title(paste(colnames(now_all_df)[ss]),cex.main=3)
       
       if(length(all_pollen[subset][keep_idx])<500) next()
@@ -246,20 +247,69 @@ cols2 <-brewer.pal(7,'BrBG')#c('slateblue4',colorRampPalette(c("lightblue3","lem
 colors_tri <- c('navy','royalblue','magenta3')
 
 dend <- as.dendrogram(clusters)
-dend <- color_branches(dend,k=3, col = colors_tri[c(3,2,1)],groupLabels = T)
+dend <- color_branches(dend,k=3, col = cluster_colors[c(3,2,1)],groupLabels = T)
 
 # %>% 
 #   dendextend::rotate(c(1:77))%>% #rotate to match labels new order
 #   plot(main = "Rotated tree\n based on labels")
  dend2 <- click_rotate(rev(dend1))
+ 
+ 
+#### pollen over time in a line calculation
+ 
+clustline <- now_all_df %>%
+  mutate(bins = cut(age,breaks=seq(0,100,10))) %>%
+  group_by(clusters,bins) %>%
+  summarise_all(list(mean))
+
+clustmelt <- melt(as.data.frame(clustline[,1:29]),id.vars = c('clusters','bins'))
+
+clustmelt1 <- clustmelt[clustmelt$clusters==1 & clustmelt$variable %in% c('forest'),]
+clustmelt2 <- clustmelt[clustmelt$clusters==2 & clustmelt$variable %in% c('TSUGAX'),]
+clustmelt3 <- clustmelt[clustmelt$clusters==3 & clustmelt$variable %in% c('PINUSX','conifer','FAGUS'),]
+
+cm4 <- rbind(clustmelt1,clustmelt2,clustmelt3)
+
+
+clustline_ages <- now_all_df %>%
+  mutate(ages = cut(age,breaks=seq(0,100,1))) %>%
+  group_by(clusters,ages) %>%
+  summarise_all(list(mean))
+
+clustmelt_ages <- melt(as.data.frame(clustline_ages[,1:29]),id.vars = c('clusters','ages'))
+
+clustmelt1_ages <- clustmelt_ages[clustmelt_ages$clusters==1 & clustmelt_ages$variable %in% c('forest'),]
+clustmelt2_ages <- clustmelt_ages[clustmelt_ages$clusters==2 & clustmelt_ages$variable %in% c('PINUSX','QUERCUS','TSUGAX'),]
+clustmelt3_ages <- clustmelt_ages[clustmelt_ages$clusters==3 & clustmelt_ages$variable %in% c('PINUSX','conifer','QUERCUS','FAGUS'),]
+
+cm5 <- rbind(clustmelt1_ages,clustmelt2_ages,clustmelt3_ages)
+
+
+ggplot(data = cm4)+
+  geom_tile(aes(x = bins,y = variable,fill = value)) +
+  #scale_fill_brewer(palette = 1) + 
+  facet_wrap(facets = vars(clusters),nrow=3)
 
 load('~/Dropbox/ReFAB_outputs/split_calib_dat_v3.0.Rdata')
 
-pdf(paste0(Sys.Date(),'cluster_fig_refab_manuscript_2.pdf'),height=12,width = 12)
-layout(matrix(c(1, 0, 2,
-                3, 3, 6,
-                4, 4, 6,
-                5, 5, 6), 4, 3, byrow = T))
+common_names <- c('Conifer','Decidious','Arboreal','Savanna','Forest','Pine','Prairie',
+                  'Oak','Birch','Other Herb.','Sedge','Alder','Ironwood','Elm','Hemlock',
+                  'Spruce','Maple','Ash','Poplar','Cypress','Other Trees','Larch','Beech',
+                  'Hickory','Basswood','Fir','Walnut')
+
+names_dat <- cbind(rownames(rlm_coeff),common_names)
+
+rlm_order <- c(3,1,2,4,5,seq(6,27,1)[order(names_dat[6:27,2])])
+
+pdf(paste0(Sys.Date(),'cluster_fig_refab_manuscript_2.pdf'),height=11,width = 9)
+layout(matrix(c(1, 1, 2, 2,
+                1, 1, 2, 2,
+                3, 3, 3, 6,
+                3, 3, 3, 6,
+                4, 4, 4, 6,
+                4, 4, 4, 6,
+                5, 5, 5, 6,
+                5, 5, 5, 6), 8, 4, byrow = T))
 par(mar=c(1.5,5,1,3),oma=c(9,3,3,3))
 
 #####
@@ -307,7 +357,8 @@ par(mar=c(1.5,5,1,3),oma=c(9,3,3,3))
 
 
 
-plot((dend2), leaflab = "none",lwd=3,las=2)
+plot((dend2), leaflab = "none",lwd=3,las=2,cex.axis=1.5)
+mtext('Height',side=2,line=5,cex=1.5)
 
 plot(settle$lon,
      settle$lat,
@@ -319,7 +370,7 @@ points(
   unlist(lon_mat),
   unlist(lat_mat),
   col = colors_tri[clusters@cluster],
-  pch = 19,cex = .75
+  pch = 19,cex = 1.25
 )
 maps::map('state', add = T)
 
@@ -327,13 +378,28 @@ maps::map('state', add = T)
 # legend('left',breaklabels[1:7],pch=19,col=colors[1:7],cex=1.1,title = 'PLS Biomass (Mg/ha)')
 # legend('right',breaklabels[8:14],pch=19,col=colors[8:14],cex=1.1,title = 'PLS Biomass (Mg/ha)')
 
+# 
+# colorbar.plot(
+#   1,
+#   50,
+#   1:20,
+#   strip.width = .5,
+#   strip.length = 8.5,
+#   col = colvals(length(breakvals) - 1),
+#   adj.x = 0
+# )
+# axis(side=1,at=seq(1.25,7.75,.75),
+#      labels = signif(seq(-1,1,length.out = length(seq(1.25,7.75,.75))),
+#                      digits=2),las=1)
+
 #par(mfrow=c(3,1))
 for (i in c(1,2,3)) {
   plot_me <- do.call(cbind, agb.list[which(clusters@cluster == i)])
   matplot(
     plot_me[2:100,],
-    xlim = c(100, 0),
+    xlim = c(100, -9),
     xaxt = 'n',
+    yaxt = 'n',
     typ = 'l',
     col = adjustcolor(colors_tri[i],alpha.f = .5),
     ylab = '',
@@ -342,10 +408,10 @@ for (i in c(1,2,3)) {
     lty = 1,
     las =2,
     cex.axis = 1.5,
-    ylim =c(0,250)
+    ylim =c(0,320)
   )
   
-  text(x = -1.5,y=245,labels= c('W','C','E')[i],cex=2)
+  text(x = -7,y=125,labels= c('W','C','E')[i],cex=4,col = colors_tri[i])
   
   ciEnvelope(x=1:100,ylo = sd_clusts[i,],
              yhi = sd_clusts1[i,],
@@ -354,17 +420,48 @@ for (i in c(1,2,3)) {
   points(sd_clusts[i,],type = 'l',lty=1)
   points(sd_clusts1[i,],type = 'l',lty=1)
   
+  axis(2,at = seq(0,250,50),las=2,cex.axis = 1.5)
+  
+  abline(h = 250,col='black')
+  abline(v=1,col='black')
+  
+  linesmat <- cast(cm4[cm4$clusters==i,],variable~bins)
+  for(nnn in 1:nrow(linesmat)){
+    linesvals <- (as.numeric(1*linesmat[nnn,-1]/max(linesmat[nnn,-1])))
+    breakvals <- seq(-1,1,.01)
+    cutvals <- cut(linesvals,breaks = breakvals,labels=F)
+    colvals <- colorRampPalette(c('white','antiquewhite','peachpuff','#8db27d','#3b4c41'))
+    
+    if(nrow(linesmat)==1){ 
+      y_do = 250+2*20 
+      }else{
+      y_do = 250+nnn*20 
+    }
+    
+    segments(x0 = c(2,seq(10,90,10)),x1 = seq(10,100,10),y1 = y_do,y0=y_do,col=colvals(length(breakvals)-1)[cutvals],lwd = 10)
+  }
+  
+  names_segs <- list(w = list('Forest'),c = list('Hemlock'),e = list(c('Conifer','Pine','Beech')))
+  
+  if(nrow(linesmat)==1){ 
+    text(x=0,y = 250+2*20,unlist(names_segs[[i]]),cex=1.2,adj=c(0,.5))
+  }else{
+    text(x=0,y = 250+1:nrow(linesmat)*20,unlist(names_segs[[i]]),cex=1.2,adj=c(0,.5)) 
+  }
+  
+  #if(i==1) colorbar.plot(6, 90, 1:100)
+  
   # points(rowMeans(plot_me),
   #        type = 'l',
   #        lwd = 4,
   #        col = 'blue')
   if(i==2)     mtext('Biomass (Mg/ha)',side = 2,line = 4,cex = 1.5)
 }
-axis(side = 1, at = seq(0,100,10),labels = seq(0,100,10),cex.axis = 1.5)
+axis(side = 1, at = seq(0,100,10),labels = seq(0,10,1),cex.axis = 1.5)
 mtext('Age (cal ka BP)',side = 1,line = 4,cex = 1.5)
 
 image(
-  t(rlm_coeff[27:1,c(1,2,3)]),
+  t(rlm_coeff[rev(rlm_order),c(1,2,3)]),
   col = cols2,
   breaks = c(-200,seq(-100, 100, length.out = length(cols2) - 1),200),
   xaxt = 'n',
@@ -374,7 +471,7 @@ image(
 axis(
   side = 2,
   at = seq(0, 1, length.out = 27),
-  labels = rev(rownames(rlm_coeff)),
+  labels = rev(common_names[rlm_order]),
   las = 2,
   cex.axis = 1.5
 )
@@ -401,6 +498,21 @@ image.plot(
   legend.only = T
 )
 
+dev.off()
+
+pdf('cluster_pollen_prop_legend.pdf')
+nbins = 70
+plot(
+  breakvals[seq(1,length(breakvals),length.out = nbins)],
+  rep(0, nbins),
+  col = colvals(length(breakvals))[seq(1,length(breakvals),length.out = nbins)],
+  pch = 15,
+  cex = 4,
+  ylim = c(-.01, .01),
+  xlim = c(.03,1),
+  bty="n",yaxt='n',ylab=NA
+)
+title('Cluster-normalized average pollen proportion')
 dev.off()
 
 # 

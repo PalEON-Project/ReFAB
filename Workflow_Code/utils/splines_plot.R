@@ -1,5 +1,7 @@
 
 
+library(nimble)
+
 source(file.path("Workflow_Code","utils","bs_nimble.R"))
 source(file.path("Workflow_Code","utils",'linexp.R'))
 splines_plot <- function(samples.mixed,Y,biomass,bMax,bimodal_sites = NULL,order_plot=NULL){
@@ -85,16 +87,23 @@ splines_plot <- function(samples.mixed,Y,biomass,bMax,bimodal_sites = NULL,order
 }
 
 if(FALSE){
-  pdf(paste0('splines.prev',Sys.Date(),'.pdf'),width = 8,height = 5)
-  splines_plot(samples.mixed,Y,biomass,bMax)
+  #pdf(paste0('splines.prev',Sys.Date(),'.pdf'),width = 8,height = 5)
+  #splines_plot(samples.mixed,Y,biomass,bMax)
+  #dev.off()
+  
+  #load('~/Downloads/3beta.est.group.in11.Rdata')
+  #load('~/Downloads/beta.est.group.in101FULL.Rdata')
+  
+  load('~/Dropbox/3beta.est.group.in100FULL.Rdata')
+  
+  load('twothirds_v3.0.Rdata')
+  pdf('splines_calib.pdf',width=10,height=7)
+  splines_plot(samples.mixed,
+               Y[1:154,],
+               biomass[1:154],
+               bMax = bMax,
+               bimodal_sites = NULL,
+               order_plot = c(1,2,3,10,12,18))
   dev.off()
   
-  
-  load('~/Downloads/3beta.est.group.in11.Rdata')
-  
-  load('~/Downloads/beta.est.group.in101FULL.Rdata')
-  load('twothirds_v2.0.Rdata')
-  pdf('splines_calib_bimodal.pdf')
-  splines_plot(samples.mixed,Y,biomass,bMax=228,bimodal_sites = calibration_bimodal)
-  dev.off()
 }

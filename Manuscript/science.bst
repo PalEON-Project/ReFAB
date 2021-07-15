@@ -1,6 +1,7 @@
 %%
-%% This is file `Science.bst',
+%% This is file `ScienceAdvances.bst',
 %% generated with the docstrip utility.
+%% and then modified manually
 %%
 %% The original source files were:
 %%
@@ -11,6 +12,7 @@
 %% *** Applicable to Science Journal references ***
 %% 
 %% Copyright 1994-1999 Patrick W Daly
+%% Modified 2014 by Aaron Clauset to conform to Science Advances style
  % ===============================================================
  % IMPORTANT NOTICE:
  % This bibliographic style (bst) file has been generated from one or
@@ -500,7 +502,7 @@ FUNCTION {format.names}
         {
           nameptr #1
           #1 + =
-          numnames #5
+          numnames #50
           > and
             { "others" 't :=
               #1 'namesleft := }
@@ -809,7 +811,7 @@ FUNCTION {format.journal.pages}
         { pop$ format.pages }
         {
           ", " *
-          pages first.page *
+          pages  *
         }
       if$
     }
@@ -1036,6 +1038,7 @@ FUNCTION {format.organization.address}
 FUNCTION {article}
 { output.bibitem
   format.authors "author" output.check
+  format.title "title" output.check new.block 
   crossref missing$
     { journal
       emphasize
@@ -1130,7 +1133,8 @@ FUNCTION {incollection}
 { output.bibitem
   format.authors "author" output.check
   crossref missing$
-    { format.in.ed.booktitle "booktitle" output.check
+    { format.title "title" output.check new.block 
+      format.in.ed.booktitle "booktitle" output.check
       format.number.series output
       format.publisher.address output
       format.bvolume output

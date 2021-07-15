@@ -162,3 +162,22 @@ for (ii in 1:77) {
   
 }
 
+####
+#### Spatial Reconstruction ####
+####
+
+load('full_mat.Rdata')
+load('pred_biomass_gam_list.Rdata')
+full_mat_se <- cbind(full_mat[,1:2],
+                  do.call(cbind,lapply(pred_biomass_gam_list, FUN=function(x) x$se)))
+
+colnames(full_mat_se)[-c(1,2)] <- paste0('AgeYBP',seq(100,10000,100),'_SE')
+write.csv(full_mat,file = 'ReFAB_spatial_reconstruction_means_v1.0.csv')
+write.csv(full_mat_se,file = 'ReFAB_spatial_reconstruction_SEs_v1.0.csv')
+
+####
+#### Calibration Dataset ####
+####
+
+
+

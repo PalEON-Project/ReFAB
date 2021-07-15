@@ -39,8 +39,8 @@ pol_cal_count <- pol_cal_count %>% mutate(.id = as.numeric(.id))
 pol_cal_count_save <- pol_cal_count
 
 save(pol_cal_count,file=paste0('nimble_pull',Sys.Date(),'.Rdata'))
-load("~/ReFAB/nimble_pull2018-02-06.Rdata")
-load("~/ReFAB/nimble_pull2018-07-13.Rdata")
+#load("~/ReFAB/nimble_pull2018-02-06.Rdata")
+#load("~/ReFAB/nimble_pull2018-07-13.Rdata")
 load('~/ReFAB/nimble_pull2018-10-31.Rdata')
 
 if(DRAW==TRUE) pdf(file.path(fig.dir,paste0('all_pollen_cores_map',Sys.Date(),'.pdf')))

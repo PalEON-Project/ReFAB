@@ -7,7 +7,7 @@ library(raster)
 library(reshape)
 library(ggplot2)
 
-nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc1.nc'))
+nc <- nc_open(file.path('~','Downloads','PLS_biomass_agb_western_point_v1.0rc2.nc'))
 
 x <- nc$dim$x$vals
 y <- nc$dim$y$vals
@@ -27,37 +27,37 @@ tot_b = b[,'Total']
 #### biomass_dat_get from get_data.R
 load('biomass_dat_est_agb.Rdata')
 
-breaks <-  c(seq(0, 100, 25), seq(150, 250, 50))
-data_binned <-
-  cut(biomass_dat_est$layer,
+breaks <-  c(seq(0, 100, 25), seq(150, 300, 50))
+data_binned_settle <-
+  cut(biomass_mat[,'Total'],
       c(breaks),
       include.lowest = FALSE,
       labels = FALSE)
-b <- as.data.frame(cbind(biomass_mat, data_binned))
-b.melt <- melt(data = b)
+b_settle <- as.data.frame(cbind(biomass_mat, data_binned_settle))
+b.melt_settle <- melt(data = b_settle)
 
-c <- matrix(NA, max(data_binned, na.rm = T), 22)
+c_settle <- matrix(NA, max(data_binned_settle, na.rm = T), 22)
 
-for (i in 1:max(data_binned, na.rm = T)) {
-  c[i, ] <- colSums(b[b$data_binned == i, -1], na.rm = T)
+for (i in 1:max(data_binned_settle, na.rm = T)) {
+  c_settle[i, ] <- colSums(b_settle[b_settle$data_binned_settle == i, -1], na.rm = T)
 }
-colnames(c) <- colnames(b[, -1])
+colnames(c_settle) <- colnames(b_settle[, -1])
 
-c <- c[, -22]
+c_settle <- c_settle[, -22]
 
 
-c1 <- prop.table(c, 1)
-c2 <- c1[, order(colMeans(c1))]
-c1.melt <- melt(c2)
+c1_settle <- prop.table(c_settle, 1)
+c2_settle <- c1_settle[, order(colMeans(c1_settle))]
+c1.melt_settle <- melt(c2_settle)
 
-c2.melt <-
-  within(c1.melt, X2 <-
+c2.melt_settle <-
+  within(c1.melt_settle, X2 <-
            factor(X2, names(sort(
-             colMeans(c1, na.rm = T), decreasing = FALSE
+             colMeans(c1_settle, na.rm = T), decreasing = FALSE
            )))) #has to be reshape not reshape2
 
 pdf('[5-A]settlement.biomass.tiles.pdf')
- ppp <- ggplot() + geom_tile(data = c2.melt,
+ ppp <- ggplot() + geom_tile(data = c2.melt_settle,
                      aes(x = X1, y = X2, fill = value),
                      colour = 'grey') +
   
@@ -76,7 +76,7 @@ dev.off()
 
 
 load('threethirds_v3.0.Rdata')
-breaks <-  c(seq(0, 100, 25), seq(150, 450, 50))
+breaks <-  c(seq(0, 100, 25), seq(150, 300, 50))
 data_binned <-  cut(biomass, c(breaks), include.lowest = FALSE, labels = FALSE)
 Y.prop <- prop.table(as.matrix(Y),1)
 colnames(Y.prop) <- c('Pine','Prairie','Oak','Birch','Other Herb.','Sedge',
@@ -105,7 +105,8 @@ c1.melt<-melt(c2)
 c2.melt <- within(c1.melt, X2 <- factor(X2,names(sort(colMeans(c1),decreasing = FALSE))))
 
 pdf('[5-B]settlement.pollen.tiles.pdf')
-ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
+ggplot() + 
+  geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour = 'grey') +
   scale_fill_gradient(name = 'Pollen \n Proportion',low="white",high="black") +
   ylab('Tree Taxa') +
   xlab('Biomass Categories Mg/ha') +
@@ -116,6 +117,32 @@ ggplot() + geom_tile(data = c2.melt, aes(x = X1, y = X2, fill = value), colour =
         axis.text = element_text(size = 10))
 dev.off()
 
+
+
+colnames(c1.melt_settle) <- c('cat','spp','value')
+colnames(c1.melt) <- c('cat','spp','value')
+c1.melt_settle_idx <- data.frame(c1.melt_settle,idx='Settlement AGWB')
+c1.melt_idx <- data.frame(c1.melt,idx='Pollen')
+
+all_tiles <- full_join(c1.melt_settle_idx, c1.melt_idx)
+all_tiles_melt <- melt(all_tiles,id.vars = c('spp','idx','cat'))
+
+all_tiles_melt1 <- all_tiles_melt[-which(all_tiles_melt$spp%in%c('Sedge','Prairie','Poplar','Other Herb.','Other Arboreal','Cypress','Alder','Poplar,tulip poplar','Other hardwood','Dogwood','Cherry','Cedar,juniper','Black gum,sweet gum')),]
+
+pdf('[5-AB]settlement.tiles.pdf')
+ggplot() + 
+  geom_tile(data = all_tiles_melt1,
+            aes(x = cat, y = spp, fill = value),
+            colour = 'grey') +
+  facet_wrap(vars(all_tiles_melt1$idx)) + 
+  scale_fill_gradient(name = 'Proportion',
+                      low="white",
+                      high="black") +
+  ylab('Tree Taxa') +
+  xlab('AGWB Categories Mg/ha') +
+  scale_x_continuous(breaks=seq(.5,( max(data_binned,na.rm = T) +.5), 1), labels = breaks[1:(max(data_binned,na.rm = T)+1)])+ 
+  theme_bw()
+dev.off()
 
 
 ################################ End figures begin exploration notes
