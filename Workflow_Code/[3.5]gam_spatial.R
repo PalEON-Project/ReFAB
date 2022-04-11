@@ -19,7 +19,7 @@ library(plotrix)
 #### Load reconstruction
 #### 
 
-nc <- nc_open('ReFAB_site_reconstruction_v1.0.nc')
+nc <- nc_open('refab_final_datasets/data_products/ReFAB_site_reconstruction_v1.0.nc')
 
 agwb <- ncvar_get(nc,"AGWB")
 
@@ -57,7 +57,7 @@ map('state',add=T)
 #### Load Smaller ReFAB Output
 #### 
 
-refab <- read.csv('median_biomass_plus_meta.csv')
+refab <- read.csv('refab_final_datasets/for_scripts/median_biomass_plus_meta.csv')
 
 library(reshape2)
 
@@ -93,6 +93,8 @@ tictoc::toc()
 
 save(b,file='b.Rdata')
 }
+
+load('refab_final_datasets/for_scripts/b.Rdata')
 
 summary(b)
 vis.gam(b)
@@ -331,7 +333,7 @@ colors <- rev(terrain.colors(length(breaks1)-1))
 plot(coors_dat_pls_sm[pts_in1,1],coors_dat_pls[pts_in1,2],col=colors[cutspls])
 
 #regional mean PLS
-pls_mean <- sum(coors_dat_pls_sm[,3])#mean(colSums(pls_hull[pts_in1,]))
+pls_mean <- sum(coors_dat_pls_sm[pts_in1,3]) * 6400#mean(colSums(pls_hull[pts_in1,]))
 pls_ci05 <- quantile(colSums(pls_hull[pts_in1,]),.05)
 pls_ci95 <- quantile(colSums(pls_hull[pts_in1,]),.975)
 
@@ -470,17 +472,18 @@ pdf('gam_maps_secondpass.pdf',height=12,width = 12,compress = T)
 
 full.mat <- cbind(coors_dat_keep,as.vector(pred_biomass_gam))
 library(spatstat)
+library(dtwclust)
 
 ch <- convexhull.xy(x= refab$lon,y=refab$lat)
 
 save_mat <- list()
 
-load('clusters.Rdata')
+load('refab_final_datasets/for_scripts/clusters.Rdata')
 
 alpha_all <- .5
 title_cex <- 3
 pt_cex <- 3
-cluster_colors <- colors_tri <- viridis::viridis(3,begin = .75,end = 0,alpha = 1)#c('navy','royalblue','magenta3')
+cluster_colors <- colors_tri <- c('cyan4','deeppink2','navy')#viridis::viridis(3,begin = .75,end = 0,alpha = 1)#c('navy','royalblue','magenta3')
 
 
 coords <- data.frame(x=refab$lon[chull(x= refab$lon,y=refab$lat)],y=refab$lat[chull(x= refab$lon,y=refab$lat)]) #convex hull coordinates
@@ -507,6 +510,7 @@ full_mat <- cbind(coors_dat,
 #### Save spatial predictions
 colnames(full_mat)[-c(1,2)] <- paste0('AgeYBP',seq(100,10000,100))
 save(full_mat,file='full_mat.Rdata')
+load('refab_final_datasets/for_scripts/full_mat.Rdata')
 
 #regional mean
 space_mat <- do.call(rbind,lapply(pred_biomass_gam_list, FUN=function(x) quantile(x$fit,c(.25,.5,.75))))
@@ -542,7 +546,7 @@ points(1:100,tot_mat[,1]+tot_mat[,2],typ='l',lty=1,lwd=2)
 
 points(1,pls_mean,pch=19,col='darkgreen',cex=.5)
 
-mtext('Total Regional Biomass (Mg)', side=2, outer = F,cex=2,line = 7)
+mtext('Total Regional AGWB (Mg)', side=2, outer = F,cex=2,line = 7)
 axis(side=1,at = seq(0,100,5),labels = seq(0,10000,500),las=2)
 axis(side=4,at = seq(3e5,9e5,1e5),labels = seq(3e5,9e5,1e5),las=2)
 
@@ -561,7 +565,7 @@ matplot(t(refab[, 2:101]), typ = 'l',lty=1,lwd=1.5,
         xlab = NA,
         xaxt= 'n')
 mtext('Years Before Present', side=1, outer = F,line=8,cex=2)
-mtext('Biomass (Mg/ha)', side=2, outer = F,cex=2,line = 5)
+mtext('AGWB (Mg/ha)', side=2, outer = F,cex=2,line = 5)
 axis(side=1,at = seq(0,100,5),labels = seq(0,10000,500),las=2)
 axis(side=4,at = seq(0,250,50),labels = seq(0,250,50),las=2)
 
@@ -621,12 +625,14 @@ pts_in1_fia <- which(point.in.polygon(point.x = coors_dat_fia_sm[,1],point.y = c
 pts_in2_fia <- which(point.in.polygon(point.x = coors_dat_fia_sm[,1],point.y = coors_dat_fia_sm[,2],pol.x = c2[,1],pol.y = c2[,2])==1)
 pts_in3_fia <- which(point.in.polygon(point.x = coors_dat_fia_sm[,1],point.y = coors_dat_fia_sm[,2],pol.x = c3[,1],pol.y = c3[,2])==1)
 
-set_mod_diff1 <- sum(coors_dat_fia_sm[pts_in1_fia,3]) - sum(coors_dat_pls_sm[pts_in1_pls,3])
-set_mod_diff2 <- sum(coors_dat_fia_sm[pts_in2_fia,3]) - sum(coors_dat_pls_sm[pts_in2_pls,3])
-set_mod_diff3 <- sum(coors_dat_fia_sm[pts_in3_fia,3]) - sum(coors_dat_pls_sm[pts_in3_pls,3])
+toTG <- 1000000
+
+set_mod_diff1 <- (sum(coors_dat_fia_sm[pts_in1_fia,3])*6400 - sum(coors_dat_pls_sm[pts_in1_pls,3])*6400)/toTG
+set_mod_diff2 <- (sum(coors_dat_fia_sm[pts_in2_fia,3])*6400 - sum(coors_dat_pls_sm[pts_in2_pls,3])*6400)/toTG
+set_mod_diff3 <- (sum(coors_dat_fia_sm[pts_in3_fia,3])*6400 - sum(coors_dat_pls_sm[pts_in3_pls,3])*6400)/toTG
 
 sum(set_mod_diff1,set_mod_diff2,set_mod_diff3)
-fia_mean <- sum(coors_dat_fia_sm[pts_in,3])
+fia_mean <- sum(coors_dat_fia_sm[pts_in,3])* 6400
 
 for(t in 1:100){
   #Calculates sum and var by refab estimate points. But this doesn't tell the whole landscape story...
@@ -685,7 +691,7 @@ print(age_slice)
   
   data_binned <-  cut(pred_biomass_gam$fit, breaks, include.lowest = TRUE, labels = FALSE)
   
-  legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
+  legendName <- c("AGWB (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
   #breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
   
   coords <- data.frame(x=refab$lon[chull(x= refab$lon,y=refab$lat)],y=refab$lat[chull(x= refab$lon,y=refab$lat)]) #convex hull coordinates
@@ -810,7 +816,7 @@ points(0,fia_mean,pch=19,col='red',cex=2)
 text(-2.25,fia_mean,'2000s')
 
 options(scipen=999) #gets rid of scientific notation
-mtext('Total Regional\n Biomass (Mg)', side=2, outer = F,line = 5)
+mtext('Total Regional\n AGWB (Mg)', side=2, outer = F,line = 5)
 
 
 
@@ -828,7 +834,7 @@ points(99:1,diff(rev(m_3)),pch=23,bg=cluster_colors[3],cex=1.5,col=NA)
 #abline(h=c(-2000,2000),lty=1,col='gray')
 abline(h=c(0),lty=1)
 abline(v=(c(100,80,50,10)),lty=1,col='lightgray')
-mtext('100 Year AGB \n Differences (Mg)', side=2, outer = F,line = 5)
+mtext('100 Year AWGB \n Increments (Mg)', side=2, outer = F,line = 5)
 
 axis.break(2,-9000,style="slash") 
 
@@ -845,7 +851,7 @@ points(-1,set_mod_diff2,pch=22,bg=cluster_colors[2],cex=2.5,col=NA)
 points(-1,set_mod_diff3,pch=23,bg=cluster_colors[3],cex=2.5,col=NA)
 #abline(h=c(set_mod_diff1,set_mod_diff2,set_mod_diff3),col=cluster_colors,lty=1)
 
-legend('bottomleft',c('West','Central','East'),pch=21:23,pt.bg = (cluster_colors),col = NA,ncol = 3,cex=1.5,pt.cex = 1.75,bg='white')
+legend('bottomleft',c('West','Central','East'),pch=21:23,pt.bg = (cluster_colors),col = NA,ncol = 3,cex=1.5,pt.cex = 1.85,bg='white')
 
 # axis(side=1,at = seq(0,100,5),labels = rev(seq(0,10000,500)),las=2)
 # axis(side=4,at = seq(-7000,7000,1000),labels = seq(-7000,7000,1000),las=2)
@@ -944,7 +950,7 @@ breaks <-  c(seq(0,50,10),seq(75,250,25),435)
 colors <- rev(viridis(length(breaks)-1))
 data_binned <-  cut(pred_biomass_gam$fit, breaks, include.lowest = TRUE, labels = FALSE)
 
-legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
+legendName <- c("AGWB (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
 coords <- data.frame(x=refab$lon[chull(x= refab$lon,y=refab$lat)],y=refab$lat[chull(x= refab$lon,y=refab$lat)]) #convex hull coordinates

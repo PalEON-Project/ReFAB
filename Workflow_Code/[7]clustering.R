@@ -7,15 +7,16 @@ library(ggfortify)
 library(gridExtra)
 library(plotrix)
 library(fields)
+library(reshape2)
 
 #####
 ##### load biomass and metadata
 #####
 
-colors_tri <- c('#1bceff','#f09719','#c41b15')
+colors_tri <- c("cyan4","deeppink2", "navy" )#c('#1bceff','#f09719','#c41b15')
 
-agb.mat <- read.csv('median_biomass_plus_meta.csv')
-agb.list <- split(x = agb.mat[,1:100],f = agb.mat$name) %>%
+agb.mat <- read.csv('refab_final_datasets/for_scripts/median_biomass_plus_meta.csv')
+agb.list <- split(x = agb.mat[,2:101],f = agb.mat$name) %>%
             lapply(.,as.numeric)
 
 lon_mat <- agb.mat$lon[order(agb.mat$name)]
@@ -60,7 +61,7 @@ for(i in 1:3){
 ##### divide pollen into cluster groups
 #####
 
-pollen_all <- read.csv('refab_pollen_counts.csv')
+pollen_all <- read.csv('refab_final_datasets/for_scripts/refab_pollen_counts.csv')
 
 cluster_all <- numeric(nrow(pollen_all))
 for(ii in 1:nrow(pollen_all)){
@@ -76,7 +77,7 @@ for(i in 1:3){
 
 
 #### sensitivity analysis
-load('info.Rdata')
+load('refab_final_datasets/for_scripts/info.Rdata')
 now_all <- do.call(rbind,info) #info comes from the average.biomass figure
 
 #### adding in biome type pollen
@@ -153,7 +154,7 @@ pdf('pol_biom_diff_scatters_limited.pdf',height = 20,width=20)
 #maps::map('state',add=T)
 par(mfrow=c(3,3),mar = c(3,3,2,0),oma = rep(4,4))
 layout(matrix(1:9,3,3))
-  for(ss in 3:5){
+  for(ss in 1:27){
     all_pollen <- unlist(do.call(c, lapply(
       pollen_save,
       FUN = function(x) {
@@ -235,7 +236,7 @@ rownames(rlm_coeff) <- c('Conifer','Decidious','Arboreal','Savanna',
 ### all together figure
 ###
 
-settle <- read.csv('paleon_total_biomass_settlement.csv')
+settle <- read.csv('refab_final_datasets/for_scripts/paleon_total_biomass_settlement.csv')
 
 breaks <-  c(seq(0,50,10),seq(75,250,25),435)
 colors <- rev(terrain.colors(length(breaks)-1))
@@ -244,7 +245,7 @@ legendName <- c("Biomass (Mg/ha)")#paste0("Biomass at Age = ",age_slice, " BP"
 breaklabels <- apply(cbind(breaks[1:(length(breaks)-1)], breaks[2:length(breaks)]), 1,  function(r) { sprintf("%0.2f - %0.2f", r[1], r[2]) })
 
 cols2 <-brewer.pal(7,'BrBG')#c('slateblue4',colorRampPalette(c("lightblue3","lemonchiffon","lightcoral"))(6),'red')# RColorBrewer::brewer.pal(11,'BrBG')
-colors_tri <- c('navy','royalblue','magenta3')
+#colors_tri <- c('navy','royalblue','magenta3')
 
 dend <- as.dendrogram(clusters)
 dend <- color_branches(dend,k=3, col = cluster_colors[c(3,2,1)],groupLabels = T)
@@ -290,7 +291,7 @@ ggplot(data = cm4)+
   #scale_fill_brewer(palette = 1) + 
   facet_wrap(facets = vars(clusters),nrow=3)
 
-load('~/Dropbox/ReFAB_outputs/split_calib_dat_v3.0.Rdata')
+load('refab_final_datasets/for_scripts/split_calib_dat_v3.0.Rdata')
 
 common_names <- c('Conifer','Decidious','Arboreal','Savanna','Forest','Pine','Prairie',
                   'Oak','Birch','Other Herb.','Sedge','Alder','Ironwood','Elm','Hemlock',
@@ -369,8 +370,9 @@ plot(settle$lon,
 points(
   unlist(lon_mat),
   unlist(lat_mat),
-  col = colors_tri[clusters@cluster],
-  pch = 19,cex = 1.25
+  col=NA,
+  bg = colors_tri[clusters@cluster],
+  pch = (21:23)[clusters@cluster],cex = 1.25
 )
 maps::map('state', add = T)
 
@@ -396,7 +398,7 @@ maps::map('state', add = T)
 for (i in c(1,2,3)) {
   plot_me <- do.call(cbind, agb.list[which(clusters@cluster == i)])
   matplot(
-    plot_me[2:100,],
+    plot_me[1:100,],
     xlim = c(100, -9),
     xaxt = 'n',
     yaxt = 'n',
@@ -413,12 +415,19 @@ for (i in c(1,2,3)) {
   
   text(x = -7,y=125,labels= c('W','C','E')[i],cex=4,col = colors_tri[i])
   
-  ciEnvelope(x=1:100,ylo = sd_clusts[i,],
-             yhi = sd_clusts1[i,],
+  # ciEnvelope(x=1:100,ylo = sd_clusts[i,],
+  #            yhi = sd_clusts1[i,],
+  #            col=adjustcolor('gray',alpha.f = .75))
+  # points(mean_clusts[i,],type = 'l',lty=2)
+  # points(sd_clusts[i,],type = 'l',lty=1)
+  # points(sd_clusts1[i,],type = 'l',lty=1)
+  
+  ciEnvelope(x=1:100,ylo = apply(plot_me,1,quantile,.25),
+             yhi = apply(plot_me,1,quantile,.75),
              col=adjustcolor('gray',alpha.f = .75))
-  points(mean_clusts[i,],type = 'l',lty=2)
-  points(sd_clusts[i,],type = 'l',lty=1)
-  points(sd_clusts1[i,],type = 'l',lty=1)
+  #points(mean_clusts[i,],type = 'l',lty=2)
+  points(apply(plot_me,1,quantile,.25),type = 'l',lty=1)
+  points(apply(plot_me,1,quantile,.75),type = 'l',lty=1)
   
   axis(2,at = seq(0,250,50),las=2,cex.axis = 1.5)
   
@@ -455,7 +464,7 @@ for (i in c(1,2,3)) {
   #        type = 'l',
   #        lwd = 4,
   #        col = 'blue')
-  if(i==2)     mtext('Biomass (Mg/ha)',side = 2,line = 4,cex = 1.5)
+  if(i==2)     mtext('AGWB (Mg/ha)',side = 2,line = 4,cex = 1.5)
 }
 axis(side = 1, at = seq(0,100,10),labels = seq(0,10,1),cex.axis = 1.5)
 mtext('Age (cal ka BP)',side = 1,line = 4,cex = 1.5)
@@ -499,6 +508,10 @@ image.plot(
 )
 
 dev.off()
+
+#####
+##### End Figure
+#####
 
 pdf('cluster_pollen_prop_legend.pdf')
 nbins = 70

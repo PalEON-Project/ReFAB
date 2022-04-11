@@ -6,7 +6,6 @@ load('cast.x.Rdata') #our calibration dataset
 load('prediction.data_v5.Rdata') #our prediction dataset
 dataID <- read.csv('dataID_v5.csv')
 
-
 x.meta.plot <- x.meta[which(x.meta$site.name %in% dataID$name),]
 x.meta.plot <- x.meta.plot[-which(x.meta.plot$site.name == 'Lily Lake'),]
 x.meta.plot <- x.meta.plot[-which(x.meta.plot$site.name == 'Mud Lake'),]

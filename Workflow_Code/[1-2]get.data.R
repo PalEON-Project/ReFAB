@@ -433,6 +433,17 @@ save(one.third.idx,file=paste0(Sys.Date(),'one.third.idx.Rdata'))
 
 save(ag.two.thirds.cast.x,file=paste0(Sys.Date(),'two.thirds.cast.x.Rdata'))
 
+plot(ag.two.thirds.cast.x$long,ag.two.thirds.cast.x$lat,pch=19,col=colors[cut(biomass2_3,breaks)])
+maps::map('state',add=T)
+
+plot(ag.one.thirds.cast.x$long,ag.one.thirds.cast.x$lat,col=colors[cut(biomass1_3,breaks)],pch=19)
+maps::map('state',add=T)
+
+calib_pred = rbind(data.frame(ag.two.thirds.cast.x[,c('lat','long','.id')],calib_pred = apply(samps2_3,2,FUN = quantile,.5)),
+      data.frame(ag.one.thirds.cast.x[,c('lat','long','.id')],calib_pred = apply(samps1_3,2,FUN = quantile,.5)))
+
+save(calib_pred,file='calib_pred.Rdata')
+
 #Y = Y[-sites_rm,] #remove sites "sites_rm" defined above
 #biomass = biomass[-sites_rm]
 

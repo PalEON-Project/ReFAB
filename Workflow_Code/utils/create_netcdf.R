@@ -5,8 +5,8 @@
 #### Calibration Dataset ####
 ####
 
-load('final_datasets/cast.x.Rdata')
-load('biomass_draws_v3.0.Rdata')
+load('refab_final_datasets/for_scripts/cast.x.Rdata')
+load('refab_final_datasets/for_scripts/biomass_draws_v3.0.Rdata')
 
 trees <- c("JUGLANSX","FRAXINUX","OSTRYCAR","ULMUS","TILIA","CARYA",
            "FAGUS","TSUGAX","QUERCUS","BETULA",
@@ -29,26 +29,44 @@ colnames(all_biom_draws) <- paste0('biomassdraw',1:250)
 
 calib_full <- cbind(cast.x[,1:4],Y,all_biom_draws)
 
-calib_meta <- read.csv('calib.meta.csv') 
+calib_meta <- read.csv('Data/calib.meta.csv') 
 
-calib_tog <- dplyr::full_join(calib_meta,calib_full)
+calib_full$lat <- signif(calib_full$lat,digits = 8)
+calib_meta$lat <- signif(calib_meta$lat,digits = 8)
+
+calib_full$long <- signif(calib_full$long,digits = 8)
+calib_meta$long <- signif(calib_meta$long,digits = 8)
+
+calib_full$.id = as.numeric(calib_full$.id)
+calib_meta$dataset = as.numeric(calib_meta$dataset)
+
+calib_tog <- merge(calib_meta,
+                              calib_full,
+                              by.x = c('lat','long','dataset'),
+                              by.y=c('lat','long','.id'))
+
+calib_tog2 = merge(calib_tog,calib_pred,
+                   by.x = c('lat','long','dataset'),
+                   by.y=c('lat','long','.id'))
 
 #check biomass distribution
 breaks <-  c(seq(0,40,10),seq(50,300,50))
 colors <- rev(terrain.colors(length(breaks)-1))
-data_binned <-  cut(calib_tog$biomassdraw100, c(breaks), include.lowest = FALSE, labels = FALSE)
-plot(calib_tog$long,calib_tog$lat,col=colors[data_binned],pch=19)
-map('state',add=T)
+data_binned <-  cut(calib_tog2$calib_pred, c(breaks), include.lowest = FALSE, labels = FALSE)
+plot(calib_tog2$long,calib_tog2$lat,col=colors[data_binned],pch=19)
+maps::map('state', add = T)
+
+
 
 #check hemlock distribution
 breaks <-  seq(0,100,1)
 colors <- rev(terrain.colors(length(breaks)-1))
-data_binned <-  cut(calib_tog$TSUGAX, c(breaks), include.lowest = FALSE, labels = FALSE)
-plot(calib_tog$long,calib_tog$lat,col=colors[data_binned],pch=19)
-map('state',add=T)
+data_binned <-  cut(calib_tog2$TSUGAX, c(breaks), include.lowest = FALSE, labels = FALSE)
+plot(calib_tog2$long,calib_tog2$lat,col=colors[data_binned],pch=19)
+maps::map('state', add = T)
 
 
-write.csv(calib_tog,file='ReFAB_calibration_data_v1.0.csv')
+write.csv(calib_tog2,file='refab_final_datasets/data_products/ReFAB_calibration_data_v1.2.csv')
 
 
 #####
@@ -95,13 +113,13 @@ iterdim <- ncdim_def("MCMC iterations",units = '',
                      as.double((seq(1,250,1))))
 
 # define variables
-fillvalue <- 1e32
+fillvalue <- -999
 dlname <- "aboveground woody biomass"
 tmp_def <- ncvar_def("AGWB","Mg/ha",list(londim,latdim,iterdim,timedim),fillvalue,dlname,prec="double")
 tmp_def_name <- ncvar_def("sitename","",list(londim),fillvalue,'site name',prec="double")
 
 # create netCDF file and put arrays
-ncfname <- "ReFAB_site_reconstruction_v1.0.nc"
+ncfname <- "ReFAB_site_reconstruction_v2.0.nc"
 ncout <- nc_create(ncfname,list(tmp_def,tmp_def_name))
 
 all_data <- array(NA,dim=c(80,80,250,100))
@@ -123,7 +141,7 @@ ncatt_put(ncout,"time","axis","T")
 ncatt_put(ncout,"MCMC iterations","axis","I")
 
 # add global attributes
-ncatt_put(ncout,0,"title",'ReFAB Site Reconstruction Data Product')
+ncatt_put(ncout,0,"title",'ReFAB Site Reconstruction Data Product v2.0')
 ncatt_put(ncout,0,"institution",'University of Notre Dame')
 history <- paste(c("A.M. Raiho",'C.J. Paciorek','J.S. McLachlan'), date(), sep=", ")
 ncatt_put(ncout,0,"history",history)
@@ -132,13 +150,41 @@ ncatt_put(ncout,0,"history",history)
 nc_close(ncout)
 
 #####
+##### To albers
+#####
+
+latlong.df_site = data.frame(x=unlist(long),y=unlist(lat))
+
+coordinates(latlong.df_site) <- ~ x + y
+proj4string(latlong.df_site) <- CRS('+proj=longlat +ellps=WGS84')
+
+albers.df_site <- spTransform(latlong.df_site, CRS('+init=epsg:3175'))
+
+albers.df_site = as.data.frame(albers.df_site)
+
+
+latlong.df_hull = data.frame(full.mat[,1:2])
+
+coordinates(latlong.df_hull) <- ~ x + y
+proj4string(latlong.df_hull) <- CRS('+proj=longlat +ellps=WGS84')
+
+albers.df_hull <- spTransform(latlong.df_hull, CRS('+init=epsg:3175'))
+
+albers.df_hull = as.data.frame(albers.df_hull)
+
+plot(albers.df_hull)
+points(as.data.frame(albers.df_fia),pch=19,col='blue',cex=.1)
+
+save(albers.df_site,albers.df_hull,file='albers_site_hull.Rdata')
+
+#####
 ##### Checking site level output #####
 #####
 
 library(lattice)
 library(RColorBrewer)
 
-nc <- nc_open('ReFAB_site_reconstruction_v1.0.nc')
+nc <- nc_open('ReFAB_site_reconstruction_v2.0.nc')
 
 agwb <- ncvar_get(nc,"AGWB");
 
@@ -224,6 +270,11 @@ for (ii in 1:77) {
   maps::map('state', add = T)
   
 }
+
+####
+#### MCMC Check ####
+####
+
 
 ####
 #### Spatial Reconstruction ####

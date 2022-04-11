@@ -7,7 +7,7 @@ source(file.path('Workflow_Code','utils','give_me_R2.R'))
 source(file.path('Workflow_Code','utils','validation_args.R'))
 
 #source(file.path('Workflow_Code','utils','7knot_args.R'))
-load('twothirds_v3.0.Rdata')
+load('Data/twothirds_v3.0.Rdata')
 WANT.NUMS = FALSE
 
 #####
@@ -98,7 +98,7 @@ dev.off()
 ##### Plot 10 Fold CV R2 Validation
 #####
 
-dir_to_samples_pred <- c('~/Dropbox/ReFAB_outputs/samps_10cv/')#c('~/10samps/')
+dir_to_samples_pred <- c('refab_final_datasets/for_scripts/samps_10cv/')#c('~/10samps/')
 samples.pred.mat <- array(NA,dim=c(5000,max(sets10),20))
 dat.index <- data.frame(group_rm=sort(rep(1:10,20)),
                         beta_row =rep(round(seq(Niters*.2,Niters,length.out = 20)),10), #picking betas past burnin
@@ -128,7 +128,6 @@ MSE <- mse_func(preds = apply(samples.pred.mat,2,FUN = quantile,.5,na.rm=T),
                 actual =  biomass.keep)
 legend('bottomright',c(paste("R2 = ",signif(R2,digits = 3)),
                        paste('MSE =', signif(MSE,digits = 3))))
-
 
 arrows(x0 = biomass.keep, y0 = apply(samples.pred.mat,2,FUN = quantile,.05,na.rm=T),
        x1 = biomass.keep, y1 = apply(samples.pred.mat,2,FUN = quantile,.975,na.rm=T),
@@ -193,7 +192,7 @@ biomass2_3 <- c(btt,newbtt)
 
 save(biomass1_3,biomass2_3,samps1_3,samps2_3,file='split_calib_dat_v3.0.Rdata')
 
-load('~/Dropbox/ReFAB_outputs/split_calib_dat_v3.0.Rdata')
+load('refab_final_datasets/for_scripts//split_calib_dat_v3.0.Rdata')
 
 pdf('new_training_set_2_3rds_validation_agb.pdf')
 par(mfrow=c(1,1))
@@ -226,8 +225,8 @@ pdf(paste0(Sys.Date(),'[8]new_gold.r2.validation.pdf'))
 par(mfrow=c(1,1))
 plot(biomass2_3, apply(samps2_3,2,FUN = quantile,.5),
      xlim=c(0,bMax), ylim=c(0,bMax), pch=19,
-     xlab="Observed Biomass (Mg/ha)", 
-     ylab="Predicted Mean Biomass (Mg/ha)",
+     xlab="Observed AGWB (Mg/ha)", 
+     ylab="Predicted Mean AGWB (Mg/ha)",
      col='darkblue',cex=1.2)
 abline(a=0,b=1)
 lm.mod <- lm(apply(samps2_3,2,FUN = quantile,.5)~biomass2_3+0)
@@ -248,9 +247,9 @@ R2training <- signif(give_me_R2(preds = apply(samps2_3,2,FUN = quantile,.5),
 R2testing <- signif(give_me_R2(preds = apply(samps1_3,2,FUN = quantile,.5),
                          actual =  biomass1_3),digits = 3)
 
-mse_train <- signif(mse_func(preds = apply(samps2_3,2,FUN = quantile,.5),
+mse_train <- signif(Metrics::rmse(predicted = apply(samps2_3,2,FUN = quantile,.5),
                                actual =  biomass2_3),digits = 3)
-mse_test <- signif(mse_func(preds = apply(samps1_3,2,FUN = quantile,.5),
+mse_test <- signif(Metrics::rmse(predicted = apply(samps1_3,2,FUN = quantile,.5),
                              actual =  biomass1_3),digits = 3)
 
 arrows(x0 = biomass2_3, y0 = apply(samps2_3,2,FUN = quantile,.05),
@@ -263,8 +262,8 @@ arrows(x0 = biomass1_3, y0 = apply(samps1_3,2,FUN = quantile,.05),
 
 legend(
   'bottomright',
-  c(paste0('Calibration (R2 = ', R2training,', MSE = ',mse_train,')'),
-    paste0('Held-out (R2 = ', R2testing,', MSE = ',mse_test,')')),
+  c(paste0('Calibration (R2 = ', R2training,', RMSE = ',mse_train,')'),
+    paste0('Held-out (R2 = ', R2testing,', RMSE = ',mse_test,')')),
   pch=c(19,25),col=c('darkblue','magenta3'),pt.bg = c('darkblue','magenta3'))
 
 dev.off()
@@ -277,6 +276,27 @@ print(paste(R2training,R2testing))
 
 save(samps1_3,biomass1_3,samps2_3,biomass2_3,file='valid_out.Rdata')
 
+#####
+##### R2 Table
+#####
+
+R2_SSR_SST <- function(preds,actual){
+  rss <- sum(( preds - actual ) ^ 2)  ## residual sum of squares
+  tss <- sum((actual - mean(actual)) ^ 2)  ## total sum of squares
+  rsq <- 1 - rss/tss
+  return(list(rsq=rsq,rss=rss,tss=tss))
+}
+
+Metrics::mse(predicted = apply(samps2_3,2,FUN = quantile,.5),actual = biomass2_3)
+Metrics::mse(predicted = apply(samps1_3,2,FUN = quantile,.5),actual = biomass1_3)
+
+sum((biomass2_3-mean(biomass2_3))^2)/length(biomass2_3)
+sum((biomass1_3-mean(biomass1_3))^2)/length(biomass1_3)
+
+calibset <- R2_SSR_SST(preds = apply(samps2_3,2,FUN = quantile,.5),actual = biomass2_3)
+testset <- R2_SSR_SST(preds = apply(samps1_3,2,FUN = quantile,.5),actual = biomass1_3)
+
+data.frame(calib=unlist(calibset),test=unlist(testset))
 
 #####
 ##### 3/3s fit R2

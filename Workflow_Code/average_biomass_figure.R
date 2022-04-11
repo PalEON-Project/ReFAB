@@ -4,8 +4,8 @@
 ###### Also, makes all site diagnostic pdfs
 
 
-dataID <- read.csv('dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
-load('prediction.data_v6.Rdata') #load('prediction.data_new_v1.Rdata') #
+dataID <- read.csv('refab_final_datasets/for_scripts/dataID_v5.csv') #dataID <- read.csv('dataID_bacon_new_v1.csv') #for original preds dataID <- 
+load('refab_final_datasets/for_scripts/prediction.data_v6.Rdata') #load('prediction.data_new_v1.Rdata') #
 source(file.path('Workflow_Code', 'utils', 'validation_args.R'))
 control.pts <- read.csv(file.path('Data', 'control.pts.csv'))
 
@@ -72,17 +72,17 @@ for(i in 1:length(unique(dataID$name))){
      max(x.meta[x.meta$site.name == locn,'age_bacon'])>8000 & 
      min(x.meta[x.meta$site.name == locn,'age_bacon'])<2000 &do.samps == TRUE){
     
-    samples.keep <- numeric(300)
+    samples.keep <- numeric(100)
     
     for(b in 1:50){
       ID <- dataID[dataID$name==as.character(locn),'ID'][b]
       file_name <- paste0(path_to_samps,'samplesList_workInfo_',ID,'_',locnClean,'_Beta_',b,'.Rdata')
       if(!file.exists(file_name)) next()
       load(file_name)
-      samples.keep <- rbind(samples.keep, samplesList)
+      samples.keep <- rbind(samples.keep, samplesList[round(seq(100,250,length.out=5)),1:100])
     }
     
-    samplesList <- samples.keep
+    samplesList <- samples.keep[-1,]
     
     if(file.exists(file_name)){
       out.list[[i]] <- list()
@@ -107,7 +107,7 @@ for(i in 1:length(unique(dataID$name))){
       #Takes out modern data estimates where data stop# i.e. 'cut' approach
       #samplesList[,1:min(age_index)] <- NA
       
-      not_burn <- seq(1,nrow(samplesList),length.out = 250)
+      not_burn <- 1:250#seq(2,nrow(samplesList),length.out = 250)
       biomassCI[[i]] <- apply(samplesList[not_burn,1:100],2,quantile,c(0.025,0.5,0.975),na.rm=TRUE)
       names(biomassCI)[i] <- x.meta[x.meta$site.name == locn,'site.id'][1]
       
